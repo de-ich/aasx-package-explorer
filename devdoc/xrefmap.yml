@@ -45707,6 +45707,34 @@ references:
   isSpec: "True"
   fullName: AdminShellNS.XmlValidator.Validate
   nameWithType: XmlValidator.Validate
+- uid: CheckHeadersScript
+  name: CheckHeadersScript
+  href: api/CheckHeadersScript.html
+  commentId: N:CheckHeadersScript
+  fullName: CheckHeadersScript
+  nameWithType: CheckHeadersScript
+- uid: CheckHeadersScript.Input
+  name: Input
+  href: api/CheckHeadersScript.Input.html
+  commentId: T:CheckHeadersScript.Input
+  fullName: CheckHeadersScript.Input
+  nameWithType: Input
+- uid: CheckHeadersScript.Input.MatchFiles(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})
+  name: MatchFiles(String, List<String>, List<String>)
+  href: api/CheckHeadersScript.Input.html#CheckHeadersScript_Input_MatchFiles_System_String_System_Collections_Generic_List_System_String__System_Collections_Generic_List_System_String__
+  commentId: M:CheckHeadersScript.Input.MatchFiles(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})
+  name.vb: MatchFiles(String, List(Of String), List(Of String))
+  fullName: CheckHeadersScript.Input.MatchFiles(System.String, System.Collections.Generic.List<System.String>, System.Collections.Generic.List<System.String>)
+  fullName.vb: CheckHeadersScript.Input.MatchFiles(System.String, System.Collections.Generic.List(Of System.String), System.Collections.Generic.List(Of System.String))
+  nameWithType: Input.MatchFiles(String, List<String>, List<String>)
+  nameWithType.vb: Input.MatchFiles(String, List(Of String), List(Of String))
+- uid: CheckHeadersScript.Input.MatchFiles*
+  name: MatchFiles
+  href: api/CheckHeadersScript.Input.html#CheckHeadersScript_Input_MatchFiles_
+  commentId: Overload:CheckHeadersScript.Input.MatchFiles
+  isSpec: "True"
+  fullName: CheckHeadersScript.Input.MatchFiles
+  nameWithType: Input.MatchFiles
 - uid: CheckScript
   name: CheckScript
   href: api/CheckScript.html

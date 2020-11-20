@@ -3394,6 +3394,16 @@
     "title": "Class XmlValidator",
     "keywords": "Class XmlValidator validates the XML content against the AASX XML schema. Please produce instances with NewXmlValidator() . Inheritance System.Object XmlValidator Namespace : AdminShellNS Assembly : AasxCsharpLibrary.dll Syntax public class XmlValidator : object Methods | Improve this Doc View Source Validate(AasValidationRecordList, Stream) validates the given XML content and stores the results in the recs . Declaration public void Validate(AasValidationRecordList recs, Stream xmlContent) Parameters Type Name Description AasValidationRecordList recs Validation records Stream xmlContent Content to be validated"
   },
+  "api/CheckHeadersScript.html": {
+    "href": "api/CheckHeadersScript.html",
+    "title": "Namespace CheckHeadersScript",
+    "keywords": "Namespace CheckHeadersScript Classes Input"
+  },
+  "api/CheckHeadersScript.Input.html": {
+    "href": "api/CheckHeadersScript.Input.html",
+    "title": "Class Input",
+    "keywords": "Class Input Inheritance System.Object Input Inherited Members System.Object.Equals(System.Object) System.Object.Equals(System.Object, System.Object) System.Object.GetHashCode() System.Object.GetType() System.Object.MemberwiseClone() System.Object.ReferenceEquals(System.Object, System.Object) System.Object.ToString() Namespace : CheckHeadersScript Assembly : CheckHeadersScript.dll Syntax public static class Input Methods | Improve this Doc View Source MatchFiles(String, List<String>, List<String>) Matches all the files defined by the patterns, includes and excludes. If any of the patterns is given as a relative directory, current working directory is prepended. Declaration public static IEnumerable<string> MatchFiles(string cwd, List<string> patterns, List<string> excludes) Parameters Type Name Description System.String cwd current working directory System.Collections.Generic.List < System.String > patterns GLOB patterns to match files for inspection System.Collections.Generic.List < System.String > excludes GLOB patterns to exclude files matching patterns Returns Type Description System.Collections.Generic.IEnumerable < System.String > Paths of the matched files"
+  },
   "api/CheckScript.html": {
     "href": "api/CheckScript.html",
     "title": "Namespace CheckScript",

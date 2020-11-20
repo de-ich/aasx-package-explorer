@@ -8162,6 +8162,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/CheckHeadersScript.Input.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CheckHeadersScript.Input.html",
+          "hash": "oY40dywLTmeZWfvJzPoDyA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CheckHeadersScript.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CheckHeadersScript.html",
+          "hash": "EqZU2X7YFJ/lsFmv/DDv7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/CheckScript.ThreeLetterWords.yml",
       "output": {
         ".html": {
@@ -9354,7 +9378,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "deTuX7WOdAwx6STI7Qs/ow=="
+          "hash": "t8bNfer7p7HPOP4IlCg/yQ=="
         }
       },
       "is_incremental": false,
@@ -9559,7 +9583,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 777,
+          "total_file_count": 779,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
