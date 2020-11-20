@@ -566,7 +566,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-21): was because of multi-select",
-        "line": 723,
+        "line": 720,
         "column": 20,
         "status": "ok"
       }
@@ -578,7 +578,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-09-01): extend the lines below to cover also data spec. for units",
-        "line": 1557,
+        "line": 1554,
         "column": 12,
         "status": "ok"
       }
@@ -690,7 +690,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-09-18): remove this test code",
-        "line": 78,
+        "line": 75,
         "column": 12,
         "status": "ok"
       }

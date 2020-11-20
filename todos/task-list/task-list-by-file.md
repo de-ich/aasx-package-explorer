@@ -599,8 +599,8 @@ MIHO,
 
 ## AasxWpfControlLibrary\DiplayVisualAasxElements.xaml.cs
 
-[Line 724, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DiplayVisualAasxElements.xaml.cs#L724
+[Line 721, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DiplayVisualAasxElements.xaml.cs#L721
 ), 
 MIHO,
 2020-07-21
@@ -609,8 +609,8 @@ MIHO,
 
 ## AasxWpfControlLibrary\DispEditAasxEntity.xaml.cs
 
-[Line 1558, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditAasxEntity.xaml.cs#L1558
+[Line 1555, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditAasxEntity.xaml.cs#L1555
 ), 
 MIHO,
 2020-09-01
@@ -711,8 +711,8 @@ MICHA,
 
 ## WpfMtpVisuViewer\MainWindow.xaml.cs
 
-[Line 79, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpVisuViewer/MainWindow.xaml.cs#L79
+[Line 76, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpVisuViewer/MainWindow.xaml.cs#L76
 ), 
 MIHO,
 2020-09-18
