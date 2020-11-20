@@ -5,7 +5,7 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): If further data specifications exist (in future), add here",
-        "line": 879,
+        "line": 870,
         "column": 12,
         "status": "ok"
       }
@@ -17,14 +17,14 @@
       {
         "prefix": "HACK",
         "suffix": " (MIHO, 2020-08-01): The check for role class or requirements is still questionable\r\n                 but seems to be correct (see below)\r\n\r\n                 Question MIHO: I dont understand the determinism behind that!\r\n                 WIEGAND: me, neither ;-)\r\n                 Wiegand:  ich hab mir von Prof.Drath nochmal erkl\u00E4ren lassen, wie SupportedRoleClass und\r\n                 RoleRequirement verwendet werden:\r\n                 In CAEX2.15(aktuelle AML Version und unsere AAS Mapping Version):\r\n                   1.Eine SystemUnitClass hat eine oder mehrere SupportedRoleClasses, die ihre \u201Em\u00F6gliche Rolle\r\n                     beschreiben(Drucker / Fax / kopierer)\r\n                   2.Wird die SystemUnitClass als InternalElement instanziiert entscheidet man sich f\u00FCr eine\r\n                     Hauptrolle, die dann zum RoleRequirement wird und evtl. Nebenklassen die dann\r\n                     SupportedRoleClasses sind(ist ein Workaround weil CAEX2.15 in der Norm nur\r\n                     ein RoleReuqirement erlaubt)\r\n                 InCAEX3.0(n\u00E4chste AMl Version):\r\n                   1.Wie bei CAEX2.15\r\n                   2.Wird die SystemUnitClass als Internal Elementinstanziiert werden die verwendeten Rollen\r\n                     jeweils als RoleRequirement zugewiesen (in CAEX3 sind mehrere RoleReuqirements nun erlaubt)",
-        "line": 176,
+        "line": 168,
         "column": 16,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): fill out \r\n                                             eds.hasDataSpecification by using outer attributes",
-        "line": 1443,
+        "line": 1435,
         "column": 44,
         "status": "ok"
       }
@@ -69,56 +69,56 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): in V1.0, shall be a list of embeddedDataSpecification",
-        "line": 1848,
+        "line": 1842,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): Qualifiers not working!",
-        "line": 2566,
+        "line": 2560,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): Operation",
-        "line": 2926,
+        "line": 2920,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): use aasenv serialzers here!",
-        "line": 3905,
+        "line": 3899,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): use aasenv serialzers here!",
-        "line": 3930,
+        "line": 3924,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): use aasenv serialzers here!",
-        "line": 4037,
+        "line": 4031,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): use aasenv serialzers here!",
-        "line": 4066,
+        "line": 4060,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): use aasenv serialzers here!",
-        "line": 4093,
+        "line": 4087,
         "column": 28,
         "status": "ok"
       }
@@ -130,56 +130,56 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-30): this does not prevent the corner case, that we could have\r\n                            * multiple dataSpecificationIEC61360 in this list, which would be an error",
-        "line": 1144,
+        "line": 1138,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-27): According to spec, cardinality is [1..1][1..n]",
-        "line": 2883,
+        "line": 2877,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-27): According to spec, cardinality is [0..1][1..n]",
-        "line": 2887,
+        "line": 2881,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-27): According to spec, cardinality is [0..1][1..n]",
-        "line": 2918,
+        "line": 2912,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-30): align wording of the member (\u0022embeddedDataSpecification\u0022) with the \r\n                * wording of the other entities (\u0022hasDataSpecification\u0022)",
-        "line": 3197,
+        "line": 3191,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-26): not very elegant, yet. Avoid temporary collection",
-        "line": 3882,
+        "line": 3876,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): check, if Json has Qualifiers or not",
-        "line": 4552,
+        "line": 4546,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-31): would be nice to use IEnumerateChildren for this ..",
-        "line": 5294,
+        "line": 5288,
         "column": 20,
         "status": "ok"
       }
@@ -191,28 +191,28 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 243,
+        "line": 252,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 363,
+        "line": 372,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 404,
+        "line": 413,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 434,
+        "line": 443,
         "column": 20,
         "status": "ok"
       }
@@ -224,7 +224,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-11-12): replace with Regex for multi language. Ideally have Exception messages\r\n                   always as English.",
-        "line": 185,
+        "line": 194,
         "column": 16,
         "status": "ok"
       }
@@ -329,7 +329,7 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Andreas, check this. \r\n                 System.Net.WebProxy.GetDefaultProxy was deprecated.",
-        "line": 55,
+        "line": 64,
         "column": 16,
         "status": "ok"
       }
@@ -341,28 +341,28 @@
       {
         "prefix": "TODO",
         "suffix": " (Andreas Orzelski, 2020-08-01): The signature file and [Content_Types].xml can be tampered?",
-        "line": 24,
+        "line": 29,
         "column": 8,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Andreas Orzelski, 2020-08-01): Is package according to the Logical model of the AAS?",
-        "line": 174,
+        "line": 179,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Andreas Orzelski, 2020-08-01): is package sealed? =\u003E no other signatures can be added?",
-        "line": 208,
+        "line": 213,
         "column": 16,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Andreas Orzelski, 2020-08-01): The information from the analysis\r\n                  -\u003E return as an object (list of enums with the issues/warings???)",
-        "line": 211,
+        "line": 216,
         "column": 16,
         "status": "ok"
       }
@@ -374,7 +374,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-03): check SOURCE",
-        "line": 0,
+        "line": 9,
         "column": 0,
         "status": "ok"
       }
@@ -386,7 +386,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): check, which namespace shall be used",
-        "line": 270,
+        "line": 279,
         "column": 32,
         "status": "ok"
       }
@@ -398,84 +398,84 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-29): The UA mapping needs to be overworked in order to comply the joint aligment with I4AAS",
-        "line": 10,
+        "line": 19,
         "column": 0,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-29): The UA mapping needs to be checked for the \u0022new\u0022 HasDataSpecification strcuture of V2.0.1",
-        "line": 11,
+        "line": 20,
         "column": 0,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): check (again) if reference to CDs is done are shall be done",
-        "line": 675,
+        "line": 684,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): not sure if to add these",
-        "line": 966,
+        "line": 975,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): use the collection element of UA?",
-        "line": 1067,
+        "line": 1076,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): decide to from where the name comes",
-        "line": 1383,
+        "line": 1392,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): description: get \u0022en\u0022 version which is appropriate?",
-        "line": 1386,
+        "line": 1395,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): parse UA data type out .. OK?",
-        "line": 1389,
+        "line": 1398,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): description: get \u0022en\u0022 version is appropriate?",
-        "line": 1398,
+        "line": 1407,
         "column": 32,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): this any better?",
-        "line": 1407,
+        "line": 1416,
         "column": 36,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): description: get \u0022en\u0022 version is appropriate?",
-        "line": 1411,
+        "line": 1420,
         "column": 36,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): check, if to make super classes for UriDictionaryEntryType?",
-        "line": 1755,
+        "line": 1764,
         "column": 12,
         "status": "ok"
       }
@@ -511,7 +511,7 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Fraunhofer IOSB: Check ReSharper to be OK",
-        "line": 19,
+        "line": 23,
         "column": 0,
         "status": "ok"
       }
@@ -523,14 +523,14 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): License",
-        "line": 25,
+        "line": 29,
         "column": 0,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 1970-01-01): Fraunhofer IOSB: Check ReSharper",
-        "line": 26,
+        "line": 30,
         "column": 0,
         "status": "ok"
       }
@@ -542,7 +542,7 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Fraunhofer IOSB: Check ReSharper settings to be OK",
-        "line": 22,
+        "line": 26,
         "column": 0,
         "status": "ok"
       }
@@ -554,7 +554,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-05): refacture this with DispEditHelper.cs",
-        "line": 575,
+        "line": 584,
         "column": 8,
         "status": "ok"
       }
@@ -566,7 +566,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-21): was because of multi-select",
-        "line": 729,
+        "line": 723,
         "column": 20,
         "status": "ok"
       }
@@ -578,7 +578,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-09-01): extend the lines below to cover also data spec. for units",
-        "line": 1563,
+        "line": 1557,
         "column": 12,
         "status": "ok"
       }
@@ -590,14 +590,14 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): possibly [Jump] button??",
-        "line": 1307,
+        "line": 1301,
         "column": 16,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Needs to be revisited",
-        "line": 1487,
+        "line": 1481,
         "column": 24,
         "status": "ok"
       }
@@ -609,14 +609,14 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Operation mssing here?",
-        "line": 227,
+        "line": 236,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Operation mssing here?",
-        "line": 249,
+        "line": 258,
         "column": 28,
         "status": "ok"
       }
@@ -628,7 +628,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-31): check if commented out because of non-working multi-select?",
-        "line": 152,
+        "line": 146,
         "column": 16,
         "status": "ok"
       }
@@ -640,14 +640,14 @@
       {
         "prefix": "HACK",
         "suffix": " (MIHO, 2020-08-03): see equivalent function in AmlImport.cs; may be re-use",
-        "line": 41,
+        "line": 50,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): spec/example files seem not to be in a final state",
-        "line": 209,
+        "line": 218,
         "column": 40,
         "status": "ok"
       }
@@ -659,7 +659,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-06): remove this, if not required anymore",
-        "line": 232,
+        "line": 241,
         "column": 12,
         "status": "ok"
       }
@@ -671,14 +671,14 @@
       {
         "prefix": "TODO",
         "suffix": " (MICHA, 2020-10-04): check if font is set correctly ..",
-        "line": 405,
+        "line": 414,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MICHA, 2020-10-04): seems, that for Textblock the alignement DOES NOT WORK!",
-        "line": 406,
+        "line": 415,
         "column": 12,
         "status": "ok"
       }
@@ -690,7 +690,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-09-18): remove this test code",
-        "line": 69,
+        "line": 78,
         "column": 12,
         "status": "ok"
       }

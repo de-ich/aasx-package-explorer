@@ -1,7 +1,7 @@
 ﻿## AasxAmlImExport\AmlExport.cs
 
-[Line 880, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxAmlImExport/AmlExport.cs#L880
+[Line 871, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxAmlImExport/AmlExport.cs#L871
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -10,8 +10,8 @@ Michael Hoffmeister,
 
 ## AasxAmlImExport\AmlImport.cs
 
-[Line 177, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxAmlImExport/AmlImport.cs#L177
+[Line 169, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxAmlImExport/AmlImport.cs#L169
 ), 
 MIHO,
 2020-08-01
@@ -35,8 +35,8 @@ MIHO,
       2.Wird die SystemUnitClass als Internal Elementinstanziiert werden die verwendeten Rollen
         jeweils als RoleRequirement zugewiesen (in CAEX3 sind mehrere RoleReuqirements nun erlaubt)
 
-[Line 1444, column 45](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxAmlImExport/AmlImport.cs#L1444
+[Line 1436, column 45](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxAmlImExport/AmlImport.cs#L1436
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -104,64 +104,64 @@ mristin,
 
 ## AasxCsharpLibrary\AasxCompatibilityModels\V10\AdminShellV10.cs
 
-[Line 1849, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L1849
+[Line 1843, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L1843
 ), 
 Michael Hoffmeister,
 1970-01-01
 
     in V1.0, shall be a list of embeddedDataSpecification
 
-[Line 2567, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L2567
+[Line 2561, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L2561
 ), 
 Michael Hoffmeister,
 1970-01-01
 
     Qualifiers not working!
 
-[Line 2927, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L2927
+[Line 2921, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L2921
 ), 
 Michael Hoffmeister,
 1970-01-01
 
     Operation
 
-[Line 3906, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L3906
+[Line 3900, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L3900
 ), 
 Michael Hoffmeister,
 1970-01-01
 
     use aasenv serialzers here!
 
-[Line 3931, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L3931
+[Line 3925, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L3925
 ), 
 Michael Hoffmeister,
 1970-01-01
 
     use aasenv serialzers here!
 
-[Line 4038, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L4038
+[Line 4032, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L4032
 ), 
 Michael Hoffmeister,
 1970-01-01
 
     use aasenv serialzers here!
 
-[Line 4067, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L4067
+[Line 4061, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L4061
 ), 
 Michael Hoffmeister,
 1970-01-01
 
     use aasenv serialzers here!
 
-[Line 4094, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L4094
+[Line 4088, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AasxCompatibilityModels/V10/AdminShellV10.cs#L4088
 ), 
 Michael Hoffmeister,
 1970-01-01
@@ -170,8 +170,8 @@ Michael Hoffmeister,
 
 ## AasxCsharpLibrary\AdminShell.cs
 
-[Line 1145, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L1145
+[Line 1139, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L1139
 ), 
 MIHO,
 2020-08-30
@@ -179,32 +179,32 @@ MIHO,
     this does not prevent the corner case, that we could have
     * multiple dataSpecificationIEC61360 in this list, which would be an error
 
-[Line 2884, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2884
+[Line 2878, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2878
 ), 
 MIHO,
 2020-08-27
 
     According to spec, cardinality is [1..1][1..n]
 
-[Line 2888, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2888
+[Line 2882, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2882
 ), 
 MIHO,
 2020-08-27
 
     According to spec, cardinality is [0..1][1..n]
 
-[Line 2919, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2919
+[Line 2913, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2913
 ), 
 MIHO,
 2020-08-27
 
     According to spec, cardinality is [0..1][1..n]
 
-[Line 3198, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L3198
+[Line 3192, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L3192
 ), 
 MIHO,
 2020-08-30
@@ -212,24 +212,24 @@ MIHO,
     align wording of the member ("embeddedDataSpecification") with the 
     * wording of the other entities ("hasDataSpecification")
 
-[Line 3883, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L3883
+[Line 3877, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L3877
 ), 
 MIHO,
 2020-08-26
 
     not very elegant, yet. Avoid temporary collection
 
-[Line 4553, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L4553
+[Line 4547, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L4547
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     check, if Json has Qualifiers or not
 
-[Line 5295, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L5295
+[Line 5289, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L5289
 ), 
 MIHO,
 2020-07-31
@@ -238,32 +238,32 @@ MIHO,
 
 ## AasxCsharpLibrary\AdminShellPackageEnv.cs
 
-[Line 244, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L244
+[Line 253, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L253
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     use a unified function to create a serializer
 
-[Line 364, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L364
+[Line 373, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L373
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     use a unified function to create a serializer
 
-[Line 405, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L405
+[Line 414, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L414
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     use a unified function to create a serializer
 
-[Line 435, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L435
+[Line 444, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L444
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -272,8 +272,8 @@ Michael Hoffmeister,
 
 ## AasxCsharpLibrary\AdminShellUtil.cs
 
-[Line 186, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellUtil.cs#L186
+[Line 195, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellUtil.cs#L195
 ), 
 MIHO,
 2020-11-12
@@ -367,8 +367,8 @@ MIHO,
 
 ## AasxRestServerLibrary\AasxRestClient.cs
 
-[Line 56, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxRestClient.cs#L56
+[Line 65, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxRestClient.cs#L65
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -378,32 +378,32 @@ Michael Hoffmeister,
 
 ## AasxSignature\AasxSignature.cs
 
-[Line 25, column 9](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxSignature/AasxSignature.cs#L25
+[Line 30, column 9](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxSignature/AasxSignature.cs#L30
 ), 
 Andreas Orzelski,
 2020-08-01
 
     The signature file and [Content_Types].xml can be tampered?
 
-[Line 175, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxSignature/AasxSignature.cs#L175
+[Line 180, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxSignature/AasxSignature.cs#L180
 ), 
 Andreas Orzelski,
 2020-08-01
 
     Is package according to the Logical model of the AAS?
 
-[Line 209, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxSignature/AasxSignature.cs#L209
+[Line 214, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxSignature/AasxSignature.cs#L214
 ), 
 Andreas Orzelski,
 2020-08-01
 
     is package sealed? => no other signatures can be added?
 
-[Line 212, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxSignature/AasxSignature.cs#L212
+[Line 217, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxSignature/AasxSignature.cs#L217
 ), 
 Andreas Orzelski,
 2020-08-01
@@ -413,8 +413,8 @@ Andreas Orzelski,
 
 ## AasxUaNetConsoleServer\Program.cs
 
-[Line 1, column 1](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetConsoleServer/Program.cs#L1
+[Line 10, column 1](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetConsoleServer/Program.cs#L10
 ), 
 MIHO,
 2020-08-03
@@ -423,8 +423,8 @@ MIHO,
 
 ## AasxUaNetServer\AasxServer\AasEntityBuilder.cs
 
-[Line 271, column 33](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasEntityBuilder.cs#L271
+[Line 280, column 33](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasEntityBuilder.cs#L280
 ), 
 MIHO,
 2020-08-06
@@ -433,96 +433,96 @@ MIHO,
 
 ## AasxUaNetServer\AasxServer\AasUaEntities.cs
 
-[Line 11, column 1](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L11
+[Line 20, column 1](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L20
 ), 
 MIHO,
 2020-08-29
 
     The UA mapping needs to be overworked in order to comply the joint aligment with I4AAS
 
-[Line 12, column 1](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L12
+[Line 21, column 1](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L21
 ), 
 MIHO,
 2020-08-29
 
     The UA mapping needs to be checked for the "new" HasDataSpecification strcuture of V2.0.1
 
-[Line 676, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L676
+[Line 685, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L685
 ), 
 MIHO,
 2020-08-06
 
     check (again) if reference to CDs is done are shall be done
 
-[Line 967, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L967
+[Line 976, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L976
 ), 
 MIHO,
 2020-08-06
 
     not sure if to add these
 
-[Line 1068, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1068
+[Line 1077, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1077
 ), 
 MIHO,
 2020-08-06
 
     use the collection element of UA?
 
-[Line 1384, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1384
+[Line 1393, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1393
 ), 
 MIHO,
 2020-08-06
 
     decide to from where the name comes
 
-[Line 1387, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1387
+[Line 1396, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1396
 ), 
 MIHO,
 2020-08-06
 
     description: get "en" version which is appropriate?
 
-[Line 1390, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1390
+[Line 1399, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1399
 ), 
 MIHO,
 2020-08-06
 
     parse UA data type out .. OK?
 
-[Line 1399, column 33](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1399
+[Line 1408, column 33](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1408
 ), 
 MIHO,
 2020-08-06
 
     description: get "en" version is appropriate?
 
-[Line 1408, column 37](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1408
+[Line 1417, column 37](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1417
 ), 
 MIHO,
 2020-08-06
 
     this any better?
 
-[Line 1412, column 37](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1412
+[Line 1421, column 37](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1421
 ), 
 MIHO,
 2020-08-06
 
     description: get "en" version is appropriate?
 
-[Line 1756, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1756
+[Line 1765, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUaNetServer/AasxServer/AasUaEntities.cs#L1765
 ), 
 MIHO,
 2020-08-06
@@ -551,8 +551,8 @@ MIHO,
 
 ## AasxUANodesetImExport\UANodeSet.cs
 
-[Line 20, column 1](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUANodesetImExport/UANodeSet.cs#L20
+[Line 24, column 1](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUANodesetImExport/UANodeSet.cs#L24
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -561,16 +561,16 @@ Michael Hoffmeister,
 
 ## AasxUANodesetImExport\UANodeSetExport.cs
 
-[Line 26, column 1](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUANodesetImExport/UANodeSetExport.cs#L26
+[Line 30, column 1](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUANodesetImExport/UANodeSetExport.cs#L30
 ), 
 Michael Hoffmeister,
 1970-01-01
 
     License
 
-[Line 27, column 1](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUANodesetImExport/UANodeSetExport.cs#L27
+[Line 31, column 1](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUANodesetImExport/UANodeSetExport.cs#L31
 ), 
 Michael Hoffmeister,
 1970-01-01
@@ -579,8 +579,8 @@ Michael Hoffmeister,
 
 ## AasxUANodesetImExport\UANodeSetImport.cs
 
-[Line 23, column 1](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUANodesetImExport/UANodeSetImport.cs#L23
+[Line 27, column 1](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxUANodesetImExport/UANodeSetImport.cs#L27
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -589,8 +589,8 @@ Michael Hoffmeister,
 
 ## AasxWpfControlLibrary\AasxFileRepository.cs
 
-[Line 576, column 9](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/AasxFileRepository.cs#L576
+[Line 585, column 9](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/AasxFileRepository.cs#L585
 ), 
 MIHO,
 2020-08-05
@@ -599,8 +599,8 @@ MIHO,
 
 ## AasxWpfControlLibrary\DiplayVisualAasxElements.xaml.cs
 
-[Line 730, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DiplayVisualAasxElements.xaml.cs#L730
+[Line 724, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DiplayVisualAasxElements.xaml.cs#L724
 ), 
 MIHO,
 2020-07-21
@@ -609,8 +609,8 @@ MIHO,
 
 ## AasxWpfControlLibrary\DispEditAasxEntity.xaml.cs
 
-[Line 1564, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditAasxEntity.xaml.cs#L1564
+[Line 1558, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditAasxEntity.xaml.cs#L1558
 ), 
 MIHO,
 2020-09-01
@@ -619,16 +619,16 @@ MIHO,
 
 ## AasxWpfControlLibrary\DispEditHelperBasics.cs
 
-[Line 1308, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1308
+[Line 1302, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1302
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     possibly [Jump] button??
 
-[Line 1488, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1488
+[Line 1482, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1482
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -637,16 +637,16 @@ Michael Hoffmeister,
 
 ## AasxWpfControlLibrary\DispEditHelperCopyPaste.cs
 
-[Line 228, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperCopyPaste.cs#L228
+[Line 237, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperCopyPaste.cs#L237
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     Operation mssing here?
 
-[Line 250, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperCopyPaste.cs#L250
+[Line 259, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperCopyPaste.cs#L259
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -655,8 +655,8 @@ Michael Hoffmeister,
 
 ## AasxWpfControlLibrary\VisualAasxElements.cs
 
-[Line 153, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/VisualAasxElements.cs#L153
+[Line 147, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/VisualAasxElements.cs#L147
 ), 
 MIHO,
 2020-07-31
@@ -665,16 +665,16 @@ MIHO,
 
 ## WpfMtpControl\MtpAmlHelper.cs
 
-[Line 42, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/MtpAmlHelper.cs#L42
+[Line 51, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/MtpAmlHelper.cs#L51
 ), 
 MIHO,
 2020-08-03
 
     see equivalent function in AmlImport.cs; may be re-use
 
-[Line 210, column 41](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/MtpAmlHelper.cs#L210
+[Line 219, column 41](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/MtpAmlHelper.cs#L219
 ), 
 MIHO,
 2020-08-06
@@ -683,8 +683,8 @@ MIHO,
 
 ## WpfMtpControl\MtpVisuOpcUaClient.cs
 
-[Line 233, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/MtpVisuOpcUaClient.cs#L233
+[Line 242, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/MtpVisuOpcUaClient.cs#L242
 ), 
 MIHO,
 2020-08-06
@@ -693,16 +693,16 @@ MIHO,
 
 ## WpfMtpControl\UiElementHelper.cs
 
-[Line 406, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/UiElementHelper.cs#L406
+[Line 415, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/UiElementHelper.cs#L415
 ), 
 MICHA,
 2020-10-04
 
     check if font is set correctly ..
 
-[Line 407, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/UiElementHelper.cs#L407
+[Line 416, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/UiElementHelper.cs#L416
 ), 
 MICHA,
 2020-10-04
@@ -711,8 +711,8 @@ MICHA,
 
 ## WpfMtpVisuViewer\MainWindow.xaml.cs
 
-[Line 70, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpVisuViewer/MainWindow.xaml.cs#L70
+[Line 79, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpVisuViewer/MainWindow.xaml.cs#L79
 ), 
 MIHO,
 2020-09-18
