@@ -18246,12 +18246,12 @@ references:
   commentId: T:AasxPackageExplorer.AboutBox
   fullName: AasxPackageExplorer.AboutBox
   nameWithType: AboutBox
-- uid: AasxPackageExplorer.AboutBox.#ctor
-  name: AboutBox()
-  href: api/AasxPackageExplorer.AboutBox.html#AasxPackageExplorer_AboutBox__ctor
-  commentId: M:AasxPackageExplorer.AboutBox.#ctor
-  fullName: AasxPackageExplorer.AboutBox.AboutBox()
-  nameWithType: AboutBox.AboutBox()
+- uid: AasxPackageExplorer.AboutBox.#ctor(AasxPackageExplorer.Pref)
+  name: AboutBox(Pref)
+  href: api/AasxPackageExplorer.AboutBox.html#AasxPackageExplorer_AboutBox__ctor_AasxPackageExplorer_Pref_
+  commentId: M:AasxPackageExplorer.AboutBox.#ctor(AasxPackageExplorer.Pref)
+  fullName: AasxPackageExplorer.AboutBox.AboutBox(AasxPackageExplorer.Pref)
+  nameWithType: AboutBox.AboutBox(Pref)
 - uid: AasxPackageExplorer.AboutBox.#ctor*
   name: AboutBox
   href: api/AasxPackageExplorer.AboutBox.html#AasxPackageExplorer_AboutBox__ctor_
@@ -18451,12 +18451,12 @@ references:
   commentId: T:AasxPackageExplorer.CustomSplashScreenNew
   fullName: AasxPackageExplorer.CustomSplashScreenNew
   nameWithType: CustomSplashScreenNew
-- uid: AasxPackageExplorer.CustomSplashScreenNew.#ctor
-  name: CustomSplashScreenNew()
-  href: api/AasxPackageExplorer.CustomSplashScreenNew.html#AasxPackageExplorer_CustomSplashScreenNew__ctor
-  commentId: M:AasxPackageExplorer.CustomSplashScreenNew.#ctor
-  fullName: AasxPackageExplorer.CustomSplashScreenNew.CustomSplashScreenNew()
-  nameWithType: CustomSplashScreenNew.CustomSplashScreenNew()
+- uid: AasxPackageExplorer.CustomSplashScreenNew.#ctor(AasxPackageExplorer.Pref)
+  name: CustomSplashScreenNew(Pref)
+  href: api/AasxPackageExplorer.CustomSplashScreenNew.html#AasxPackageExplorer_CustomSplashScreenNew__ctor_AasxPackageExplorer_Pref_
+  commentId: M:AasxPackageExplorer.CustomSplashScreenNew.#ctor(AasxPackageExplorer.Pref)
+  fullName: AasxPackageExplorer.CustomSplashScreenNew.CustomSplashScreenNew(AasxPackageExplorer.Pref)
+  nameWithType: CustomSplashScreenNew.CustomSplashScreenNew(Pref)
 - uid: AasxPackageExplorer.CustomSplashScreenNew.#ctor*
   name: CustomSplashScreenNew
   href: api/AasxPackageExplorer.CustomSplashScreenNew.html#AasxPackageExplorer_CustomSplashScreenNew__ctor_
@@ -21160,12 +21160,12 @@ references:
   commentId: T:AasxPackageExplorer.MainWindow
   fullName: AasxPackageExplorer.MainWindow
   nameWithType: MainWindow
-- uid: AasxPackageExplorer.MainWindow.#ctor
-  name: MainWindow()
-  href: api/AasxPackageExplorer.MainWindow.html#AasxPackageExplorer_MainWindow__ctor
-  commentId: M:AasxPackageExplorer.MainWindow.#ctor
-  fullName: AasxPackageExplorer.MainWindow.MainWindow()
-  nameWithType: MainWindow.MainWindow()
+- uid: AasxPackageExplorer.MainWindow.#ctor(AasxPackageExplorer.Pref)
+  name: MainWindow(Pref)
+  href: api/AasxPackageExplorer.MainWindow.html#AasxPackageExplorer_MainWindow__ctor_AasxPackageExplorer_Pref_
+  commentId: M:AasxPackageExplorer.MainWindow.#ctor(AasxPackageExplorer.Pref)
+  fullName: AasxPackageExplorer.MainWindow.MainWindow(AasxPackageExplorer.Pref)
+  nameWithType: MainWindow.MainWindow(Pref)
 - uid: AasxPackageExplorer.MainWindow.#ctor*
   name: MainWindow
   href: api/AasxPackageExplorer.MainWindow.html#AasxPackageExplorer_MainWindow__ctor_
@@ -22423,57 +22423,6 @@ references:
   commentId: F:AasxPackageExplorer.OptionsInformation.PluginDllInfo.Path
   fullName: AasxPackageExplorer.OptionsInformation.PluginDllInfo.Path
   nameWithType: OptionsInformation.PluginDllInfo.Path
-- uid: AasxPackageExplorer.OptionsInformation.PrefAuthors
-  name: PrefAuthors
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_PrefAuthors
-  commentId: F:AasxPackageExplorer.OptionsInformation.PrefAuthors
-  fullName: AasxPackageExplorer.OptionsInformation.PrefAuthors
-  nameWithType: OptionsInformation.PrefAuthors
-- uid: AasxPackageExplorer.OptionsInformation.PrefBuildDate
-  name: PrefBuildDate
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_PrefBuildDate
-  commentId: P:AasxPackageExplorer.OptionsInformation.PrefBuildDate
-  fullName: AasxPackageExplorer.OptionsInformation.PrefBuildDate
-  nameWithType: OptionsInformation.PrefBuildDate
-- uid: AasxPackageExplorer.OptionsInformation.PrefBuildDate*
-  name: PrefBuildDate
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_PrefBuildDate_
-  commentId: Overload:AasxPackageExplorer.OptionsInformation.PrefBuildDate
-  isSpec: "True"
-  fullName: AasxPackageExplorer.OptionsInformation.PrefBuildDate
-  nameWithType: OptionsInformation.PrefBuildDate
-- uid: AasxPackageExplorer.OptionsInformation.PrefLicenseLong
-  name: PrefLicenseLong
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_PrefLicenseLong
-  commentId: P:AasxPackageExplorer.OptionsInformation.PrefLicenseLong
-  fullName: AasxPackageExplorer.OptionsInformation.PrefLicenseLong
-  nameWithType: OptionsInformation.PrefLicenseLong
-- uid: AasxPackageExplorer.OptionsInformation.PrefLicenseLong*
-  name: PrefLicenseLong
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_PrefLicenseLong_
-  commentId: Overload:AasxPackageExplorer.OptionsInformation.PrefLicenseLong
-  isSpec: "True"
-  fullName: AasxPackageExplorer.OptionsInformation.PrefLicenseLong
-  nameWithType: OptionsInformation.PrefLicenseLong
-- uid: AasxPackageExplorer.OptionsInformation.PrefLicenseShort
-  name: PrefLicenseShort
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_PrefLicenseShort
-  commentId: F:AasxPackageExplorer.OptionsInformation.PrefLicenseShort
-  fullName: AasxPackageExplorer.OptionsInformation.PrefLicenseShort
-  nameWithType: OptionsInformation.PrefLicenseShort
-- uid: AasxPackageExplorer.OptionsInformation.PrefVersion
-  name: PrefVersion
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_PrefVersion
-  commentId: P:AasxPackageExplorer.OptionsInformation.PrefVersion
-  fullName: AasxPackageExplorer.OptionsInformation.PrefVersion
-  nameWithType: OptionsInformation.PrefVersion
-- uid: AasxPackageExplorer.OptionsInformation.PrefVersion*
-  name: PrefVersion
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_PrefVersion_
-  commentId: Overload:AasxPackageExplorer.OptionsInformation.PrefVersion
-  isSpec: "True"
-  fullName: AasxPackageExplorer.OptionsInformation.PrefVersion
-  nameWithType: OptionsInformation.PrefVersion
 - uid: AasxPackageExplorer.OptionsInformation.QualifiersFile
   name: QualifiersFile
   href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_QualifiersFile
@@ -22935,6 +22884,68 @@ references:
   isSpec: "True"
   fullName: AasxPackageExplorer.Plugins.TrySetOptionsForPlugins
   nameWithType: Plugins.TrySetOptionsForPlugins
+- uid: AasxPackageExplorer.Pref
+  name: Pref
+  href: api/AasxPackageExplorer.Pref.html
+  commentId: T:AasxPackageExplorer.Pref
+  fullName: AasxPackageExplorer.Pref
+  nameWithType: Pref
+- uid: AasxPackageExplorer.Pref.#ctor(System.String,System.String,System.String,System.String,System.String)
+  name: Pref(String, String, String, String, String)
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref__ctor_System_String_System_String_System_String_System_String_System_String_
+  commentId: M:AasxPackageExplorer.Pref.#ctor(System.String,System.String,System.String,System.String,System.String)
+  fullName: AasxPackageExplorer.Pref.Pref(System.String, System.String, System.String, System.String, System.String)
+  nameWithType: Pref.Pref(String, String, String, String, String)
+- uid: AasxPackageExplorer.Pref.#ctor*
+  name: Pref
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref__ctor_
+  commentId: Overload:AasxPackageExplorer.Pref.#ctor
+  isSpec: "True"
+  fullName: AasxPackageExplorer.Pref.Pref
+  nameWithType: Pref.Pref
+- uid: AasxPackageExplorer.Pref.Authors
+  name: Authors
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref_Authors
+  commentId: F:AasxPackageExplorer.Pref.Authors
+  fullName: AasxPackageExplorer.Pref.Authors
+  nameWithType: Pref.Authors
+- uid: AasxPackageExplorer.Pref.BuildDate
+  name: BuildDate
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref_BuildDate
+  commentId: F:AasxPackageExplorer.Pref.BuildDate
+  fullName: AasxPackageExplorer.Pref.BuildDate
+  nameWithType: Pref.BuildDate
+- uid: AasxPackageExplorer.Pref.LicenseLong
+  name: LicenseLong
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref_LicenseLong
+  commentId: F:AasxPackageExplorer.Pref.LicenseLong
+  fullName: AasxPackageExplorer.Pref.LicenseLong
+  nameWithType: Pref.LicenseLong
+- uid: AasxPackageExplorer.Pref.LicenseShort
+  name: LicenseShort
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref_LicenseShort
+  commentId: F:AasxPackageExplorer.Pref.LicenseShort
+  fullName: AasxPackageExplorer.Pref.LicenseShort
+  nameWithType: Pref.LicenseShort
+- uid: AasxPackageExplorer.Pref.Read
+  name: Read()
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref_Read
+  commentId: M:AasxPackageExplorer.Pref.Read
+  fullName: AasxPackageExplorer.Pref.Read()
+  nameWithType: Pref.Read()
+- uid: AasxPackageExplorer.Pref.Read*
+  name: Read
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref_Read_
+  commentId: Overload:AasxPackageExplorer.Pref.Read
+  isSpec: "True"
+  fullName: AasxPackageExplorer.Pref.Read
+  nameWithType: Pref.Read
+- uid: AasxPackageExplorer.Pref.Version
+  name: Version
+  href: api/AasxPackageExplorer.Pref.html#AasxPackageExplorer_Pref_Version
+  commentId: F:AasxPackageExplorer.Pref.Version
+  fullName: AasxPackageExplorer.Pref.Version
+  nameWithType: Pref.Version
 - uid: AasxPackageExplorer.ProgressBarFlyout
   name: ProgressBarFlyout
   href: api/AasxPackageExplorer.ProgressBarFlyout.html

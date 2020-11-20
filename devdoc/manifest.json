@@ -3402,7 +3402,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.AboutBox.html",
-          "hash": "0Xep4UbjfNh2XxkXKftAqg=="
+          "hash": "/NxXzx35ZlYEFpnc+ZL0Zw=="
         }
       },
       "is_incremental": false,
@@ -3462,7 +3462,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.CustomSplashScreenNew.html",
-          "hash": "TvypDt87dXObhdNNLtLFCQ=="
+          "hash": "KC3vr7k4tHN8iJS9JLhW1Q=="
         }
       },
       "is_incremental": false,
@@ -3810,7 +3810,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.MainWindow.html",
-          "hash": "1xaqsBzTRq6zNWdV9SH3RQ=="
+          "hash": "xEIatgx+Snww+pUQl7B6Fw=="
         }
       },
       "is_incremental": false,
@@ -3966,7 +3966,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.OptionsInformation.PluginDllInfo.html",
-          "hash": "UTkrs4TFuPRvuTmr3r2q2Q=="
+          "hash": "v0+/AXukUmM+2GoMfKk77A=="
         }
       },
       "is_incremental": false,
@@ -3978,7 +3978,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.OptionsInformation.html",
-          "hash": "krhS/VVpj7YkLM/sSE0Uog=="
+          "hash": "/3lE8ikQuctbKVwXPPVfEg=="
         }
       },
       "is_incremental": false,
@@ -4003,6 +4003,18 @@
         ".html": {
           "relative_path": "api/AasxPackageExplorer.Plugins.html",
           "hash": "1MKoa7Ir7W3FUpnV3mSS2w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPackageExplorer.Pref.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPackageExplorer.Pref.html",
+          "hash": "PKLSP2updJwukPz1cYZ4SA=="
         }
       },
       "is_incremental": false,
@@ -4566,7 +4578,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.html",
-          "hash": "AOhoTFFIheMEUuXr6ctz4w=="
+          "hash": "p7w0nSgC9WaHV0g1ShHgJg=="
         }
       },
       "is_incremental": false,
@@ -9378,7 +9390,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "t8bNfer7p7HPOP4IlCg/yQ=="
+          "hash": "T9QcAfhiUm23BQfZ+g8kDQ=="
         }
       },
       "is_incremental": false,
@@ -9583,7 +9595,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 779,
+          "total_file_count": 780,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
