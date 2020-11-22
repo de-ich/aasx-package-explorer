@@ -2106,7 +2106,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxGlobalLogging.Log.html",
-          "hash": "SRjGm1lLr06chbVrZqtJFw=="
+          "hash": "ZkqHNRt3QNabogW+2S24VQ=="
         }
       },
       "is_incremental": false,
@@ -2946,7 +2946,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxIntegrationBase.AasxWpfBaseUtils.StoredPrintColors.html",
-          "hash": "BpGbJkfCX6Cxqyt5UyvIrA=="
+          "hash": "lUj1ZaaDCh7+riw7IemJOg=="
         }
       },
       "is_incremental": false,
@@ -2958,7 +2958,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxIntegrationBase.AasxWpfBaseUtils.html",
-          "hash": "PKpVq3TWqbqGj7kvCo9eRQ=="
+          "hash": "Ja7gZbrvazI1o46VU4gEtg=="
         }
       },
       "is_incremental": false,
@@ -3086,35 +3086,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AasxIntegrationBase.ILogProvider.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AasxIntegrationBase.ILogProvider.html",
-          "hash": "jhQfuLy77iEro3UIghSTOQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AasxIntegrationBase.IManageStoredPrints.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AasxIntegrationBase.IManageStoredPrints.html",
-          "hash": "TWRejBna73TTBwUj22I7JQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AasxIntegrationBase.LogInstance.yml",
       "output": {
         ".html": {
           "relative_path": "api/AasxIntegrationBase.LogInstance.html",
-          "hash": "Hu9ZmdRiOYqdNLLeeTo+QA=="
+          "hash": "TWS+so0SNbQHf3lj5lM3fA=="
         }
       },
       "is_incremental": false,
@@ -3158,11 +3134,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/AasxIntegrationBase.StoredPrint.Color.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxIntegrationBase.StoredPrint.Color.html",
+          "hash": "6H3+mbr/38P7f2ZOKjb+Fg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/AasxIntegrationBase.StoredPrint.yml",
       "output": {
         ".html": {
           "relative_path": "api/AasxIntegrationBase.StoredPrint.html",
-          "hash": "bqBeVxGDRH7ezjJcSCxC8g=="
+          "hash": "XTD+EAayQSj4XoEfp960bA=="
         }
       },
       "is_incremental": false,
@@ -3174,7 +3162,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxIntegrationBase.StoredPrintsMinimalStore.html",
-          "hash": "n67QdxpGDkygfiD/Ri+9FQ=="
+          "hash": "5qz8KObUiVQxW47EKXHKfA=="
         }
       },
       "is_incremental": false,
@@ -3198,7 +3186,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxIntegrationBase.html",
-          "hash": "LhKJpu70qvIwTnIOnhAorw=="
+          "hash": "oUmwwlAgJEXMo2Ch8Argiw=="
         }
       },
       "is_incremental": false,
@@ -3414,7 +3402,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.App.html",
-          "hash": "V8l8urwOdGr5+MRZNtAWYw=="
+          "hash": "pvXxp0VJGe84yQkv1xyBaw=="
         }
       },
       "is_incremental": false,
@@ -3810,7 +3798,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.MainWindow.html",
-          "hash": "lUUOtvmVXrnzvxJApHmk5A=="
+          "hash": "4UVEUjLKY9nIN/vsxTCGkQ=="
         }
       },
       "is_incremental": false,
@@ -3822,7 +3810,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.MessageReportWindow.html",
-          "hash": "YbvbEiar/V/SV79OuiJFeg=="
+          "hash": "Ta09qpemT8kpEHPvYpnvsg=="
         }
       },
       "is_incremental": false,
@@ -9390,7 +9378,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "T9QcAfhiUm23BQfZ+g8kDQ=="
+          "hash": "vQ23Sbr5ll+OfxE4T7R7bg=="
         }
       },
       "is_incremental": false,
@@ -9595,7 +9583,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 780,
+          "total_file_count": 779,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

@@ -12451,40 +12451,15 @@ references:
   isSpec: "True"
   fullName: AasxGlobalLogging.Log.Error
   nameWithType: Log.Error
-- uid: AasxGlobalLogging.Log.ErrorWithHyperlink(System.String,System.String,System.String,System.Object[])
-  name: ErrorWithHyperlink(String, String, String, Object[])
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_ErrorWithHyperlink_System_String_System_String_System_String_System_Object___
-  commentId: M:AasxGlobalLogging.Log.ErrorWithHyperlink(System.String,System.String,System.String,System.Object[])
-  name.vb: ErrorWithHyperlink(String, String, String, Object())
-  fullName: AasxGlobalLogging.Log.ErrorWithHyperlink(System.String, System.String, System.String, System.Object[])
-  fullName.vb: AasxGlobalLogging.Log.ErrorWithHyperlink(System.String, System.String, System.String, System.Object())
-  nameWithType: Log.ErrorWithHyperlink(String, String, String, Object[])
-  nameWithType.vb: Log.ErrorWithHyperlink(String, String, String, Object())
-- uid: AasxGlobalLogging.Log.ErrorWithHyperlink*
-  name: ErrorWithHyperlink
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_ErrorWithHyperlink_
-  commentId: Overload:AasxGlobalLogging.Log.ErrorWithHyperlink
-  isSpec: "True"
-  fullName: AasxGlobalLogging.Log.ErrorWithHyperlink
-  nameWithType: Log.ErrorWithHyperlink
-- uid: AasxGlobalLogging.Log.Info(System.Int32,System.Int32,System.String,System.Object[])
-  name: Info(Int32, Int32, String, Object[])
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Info_System_Int32_System_Int32_System_String_System_Object___
-  commentId: M:AasxGlobalLogging.Log.Info(System.Int32,System.Int32,System.String,System.Object[])
-  name.vb: Info(Int32, Int32, String, Object())
-  fullName: AasxGlobalLogging.Log.Info(System.Int32, System.Int32, System.String, System.Object[])
-  fullName.vb: AasxGlobalLogging.Log.Info(System.Int32, System.Int32, System.String, System.Object())
-  nameWithType: Log.Info(Int32, Int32, String, Object[])
-  nameWithType.vb: Log.Info(Int32, Int32, String, Object())
-- uid: AasxGlobalLogging.Log.Info(System.Int32,System.String,System.Object[])
-  name: Info(Int32, String, Object[])
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Info_System_Int32_System_String_System_Object___
-  commentId: M:AasxGlobalLogging.Log.Info(System.Int32,System.String,System.Object[])
-  name.vb: Info(Int32, String, Object())
-  fullName: AasxGlobalLogging.Log.Info(System.Int32, System.String, System.Object[])
-  fullName.vb: AasxGlobalLogging.Log.Info(System.Int32, System.String, System.Object())
-  nameWithType: Log.Info(Int32, String, Object[])
-  nameWithType.vb: Log.Info(Int32, String, Object())
+- uid: AasxGlobalLogging.Log.Info(AasxIntegrationBase.StoredPrint.Color,System.String,System.Object[])
+  name: Info(StoredPrint.Color, String, Object[])
+  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Info_AasxIntegrationBase_StoredPrint_Color_System_String_System_Object___
+  commentId: M:AasxGlobalLogging.Log.Info(AasxIntegrationBase.StoredPrint.Color,System.String,System.Object[])
+  name.vb: Info(StoredPrint.Color, String, Object())
+  fullName: AasxGlobalLogging.Log.Info(AasxIntegrationBase.StoredPrint.Color, System.String, System.Object[])
+  fullName.vb: AasxGlobalLogging.Log.Info(AasxIntegrationBase.StoredPrint.Color, System.String, System.Object())
+  nameWithType: Log.Info(StoredPrint.Color, String, Object[])
+  nameWithType.vb: Log.Info(StoredPrint.Color, String, Object())
 - uid: AasxGlobalLogging.Log.Info(System.String,System.Object[])
   name: Info(String, Object[])
   href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Info_System_String_System_Object___
@@ -12501,22 +12476,6 @@ references:
   isSpec: "True"
   fullName: AasxGlobalLogging.Log.Info
   nameWithType: Log.Info
-- uid: AasxGlobalLogging.Log.InfoWithHyperlink(System.Int32,System.String,System.String,System.String,System.Object[])
-  name: InfoWithHyperlink(Int32, String, String, String, Object[])
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_InfoWithHyperlink_System_Int32_System_String_System_String_System_String_System_Object___
-  commentId: M:AasxGlobalLogging.Log.InfoWithHyperlink(System.Int32,System.String,System.String,System.String,System.Object[])
-  name.vb: InfoWithHyperlink(Int32, String, String, String, Object())
-  fullName: AasxGlobalLogging.Log.InfoWithHyperlink(System.Int32, System.String, System.String, System.String, System.Object[])
-  fullName.vb: AasxGlobalLogging.Log.InfoWithHyperlink(System.Int32, System.String, System.String, System.String, System.Object())
-  nameWithType: Log.InfoWithHyperlink(Int32, String, String, String, Object[])
-  nameWithType.vb: Log.InfoWithHyperlink(Int32, String, String, String, Object())
-- uid: AasxGlobalLogging.Log.InfoWithHyperlink*
-  name: InfoWithHyperlink
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_InfoWithHyperlink_
-  commentId: Overload:AasxGlobalLogging.Log.InfoWithHyperlink
-  isSpec: "True"
-  fullName: AasxGlobalLogging.Log.InfoWithHyperlink
-  nameWithType: Log.InfoWithHyperlink
 - uid: AasxGlobalLogging.Log.LogInstance
   name: LogInstance
   href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_LogInstance
@@ -16367,165 +16326,6 @@ references:
   isSpec: "True"
   fullName: AasxIntegrationBase.IFlyoutProvider.StartFlyoverModal
   nameWithType: IFlyoutProvider.StartFlyoverModal
-- uid: AasxIntegrationBase.ILogProvider
-  name: ILogProvider
-  href: api/AasxIntegrationBase.ILogProvider.html
-  commentId: T:AasxIntegrationBase.ILogProvider
-  fullName: AasxIntegrationBase.ILogProvider
-  nameWithType: ILogProvider
-- uid: AasxIntegrationBase.ILogProvider.Error(System.Exception,System.String)
-  name: Error(Exception, String)
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_Error_System_Exception_System_String_
-  commentId: M:AasxIntegrationBase.ILogProvider.Error(System.Exception,System.String)
-  fullName: AasxIntegrationBase.ILogProvider.Error(System.Exception, System.String)
-  nameWithType: ILogProvider.Error(Exception, String)
-- uid: AasxIntegrationBase.ILogProvider.Error(System.String,System.Object[])
-  name: Error(String, Object[])
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_Error_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.ILogProvider.Error(System.String,System.Object[])
-  name.vb: Error(String, Object())
-  fullName: AasxIntegrationBase.ILogProvider.Error(System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.ILogProvider.Error(System.String, System.Object())
-  nameWithType: ILogProvider.Error(String, Object[])
-  nameWithType.vb: ILogProvider.Error(String, Object())
-- uid: AasxIntegrationBase.ILogProvider.Error*
-  name: Error
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_Error_
-  commentId: Overload:AasxIntegrationBase.ILogProvider.Error
-  isSpec: "True"
-  fullName: AasxIntegrationBase.ILogProvider.Error
-  nameWithType: ILogProvider.Error
-- uid: AasxIntegrationBase.ILogProvider.ErrorWithHyperlink(System.String,System.String,System.String,System.Object[])
-  name: ErrorWithHyperlink(String, String, String, Object[])
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_ErrorWithHyperlink_System_String_System_String_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.ILogProvider.ErrorWithHyperlink(System.String,System.String,System.String,System.Object[])
-  name.vb: ErrorWithHyperlink(String, String, String, Object())
-  fullName: AasxIntegrationBase.ILogProvider.ErrorWithHyperlink(System.String, System.String, System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.ILogProvider.ErrorWithHyperlink(System.String, System.String, System.String, System.Object())
-  nameWithType: ILogProvider.ErrorWithHyperlink(String, String, String, Object[])
-  nameWithType.vb: ILogProvider.ErrorWithHyperlink(String, String, String, Object())
-- uid: AasxIntegrationBase.ILogProvider.ErrorWithHyperlink*
-  name: ErrorWithHyperlink
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_ErrorWithHyperlink_
-  commentId: Overload:AasxIntegrationBase.ILogProvider.ErrorWithHyperlink
-  isSpec: "True"
-  fullName: AasxIntegrationBase.ILogProvider.ErrorWithHyperlink
-  nameWithType: ILogProvider.ErrorWithHyperlink
-- uid: AasxIntegrationBase.ILogProvider.Info(System.Int32,System.String,System.Object[])
-  name: Info(Int32, String, Object[])
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_Info_System_Int32_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.ILogProvider.Info(System.Int32,System.String,System.Object[])
-  name.vb: Info(Int32, String, Object())
-  fullName: AasxIntegrationBase.ILogProvider.Info(System.Int32, System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.ILogProvider.Info(System.Int32, System.String, System.Object())
-  nameWithType: ILogProvider.Info(Int32, String, Object[])
-  nameWithType.vb: ILogProvider.Info(Int32, String, Object())
-- uid: AasxIntegrationBase.ILogProvider.Info(System.String,System.Object[])
-  name: Info(String, Object[])
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_Info_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.ILogProvider.Info(System.String,System.Object[])
-  name.vb: Info(String, Object())
-  fullName: AasxIntegrationBase.ILogProvider.Info(System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.ILogProvider.Info(System.String, System.Object())
-  nameWithType: ILogProvider.Info(String, Object[])
-  nameWithType.vb: ILogProvider.Info(String, Object())
-- uid: AasxIntegrationBase.ILogProvider.Info*
-  name: Info
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_Info_
-  commentId: Overload:AasxIntegrationBase.ILogProvider.Info
-  isSpec: "True"
-  fullName: AasxIntegrationBase.ILogProvider.Info
-  nameWithType: ILogProvider.Info
-- uid: AasxIntegrationBase.ILogProvider.InfoWithHyperlink(System.Int32,System.String,System.String,System.String,System.Object[])
-  name: InfoWithHyperlink(Int32, String, String, String, Object[])
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_InfoWithHyperlink_System_Int32_System_String_System_String_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.ILogProvider.InfoWithHyperlink(System.Int32,System.String,System.String,System.String,System.Object[])
-  name.vb: InfoWithHyperlink(Int32, String, String, String, Object())
-  fullName: AasxIntegrationBase.ILogProvider.InfoWithHyperlink(System.Int32, System.String, System.String, System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.ILogProvider.InfoWithHyperlink(System.Int32, System.String, System.String, System.String, System.Object())
-  nameWithType: ILogProvider.InfoWithHyperlink(Int32, String, String, String, Object[])
-  nameWithType.vb: ILogProvider.InfoWithHyperlink(Int32, String, String, String, Object())
-- uid: AasxIntegrationBase.ILogProvider.InfoWithHyperlink*
-  name: InfoWithHyperlink
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_InfoWithHyperlink_
-  commentId: Overload:AasxIntegrationBase.ILogProvider.InfoWithHyperlink
-  isSpec: "True"
-  fullName: AasxIntegrationBase.ILogProvider.InfoWithHyperlink
-  nameWithType: ILogProvider.InfoWithHyperlink
-- uid: AasxIntegrationBase.ILogProvider.Silent(System.String,System.Object[])
-  name: Silent(String, Object[])
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_Silent_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.ILogProvider.Silent(System.String,System.Object[])
-  name.vb: Silent(String, Object())
-  fullName: AasxIntegrationBase.ILogProvider.Silent(System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.ILogProvider.Silent(System.String, System.Object())
-  nameWithType: ILogProvider.Silent(String, Object[])
-  nameWithType.vb: ILogProvider.Silent(String, Object())
-- uid: AasxIntegrationBase.ILogProvider.Silent*
-  name: Silent
-  href: api/AasxIntegrationBase.ILogProvider.html#AasxIntegrationBase_ILogProvider_Silent_
-  commentId: Overload:AasxIntegrationBase.ILogProvider.Silent
-  isSpec: "True"
-  fullName: AasxIntegrationBase.ILogProvider.Silent
-  nameWithType: ILogProvider.Silent
-- uid: AasxIntegrationBase.IManageStoredPrints
-  name: IManageStoredPrints
-  href: api/AasxIntegrationBase.IManageStoredPrints.html
-  commentId: T:AasxIntegrationBase.IManageStoredPrints
-  fullName: AasxIntegrationBase.IManageStoredPrints
-  nameWithType: IManageStoredPrints
-- uid: AasxIntegrationBase.IManageStoredPrints.Append(AasxIntegrationBase.StoredPrint)
-  name: Append(StoredPrint)
-  href: api/AasxIntegrationBase.IManageStoredPrints.html#AasxIntegrationBase_IManageStoredPrints_Append_AasxIntegrationBase_StoredPrint_
-  commentId: M:AasxIntegrationBase.IManageStoredPrints.Append(AasxIntegrationBase.StoredPrint)
-  fullName: AasxIntegrationBase.IManageStoredPrints.Append(AasxIntegrationBase.StoredPrint)
-  nameWithType: IManageStoredPrints.Append(StoredPrint)
-- uid: AasxIntegrationBase.IManageStoredPrints.Append*
-  name: Append
-  href: api/AasxIntegrationBase.IManageStoredPrints.html#AasxIntegrationBase_IManageStoredPrints_Append_
-  commentId: Overload:AasxIntegrationBase.IManageStoredPrints.Append
-  isSpec: "True"
-  fullName: AasxIntegrationBase.IManageStoredPrints.Append
-  nameWithType: IManageStoredPrints.Append
-- uid: AasxIntegrationBase.IManageStoredPrints.CheckForLogMessage
-  name: CheckForLogMessage()
-  href: api/AasxIntegrationBase.IManageStoredPrints.html#AasxIntegrationBase_IManageStoredPrints_CheckForLogMessage
-  commentId: M:AasxIntegrationBase.IManageStoredPrints.CheckForLogMessage
-  fullName: AasxIntegrationBase.IManageStoredPrints.CheckForLogMessage()
-  nameWithType: IManageStoredPrints.CheckForLogMessage()
-- uid: AasxIntegrationBase.IManageStoredPrints.CheckForLogMessage*
-  name: CheckForLogMessage
-  href: api/AasxIntegrationBase.IManageStoredPrints.html#AasxIntegrationBase_IManageStoredPrints_CheckForLogMessage_
-  commentId: Overload:AasxIntegrationBase.IManageStoredPrints.CheckForLogMessage
-  isSpec: "True"
-  fullName: AasxIntegrationBase.IManageStoredPrints.CheckForLogMessage
-  nameWithType: IManageStoredPrints.CheckForLogMessage
-- uid: AasxIntegrationBase.IManageStoredPrints.ClearStoredPrints
-  name: ClearStoredPrints()
-  href: api/AasxIntegrationBase.IManageStoredPrints.html#AasxIntegrationBase_IManageStoredPrints_ClearStoredPrints
-  commentId: M:AasxIntegrationBase.IManageStoredPrints.ClearStoredPrints
-  fullName: AasxIntegrationBase.IManageStoredPrints.ClearStoredPrints()
-  nameWithType: IManageStoredPrints.ClearStoredPrints()
-- uid: AasxIntegrationBase.IManageStoredPrints.ClearStoredPrints*
-  name: ClearStoredPrints
-  href: api/AasxIntegrationBase.IManageStoredPrints.html#AasxIntegrationBase_IManageStoredPrints_ClearStoredPrints_
-  commentId: Overload:AasxIntegrationBase.IManageStoredPrints.ClearStoredPrints
-  isSpec: "True"
-  fullName: AasxIntegrationBase.IManageStoredPrints.ClearStoredPrints
-  nameWithType: IManageStoredPrints.ClearStoredPrints
-- uid: AasxIntegrationBase.IManageStoredPrints.PopLastStoredPrint
-  name: PopLastStoredPrint()
-  href: api/AasxIntegrationBase.IManageStoredPrints.html#AasxIntegrationBase_IManageStoredPrints_PopLastStoredPrint
-  commentId: M:AasxIntegrationBase.IManageStoredPrints.PopLastStoredPrint
-  fullName: AasxIntegrationBase.IManageStoredPrints.PopLastStoredPrint()
-  nameWithType: IManageStoredPrints.PopLastStoredPrint()
-- uid: AasxIntegrationBase.IManageStoredPrints.PopLastStoredPrint*
-  name: PopLastStoredPrint
-  href: api/AasxIntegrationBase.IManageStoredPrints.html#AasxIntegrationBase_IManageStoredPrints_PopLastStoredPrint_
-  commentId: Overload:AasxIntegrationBase.IManageStoredPrints.PopLastStoredPrint
-  isSpec: "True"
-  fullName: AasxIntegrationBase.IManageStoredPrints.PopLastStoredPrint
-  nameWithType: IManageStoredPrints.PopLastStoredPrint
 - uid: AasxIntegrationBase.LogInstance
   name: LogInstance
   href: api/AasxIntegrationBase.LogInstance.html
@@ -16545,19 +16345,6 @@ references:
   isSpec: "True"
   fullName: AasxIntegrationBase.LogInstance.Append
   nameWithType: LogInstance.Append
-- uid: AasxIntegrationBase.LogInstance.CheckForShortTermMessage
-  name: CheckForShortTermMessage()
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_CheckForShortTermMessage
-  commentId: M:AasxIntegrationBase.LogInstance.CheckForShortTermMessage
-  fullName: AasxIntegrationBase.LogInstance.CheckForShortTermMessage()
-  nameWithType: LogInstance.CheckForShortTermMessage()
-- uid: AasxIntegrationBase.LogInstance.CheckForShortTermMessage*
-  name: CheckForShortTermMessage
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_CheckForShortTermMessage_
-  commentId: Overload:AasxIntegrationBase.LogInstance.CheckForShortTermMessage
-  isSpec: "True"
-  fullName: AasxIntegrationBase.LogInstance.CheckForShortTermMessage
-  nameWithType: LogInstance.CheckForShortTermMessage
 - uid: AasxIntegrationBase.LogInstance.ClearNumberErrors
   name: ClearNumberErrors()
   href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_ClearNumberErrors
@@ -16571,25 +16358,6 @@ references:
   isSpec: "True"
   fullName: AasxIntegrationBase.LogInstance.ClearNumberErrors
   nameWithType: LogInstance.ClearNumberErrors
-- uid: AasxIntegrationBase.LogInstance.ClearStoredPrints
-  name: ClearStoredPrints()
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_ClearStoredPrints
-  commentId: M:AasxIntegrationBase.LogInstance.ClearStoredPrints
-  fullName: AasxIntegrationBase.LogInstance.ClearStoredPrints()
-  nameWithType: LogInstance.ClearStoredPrints()
-- uid: AasxIntegrationBase.LogInstance.ClearStoredPrints*
-  name: ClearStoredPrints
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_ClearStoredPrints_
-  commentId: Overload:AasxIntegrationBase.LogInstance.ClearStoredPrints
-  isSpec: "True"
-  fullName: AasxIntegrationBase.LogInstance.ClearStoredPrints
-  nameWithType: LogInstance.ClearStoredPrints
-- uid: AasxIntegrationBase.LogInstance.DebugLevel
-  name: DebugLevel
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_DebugLevel
-  commentId: F:AasxIntegrationBase.LogInstance.DebugLevel
-  fullName: AasxIntegrationBase.LogInstance.DebugLevel
-  nameWithType: LogInstance.DebugLevel
 - uid: AasxIntegrationBase.LogInstance.EnableLongTermStore
   name: EnableLongTermStore()
   href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_EnableLongTermStore
@@ -16625,22 +16393,6 @@ references:
   isSpec: "True"
   fullName: AasxIntegrationBase.LogInstance.Error
   nameWithType: LogInstance.Error
-- uid: AasxIntegrationBase.LogInstance.ErrorWithHyperlink(System.String,System.String,System.String,System.Object[])
-  name: ErrorWithHyperlink(String, String, String, Object[])
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_ErrorWithHyperlink_System_String_System_String_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.LogInstance.ErrorWithHyperlink(System.String,System.String,System.String,System.Object[])
-  name.vb: ErrorWithHyperlink(String, String, String, Object())
-  fullName: AasxIntegrationBase.LogInstance.ErrorWithHyperlink(System.String, System.String, System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.LogInstance.ErrorWithHyperlink(System.String, System.String, System.String, System.Object())
-  nameWithType: LogInstance.ErrorWithHyperlink(String, String, String, Object[])
-  nameWithType.vb: LogInstance.ErrorWithHyperlink(String, String, String, Object())
-- uid: AasxIntegrationBase.LogInstance.ErrorWithHyperlink*
-  name: ErrorWithHyperlink
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_ErrorWithHyperlink_
-  commentId: Overload:AasxIntegrationBase.LogInstance.ErrorWithHyperlink
-  isSpec: "True"
-  fullName: AasxIntegrationBase.LogInstance.ErrorWithHyperlink
-  nameWithType: LogInstance.ErrorWithHyperlink
 - uid: AasxIntegrationBase.LogInstance.GetStoredLongTermPrints
   name: GetStoredLongTermPrints()
   href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_GetStoredLongTermPrints
@@ -16654,24 +16406,15 @@ references:
   isSpec: "True"
   fullName: AasxIntegrationBase.LogInstance.GetStoredLongTermPrints
   nameWithType: LogInstance.GetStoredLongTermPrints
-- uid: AasxIntegrationBase.LogInstance.Info(System.Int32,System.Int32,System.String,System.Object[])
-  name: Info(Int32, Int32, String, Object[])
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_Info_System_Int32_System_Int32_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.LogInstance.Info(System.Int32,System.Int32,System.String,System.Object[])
-  name.vb: Info(Int32, Int32, String, Object())
-  fullName: AasxIntegrationBase.LogInstance.Info(System.Int32, System.Int32, System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.LogInstance.Info(System.Int32, System.Int32, System.String, System.Object())
-  nameWithType: LogInstance.Info(Int32, Int32, String, Object[])
-  nameWithType.vb: LogInstance.Info(Int32, Int32, String, Object())
-- uid: AasxIntegrationBase.LogInstance.Info(System.Int32,System.String,System.Object[])
-  name: Info(Int32, String, Object[])
-  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_Info_System_Int32_System_String_System_Object___
-  commentId: M:AasxIntegrationBase.LogInstance.Info(System.Int32,System.String,System.Object[])
-  name.vb: Info(Int32, String, Object())
-  fullName: AasxIntegrationBase.LogInstance.Info(System.Int32, System.String, System.Object[])
-  fullName.vb: AasxIntegrationBase.LogInstance.Info(System.Int32, System.String, System.Object())
-  nameWithType: LogInstance.Info(Int32, String, Object[])
-  nameWithType.vb: LogInstance.Info(Int32, String, Object())
+- uid: AasxIntegrationBase.LogInstance.Info(AasxIntegrationBase.StoredPrint.Color,System.String,System.Object[])
+  name: Info(StoredPrint.Color, String, Object[])
+  href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_Info_AasxIntegrationBase_StoredPrint_Color_System_String_System_Object___
+  commentId: M:AasxIntegrationBase.LogInstance.Info(AasxIntegrationBase.StoredPrint.Color,System.String,System.Object[])
+  name.vb: Info(StoredPrint.Color, String, Object())
+  fullName: AasxIntegrationBase.LogInstance.Info(AasxIntegrationBase.StoredPrint.Color, System.String, System.Object[])
+  fullName.vb: AasxIntegrationBase.LogInstance.Info(AasxIntegrationBase.StoredPrint.Color, System.String, System.Object())
+  nameWithType: LogInstance.Info(StoredPrint.Color, String, Object[])
+  nameWithType.vb: LogInstance.Info(StoredPrint.Color, String, Object())
 - uid: AasxIntegrationBase.LogInstance.Info(System.String,System.Object[])
   name: Info(String, Object[])
   href: api/AasxIntegrationBase.LogInstance.html#AasxIntegrationBase_LogInstance_Info_System_String_System_Object___
@@ -16948,12 +16691,12 @@ references:
   commentId: T:AasxIntegrationBase.StoredPrint
   fullName: AasxIntegrationBase.StoredPrint
   nameWithType: StoredPrint
-- uid: AasxIntegrationBase.StoredPrint.#ctor(System.Int32,System.String,System.String,System.String,System.Boolean,System.String,System.Exception)
-  name: StoredPrint(Int32, String, String, String, Boolean, String, Exception)
-  href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint__ctor_System_Int32_System_String_System_String_System_String_System_Boolean_System_String_System_Exception_
-  commentId: M:AasxIntegrationBase.StoredPrint.#ctor(System.Int32,System.String,System.String,System.String,System.Boolean,System.String,System.Exception)
-  fullName: AasxIntegrationBase.StoredPrint.StoredPrint(System.Int32, System.String, System.String, System.String, System.Boolean, System.String, System.Exception)
-  nameWithType: StoredPrint.StoredPrint(Int32, String, String, String, Boolean, String, Exception)
+- uid: AasxIntegrationBase.StoredPrint.#ctor(AasxIntegrationBase.StoredPrint.Color,System.String,System.String,System.String,System.Boolean,System.String)
+  name: StoredPrint(StoredPrint.Color, String, String, String, Boolean, String)
+  href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint__ctor_AasxIntegrationBase_StoredPrint_Color_System_String_System_String_System_String_System_Boolean_System_String_
+  commentId: M:AasxIntegrationBase.StoredPrint.#ctor(AasxIntegrationBase.StoredPrint.Color,System.String,System.String,System.String,System.Boolean,System.String)
+  fullName: AasxIntegrationBase.StoredPrint.StoredPrint(AasxIntegrationBase.StoredPrint.Color, System.String, System.String, System.String, System.Boolean, System.String)
+  nameWithType: StoredPrint.StoredPrint(StoredPrint.Color, String, String, String, Boolean, String)
 - uid: AasxIntegrationBase.StoredPrint.#ctor(System.String)
   name: StoredPrint(String)
   href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint__ctor_System_String_
@@ -16973,30 +16716,30 @@ references:
   commentId: F:AasxIntegrationBase.StoredPrint.color
   fullName: AasxIntegrationBase.StoredPrint.color
   nameWithType: StoredPrint.color
-- uid: AasxIntegrationBase.StoredPrint.ColorBlack
-  name: ColorBlack
-  href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint_ColorBlack
-  commentId: F:AasxIntegrationBase.StoredPrint.ColorBlack
-  fullName: AasxIntegrationBase.StoredPrint.ColorBlack
-  nameWithType: StoredPrint.ColorBlack
-- uid: AasxIntegrationBase.StoredPrint.ColorBlue
-  name: ColorBlue
-  href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint_ColorBlue
-  commentId: F:AasxIntegrationBase.StoredPrint.ColorBlue
-  fullName: AasxIntegrationBase.StoredPrint.ColorBlue
-  nameWithType: StoredPrint.ColorBlue
-- uid: AasxIntegrationBase.StoredPrint.ColorNoDisplay
-  name: ColorNoDisplay
-  href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint_ColorNoDisplay
-  commentId: F:AasxIntegrationBase.StoredPrint.ColorNoDisplay
-  fullName: AasxIntegrationBase.StoredPrint.ColorNoDisplay
-  nameWithType: StoredPrint.ColorNoDisplay
-- uid: AasxIntegrationBase.StoredPrint.ColorRed
-  name: ColorRed
-  href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint_ColorRed
-  commentId: F:AasxIntegrationBase.StoredPrint.ColorRed
-  fullName: AasxIntegrationBase.StoredPrint.ColorRed
-  nameWithType: StoredPrint.ColorRed
+- uid: AasxIntegrationBase.StoredPrint.Color
+  name: StoredPrint.Color
+  href: api/AasxIntegrationBase.StoredPrint.Color.html
+  commentId: T:AasxIntegrationBase.StoredPrint.Color
+  fullName: AasxIntegrationBase.StoredPrint.Color
+  nameWithType: StoredPrint.Color
+- uid: AasxIntegrationBase.StoredPrint.Color.Black
+  name: Black
+  href: api/AasxIntegrationBase.StoredPrint.Color.html#AasxIntegrationBase_StoredPrint_Color_Black
+  commentId: F:AasxIntegrationBase.StoredPrint.Color.Black
+  fullName: AasxIntegrationBase.StoredPrint.Color.Black
+  nameWithType: StoredPrint.Color.Black
+- uid: AasxIntegrationBase.StoredPrint.Color.Blue
+  name: Blue
+  href: api/AasxIntegrationBase.StoredPrint.Color.html#AasxIntegrationBase_StoredPrint_Color_Blue
+  commentId: F:AasxIntegrationBase.StoredPrint.Color.Blue
+  fullName: AasxIntegrationBase.StoredPrint.Color.Blue
+  nameWithType: StoredPrint.Color.Blue
+- uid: AasxIntegrationBase.StoredPrint.Color.Red
+  name: Red
+  href: api/AasxIntegrationBase.StoredPrint.Color.html#AasxIntegrationBase_StoredPrint_Color_Red
+  commentId: F:AasxIntegrationBase.StoredPrint.Color.Red
+  fullName: AasxIntegrationBase.StoredPrint.Color.Red
+  nameWithType: StoredPrint.Color.Red
 - uid: AasxIntegrationBase.StoredPrint.isError
   name: isError
   href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint_isError
@@ -17021,12 +16764,6 @@ references:
   commentId: F:AasxIntegrationBase.StoredPrint.msg
   fullName: AasxIntegrationBase.StoredPrint.msg
   nameWithType: StoredPrint.msg
-- uid: AasxIntegrationBase.StoredPrint.origException
-  name: origException
-  href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint_origException
-  commentId: F:AasxIntegrationBase.StoredPrint.origException
-  fullName: AasxIntegrationBase.StoredPrint.origException
-  nameWithType: StoredPrint.origException
 - uid: AasxIntegrationBase.StoredPrint.stackTrace
   name: stackTrace
   href: api/AasxIntegrationBase.StoredPrint.html#AasxIntegrationBase_StoredPrint_stackTrace
@@ -17065,32 +16802,6 @@ references:
   isSpec: "True"
   fullName: AasxIntegrationBase.StoredPrintsMinimalStore.Append
   nameWithType: StoredPrintsMinimalStore.Append
-- uid: AasxIntegrationBase.StoredPrintsMinimalStore.CheckForLogMessage
-  name: CheckForLogMessage()
-  href: api/AasxIntegrationBase.StoredPrintsMinimalStore.html#AasxIntegrationBase_StoredPrintsMinimalStore_CheckForLogMessage
-  commentId: M:AasxIntegrationBase.StoredPrintsMinimalStore.CheckForLogMessage
-  fullName: AasxIntegrationBase.StoredPrintsMinimalStore.CheckForLogMessage()
-  nameWithType: StoredPrintsMinimalStore.CheckForLogMessage()
-- uid: AasxIntegrationBase.StoredPrintsMinimalStore.CheckForLogMessage*
-  name: CheckForLogMessage
-  href: api/AasxIntegrationBase.StoredPrintsMinimalStore.html#AasxIntegrationBase_StoredPrintsMinimalStore_CheckForLogMessage_
-  commentId: Overload:AasxIntegrationBase.StoredPrintsMinimalStore.CheckForLogMessage
-  isSpec: "True"
-  fullName: AasxIntegrationBase.StoredPrintsMinimalStore.CheckForLogMessage
-  nameWithType: StoredPrintsMinimalStore.CheckForLogMessage
-- uid: AasxIntegrationBase.StoredPrintsMinimalStore.ClearStoredPrints
-  name: ClearStoredPrints()
-  href: api/AasxIntegrationBase.StoredPrintsMinimalStore.html#AasxIntegrationBase_StoredPrintsMinimalStore_ClearStoredPrints
-  commentId: M:AasxIntegrationBase.StoredPrintsMinimalStore.ClearStoredPrints
-  fullName: AasxIntegrationBase.StoredPrintsMinimalStore.ClearStoredPrints()
-  nameWithType: StoredPrintsMinimalStore.ClearStoredPrints()
-- uid: AasxIntegrationBase.StoredPrintsMinimalStore.ClearStoredPrints*
-  name: ClearStoredPrints
-  href: api/AasxIntegrationBase.StoredPrintsMinimalStore.html#AasxIntegrationBase_StoredPrintsMinimalStore_ClearStoredPrints_
-  commentId: Overload:AasxIntegrationBase.StoredPrintsMinimalStore.ClearStoredPrints
-  isSpec: "True"
-  fullName: AasxIntegrationBase.StoredPrintsMinimalStore.ClearStoredPrints
-  nameWithType: StoredPrintsMinimalStore.ClearStoredPrints
 - uid: AasxIntegrationBase.StoredPrintsMinimalStore.GetStoredPrints
   name: GetStoredPrints()
   href: api/AasxIntegrationBase.StoredPrintsMinimalStore.html#AasxIntegrationBase_StoredPrintsMinimalStore_GetStoredPrints
@@ -21900,12 +21611,15 @@ references:
   commentId: T:AasxPackageExplorer.MessageReportWindow
   fullName: AasxPackageExplorer.MessageReportWindow
   nameWithType: MessageReportWindow
-- uid: AasxPackageExplorer.MessageReportWindow.#ctor
-  name: MessageReportWindow()
-  href: api/AasxPackageExplorer.MessageReportWindow.html#AasxPackageExplorer_MessageReportWindow__ctor
-  commentId: M:AasxPackageExplorer.MessageReportWindow.#ctor
-  fullName: AasxPackageExplorer.MessageReportWindow.MessageReportWindow()
-  nameWithType: MessageReportWindow.MessageReportWindow()
+- uid: AasxPackageExplorer.MessageReportWindow.#ctor(System.Collections.Generic.IEnumerable{AasxIntegrationBase.StoredPrint})
+  name: MessageReportWindow(IEnumerable<StoredPrint>)
+  href: api/AasxPackageExplorer.MessageReportWindow.html#AasxPackageExplorer_MessageReportWindow__ctor_System_Collections_Generic_IEnumerable_AasxIntegrationBase_StoredPrint__
+  commentId: M:AasxPackageExplorer.MessageReportWindow.#ctor(System.Collections.Generic.IEnumerable{AasxIntegrationBase.StoredPrint})
+  name.vb: MessageReportWindow(IEnumerable(Of StoredPrint))
+  fullName: AasxPackageExplorer.MessageReportWindow.MessageReportWindow(System.Collections.Generic.IEnumerable<AasxIntegrationBase.StoredPrint>)
+  fullName.vb: AasxPackageExplorer.MessageReportWindow.MessageReportWindow(System.Collections.Generic.IEnumerable(Of AasxIntegrationBase.StoredPrint))
+  nameWithType: MessageReportWindow.MessageReportWindow(IEnumerable<StoredPrint>)
+  nameWithType.vb: MessageReportWindow.MessageReportWindow(IEnumerable(Of StoredPrint))
 - uid: AasxPackageExplorer.MessageReportWindow.#ctor*
   name: MessageReportWindow
   href: api/AasxPackageExplorer.MessageReportWindow.html#AasxPackageExplorer_MessageReportWindow__ctor_
@@ -21913,19 +21627,6 @@ references:
   isSpec: "True"
   fullName: AasxPackageExplorer.MessageReportWindow.MessageReportWindow
   nameWithType: MessageReportWindow.MessageReportWindow
-- uid: AasxPackageExplorer.MessageReportWindow.Append(AasxIntegrationBase.StoredPrint)
-  name: Append(StoredPrint)
-  href: api/AasxPackageExplorer.MessageReportWindow.html#AasxPackageExplorer_MessageReportWindow_Append_AasxIntegrationBase_StoredPrint_
-  commentId: M:AasxPackageExplorer.MessageReportWindow.Append(AasxIntegrationBase.StoredPrint)
-  fullName: AasxPackageExplorer.MessageReportWindow.Append(AasxIntegrationBase.StoredPrint)
-  nameWithType: MessageReportWindow.Append(StoredPrint)
-- uid: AasxPackageExplorer.MessageReportWindow.Append*
-  name: Append
-  href: api/AasxPackageExplorer.MessageReportWindow.html#AasxPackageExplorer_MessageReportWindow_Append_
-  commentId: Overload:AasxPackageExplorer.MessageReportWindow.Append
-  isSpec: "True"
-  fullName: AasxPackageExplorer.MessageReportWindow.Append
-  nameWithType: MessageReportWindow.Append
 - uid: AasxPackageExplorer.MessageReportWindow.InitializeComponent
   name: InitializeComponent()
   href: api/AasxPackageExplorer.MessageReportWindow.html#AasxPackageExplorer_MessageReportWindow_InitializeComponent
