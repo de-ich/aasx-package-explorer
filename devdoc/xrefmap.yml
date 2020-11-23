@@ -45320,6 +45320,38 @@ references:
   commentId: F:AdminShellNS.AdminShellV20.Views.views
   fullName: AdminShellNS.AdminShellV20.Views.views
   nameWithType: AdminShellV20.Views.views
+- uid: AdminShellNS.InternalLog
+  name: InternalLog
+  href: api/AdminShellNS.InternalLog.html
+  commentId: T:AdminShellNS.InternalLog
+  fullName: AdminShellNS.InternalLog
+  nameWithType: InternalLog
+- uid: AdminShellNS.InternalLog.Error(System.Exception,System.String)
+  name: Error(System.Exception, String)
+  href: api/AdminShellNS.InternalLog.html#AdminShellNS_InternalLog_Error_System_Exception_System_String_
+  commentId: M:AdminShellNS.InternalLog.Error(System.Exception,System.String)
+  fullName: AdminShellNS.InternalLog.Error(System.Exception, System.String)
+  nameWithType: InternalLog.Error(System.Exception, String)
+- uid: AdminShellNS.InternalLog.Error*
+  name: Error
+  href: api/AdminShellNS.InternalLog.html#AdminShellNS_InternalLog_Error_
+  commentId: Overload:AdminShellNS.InternalLog.Error
+  isSpec: "True"
+  fullName: AdminShellNS.InternalLog.Error
+  nameWithType: InternalLog.Error
+- uid: AdminShellNS.InternalLog.SilentlyIgnoredError(System.Exception)
+  name: SilentlyIgnoredError(System.Exception)
+  href: api/AdminShellNS.InternalLog.html#AdminShellNS_InternalLog_SilentlyIgnoredError_System_Exception_
+  commentId: M:AdminShellNS.InternalLog.SilentlyIgnoredError(System.Exception)
+  fullName: AdminShellNS.InternalLog.SilentlyIgnoredError(System.Exception)
+  nameWithType: InternalLog.SilentlyIgnoredError(System.Exception)
+- uid: AdminShellNS.InternalLog.SilentlyIgnoredError*
+  name: SilentlyIgnoredError
+  href: api/AdminShellNS.InternalLog.html#AdminShellNS_InternalLog_SilentlyIgnoredError_
+  commentId: Overload:AdminShellNS.InternalLog.SilentlyIgnoredError
+  isSpec: "True"
+  fullName: AdminShellNS.InternalLog.SilentlyIgnoredError
+  nameWithType: InternalLog.SilentlyIgnoredError
 - uid: AdminShellNS.ListOfAasSupplementaryFile
   name: ListOfAasSupplementaryFile
   href: api/AdminShellNS.ListOfAasSupplementaryFile.html
@@ -45339,6 +45371,37 @@ references:
   isSpec: "True"
   fullName: AdminShellNS.ListOfAasSupplementaryFile.FindByUri
   nameWithType: ListOfAasSupplementaryFile.FindByUri
+- uid: AdminShellNS.Logging
+  name: Logging
+  href: api/AdminShellNS.Logging.html
+  commentId: T:AdminShellNS.Logging
+  fullName: AdminShellNS.Logging
+  nameWithType: Logging
+- uid: AdminShellNS.Logging.FormatError(System.Exception,System.String)
+  name: FormatError(System.Exception, String)
+  href: api/AdminShellNS.Logging.html#AdminShellNS_Logging_FormatError_System_Exception_System_String_
+  commentId: M:AdminShellNS.Logging.FormatError(System.Exception,System.String)
+  fullName: AdminShellNS.Logging.FormatError(System.Exception, System.String)
+  nameWithType: Logging.FormatError(System.Exception, String)
+- uid: AdminShellNS.Logging.FormatError*
+  name: FormatError
+  href: api/AdminShellNS.Logging.html#AdminShellNS_Logging_FormatError_
+  commentId: Overload:AdminShellNS.Logging.FormatError
+  isSpec: "True"
+  fullName: AdminShellNS.Logging.FormatError
+  nameWithType: Logging.FormatError
+- uid: AdminShellNS.LogInternally
+  name: LogInternally
+  href: api/AdminShellNS.LogInternally.html
+  commentId: T:AdminShellNS.LogInternally
+  fullName: AdminShellNS.LogInternally
+  nameWithType: LogInternally
+- uid: AdminShellNS.LogInternally.That
+  name: That
+  href: api/AdminShellNS.LogInternally.html#AdminShellNS_LogInternally_That
+  commentId: F:AdminShellNS.LogInternally.That
+  fullName: AdminShellNS.LogInternally.That
+  nameWithType: LogInternally.That
 - uid: AdminShellNS.MultiValueDictionary`2
   name: MultiValueDictionary<K, V>
   href: api/AdminShellNS.MultiValueDictionary-2.html

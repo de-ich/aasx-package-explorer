@@ -172,14 +172,14 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): check, if Json has Qualifiers or not",
-        "line": 4546,
+        "line": 4549,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-31): would be nice to use IEnumerateChildren for this ..",
-        "line": 5288,
+        "line": 5291,
         "column": 20,
         "status": "ok"
       }
@@ -191,28 +191,28 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 252,
+        "line": 253,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 372,
+        "line": 373,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 413,
+        "line": 414,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 443,
+        "line": 444,
         "column": 20,
         "status": "ok"
       }
@@ -554,7 +554,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-05): refacture this with DispEditHelper.cs",
-        "line": 584,
+        "line": 591,
         "column": 8,
         "status": "ok"
       }
@@ -578,7 +578,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-09-01): extend the lines below to cover also data spec. for units",
-        "line": 1554,
+        "line": 1557,
         "column": 12,
         "status": "ok"
       }
@@ -590,14 +590,14 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): possibly [Jump] button??",
-        "line": 1301,
+        "line": 1306,
         "column": 16,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Needs to be revisited",
-        "line": 1481,
+        "line": 1486,
         "column": 24,
         "status": "ok"
       }
