@@ -609,8 +609,8 @@ MIHO,
 
 ## AasxWpfControlLibrary\DispEditAasxEntity.xaml.cs
 
-[Line 1558, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditAasxEntity.xaml.cs#L1558
+[Line 1549, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditAasxEntity.xaml.cs#L1549
 ), 
 MIHO,
 2020-09-01
@@ -619,16 +619,16 @@ MIHO,
 
 ## AasxWpfControlLibrary\DispEditHelperBasics.cs
 
-[Line 1307, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1307
+[Line 1303, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1303
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     possibly [Jump] button??
 
-[Line 1487, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1487
+[Line 1483, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1483
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -637,16 +637,16 @@ Michael Hoffmeister,
 
 ## AasxWpfControlLibrary\DispEditHelperCopyPaste.cs
 
-[Line 237, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperCopyPaste.cs#L237
+[Line 227, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperCopyPaste.cs#L227
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     Operation mssing here?
 
-[Line 259, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperCopyPaste.cs#L259
+[Line 249, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperCopyPaste.cs#L249
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -655,8 +655,8 @@ Michael Hoffmeister,
 
 ## AasxWpfControlLibrary\VisualAasxElements.cs
 
-[Line 147, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/VisualAasxElements.cs#L147
+[Line 143, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/VisualAasxElements.cs#L143
 ), 
 MIHO,
 2020-07-31

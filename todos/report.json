@@ -578,7 +578,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-09-01): extend the lines below to cover also data spec. for units",
-        "line": 1557,
+        "line": 1548,
         "column": 12,
         "status": "ok"
       }
@@ -590,14 +590,14 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): possibly [Jump] button??",
-        "line": 1306,
+        "line": 1302,
         "column": 16,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Needs to be revisited",
-        "line": 1486,
+        "line": 1482,
         "column": 24,
         "status": "ok"
       }
@@ -609,14 +609,14 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Operation mssing here?",
-        "line": 236,
+        "line": 226,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Operation mssing here?",
-        "line": 258,
+        "line": 248,
         "column": 28,
         "status": "ok"
       }
@@ -628,7 +628,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-31): check if commented out because of non-working multi-select?",
-        "line": 146,
+        "line": 142,
         "column": 16,
         "status": "ok"
       }

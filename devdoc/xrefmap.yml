@@ -12417,94 +12417,6 @@ references:
   isSpec: "True"
   fullName: AasxDictionaryImport.MultiString.Values
   nameWithType: MultiString.Values
-- uid: AasxGlobalLogging
-  name: AasxGlobalLogging
-  href: api/AasxGlobalLogging.html
-  commentId: N:AasxGlobalLogging
-  fullName: AasxGlobalLogging
-  nameWithType: AasxGlobalLogging
-- uid: AasxGlobalLogging.Log
-  name: Log
-  href: api/AasxGlobalLogging.Log.html
-  commentId: T:AasxGlobalLogging.Log
-  fullName: AasxGlobalLogging.Log
-  nameWithType: Log
-- uid: AasxGlobalLogging.Log.Error(System.Exception,System.String)
-  name: Error(Exception, String)
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Error_System_Exception_System_String_
-  commentId: M:AasxGlobalLogging.Log.Error(System.Exception,System.String)
-  fullName: AasxGlobalLogging.Log.Error(System.Exception, System.String)
-  nameWithType: Log.Error(Exception, String)
-- uid: AasxGlobalLogging.Log.Error(System.String,System.Object[])
-  name: Error(String, Object[])
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Error_System_String_System_Object___
-  commentId: M:AasxGlobalLogging.Log.Error(System.String,System.Object[])
-  name.vb: Error(String, Object())
-  fullName: AasxGlobalLogging.Log.Error(System.String, System.Object[])
-  fullName.vb: AasxGlobalLogging.Log.Error(System.String, System.Object())
-  nameWithType: Log.Error(String, Object[])
-  nameWithType.vb: Log.Error(String, Object())
-- uid: AasxGlobalLogging.Log.Error*
-  name: Error
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Error_
-  commentId: Overload:AasxGlobalLogging.Log.Error
-  isSpec: "True"
-  fullName: AasxGlobalLogging.Log.Error
-  nameWithType: Log.Error
-- uid: AasxGlobalLogging.Log.Info(AasxIntegrationBase.StoredPrint.Color,System.String,System.Object[])
-  name: Info(StoredPrint.Color, String, Object[])
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Info_AasxIntegrationBase_StoredPrint_Color_System_String_System_Object___
-  commentId: M:AasxGlobalLogging.Log.Info(AasxIntegrationBase.StoredPrint.Color,System.String,System.Object[])
-  name.vb: Info(StoredPrint.Color, String, Object())
-  fullName: AasxGlobalLogging.Log.Info(AasxIntegrationBase.StoredPrint.Color, System.String, System.Object[])
-  fullName.vb: AasxGlobalLogging.Log.Info(AasxIntegrationBase.StoredPrint.Color, System.String, System.Object())
-  nameWithType: Log.Info(StoredPrint.Color, String, Object[])
-  nameWithType.vb: Log.Info(StoredPrint.Color, String, Object())
-- uid: AasxGlobalLogging.Log.Info(System.String,System.Object[])
-  name: Info(String, Object[])
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Info_System_String_System_Object___
-  commentId: M:AasxGlobalLogging.Log.Info(System.String,System.Object[])
-  name.vb: Info(String, Object())
-  fullName: AasxGlobalLogging.Log.Info(System.String, System.Object[])
-  fullName.vb: AasxGlobalLogging.Log.Info(System.String, System.Object())
-  nameWithType: Log.Info(String, Object[])
-  nameWithType.vb: Log.Info(String, Object())
-- uid: AasxGlobalLogging.Log.Info*
-  name: Info
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Info_
-  commentId: Overload:AasxGlobalLogging.Log.Info
-  isSpec: "True"
-  fullName: AasxGlobalLogging.Log.Info
-  nameWithType: Log.Info
-- uid: AasxGlobalLogging.Log.LogInstance
-  name: LogInstance
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_LogInstance
-  commentId: P:AasxGlobalLogging.Log.LogInstance
-  fullName: AasxGlobalLogging.Log.LogInstance
-  nameWithType: Log.LogInstance
-- uid: AasxGlobalLogging.Log.LogInstance*
-  name: LogInstance
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_LogInstance_
-  commentId: Overload:AasxGlobalLogging.Log.LogInstance
-  isSpec: "True"
-  fullName: AasxGlobalLogging.Log.LogInstance
-  nameWithType: Log.LogInstance
-- uid: AasxGlobalLogging.Log.Silent(System.String,System.Object[])
-  name: Silent(String, Object[])
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Silent_System_String_System_Object___
-  commentId: M:AasxGlobalLogging.Log.Silent(System.String,System.Object[])
-  name.vb: Silent(String, Object())
-  fullName: AasxGlobalLogging.Log.Silent(System.String, System.Object[])
-  fullName.vb: AasxGlobalLogging.Log.Silent(System.String, System.Object())
-  nameWithType: Log.Silent(String, Object[])
-  nameWithType.vb: Log.Silent(String, Object())
-- uid: AasxGlobalLogging.Log.Silent*
-  name: Silent
-  href: api/AasxGlobalLogging.Log.html#AasxGlobalLogging_Log_Silent_
-  commentId: Overload:AasxGlobalLogging.Log.Silent
-  isSpec: "True"
-  fullName: AasxGlobalLogging.Log.Silent
-  nameWithType: Log.Silent
 - uid: AasxIntegrationBase
   name: AasxIntegrationBase
   href: api/AasxIntegrationBase.html
@@ -20709,6 +20621,25 @@ references:
   isSpec: "True"
   fullName: AasxPackageExplorer.ITreeViewSelectable.IsSelected
   nameWithType: ITreeViewSelectable.IsSelected
+- uid: AasxPackageExplorer.Log
+  name: Log
+  href: api/AasxPackageExplorer.Log.html
+  commentId: T:AasxPackageExplorer.Log
+  fullName: AasxPackageExplorer.Log
+  nameWithType: Log
+- uid: AasxPackageExplorer.Log.Singleton
+  name: Singleton
+  href: api/AasxPackageExplorer.Log.html#AasxPackageExplorer_Log_Singleton
+  commentId: P:AasxPackageExplorer.Log.Singleton
+  fullName: AasxPackageExplorer.Log.Singleton
+  nameWithType: Log.Singleton
+- uid: AasxPackageExplorer.Log.Singleton*
+  name: Singleton
+  href: api/AasxPackageExplorer.Log.html#AasxPackageExplorer_Log_Singleton_
+  commentId: Overload:AasxPackageExplorer.Log.Singleton
+  isSpec: "True"
+  fullName: AasxPackageExplorer.Log.Singleton
+  nameWithType: Log.Singleton
 - uid: AasxPackageExplorer.LogMessageFlyout
   name: LogMessageFlyout
   href: api/AasxPackageExplorer.LogMessageFlyout.html
