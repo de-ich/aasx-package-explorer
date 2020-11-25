@@ -18229,19 +18229,19 @@ references:
   isSpec: "True"
   fullName: AasxPackageExplorer.DiplayVisualAasxElements.ExpandOnlyBranchWithin
   nameWithType: DiplayVisualAasxElements.ExpandOnlyBranchWithin
-- uid: AasxPackageExplorer.DiplayVisualAasxElements.FilterLeafsOfVisualElements(AasxPackageExplorer.VisualElementGeneric,System.String)
-  name: FilterLeafsOfVisualElements(VisualElementGeneric, String)
-  href: api/AasxPackageExplorer.DiplayVisualAasxElements.html#AasxPackageExplorer_DiplayVisualAasxElements_FilterLeafsOfVisualElements_AasxPackageExplorer_VisualElementGeneric_System_String_
-  commentId: M:AasxPackageExplorer.DiplayVisualAasxElements.FilterLeafsOfVisualElements(AasxPackageExplorer.VisualElementGeneric,System.String)
-  fullName: AasxPackageExplorer.DiplayVisualAasxElements.FilterLeafsOfVisualElements(AasxPackageExplorer.VisualElementGeneric, System.String)
-  nameWithType: DiplayVisualAasxElements.FilterLeafsOfVisualElements(VisualElementGeneric, String)
-- uid: AasxPackageExplorer.DiplayVisualAasxElements.FilterLeafsOfVisualElements*
-  name: FilterLeafsOfVisualElements
-  href: api/AasxPackageExplorer.DiplayVisualAasxElements.html#AasxPackageExplorer_DiplayVisualAasxElements_FilterLeafsOfVisualElements_
-  commentId: Overload:AasxPackageExplorer.DiplayVisualAasxElements.FilterLeafsOfVisualElements
+- uid: AasxPackageExplorer.DiplayVisualAasxElements.FilterLeavesOfVisualElements(AasxPackageExplorer.VisualElementGeneric,System.String)
+  name: FilterLeavesOfVisualElements(VisualElementGeneric, String)
+  href: api/AasxPackageExplorer.DiplayVisualAasxElements.html#AasxPackageExplorer_DiplayVisualAasxElements_FilterLeavesOfVisualElements_AasxPackageExplorer_VisualElementGeneric_System_String_
+  commentId: M:AasxPackageExplorer.DiplayVisualAasxElements.FilterLeavesOfVisualElements(AasxPackageExplorer.VisualElementGeneric,System.String)
+  fullName: AasxPackageExplorer.DiplayVisualAasxElements.FilterLeavesOfVisualElements(AasxPackageExplorer.VisualElementGeneric, System.String)
+  nameWithType: DiplayVisualAasxElements.FilterLeavesOfVisualElements(VisualElementGeneric, String)
+- uid: AasxPackageExplorer.DiplayVisualAasxElements.FilterLeavesOfVisualElements*
+  name: FilterLeavesOfVisualElements
+  href: api/AasxPackageExplorer.DiplayVisualAasxElements.html#AasxPackageExplorer_DiplayVisualAasxElements_FilterLeavesOfVisualElements_
+  commentId: Overload:AasxPackageExplorer.DiplayVisualAasxElements.FilterLeavesOfVisualElements
   isSpec: "True"
-  fullName: AasxPackageExplorer.DiplayVisualAasxElements.FilterLeafsOfVisualElements
-  nameWithType: DiplayVisualAasxElements.FilterLeafsOfVisualElements
+  fullName: AasxPackageExplorer.DiplayVisualAasxElements.FilterLeavesOfVisualElements
+  nameWithType: DiplayVisualAasxElements.FilterLeavesOfVisualElements
 - uid: AasxPackageExplorer.DiplayVisualAasxElements.FindAllVisualElement
   name: FindAllVisualElement()
   href: api/AasxPackageExplorer.DiplayVisualAasxElements.html#AasxPackageExplorer_DiplayVisualAasxElements_FindAllVisualElement
