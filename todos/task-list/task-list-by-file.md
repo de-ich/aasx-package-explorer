@@ -411,6 +411,23 @@ Andreas Orzelski,
     The information from the analysis
     -> return as an object (list of enums with the issues/warings???)
 
+## AasxToolkit.Tests\TestProgram.cs
+
+[Line 251, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxToolkit.Tests/TestProgram.cs#L251
+), 
+mristin,
+2020-10-30
+
+    add json once the validation is in place.
+     Michael Hoffmeister had it almost done today.
+     
+    Path.Combine(
+        TestContext.CurrentContext.TestDirectory,
+        "TestResources\\AasxToolkit.Tests\\sample.json")
+        
+        dead-csharp ignore this comment
+
 ## AasxUaNetConsoleServer\Program.cs
 
 [Line 10, column 1](

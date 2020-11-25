@@ -369,6 +369,18 @@
     ]
   },
   {
+    "path": "AasxToolkit.Tests\\TestProgram.cs",
+    "records": [
+      {
+        "prefix": "TODO",
+        "suffix": " (mristin, 2020-10-30): add json once the validation is in place.\r\n                     Michael Hoffmeister had it almost done today.\r\n                     \r\n                    Path.Combine(\r\n                        TestContext.CurrentContext.TestDirectory,\r\n                        \u0022TestResources\\\\AasxToolkit.Tests\\\\sample.json\u0022)\r\n                        \r\n                        dead-csharp ignore this comment",
+        "line": 250,
+        "column": 20,
+        "status": "ok"
+      }
+    ]
+  },
+  {
     "path": "AasxUaNetConsoleServer\\Program.cs",
     "records": [
       {
