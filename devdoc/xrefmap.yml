@@ -21969,12 +21969,6 @@ references:
   commentId: F:AasxPackageExplorer.OptionsInformation.LogoFile
   fullName: AasxPackageExplorer.OptionsInformation.LogoFile
   nameWithType: OptionsInformation.LogoFile
-- uid: AasxPackageExplorer.OptionsInformation.OptionsTextFn
-  name: OptionsTextFn
-  href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_OptionsTextFn
-  commentId: F:AasxPackageExplorer.OptionsInformation.OptionsTextFn
-  fullName: AasxPackageExplorer.OptionsInformation.OptionsTextFn
-  nameWithType: OptionsInformation.OptionsTextFn
 - uid: AasxPackageExplorer.OptionsInformation.ParseArgs(System.String[],AasxPackageExplorer.OptionsInformation)
   name: ParseArgs(String[], OptionsInformation)
   href: api/AasxPackageExplorer.OptionsInformation.html#AasxPackageExplorer_OptionsInformation_ParseArgs_System_String___AasxPackageExplorer_OptionsInformation_

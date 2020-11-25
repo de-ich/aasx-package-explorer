@@ -337,8 +337,8 @@ Robin,
 
 ## AasxPackageExplorer.Tests\TestOptionsAndPlugins.cs
 
-[Line 85, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxPackageExplorer.Tests/TestOptionsAndPlugins.cs#L85
+[Line 173, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxPackageExplorer.Tests/TestOptionsAndPlugins.cs#L173
 ), 
 mristin,
 2020-11-13
