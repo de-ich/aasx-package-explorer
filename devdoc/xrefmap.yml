@@ -36402,12 +36402,12 @@ references:
   isSpec: "True"
   fullName: AdminShellNS.AdminShellPackageSupplementaryFile.GetElementName
   nameWithType: AdminShellPackageSupplementaryFile.GetElementName
-- uid: AdminShellNS.AdminShellPackageSupplementaryFile.location
-  name: location
-  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_location
-  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.location
-  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.location
-  nameWithType: AdminShellPackageSupplementaryFile.location
+- uid: AdminShellNS.AdminShellPackageSupplementaryFile.Location
+  name: Location
+  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_Location
+  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.Location
+  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.Location
+  nameWithType: AdminShellPackageSupplementaryFile.Location
 - uid: AdminShellNS.AdminShellPackageSupplementaryFile.LocationType
   name: AdminShellPackageSupplementaryFile.LocationType
   href: api/AdminShellNS.AdminShellPackageSupplementaryFile.LocationType.html
@@ -36438,24 +36438,24 @@ references:
   commentId: T:AdminShellNS.AdminShellPackageSupplementaryFile.SourceGetByteChunk
   fullName: AdminShellNS.AdminShellPackageSupplementaryFile.SourceGetByteChunk
   nameWithType: AdminShellPackageSupplementaryFile.SourceGetByteChunk
-- uid: AdminShellNS.AdminShellPackageSupplementaryFile.sourceGetBytesDel
-  name: sourceGetBytesDel
-  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_sourceGetBytesDel
-  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.sourceGetBytesDel
-  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.sourceGetBytesDel
-  nameWithType: AdminShellPackageSupplementaryFile.sourceGetBytesDel
-- uid: AdminShellNS.AdminShellPackageSupplementaryFile.sourceLocalPath
-  name: sourceLocalPath
-  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_sourceLocalPath
-  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.sourceLocalPath
-  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.sourceLocalPath
-  nameWithType: AdminShellPackageSupplementaryFile.sourceLocalPath
-- uid: AdminShellNS.AdminShellPackageSupplementaryFile.specialHandling
-  name: specialHandling
-  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_specialHandling
-  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.specialHandling
-  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.specialHandling
-  nameWithType: AdminShellPackageSupplementaryFile.specialHandling
+- uid: AdminShellNS.AdminShellPackageSupplementaryFile.SourceGetBytesDel
+  name: SourceGetBytesDel
+  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_SourceGetBytesDel
+  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.SourceGetBytesDel
+  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.SourceGetBytesDel
+  nameWithType: AdminShellPackageSupplementaryFile.SourceGetBytesDel
+- uid: AdminShellNS.AdminShellPackageSupplementaryFile.SourceLocalPath
+  name: SourceLocalPath
+  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_SourceLocalPath
+  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.SourceLocalPath
+  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.SourceLocalPath
+  nameWithType: AdminShellPackageSupplementaryFile.SourceLocalPath
+- uid: AdminShellNS.AdminShellPackageSupplementaryFile.SpecialHandling
+  name: SpecialHandling
+  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_SpecialHandling
+  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.SpecialHandling
+  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.SpecialHandling
+  nameWithType: AdminShellPackageSupplementaryFile.SpecialHandling
 - uid: AdminShellNS.AdminShellPackageSupplementaryFile.SpecialHandlingType
   name: AdminShellPackageSupplementaryFile.SpecialHandlingType
   href: api/AdminShellNS.AdminShellPackageSupplementaryFile.SpecialHandlingType.html
@@ -36474,18 +36474,18 @@ references:
   commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.SpecialHandlingType.None
   fullName: AdminShellNS.AdminShellPackageSupplementaryFile.SpecialHandlingType.None
   nameWithType: AdminShellPackageSupplementaryFile.SpecialHandlingType.None
-- uid: AdminShellNS.AdminShellPackageSupplementaryFile.uri
-  name: uri
-  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_uri
-  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.uri
-  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.uri
-  nameWithType: AdminShellPackageSupplementaryFile.uri
-- uid: AdminShellNS.AdminShellPackageSupplementaryFile.useMimeType
-  name: useMimeType
-  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_useMimeType
-  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.useMimeType
-  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.useMimeType
-  nameWithType: AdminShellPackageSupplementaryFile.useMimeType
+- uid: AdminShellNS.AdminShellPackageSupplementaryFile.Uri
+  name: Uri
+  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_Uri
+  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.Uri
+  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.Uri
+  nameWithType: AdminShellPackageSupplementaryFile.Uri
+- uid: AdminShellNS.AdminShellPackageSupplementaryFile.UseMimeType
+  name: UseMimeType
+  href: api/AdminShellNS.AdminShellPackageSupplementaryFile.html#AdminShellNS_AdminShellPackageSupplementaryFile_UseMimeType
+  commentId: F:AdminShellNS.AdminShellPackageSupplementaryFile.UseMimeType
+  fullName: AdminShellNS.AdminShellPackageSupplementaryFile.UseMimeType
+  nameWithType: AdminShellPackageSupplementaryFile.UseMimeType
 - uid: AdminShellNS.AdminShellSerializationHelper
   name: AdminShellSerializationHelper
   href: api/AdminShellNS.AdminShellSerializationHelper.html

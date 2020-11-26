@@ -191,28 +191,28 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 247,
+        "line": 240,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 430,
+        "line": 426,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 474,
+        "line": 469,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 509,
+        "line": 504,
         "column": 24,
         "status": "ok"
       }
