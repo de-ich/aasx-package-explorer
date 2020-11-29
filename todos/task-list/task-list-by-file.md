@@ -365,17 +365,6 @@ MIHO,
 
     when dragging the divider between elements tree and browser window,
 
-## AasxRestServerLibrary\AasxRestClient.cs
-
-[Line 65, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxRestClient.cs#L65
-), 
-Michael Hoffmeister,
-2020-08-01
-
-    Andreas, check this. 
-    System.Net.WebProxy.GetDefaultProxy was deprecated.
-
 ## AasxSignature\AasxSignature.cs
 
 [Line 30, column 9](

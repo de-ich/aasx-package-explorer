@@ -31879,19 +31879,19 @@ references:
   isSpec: "True"
   fullName: AasxRestServerLibrary.AasxRestClient.OpenPackageByAasEnv
   nameWithType: AasxRestClient.OpenPackageByAasEnv
-- uid: AasxRestServerLibrary.AasxRestClient.PutSubmodel(System.String)
-  name: PutSubmodel(String)
-  href: api/AasxRestServerLibrary.AasxRestClient.html#AasxRestServerLibrary_AasxRestClient_PutSubmodel_System_String_
-  commentId: M:AasxRestServerLibrary.AasxRestClient.PutSubmodel(System.String)
-  fullName: AasxRestServerLibrary.AasxRestClient.PutSubmodel(System.String)
-  nameWithType: AasxRestClient.PutSubmodel(String)
-- uid: AasxRestServerLibrary.AasxRestClient.PutSubmodel*
-  name: PutSubmodel
-  href: api/AasxRestServerLibrary.AasxRestClient.html#AasxRestServerLibrary_AasxRestClient_PutSubmodel_
-  commentId: Overload:AasxRestServerLibrary.AasxRestClient.PutSubmodel
+- uid: AasxRestServerLibrary.AasxRestClient.PutSubmodelAsync(System.String)
+  name: PutSubmodelAsync(String)
+  href: api/AasxRestServerLibrary.AasxRestClient.html#AasxRestServerLibrary_AasxRestClient_PutSubmodelAsync_System_String_
+  commentId: M:AasxRestServerLibrary.AasxRestClient.PutSubmodelAsync(System.String)
+  fullName: AasxRestServerLibrary.AasxRestClient.PutSubmodelAsync(System.String)
+  nameWithType: AasxRestClient.PutSubmodelAsync(String)
+- uid: AasxRestServerLibrary.AasxRestClient.PutSubmodelAsync*
+  name: PutSubmodelAsync
+  href: api/AasxRestServerLibrary.AasxRestClient.html#AasxRestServerLibrary_AasxRestClient_PutSubmodelAsync_
+  commentId: Overload:AasxRestServerLibrary.AasxRestClient.PutSubmodelAsync
   isSpec: "True"
-  fullName: AasxRestServerLibrary.AasxRestClient.PutSubmodel
-  nameWithType: AasxRestClient.PutSubmodel
+  fullName: AasxRestServerLibrary.AasxRestClient.PutSubmodelAsync
+  nameWithType: AasxRestClient.PutSubmodelAsync
 - uid: AasxRestServerLibrary.AasxRestClient.ReloadPropertyValue
   name: ReloadPropertyValue()
   href: api/AasxRestServerLibrary.AasxRestClient.html#AasxRestServerLibrary_AasxRestClient_ReloadPropertyValue

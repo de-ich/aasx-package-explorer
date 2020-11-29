@@ -324,18 +324,6 @@
     ]
   },
   {
-    "path": "AasxRestServerLibrary\\AasxRestClient.cs",
-    "records": [
-      {
-        "prefix": "TODO",
-        "suffix": " (Michael Hoffmeister, 2020-08-01): Andreas, check this. \r\n                 System.Net.WebProxy.GetDefaultProxy was deprecated.",
-        "line": 64,
-        "column": 16,
-        "status": "ok"
-      }
-    ]
-  },
-  {
     "path": "AasxSignature\\AasxSignature.cs",
     "records": [
       {
