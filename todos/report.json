@@ -671,14 +671,14 @@
       {
         "prefix": "TODO",
         "suffix": " (MICHA, 2020-10-04): check if font is set correctly ..",
-        "line": 414,
+        "line": 425,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MICHA, 2020-10-04): seems, that for Textblock the alignement DOES NOT WORK!",
-        "line": 415,
+        "line": 426,
         "column": 12,
         "status": "ok"
       }

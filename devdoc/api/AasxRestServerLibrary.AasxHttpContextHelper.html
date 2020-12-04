@@ -90,35 +90,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">AasxHttpContextHelper</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="AasxRestServerLibrary.html">AasxRestServerLibrary</a></h6>
   <h6><strong>Assembly</strong>: AasxRestServerLibrary.dll</h6>
   <h5 id="AasxRestServerLibrary_AasxHttpContextHelper_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AasxHttpContextHelper</code></pre>
+    <pre><code class="lang-csharp hljs">public class AasxHttpContextHelper : object</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -190,12 +166,12 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L73">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_CreateHandlesFromQueryString_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.CreateHandlesFromQueryString*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_CreateHandlesFromQueryString_System_Collections_Specialized_NameValueCollection_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.CreateHandlesFromQueryString(System.Collections.Specialized.NameValueCollection)">CreateHandlesFromQueryString(NameValueCollection)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_CreateHandlesFromQueryString_System_Collections_Specialized_NameValueCollection_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.CreateHandlesFromQueryString(System.Collections.Specialized.NameValueCollection)">CreateHandlesFromQueryString(System.Collections.Specialized.NameValueCollection)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;AasxHttpHandleIdentification&gt; CreateHandlesFromQueryString(NameValueCollection queryStrings)</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;AasxHttpHandleIdentification&gt; CreateHandlesFromQueryString(System.Collections.Specialized.NameValueCollection queryStrings)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -224,7 +200,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="AasxRestServerLibrary.AasxHttpHandleIdentification.html">AasxHttpHandleIdentification</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="AasxRestServerLibrary.AasxHttpHandleIdentification.html">AasxHttpHandleIdentification</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -271,7 +247,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="AasxRestServerLibrary.AasxHttpHandleIdentification.html">AasxHttpHandleIdentification</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="AasxRestServerLibrary.AasxHttpHandleIdentification.html">AasxHttpHandleIdentification</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -1351,12 +1327,12 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L151">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_FindAAS_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindAAS*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindAAS_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindAAS(System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindAAS(String, NameValueCollection, String)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindAAS_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindAAS(System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindAAS(String, System.Collections.Specialized.NameValueCollection, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AdminShellV20.AdministrationShell FindAAS(string aasid, NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public AdminShellV20.AdministrationShell FindAAS(string aasid, System.Collections.Specialized.NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1408,12 +1384,12 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L256">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_FindCdWithoutAas_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindCdWithoutAas*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindCdWithoutAas_AdminShellNS_AdminShellV20_AdministrationShell_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindCdWithoutAas(AdminShellNS.AdminShellV20.AdministrationShell,System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindCdWithoutAas(AdminShellV20.AdministrationShell, String, NameValueCollection, String)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindCdWithoutAas_AdminShellNS_AdminShellV20_AdministrationShell_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindCdWithoutAas(AdminShellNS.AdminShellV20.AdministrationShell,System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindCdWithoutAas(AdminShellV20.AdministrationShell, String, System.Collections.Specialized.NameValueCollection, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AdminShellV20.ConceptDescription FindCdWithoutAas(AdminShellV20.AdministrationShell aas, string cdid, NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public AdminShellV20.ConceptDescription FindCdWithoutAas(AdminShellV20.AdministrationShell aas, string cdid, System.Collections.Specialized.NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1464,13 +1440,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelElement_AdminShellNS_AdminShellV20_Referable_System_Collections_Generic_List_AdminShellNS_AdminShellV20_SubmodelElementWrapper__System_String___System_Int32_.md&amp;value=---%0Auid%3A%20AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelElement(AdminShellNS.AdminShellV20.Referable%2CSystem.Collections.Generic.List%7BAdminShellNS.AdminShellV20.SubmodelElementWrapper%7D%2CSystem.String%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelElement_AdminShellNS_AdminShellV20_Referable_List_AdminShellNS_AdminShellV20_SubmodelElementWrapper__System_String___System_Int32_.md&amp;value=---%0Auid%3A%20AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelElement(AdminShellNS.AdminShellV20.Referable%2CList%7BAdminShellNS.AdminShellV20.SubmodelElementWrapper%7D%2CSystem.String%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L298">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelElement_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelElement*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelElement_AdminShellNS_AdminShellV20_Referable_System_Collections_Generic_List_AdminShellNS_AdminShellV20_SubmodelElementWrapper__System_String___System_Int32_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelElement(AdminShellNS.AdminShellV20.Referable,System.Collections.Generic.List{AdminShellNS.AdminShellV20.SubmodelElementWrapper},System.String[],System.Int32)">FindSubmodelElement(AdminShellV20.Referable, List&lt;AdminShellV20.SubmodelElementWrapper&gt;, String[], Int32)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelElement_AdminShellNS_AdminShellV20_Referable_List_AdminShellNS_AdminShellV20_SubmodelElementWrapper__System_String___System_Int32_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelElement(AdminShellNS.AdminShellV20.Referable,List{AdminShellNS.AdminShellV20.SubmodelElementWrapper},System.String[],System.Int32)">FindSubmodelElement(AdminShellV20.Referable, List&lt;AdminShellV20.SubmodelElementWrapper&gt;, String[], Int32)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1493,7 +1469,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElementWrapper.html">AdminShellV20.SubmodelElementWrapper</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElementWrapper.html">AdminShellV20.SubmodelElementWrapper</a>&gt;</td>
         <td><span class="parametername">wrappers</span></td>
         <td></td>
       </tr>
@@ -1532,12 +1508,12 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L173">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelRefWithinAas_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelRefWithinAas*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelRefWithinAas_AdminShellNS_AdminShellV20_AdministrationShell_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelRefWithinAas(AdminShellNS.AdminShellV20.AdministrationShell,System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindSubmodelRefWithinAas(AdminShellV20.AdministrationShell, String, NameValueCollection, String)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelRefWithinAas_AdminShellNS_AdminShellV20_AdministrationShell_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelRefWithinAas(AdminShellNS.AdminShellV20.AdministrationShell,System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindSubmodelRefWithinAas(AdminShellV20.AdministrationShell, String, System.Collections.Specialized.NameValueCollection, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AdminShellV20.SubmodelRef FindSubmodelRefWithinAas(AdminShellV20.AdministrationShell aas, string smid, NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public AdminShellV20.SubmodelRef FindSubmodelRefWithinAas(AdminShellV20.AdministrationShell aas, string smid, System.Collections.Specialized.NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1594,12 +1570,12 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L205">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelWithinAas_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelWithinAas*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelWithinAas_AdminShellNS_AdminShellV20_AdministrationShell_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelWithinAas(AdminShellNS.AdminShellV20.AdministrationShell,System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindSubmodelWithinAas(AdminShellV20.AdministrationShell, String, NameValueCollection, String)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelWithinAas_AdminShellNS_AdminShellV20_AdministrationShell_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelWithinAas(AdminShellNS.AdminShellV20.AdministrationShell,System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindSubmodelWithinAas(AdminShellV20.AdministrationShell, String, System.Collections.Specialized.NameValueCollection, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AdminShellV20.Submodel FindSubmodelWithinAas(AdminShellV20.AdministrationShell aas, string smid, NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public AdminShellV20.Submodel FindSubmodelWithinAas(AdminShellV20.AdministrationShell aas, string smid, System.Collections.Specialized.NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1656,12 +1632,12 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L231">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelWithoutAas_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelWithoutAas*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelWithoutAas_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelWithoutAas(System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindSubmodelWithoutAas(String, NameValueCollection, String)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_FindSubmodelWithoutAas_System_String_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.FindSubmodelWithoutAas(System.String,System.Collections.Specialized.NameValueCollection,System.String)">FindSubmodelWithoutAas(String, System.Collections.Specialized.NameValueCollection, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AdminShellV20.Submodel FindSubmodelWithoutAas(string smid, NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public AdminShellV20.Submodel FindSubmodelWithoutAas(string smid, System.Collections.Specialized.NameValueCollection queryStrings = null, string rawUrl = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1811,13 +1787,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxRestServerLibrary_AasxHttpContextHelper_PathInfoRegexMatch_System_Reflection_MethodBase_System_String_.md&amp;value=---%0Auid%3A%20AasxRestServerLibrary.AasxHttpContextHelper.PathInfoRegexMatch(System.Reflection.MethodBase%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxRestServerLibrary_AasxHttpContextHelper_PathInfoRegexMatch_MethodBase_System_String_.md&amp;value=---%0Auid%3A%20AasxRestServerLibrary.AasxHttpContextHelper.PathInfoRegexMatch(MethodBase%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L59">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_PathInfoRegexMatch_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.PathInfoRegexMatch*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_PathInfoRegexMatch_System_Reflection_MethodBase_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.PathInfoRegexMatch(System.Reflection.MethodBase,System.String)">PathInfoRegexMatch(MethodBase, String)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_PathInfoRegexMatch_MethodBase_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.PathInfoRegexMatch(MethodBase,System.String)">PathInfoRegexMatch(MethodBase, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1835,7 +1811,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td><span class="xref">MethodBase</span></td>
         <td><span class="parametername">methodWithRestRoute</span></td>
         <td></td>
       </tr>
@@ -1856,7 +1832,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Text.RegularExpressions.Match</span></td>
+        <td><span class="xref">Match</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1905,13 +1881,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxRestServerLibrary_AasxHttpContextHelper_SendStreamResponse_IHttpContext_System_IO_Stream_System_String_.md&amp;value=---%0Auid%3A%20AasxRestServerLibrary.AasxHttpContextHelper.SendStreamResponse(IHttpContext%2CSystem.IO.Stream%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxRestServerLibrary_AasxHttpContextHelper_SendStreamResponse_IHttpContext_Stream_System_String_.md&amp;value=---%0Auid%3A%20AasxRestServerLibrary.AasxHttpContextHelper.SendStreamResponse(IHttpContext%2CStream%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxRestServerLibrary/AasxHttpContextHelper.cs/#L381">View Source</a>
   </span>
   <a id="AasxRestServerLibrary_AasxHttpContextHelper_SendStreamResponse_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.SendStreamResponse*"></a>
-  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_SendStreamResponse_IHttpContext_System_IO_Stream_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.SendStreamResponse(IHttpContext,System.IO.Stream,System.String)">SendStreamResponse(IHttpContext, Stream, String)</h4>
+  <h4 id="AasxRestServerLibrary_AasxHttpContextHelper_SendStreamResponse_IHttpContext_Stream_System_String_" data-uid="AasxRestServerLibrary.AasxHttpContextHelper.SendStreamResponse(IHttpContext,Stream,System.String)">SendStreamResponse(IHttpContext, Stream, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1934,7 +1910,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="xref">Stream</span></td>
         <td><span class="parametername">stream</span></td>
         <td></td>
       </tr>

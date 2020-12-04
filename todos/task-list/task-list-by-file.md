@@ -699,16 +699,16 @@ MIHO,
 
 ## WpfMtpControl\UiElementHelper.cs
 
-[Line 415, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/UiElementHelper.cs#L415
+[Line 426, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/UiElementHelper.cs#L426
 ), 
 MICHA,
 2020-10-04
 
     check if font is set correctly ..
 
-[Line 416, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/UiElementHelper.cs#L416
+[Line 427, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/WpfMtpControl/UiElementHelper.cs#L427
 ), 
 MICHA,
 2020-10-04
