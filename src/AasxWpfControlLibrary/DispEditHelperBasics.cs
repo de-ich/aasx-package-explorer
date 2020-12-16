@@ -218,7 +218,7 @@ namespace AasxPackageExplorer
         // small widget handling
         //
 
-        public AasCntlGrid AddSmallGrid(int rows, int cols, string[] colWidths = null, Thickness margin = new Thickness())
+        public AasCntlGrid AddSmallGrid(int rows, int cols, string[] colWidths = null, AasCntlThickness margin = null)
         {
             var g = new AasCntlGrid();
             g.Margin = margin;
@@ -263,7 +263,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlWrapPanel AddSmallWrapPanelTo(
-            AasCntlGrid g, int row, int col, Thickness margin = new Thickness(), Brush background = null)
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, Brush background = null)
         {
             var wp = new AasCntlWrapPanel();
             wp.Margin = margin;
@@ -276,7 +276,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlStackPanel AddSmallStackPanelTo(
-            AasCntlGrid g, int row, int col, Thickness margin = new Thickness(), Brush background = null,
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, Brush background = null,
             bool setVertical = false, bool setHorizontal = false)
         {
             var sp = new AasCntlStackPanel();
@@ -295,7 +295,7 @@ namespace AasxPackageExplorer
 
         public AasCntlGrid AddSmallGridTo(
             AasCntlGrid g, int row, int col,
-            int rows, int cols, string[] colWidths = null, Thickness margin = new Thickness())
+            int rows, int cols, string[] colWidths = null, AasCntlThickness margin = null)
         {
             var inner = AddSmallGrid(rows, cols, colWidths, margin);
             inner.Margin = margin;
@@ -306,7 +306,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlTextBox AddSmallTextBoxTo(
-            AasCntlGrid g, int row, int col, Thickness margin = new Thickness(), Thickness padding = new Thickness(),
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string text = "", Brush foreground = null, Brush background = null,
             Nullable<VerticalAlignment> verticalContentAlignment = null)
         {
@@ -333,9 +333,9 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlBorder AddSmallDropBoxTo(
-            AasCntlGrid g, int row, int col, Thickness margin = new Thickness(), Thickness padding = new Thickness(),
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string text = "", Brush borderBrush = null, Brush background = null,
-            Thickness borderThickness = new Thickness(), int minHeight = 0)
+            AasCntlThickness borderThickness = null, int minHeight = 0)
         {
             var brd = new AasCntlBorder();
             brd.Margin = margin;
@@ -371,7 +371,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlComboBox AddSmallComboBoxTo(
-            AasCntlGrid g, int row, int col, Thickness margin = new Thickness(), Thickness padding = new Thickness(),
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string text = "", Brush foreground = null, Brush background = null,
             int minWidth = -1, int maxWidth = -1, string[] items = null, bool isEditable = false,
             Nullable<VerticalAlignment> verticalContentAlignment = null)
@@ -414,7 +414,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlButton AddSmallButtonTo(
-            AasCntlGrid g, int row, int col, Thickness margin = new Thickness(), Thickness padding = new Thickness(),
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string content = "", Brush foreground = null, Brush background = null)
         {
             var but = new AasCntlButton();
@@ -437,7 +437,7 @@ namespace AasxPackageExplorer
             ModifyRepo repo,
             string[] menuHeaders,
             Func<object, ModifyRepo.LambdaAction> menuItemLambda,
-            Thickness margin = new Thickness(), Thickness padding = new Thickness(),
+            AasCntlThickness margin = null, AasCntlThickness padding = null,
             Brush foreground = null, Brush background = null)
         {
             // construct button
@@ -479,7 +479,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlCheckBox AddSmallCheckBoxTo(
-            AasCntlGrid g, int row, int col, Thickness margin = new Thickness(), Thickness padding = new Thickness(),
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string content = "", bool isChecked = false, Brush foreground = null, Brush background = null,
             Nullable<VerticalAlignment> verticalContentAlignment = null)
         {
@@ -505,7 +505,7 @@ namespace AasxPackageExplorer
             string auxButtonTitle = null, Func<object, ModifyRepo.LambdaAction> auxButtonLambda = null)
         {
             var g = new AasCntlGrid();
-            g.Margin = new Thickness(0, 13, 0, 0);
+            g.Margin = new AasCntlThickness(0, 13, 0, 0);
 
             var gc1 = new AasCntlColumnDefinition();
             gc1.Width = new GridLength(1.0, GridUnitType.Star);
@@ -520,8 +520,8 @@ namespace AasxPackageExplorer
             }
 
             var l = new AasCntlLabel();
-            l.Margin = new Thickness(0, 0, 0, 0);
-            l.Padding = new Thickness(5, 0, 0, 0);
+            l.Margin = new AasCntlThickness(0, 0, 0, 0);
+            l.Padding = new AasCntlThickness(5, 0, 0, 0);
             l.Background = background;
             l.Foreground = foreground;
             l.Content = "" + name;
@@ -536,15 +536,15 @@ namespace AasxPackageExplorer
                 repo.RegisterControl(
                     AddSmallButtonTo(
                         g, 0, 1,
-                        margin: new Thickness(2, 2, 2, 2),
-                        padding: new Thickness(5, 0, 5, 0),
+                        margin: new AasCntlThickness(2, 2, 2, 2),
+                        padding: new AasCntlThickness(5, 0, 5, 0),
                         content: auxButtonTitle),
                     auxButtonLambda);
             }
         }
 
         public AasCntlTextBlock AddSmallLabelTo(
-            AasCntlGrid g, int row, int col, Thickness margin = new Thickness(), Thickness padding = new Thickness(),
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string content = "", Brush foreground = null, Brush background = null, bool setBold = false)
         {
             var lab = new AasCntlTextBlock();
@@ -614,7 +614,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlGrid AddSubGrid(AasCntlStackPanel view, string caption,
-            int rows, int cols, string[] colWidths = null, Thickness margin = new Thickness())
+            int rows, int cols, string[] colWidths = null, AasCntlThickness margin = null)
         {
             var g = AddSmallGrid(1, 2, new[] { "#", "*" });
             AddSmallLabelTo(g, 0, 0, content: caption);
@@ -687,7 +687,7 @@ namespace AasxPackageExplorer
 
             // Grid
             var g = new AasCntlGrid();
-            g.Margin = new Thickness(0, 1, 0, 1);
+            g.Margin = new AasCntlThickness(0, 1, 0, 1);
             var gc1 = new AasCntlColumnDefinition();
             gc1.Width = GridLength.Auto;
             gc1.MinWidth = this.standardFirstColWidth;
@@ -705,12 +705,12 @@ namespace AasxPackageExplorer
                 }
 
             // Label for key
-            AddSmallLabelTo(g, 0, 0, padding: new Thickness(5, 0, 0, 0), content: "" + key + ":");
+            AddSmallLabelTo(g, 0, 0, padding: new AasCntlThickness(5, 0, 0, 0), content: "" + key + ":");
 
             // Label / TextBox for value
             if (repo == null)
             {
-                AddSmallLabelTo(g, 0, 1, padding: new Thickness(2, 0, 0, 0), content: "" + value);
+                AddSmallLabelTo(g, 0, 1, padding: new AasCntlThickness(2, 0, 0, 0), content: "" + value);
             }
             else if (comboBoxItems != null)
             {
@@ -724,8 +724,8 @@ namespace AasxPackageExplorer
                 // use combo box
                 var cb = AddSmallComboBoxTo(
                     g, 0, 1,
-                    margin: new Thickness(0, 2, 2, 2),
-                    padding: new Thickness(2, 0, 2, 0),
+                    margin: new AasCntlThickness(0, 2, 2, 2),
+                    padding: new AasCntlThickness(2, 0, 2, 0),
                     text: "" + value,
                     minWidth: 60,
                     maxWidth: maxWidth,
@@ -742,7 +742,7 @@ namespace AasxPackageExplorer
             else
             {
                 // use plain text box
-                var tb = AddSmallTextBoxTo(g, 0, 1, margin: new Thickness(0, 2, 2, 2), text: "" + value);
+                var tb = AddSmallTextBoxTo(g, 0, 1, margin: new AasCntlThickness(0, 2, 2, 2), text: "" + value);
                 repo.RegisterControl(tb,
                     setValue, takeOverLambda: takeOverLambdaAction);
 
@@ -766,8 +766,8 @@ namespace AasxPackageExplorer
                     var b = repo.RegisterControl(
                         AddSmallButtonTo(
                             g, 0, 2 + i,
-                            margin: new Thickness(2, 2, 2, 2),
-                            padding: new Thickness(5, 0, 5, 0),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
+                            padding: new AasCntlThickness(5, 0, 5, 0),
                             content: intButtonTitles[i]),
                         lmb) as AasCntlButton;
                     if (i < intButtonToolTips.Count)
@@ -799,7 +799,7 @@ namespace AasxPackageExplorer
 
             // Grid
             var g = new AasCntlGrid();
-            g.Margin = new Thickness(0, 1, 0, 1);
+            g.Margin = new AasCntlThickness(0, 1, 0, 1);
             var gc1 = new AasCntlColumnDefinition();
             gc1.Width = new GridLength(this.standardFirstColWidth);
             g.ColumnDefinitions.Add(gc1);
@@ -808,19 +808,19 @@ namespace AasxPackageExplorer
             g.ColumnDefinitions.Add(gc2);
 
             // Label for key
-            AddSmallLabelTo(g, 0, 0, padding: new Thickness(5, 0, 0, 0), content: "" + key + ":");
+            AddSmallLabelTo(g, 0, 0, padding: new AasCntlThickness(5, 0, 0, 0), content: "" + key + ":");
 
             // Label / TextBox for value
             if (repo == null)
             {
                 // view only
-                AddSmallLabelTo(g, 0, 1, padding: new Thickness(2, 0, 0, 0), content: "" + value);
+                AddSmallLabelTo(g, 0, 1, padding: new AasCntlThickness(2, 0, 0, 0), content: "" + value);
             }
             else
             {
                 // interactive
-                var brd = AddSmallDropBoxTo(g, 0, 1, margin: new Thickness(2, 2, 2, 2),
-                    borderThickness: new Thickness(1), text: "" + value, minHeight: minHeight);
+                var brd = AddSmallDropBoxTo(g, 0, 1, margin: new AasCntlThickness(2, 2, 2, 2),
+                    borderThickness: new AasCntlThickness(1), text: "" + value, minHeight: minHeight);
                 repo.RegisterControl(brd,
                     setValue);
             }
@@ -844,7 +844,7 @@ namespace AasxPackageExplorer
 
             // Grid
             var g = new AasCntlGrid();
-            g.Margin = new Thickness(0, 0, 0, 0);
+            g.Margin = new AasCntlThickness(0, 0, 0, 0);
 
             var gc1 = new AasCntlColumnDefinition();
             gc1.Width = GridLength.Auto;
@@ -876,8 +876,8 @@ namespace AasxPackageExplorer
 
             // Label for key
             var l1 = new AasCntlLabel();
-            l1.Margin = new Thickness(0, 0, 0, 0);
-            l1.Padding = new Thickness(5, 0, 0, 0);
+            l1.Margin = new AasCntlThickness(0, 0, 0, 0);
+            l1.Padding = new AasCntlThickness(5, 0, 0, 0);
             l1.Content = "" + key + ":";
             AasCntlGrid.SetRow(l1, 0);
             AasCntlGrid.SetColumn(l1, 0);
@@ -888,8 +888,8 @@ namespace AasxPackageExplorer
                 for (int c = 0; c < cols; c++)
                 {
                     var l2 = new AasCntlLabel();
-                    l2.Margin = new Thickness(0, 0, 0, 0);
-                    l2.Padding = new Thickness(2, 0, 0, 0);
+                    l2.Margin = new AasCntlThickness(0, 0, 0, 0);
+                    l2.Padding = new AasCntlThickness(2, 0, 0, 0);
                     l2.Content = "" + value[r][c];
                     AasCntlGrid.SetRow(l2, 0 + r);
                     AasCntlGrid.SetColumn(l2, 1 + c);
@@ -905,20 +905,20 @@ namespace AasxPackageExplorer
         {
             // make grid
             var g = this.AddSmallGrid(1, 2, new[] { "" + this.standardFirstColWidth + ":", "*" },
-                    margin: new Thickness(0, 2, 0, 0));
+                    margin: new AasCntlThickness(0, 2, 0, 0));
 
             // Column 0 = Key
-            this.AddSmallLabelTo(g, 0, 0, padding: new Thickness(5, 0, 0, 0), content: key);
+            this.AddSmallLabelTo(g, 0, 0, padding: new AasCntlThickness(5, 0, 0, 0), content: key);
 
             // Column 1 = Check box or info
             if (repo == null || valueChanged == null)
             {
-                this.AddSmallLabelTo(g, 0, 1, padding: new Thickness(2, 0, 0, 0),
+                this.AddSmallLabelTo(g, 0, 1, padding: new AasCntlThickness(2, 0, 0, 0),
                         content: initialValue ? "True" : "False");
             }
             else
             {
-                repo.RegisterControl(this.AddSmallCheckBoxTo(g, 0, 1, margin: new Thickness(2, 2, 2, 2),
+                repo.RegisterControl(this.AddSmallCheckBoxTo(g, 0, 1, margin: new AasCntlThickness(2, 2, 2, 2),
                     content: additionalInfo, verticalContentAlignment: VerticalAlignment.Center,
                     isChecked: initialValue),
                         (o) =>
@@ -943,7 +943,7 @@ namespace AasxPackageExplorer
 
             // Grid
             var g = new AasCntlGrid();
-            g.Margin = new Thickness(0, 5, 0, 5);
+            g.Margin = new AasCntlThickness(0, 5, 0, 5);
 
             // 0 key
             var gc = new AasCntlColumnDefinition();
@@ -965,18 +965,18 @@ namespace AasxPackageExplorer
             g.RowDefinitions.Add(gr);
 
             // key label
-            var x = AddSmallLabelTo(g, 0, 0, margin: new Thickness(5, 0, 0, 0), content: "" + key);
+            var x = AddSmallLabelTo(g, 0, 0, margin: new AasCntlThickness(5, 0, 0, 0), content: "" + key);
             x.VerticalAlignment = VerticalAlignment.Center;
 
             // 1 + action button
-            var wp = AddSmallWrapPanelTo(g, 0, 1, margin: new Thickness(5, 0, 5, 0));
+            var wp = AddSmallWrapPanelTo(g, 0, 1, margin: new AasCntlThickness(5, 0, 5, 0));
             for (int i = 0; i < numButton; i++)
             {
                 int currentI = i;
                 var b = new AasCntlButton();
                 b.Content = "" + actionStr[i];
-                b.Margin = new Thickness(2, 2, 2, 2);
-                b.Padding = new Thickness(5, 0, 5, 0);
+                b.Margin = new AasCntlThickness(2, 2, 2, 2);
+                b.Padding = new AasCntlThickness(5, 0, 5, 0);
                 wp.Children.Add(b);
                 repo.RegisterControl(b,
                     (o) =>
@@ -1011,7 +1011,7 @@ namespace AasxPackageExplorer
 
             // Grid
             var g = new AasCntlGrid();
-            g.Margin = new Thickness(0, 0, 0, 0);
+            g.Margin = new AasCntlThickness(0, 0, 0, 0);
 
             // 0 key
             var gc = new AasCntlColumnDefinition();
@@ -1043,7 +1043,7 @@ namespace AasxPackageExplorer
             }
 
             // populate key
-            AddSmallLabelTo(g, 0, 0, margin: new Thickness(5, 0, 0, 0), content: "" + key + ":");
+            AddSmallLabelTo(g, 0, 0, margin: new AasCntlThickness(5, 0, 0, 0), content: "" + key + ":");
 
             // populate [+]
             if (repo != null)
@@ -1051,8 +1051,8 @@ namespace AasxPackageExplorer
                 repo.RegisterControl(
                     AddSmallButtonTo(
                         g, 0, 3,
-                        margin: new Thickness(2, 2, 2, 2),
-                        padding: new Thickness(5, 0, 5, 0),
+                        margin: new AasCntlThickness(2, 2, 2, 2),
+                        padding: new AasCntlThickness(5, 0, 5, 0),
                         content: "Add blank"),
                     (o) =>
                     {
@@ -1070,13 +1070,13 @@ namespace AasxPackageExplorer
                         // lang
                         AddSmallLabelTo(
                             g, 0 + i + rowOfs, 1,
-                            padding: new Thickness(2, 0, 0, 0),
+                            padding: new AasCntlThickness(2, 0, 0, 0),
                             content: "[" + langStr[i].lang + "]");
 
                         // str
                         AddSmallLabelTo(
                             g, 0 + i + rowOfs, 2,
-                            padding: new Thickness(2, 0, 0, 0),
+                            padding: new AasCntlThickness(2, 0, 0, 0),
                             content: "" + langStr[i].str);
                     }
                     else
@@ -1087,7 +1087,7 @@ namespace AasxPackageExplorer
                         // lang
                         var tbLang = AddSmallComboBoxTo(
                             g, 0 + i + rowOfs, 1,
-                            margin: new Thickness(0, 2, 2, 2),
+                            margin: new AasCntlThickness(0, 2, 2, 2),
                             text: "" + langStr[currentI].lang,
                             minWidth: 50,
                             items: defaultLanguages,
@@ -1108,7 +1108,7 @@ namespace AasxPackageExplorer
                         // str
                         var tbStr = AddSmallTextBoxTo(
                             g, 0 + i + rowOfs, 2,
-                            margin: new Thickness(2, 2, 2, 2),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
                             text: "" + langStr[currentI].str);
                         repo.RegisterControl(
                             tbStr,
@@ -1127,8 +1127,8 @@ namespace AasxPackageExplorer
                         repo.RegisterControl(
                             AddSmallButtonTo(
                                 g, 0 + i + rowOfs, 3,
-                                margin: new Thickness(2, 2, 2, 2),
-                                padding: new Thickness(5, 0, 5, 0),
+                                margin: new AasCntlThickness(2, 2, 2, 2),
+                                padding: new AasCntlThickness(5, 0, 5, 0),
                                 content: "-"),
                             (o) =>
                             {
@@ -1285,7 +1285,7 @@ namespace AasxPackageExplorer
 
             // Grid
             var g = new AasCntlGrid();
-            g.Margin = new Thickness(0, 0, 0, 0);
+            g.Margin = new AasCntlThickness(0, 0, 0, 0);
 
             // 0 key
             var gc = new AasCntlColumnDefinition();
@@ -1327,7 +1327,7 @@ namespace AasxPackageExplorer
             }
 
             // populate key
-            AddSmallLabelTo(g, 0, 0, margin: new Thickness(5, 0, 0, 0), content: "" + key + ":");
+            AddSmallLabelTo(g, 0, 0, margin: new AasCntlThickness(5, 0, 0, 0), content: "" + key + ":");
 
             // presets?
             var presetNo = 0;
@@ -1358,8 +1358,8 @@ namespace AasxPackageExplorer
                     repo.RegisterControl(
                         AddSmallButtonTo(
                             g2, 0, 1,
-                            margin: new Thickness(2, 2, 2, 2),
-                            padding: new Thickness(5, 0, 5, 0),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
+                            padding: new AasCntlThickness(5, 0, 5, 0),
                             content: "Add known"),
                         (o) =>
                         {
@@ -1383,8 +1383,8 @@ namespace AasxPackageExplorer
                     repo.RegisterControl(
                         AddSmallButtonTo(
                             g2, 0, 2,
-                            margin: new Thickness(2, 2, 2, 2),
-                            padding: new Thickness(5, 0, 5, 0),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
+                            padding: new AasCntlThickness(5, 0, 5, 0),
                             content: "Add eCl@ss IRDI"),
                         (o) =>
                         {
@@ -1408,8 +1408,8 @@ namespace AasxPackageExplorer
                     repo.RegisterControl(
                         AddSmallButtonTo(
                             g2, 0, 3,
-                            margin: new Thickness(2, 2, 2, 2),
-                            padding: new Thickness(5, 0, 5, 0),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
+                            padding: new AasCntlThickness(5, 0, 5, 0),
                             content: "Add existing"),
                         (o) =>
                         {
@@ -1427,8 +1427,8 @@ namespace AasxPackageExplorer
                 repo.RegisterControl(
                     AddSmallButtonTo(
                         g2, 0, 4,
-                        margin: new Thickness(2, 2, 2, 2),
-                        padding: new Thickness(5, 0, 5, 0),
+                        margin: new AasCntlThickness(2, 2, 2, 2),
+                        padding: new AasCntlThickness(5, 0, 5, 0),
                         content: "Add blank"),
                     (o) =>
                     {
@@ -1444,8 +1444,8 @@ namespace AasxPackageExplorer
                     repo.RegisterControl(
                         AddSmallButtonTo(
                             g2, 0, 5,
-                            margin: new Thickness(2, 2, 2, 2),
-                            padding: new Thickness(5, 0, 5, 0),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
+                            padding: new AasCntlThickness(5, 0, 5, 0),
                             content: "Jump"),
                         (o) =>
                         {
@@ -1455,8 +1455,8 @@ namespace AasxPackageExplorer
                 repo.RegisterControl(
                     AddSmallButtonTo(
                         g2, 0, 6,
-                        margin: new Thickness(2, 2, 2, 2),
-                        padding: new Thickness(5, 0, 5, 0),
+                        margin: new AasCntlThickness(2, 2, 2, 2),
+                        padding: new AasCntlThickness(5, 0, 5, 0),
                         content: "Clipboard"),
                     (o) =>
                     {
@@ -1472,8 +1472,8 @@ namespace AasxPackageExplorer
                     repo.RegisterControl(
                         AddSmallButtonTo(
                             g2, 0, 7 + i,
-                            margin: new Thickness(2, 2, 2, 2),
-                            padding: new Thickness(5, 0, 5, 0),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
+                            padding: new AasCntlThickness(5, 0, 5, 0),
                             content: "" + addPresetNames[i]),
                         (o) =>
                         {
@@ -1491,25 +1491,25 @@ namespace AasxPackageExplorer
                         // lang
                         AddSmallLabelTo(
                             g, 0 + i + rowOfs, 1,
-                            padding: new Thickness(2, 0, 0, 0),
+                            padding: new AasCntlThickness(2, 0, 0, 0),
                             content: "(" + keys[i].type + ")");
 
                         // local
                         AddSmallLabelTo(
                             g, 0 + i + rowOfs, 2,
-                            padding: new Thickness(2, 0, 0, 0),
+                            padding: new AasCntlThickness(2, 0, 0, 0),
                             content: "" + ((keys[i].local) ? "(local)" : "(no-local)"));
 
                         // id type
                         AddSmallLabelTo(
                             g, 0 + i + rowOfs, 3,
-                            padding: new Thickness(2, 0, 0, 0),
+                            padding: new AasCntlThickness(2, 0, 0, 0),
                             content: "[" + keys[i].idType + "]");
 
                         // value
                         AddSmallLabelTo(
                             g, 0 + i + rowOfs, 4,
-                            padding: new Thickness(2, 0, 0, 0),
+                            padding: new AasCntlThickness(2, 0, 0, 0),
                             content: "" + keys[i].value);
 
                         // jump
@@ -1539,7 +1539,7 @@ namespace AasxPackageExplorer
                         var cbType = repo.RegisterControl(
                             AddSmallComboBoxTo(
                                 g, 0 + i + rowOfs, 1,
-                                margin: new Thickness(2, 2, 2, 2),
+                                margin: new AasCntlThickness(2, 2, 2, 2),
                                 text: "" + keys[currentI].type,
                                 minWidth: 100,
                                 items: AdminShell.Key.KeyElements,
@@ -1563,7 +1563,7 @@ namespace AasxPackageExplorer
                         repo.RegisterControl(
                             AddSmallCheckBoxTo(
                                 g, 0 + i + rowOfs, 2,
-                                margin: new Thickness(2, 2, 2, 2),
+                                margin: new AasCntlThickness(2, 2, 2, 2),
                                 content: "local",
                                 isChecked: keys[currentI].local,
                                 verticalContentAlignment: VerticalAlignment.Center),
@@ -1577,7 +1577,7 @@ namespace AasxPackageExplorer
                         // id type
                         var cbIdType = AddSmallComboBoxTo(
                             g, 0 + i + rowOfs, 3,
-                            margin: new Thickness(2, 2, 2, 2),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
                             text: "" + keys[currentI].idType,
                             minWidth: 100,
                             items: AdminShell.Key.IdentifierTypeNames,
@@ -1600,7 +1600,7 @@ namespace AasxPackageExplorer
                         // value
                         var tbValue = AddSmallTextBoxTo(
                             g, 0 + i + rowOfs, 4,
-                            margin: new Thickness(2, 2, 2, 2),
+                            margin: new AasCntlThickness(2, 2, 2, 2),
                             text: "" + keys[currentI].value,
                             verticalContentAlignment: VerticalAlignment.Center);
                         repo.RegisterControl(
@@ -1626,8 +1626,8 @@ namespace AasxPackageExplorer
                                     "\u25b2", "Move Up",
                                     "\u25bc", "Move Down",
                                 },
-                                margin: new Thickness(2, 2, 2, 2),
-                                padding: new Thickness(5, 0, 5, 0),
+                                margin: new AasCntlThickness(2, 2, 2, 2),
+                                padding: new AasCntlThickness(5, 0, 5, 0),
                                 menuItemLambda: (o) =>
                                 {
                                     var action = false;
@@ -2026,7 +2026,7 @@ namespace AasxPackageExplorer
 
             // show!
             var bubble = new AasCntlHintBubble();
-            bubble.Margin = new Thickness(2, 4, 2, 0);
+            bubble.Margin = new AasCntlThickness(2, 4, 2, 0);
             bubble.Text = string.Join("\r\n", textsToShow);
             if (highestSev == HintCheck.Severity.High)
             {
