@@ -3361,7 +3361,11 @@ namespace AasxPackageExplorer
                 return renderHints;
             }
 
+#if MONOUI
             var stack = ClearDisplayDefautlStack();
+#else
+            var stack = new AasCntlStackPanel();
+#endif
 
             // ReSharper disable CoVariantArrayConversion
             AasCntlBrush[][] levelColors = new AasCntlBrush[][]
@@ -3516,7 +3520,11 @@ namespace AasxPackageExplorer
                 if (result == null)
                 {
                     // re-init display!
+#if MONOUI
                     stack = ClearDisplayDefautlStack();
+#else
+                    stack = new AasCntlStackPanel();
+#endif
 
                     // helping message
                     helper.AddGroup(
@@ -3534,10 +3542,20 @@ namespace AasxPackageExplorer
             else
                 helper.AddGroup(stack, "Entity is unknown!", levelColors[0][0], levelColors[0][1]);
 
+            // now render master stack
+
+#if MONOUI
+#else
+            theMasterPanel.Children.Clear();
+            var spwpf = stack.GetWpfElement();
+            DockPanel.SetDock(spwpf, Dock.Top);
+            theMasterPanel.Children.Add(spwpf);
+#endif
+
             // return render hints
             return renderHints;
         }
 
-        #endregion
+#endregion
     }
 }
