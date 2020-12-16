@@ -87,7 +87,7 @@ namespace AasxPackageExplorer
         // Referable
         //
 
-        public void DisplayOrEditEntityReferable(StackPanel stack,
+        public void DisplayOrEditEntityReferable(AasCntlStackPanel stack,
             AdminShell.Referable referable,
             DispEditInjectAction injectToIdShort = null,
             HintCheck[] addHintsCategory = null,
@@ -175,7 +175,7 @@ namespace AasxPackageExplorer
         // Identifiable
         //
 
-        public void DisplayOrEditEntityIdentifiable(StackPanel stack,
+        public void DisplayOrEditEntityIdentifiable(AasCntlStackPanel stack,
             AdminShell.Identifiable identifiable,
             string templateForIdString,
             DispEditInjectAction injectToId = null,
@@ -293,7 +293,7 @@ namespace AasxPackageExplorer
         // Data Specification
         //
 
-        public void DisplayOrEditEntityHasDataSpecificationReferences(StackPanel stack,
+        public void DisplayOrEditEntityHasDataSpecificationReferences(AasCntlStackPanel stack,
             AdminShell.HasDataSpecification hasDataSpecification,
             Action<AdminShell.HasDataSpecification> setOutput,
             string[] addPresetNames = null, AdminShell.KeyList[] addPresetKeyLists = null,
@@ -362,7 +362,7 @@ namespace AasxPackageExplorer
         // List of References
         //
 
-        public void DisplayOrEditEntityListOfReferences(StackPanel stack,
+        public void DisplayOrEditEntityListOfReferences(AasCntlStackPanel stack,
             List<AdminShell.Reference> references,
             Action<List<AdminShell.Reference>> setOutput,
             string entityName,
@@ -417,7 +417,7 @@ namespace AasxPackageExplorer
         // Kind
         //
 
-        public void DisplayOrEditEntityAssetKind(StackPanel stack,
+        public void DisplayOrEditEntityAssetKind(AasCntlStackPanel stack,
             AdminShell.AssetKind kind,
             Action<AdminShell.AssetKind> setOutput)
         {
@@ -453,7 +453,7 @@ namespace AasxPackageExplorer
                     new[] { "Template", "Instance" });
         }
 
-        public void DisplayOrEditEntityModelingKind(StackPanel stack,
+        public void DisplayOrEditEntityModelingKind(AasCntlStackPanel stack,
             AdminShell.ModelingKind kind,
             Action<AdminShell.ModelingKind> setOutput,
             string instanceExceptionStatement = null)
@@ -494,7 +494,7 @@ namespace AasxPackageExplorer
         // HasSemantic
         //
 
-        public void DisplayOrEditEntitySemanticId(StackPanel stack,
+        public void DisplayOrEditEntitySemanticId(AasCntlStackPanel stack,
             AdminShell.SemanticId semanticId,
             Action<AdminShell.SemanticId> setOutput,
             string statement = null,
@@ -553,7 +553,7 @@ namespace AasxPackageExplorer
         // Qualifiable
         //
 
-        public void DisplayOrEditEntityQualifierCollection(StackPanel stack,
+        public void DisplayOrEditEntityQualifierCollection(AasCntlStackPanel stack,
             AdminShell.QualifierCollection qualifiers,
             Action<AdminShell.QualifierCollection> setOutput)
         {
@@ -581,7 +581,7 @@ namespace AasxPackageExplorer
         // DataSpecificationIEC61360
         //
 
-        public void DisplayOrEditEntityDataSpecificationIEC61360(StackPanel stack,
+        public void DisplayOrEditEntityDataSpecificationIEC61360(AasCntlStackPanel stack,
             AdminShell.DataSpecificationIEC61360 dsiec)
         {
             // access
@@ -759,7 +759,7 @@ namespace AasxPackageExplorer
         // special Submodel References
         // 
 
-        public void DisplayOrEditEntitySubmodelRef(StackPanel stack,
+        public void DisplayOrEditEntitySubmodelRef(AasCntlStackPanel stack,
             AdminShell.SubmodelRef smref,
             Action<AdminShell.SubmodelRef> setOutput,
             string entityName)

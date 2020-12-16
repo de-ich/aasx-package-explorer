@@ -130,7 +130,7 @@ namespace AasxPackageExplorer
 
         public void DisplayOrEditAasEntityAsset(
             PackageCentral packages, AdminShell.AdministrationShellEnv env, AdminShell.Asset asset,
-            bool editMode, ModifyRepo repo, StackPanel stack, Brush[][] levelColors, bool embedded = false,
+            bool editMode, ModifyRepo repo, AasCntlStackPanel stack, Brush[][] levelColors, bool embedded = false,
             bool hintMode = false)
         {
             helper.AddGroup(stack, "Asset", levelColors[0][0], levelColors[0][1]);
@@ -271,7 +271,7 @@ namespace AasxPackageExplorer
 
         public void DisplayOrEditAasEntityAasEnv(
             PackageCentral packages, AdminShell.AdministrationShellEnv env,
-            VisualElementEnvironmentItem.ItemType envItemType, bool editMode, ModifyRepo repo, StackPanel stack,
+            VisualElementEnvironmentItem.ItemType envItemType, bool editMode, ModifyRepo repo, AasCntlStackPanel stack,
             Brush[][] levelColors, bool hintMode = false)
         {
             helper.AddGroup(stack, "Environment of Asset Administration Shells", levelColors[0][0], levelColors[0][1]);
@@ -763,7 +763,7 @@ namespace AasxPackageExplorer
 
         public void DisplayOrEditAasEntitySupplementaryFile(
             PackageCentral packages, AdminShellPackageSupplementaryFile psf, bool editMode, ModifyRepo repo,
-            StackPanel stack, Brush[][] levelColors)
+            AasCntlStackPanel stack, Brush[][] levelColors)
         {
             //
             // Package
@@ -809,7 +809,7 @@ namespace AasxPackageExplorer
 
         public void DisplayOrEditAasEntityAas(
             PackageCentral packages, AdminShell.AdministrationShellEnv env, AdminShell.AdministrationShell aas,
-            bool editMode, ModifyRepo repo, StackPanel stack, Brush[][] levelColors, bool hintMode = false)
+            bool editMode, ModifyRepo repo, AasCntlStackPanel stack, Brush[][] levelColors, bool hintMode = false)
         {
             helper.AddGroup(stack, "Asset Administration Shell", levelColors[0][0], levelColors[0][1]);
 
@@ -1097,7 +1097,7 @@ namespace AasxPackageExplorer
         public void DisplayOrEditAasEntitySubmodelOrRef(
             PackageCentral packages, AdminShell.AdministrationShellEnv env, AdminShell.AdministrationShell aas,
             AdminShell.SubmodelRef smref, AdminShell.Submodel submodel, bool editMode, ModifyRepo repo,
-            StackPanel stack, Brush[][] levelColors, bool hintMode = false)
+            AasCntlStackPanel stack, Brush[][] levelColors, bool hintMode = false)
         {
             // This panel renders first the SubmodelReference and then the Submodel, below
             if (smref != null)
@@ -1417,7 +1417,7 @@ namespace AasxPackageExplorer
         public void DisplayOrEditAasEntityConceptDescription(
             PackageCentral packages, AdminShell.AdministrationShellEnv env,
             AdminShell.Referable parentContainer, AdminShell.ConceptDescription cd, bool editMode,
-            ModifyRepo repo, StackPanel stack, Brush[][] levelColors, bool embedded = false, bool hintMode = false)
+            ModifyRepo repo, AasCntlStackPanel stack, Brush[][] levelColors, bool embedded = false, bool hintMode = false)
         {
             helper.AddGroup(stack, "ConceptDescription", levelColors[0][0], levelColors[0][1]);
 
@@ -1582,7 +1582,7 @@ namespace AasxPackageExplorer
         public void DisplayOrEditAasEntityOperationVariable(
             PackageCentral packages, AdminShell.AdministrationShellEnv env,
             AdminShell.Referable parentContainer, AdminShell.OperationVariable ov, bool editMode,
-            ModifyRepo repo, StackPanel stack, Brush[][] levelColors, bool hintMode = false)
+            ModifyRepo repo, AasCntlStackPanel stack, Brush[][] levelColors, bool hintMode = false)
         {
             //
             // Submodel Element GENERAL
@@ -1751,7 +1751,7 @@ namespace AasxPackageExplorer
         public void DisplayOrEditAasEntitySubmodelElement(
             PackageCentral packages, AdminShell.AdministrationShellEnv env,
             AdminShell.Referable parentContainer, AdminShell.SubmodelElementWrapper wrapper,
-            AdminShell.SubmodelElement sme, bool editMode, ModifyRepo repo, StackPanel stack,
+            AdminShell.SubmodelElement sme, bool editMode, ModifyRepo repo, AasCntlStackPanel stack,
             Brush[][] levelColors, bool hintMode = false)
         {
             //
@@ -1778,7 +1778,7 @@ namespace AasxPackageExplorer
                 helper.AddGroup(stack, "Editing of entities", levelColors[0][0], levelColors[0][1]);
 
                 // for sake of space efficiency, smuggle "Refactor" into this
-                var horizStack = new WrapPanel();
+                var horizStack = new AasCntlWrapPanel();
                 horizStack.Orientation = Orientation.Horizontal;
                 stack.Children.Add(horizStack);
 
@@ -3222,7 +3222,7 @@ namespace AasxPackageExplorer
 
         public void DisplayOrEditAasEntityView(
             PackageCentral packages, AdminShell.AdministrationShellEnv env, AdminShell.AdministrationShell shell,
-            AdminShell.View view, bool editMode, ModifyRepo repo, StackPanel stack, Brush[][] levelColors,
+            AdminShell.View view, bool editMode, ModifyRepo repo, AasCntlStackPanel stack, Brush[][] levelColors,
             bool hintMode = false)
         {
             //
@@ -3293,7 +3293,7 @@ namespace AasxPackageExplorer
 
         public void DisplayOrEditAasEntityViewReference(
             PackageCentral packages, AdminShell.AdministrationShellEnv env, AdminShell.View view,
-            AdminShell.ContainedElementRef reference, bool editMode, ModifyRepo repo, StackPanel stack,
+            AdminShell.ContainedElementRef reference, bool editMode, ModifyRepo repo, AasCntlStackPanel stack,
             Brush[][] levelColors)
         {
             //
@@ -3319,12 +3319,13 @@ namespace AasxPackageExplorer
         //
         //
 
-        public StackPanel ClearDisplayDefautlStack()
+        public AasCntlStackPanel ClearDisplayDefautlStack()
         {
             theMasterPanel.Children.Clear();
-            var sp = new StackPanel();
-            DockPanel.SetDock(sp, Dock.Top);
-            theMasterPanel.Children.Add(sp);
+            var sp = new AasCntlStackPanel();
+            var spwpf = sp.GetWpfElement();
+            DockPanel.SetDock(spwpf, Dock.Top);
+            theMasterPanel.Children.Add(spwpf);
             return sp;
         }
 
