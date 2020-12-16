@@ -96,7 +96,7 @@ namespace AasxPackageExplorer
         public IFlyoutProvider flyoutProvider = null;
         public IPushApplicationEvent appEventsProvider = null; 
 
-        public Brush[][] levelColors = null;
+        public AasCntlBrush[][] levelColors = null;
 
         public int standardFirstColWidth = 100;
 
@@ -263,7 +263,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlWrapPanel AddSmallWrapPanelTo(
-            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, Brush background = null)
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlBrush background = null)
         {
             var wp = new AasCntlWrapPanel();
             wp.Margin = margin;
@@ -276,7 +276,7 @@ namespace AasxPackageExplorer
         }
 
         public AasCntlStackPanel AddSmallStackPanelTo(
-            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, Brush background = null,
+            AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlBrush background = null,
             bool setVertical = false, bool setHorizontal = false)
         {
             var sp = new AasCntlStackPanel();
@@ -334,7 +334,7 @@ namespace AasxPackageExplorer
 
         public AasCntlBorder AddSmallDropBoxTo(
             AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
-            string text = "", Brush borderBrush = null, Brush background = null,
+            string text = "", AasCntlBrush borderBrush = null, AasCntlBrush background = null,
             AasCntlThickness borderThickness = null, int minHeight = 0)
         {
             var brd = new AasCntlBorder();
@@ -342,11 +342,11 @@ namespace AasxPackageExplorer
             brd.Padding = padding;
             brd.Tag = "DropBox";
 
-            brd.BorderBrush = Brushes.DarkBlue;
+            brd.BorderBrush = AasCntlBrushes.DarkBlue;
             if (borderBrush != null)
                 brd.BorderBrush = borderBrush;
 
-            brd.Background = Brushes.LightBlue;
+            brd.Background = AasCntlBrushes.LightBlue;
             if (background != null)
                 brd.Background = background;
 
@@ -500,7 +500,7 @@ namespace AasxPackageExplorer
             return (cb);
         }
 
-        public void AddGroup(AasCntlStackPanel view, string name, Brush background, Brush foreground,
+        public void AddGroup(AasCntlStackPanel view, string name, AasCntlBrush background, AasCntlBrush foreground,
             ModifyRepo repo = null,
             string auxButtonTitle = null, Func<object, ModifyRepo.LambdaAction> auxButtonLambda = null)
         {
