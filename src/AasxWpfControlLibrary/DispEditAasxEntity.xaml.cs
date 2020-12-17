@@ -3323,7 +3323,7 @@ namespace AasxPackageExplorer
         {
             theMasterPanel.Children.Clear();
             var sp = new AasCntlStackPanel();
-            var spwpf = sp.GetWpfElement();
+            var spwpf = sp.GetOrCreateWpfElement();
             DockPanel.SetDock(spwpf, Dock.Top);
             theMasterPanel.Children.Add(spwpf);
             return sp;
@@ -3409,6 +3409,9 @@ namespace AasxPackageExplorer
             helper.hintMode = hintMode;
             helper.showIriMode = showIriMode;
             helper.repo = repo;
+
+            // create display context for WPF
+            var displayContext = new AasCntlDisplayContextWpf(helper.repo);
 
             //
             // Dispatch
@@ -3547,7 +3550,7 @@ namespace AasxPackageExplorer
 #if MONOUI
 #else
             theMasterPanel.Children.Clear();
-            var spwpf = stack.GetWpfElement();
+            var spwpf = stack.GetOrCreateWpfElement();
             DockPanel.SetDock(spwpf, Dock.Top);
             theMasterPanel.Children.Add(spwpf);
 #endif
