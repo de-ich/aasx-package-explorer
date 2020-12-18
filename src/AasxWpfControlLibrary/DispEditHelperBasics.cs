@@ -308,7 +308,7 @@ namespace AasxPackageExplorer
         public AasCntlTextBox AddSmallTextBoxTo(
             AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string text = "", Brush foreground = null, Brush background = null,
-            Nullable<VerticalAlignment> verticalContentAlignment = null)
+            AasCntlVerticalAlignment? verticalContentAlignment = null)
         {
             var tb = new AasCntlTextBox();
             tb.Margin = margin;
@@ -374,7 +374,7 @@ namespace AasxPackageExplorer
             AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string text = "", Brush foreground = null, Brush background = null,
             int minWidth = -1, int maxWidth = -1, string[] items = null, bool isEditable = false,
-            Nullable<VerticalAlignment> verticalContentAlignment = null)
+            AasCntlVerticalAlignment? verticalContentAlignment = null)
         {
             var cb = new AasCntlComboBox();
             cb.Margin = margin;
@@ -394,7 +394,7 @@ namespace AasxPackageExplorer
             cb.IsEditable = isEditable;
             if (verticalContentAlignment != null)
                 cb.VerticalContentAlignment = verticalContentAlignment.Value;
-            cb.HorizontalAlignment = HorizontalAlignment.Left;
+            cb.HorizontalAlignment = AasCntlHorizontalAlignment.Left;
             AasCntlGrid.SetRow(cb, row);
             AasCntlGrid.SetColumn(cb, col);
             g.Children.Add(cb);
@@ -482,7 +482,7 @@ namespace AasxPackageExplorer
         public AasCntlCheckBox AddSmallCheckBoxTo(
             AasCntlGrid g, int row, int col, AasCntlThickness margin = null, AasCntlThickness padding = null,
             string content = "", bool isChecked = false, Brush foreground = null, Brush background = null,
-            Nullable<VerticalAlignment> verticalContentAlignment = null)
+            AasCntlVerticalAlignment? verticalContentAlignment = null)
         {
             var cb = new AasCntlCheckBox();
             cb.Margin = margin;
@@ -920,7 +920,7 @@ namespace AasxPackageExplorer
             else
             {
                 repo.RegisterControl(this.AddSmallCheckBoxTo(g, 0, 1, margin: new AasCntlThickness(2, 2, 2, 2),
-                    content: additionalInfo, verticalContentAlignment: VerticalAlignment.Center,
+                    content: additionalInfo, verticalContentAlignment: AasCntlVerticalAlignment.Center,
                     isChecked: initialValue),
                         (o) =>
                         {
@@ -967,7 +967,7 @@ namespace AasxPackageExplorer
 
             // key label
             var x = AddSmallLabelTo(g, 0, 0, margin: new AasCntlThickness(5, 0, 0, 0), content: "" + key);
-            x.VerticalAlignment = VerticalAlignment.Center;
+            x.VerticalAlignment = AasCntlVerticalAlignment.Center;
 
             // 1 + action button
             var wp = AddSmallWrapPanelTo(g, 0, 1, margin: new AasCntlThickness(5, 0, 5, 0));
@@ -1545,7 +1545,7 @@ namespace AasxPackageExplorer
                                 minWidth: 100,
                                 items: AdminShell.Key.KeyElements,
                                 isEditable: false,
-                                verticalContentAlignment: VerticalAlignment.Center),
+                                verticalContentAlignment: AasCntlVerticalAlignment.Center),
                             (o) =>
                             {
                                 keys[currentI].type = o as string;
@@ -1567,7 +1567,7 @@ namespace AasxPackageExplorer
                                 margin: new AasCntlThickness(2, 2, 2, 2),
                                 content: "local",
                                 isChecked: keys[currentI].local,
-                                verticalContentAlignment: VerticalAlignment.Center),
+                                verticalContentAlignment: AasCntlVerticalAlignment.Center),
                             (o) =>
                             {
                                 keys[currentI].local = (bool)o;
@@ -1583,7 +1583,7 @@ namespace AasxPackageExplorer
                             minWidth: 100,
                             items: AdminShell.Key.IdentifierTypeNames,
                             isEditable: false,
-                            verticalContentAlignment: VerticalAlignment.Center);
+                            verticalContentAlignment: AasCntlVerticalAlignment.Center);
                         repo.RegisterControl(
                             cbIdType,
                             (o) =>
@@ -1603,7 +1603,7 @@ namespace AasxPackageExplorer
                             g, 0 + i + rowOfs, 4,
                             margin: new AasCntlThickness(2, 2, 2, 2),
                             text: "" + keys[currentI].value,
-                            verticalContentAlignment: VerticalAlignment.Center);
+                            verticalContentAlignment: AasCntlVerticalAlignment.Center);
                         repo.RegisterControl(
                             tbValue,
                             (o) =>
