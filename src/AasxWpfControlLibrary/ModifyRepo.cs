@@ -142,6 +142,10 @@ namespace AasxPackageExplorer
             var it = aasCntlToItem[aasCntl];
             it.fwElem = fe;
 
+            // add to framework elems index
+            if (!fwElemToItem.ContainsKey(fe))
+                fwElemToItem.Add(fe, it);
+
             // now, activate
             ActivateFwElem(it);
         }
