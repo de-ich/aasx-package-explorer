@@ -99,7 +99,7 @@ namespace AasxPackageExplorer
             it.aasCntl = cntl;
             it.setValueLambda = setValue;
             it.takeOverLambda = takeOverLambda;
-            
+
             items.Add(it);
             aasCntlToItem.Add(cntl, it);
 
@@ -145,6 +145,9 @@ namespace AasxPackageExplorer
             // add to framework elems index
             if (!fwElemToItem.ContainsKey(fe))
                 fwElemToItem.Add(fe, it);
+
+            if (aasCntl is AasCntlComboBox cb && it.takeOverLambda != null)
+                ;
 
             // now, activate
             ActivateFwElem(it);
@@ -255,7 +258,7 @@ namespace AasxPackageExplorer
                     // contents changed
                     WishForOutsideAction.Add(new LambdaActionContentsTakeOver());
 
-                    if (it.takeOverLambda != null)
+                    if (it.takeOverLambda != null && false)
                         WishForOutsideAction.Add(it.takeOverLambda);
                 }
             }
