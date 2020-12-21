@@ -30,6 +30,7 @@ using AasxSignature;
 using AasxUANodesetImExport;
 using AasxWpfControlLibrary.PackageCentral;
 using AdminShellNS;
+using AnyUi;
 using Jose;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -1545,7 +1546,7 @@ namespace AasxPackageExplorer
                 return;
             }
 
-            var input = new TextBoxFlyout("REST server adress:", MessageBoxImage.Question);
+            var input = new TextBoxFlyout("REST server adress:", AnyUiMessageBoxImage.Question);
             input.Text = PUTURL;
             this.StartFlyoverModal(input);
             if (!input.Result)
@@ -1594,7 +1595,7 @@ namespace AasxPackageExplorer
                 return;
             }
 
-            var input = new TextBoxFlyout("REST server adress:", MessageBoxImage.Question);
+            var input = new TextBoxFlyout("REST server adress:", AnyUiMessageBoxImage.Question);
             input.Text = GETURL;
             this.StartFlyoverModal(input);
             if (!input.Result)
