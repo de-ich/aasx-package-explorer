@@ -226,12 +226,12 @@ namespace AasxPackageExplorer
                             }
 
                             if (!res)
-                                helper.flyoutProvider.MessageBoxFlyoutShow(
+                                helper.context.MessageBoxFlyoutShow(
                                     "The renaming of the Submodel or some referring elements " +
                                     "has not performed successfully! Please review your inputs and " +
                                     "the AAS structure for any inconsistencies.",
                                     "Warning",
-                                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    AnyUiMessageBoxButton.OK,AnyUiMessageBoxImage.Warning);
                             return new ModifyRepo.LambdaActionRedrawAllElements(asset);
                         }
                     }
@@ -591,9 +591,9 @@ namespace AasxPackageExplorer
                             margin: new AnyUiThickness(2, 2, 2, 2), padding: new AnyUiThickness(5, 0, 5, 0)),
                         (o) =>
                         {
-                            if (MessageBoxResult.Yes == helper.flyoutProvider.MessageBoxFlyoutShow(
+                            if (AnyUiMessageBoxResult.Yes == helper.context.MessageBoxFlyoutShow(
                                "Perform sort operation? This operation can not be reverted!", "ConceptDescriptions",
-                               MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                               AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Warning))
                             {
                                 var success = false;
                                 if (cb.SelectedIndex == 0)
@@ -772,9 +772,9 @@ namespace AasxPackageExplorer
                {
                    if (buttonNdx == 0)
                        if (helper.flyoutProvider != null &&
-                           MessageBoxResult.Yes == helper.flyoutProvider.MessageBoxFlyoutShow(
+                           AnyUiMessageBoxResult.Yes == helper.context.MessageBoxFlyoutShow(
                                "Delete selected entity? This operation can not be reverted!", "AASX",
-                               MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                               AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Warning))
                        {
                            try
                            {
@@ -850,13 +850,13 @@ namespace AasxPackageExplorer
                         if (buttonNdx == 0)
                         {
                             if (helper.flyoutProvider != null &&
-                                MessageBoxResult.Yes != helper.flyoutProvider.MessageBoxFlyoutShow(
+                                AnyUiMessageBoxResult.Yes != helper.context.MessageBoxFlyoutShow(
                                     "This operation creates a reference to an existing Submodel. " +
                                         "By this, two AAS will share exactly the same data records. " +
                                         "Changing one will cause the other AAS's information to change as well. " +
                                         "This operation is rather special. Do you want to proceed?",
                                     "Submodel sharing",
-                                    MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                                    AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Warning))
                                 return new ModifyRepo.LambdaActionNone();
 
                             // select existing Submodel
@@ -1125,9 +1125,9 @@ namespace AasxPackageExplorer
                 {
                     if (buttonNdx == 0)
                         if (helper.flyoutProvider != null &&
-                             MessageBoxResult.Yes == helper.flyoutProvider.MessageBoxFlyoutShow(
+                             AnyUiMessageBoxResult.Yes == helper.context.MessageBoxFlyoutShow(
                                  "Delete selected Submodel? This operation can not be reverted!", "AASX",
-                                 MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                                 AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Warning))
                         {
                             if (env.Submodels.Contains(submodel))
                                 env.Submodels.Remove(submodel);
@@ -1293,11 +1293,11 @@ namespace AasxPackageExplorer
                     (buttonNdx) =>
                     {
                         if (helper.flyoutProvider != null &&
-                            MessageBoxResult.Yes != helper.flyoutProvider.MessageBoxFlyoutShow(
+                            AnyUiMessageBoxResult.Yes != helper.context.MessageBoxFlyoutShow(
                                 "This operation will affect all Kind attributes of " +
                                     "the Submodel and all of its SubmodelElements. Do you want to proceed?",
                                 "Setting Kind",
-                                MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                                AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Warning))
                             return new ModifyRepo.LambdaActionNone();
 
                         submodel.kind = (buttonNdx == 0)
@@ -1359,12 +1359,12 @@ namespace AasxPackageExplorer
                                     }
 
                                     if (!res)
-                                        helper.flyoutProvider.MessageBoxFlyoutShow(
+                                        helper.context.MessageBoxFlyoutShow(
                                             "The renaming of the Submodel or some referring elements " +
                                             "has not performed successfully! Please review your inputs and " +
                                             "the AAS structure for any inconsistencies.",
                                             "Warning",
-                                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                                            AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Warning);
                                     return new ModifyRepo.LambdaActionRedrawAllElements(smref);
                                 }
                             }
@@ -1497,12 +1497,12 @@ namespace AasxPackageExplorer
                             }
 
                             if (!res)
-                                helper.flyoutProvider.MessageBoxFlyoutShow(
+                                helper.context.MessageBoxFlyoutShow(
                                     "The renaming of the ConceptDescription or some referring elements has not " +
                                         "performed successfully! Please review your inputs and the AAS " +
                                         "structure for any inconsistencies.",
                                         "Warning",
-                                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Warning);
                             return new ModifyRepo.LambdaActionRedrawAllElements(cd);
                         }
                     }
@@ -1674,10 +1674,10 @@ namespace AasxPackageExplorer
                        {
                            if (buttonNdx == 0)
                                if (helper.flyoutProvider != null &&
-                                    MessageBoxResult.Yes == helper.flyoutProvider.MessageBoxFlyoutShow(
+                                    AnyUiMessageBoxResult.Yes == helper.context.MessageBoxFlyoutShow(
                                         "Delete value, which is the dataset of a SubmodelElement? " +
                                             "This cannot be reverted!",
-                                        "AASX", MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                                        "AASX", AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Warning))
                                {
                                    ov.value = null;
                                    return new ModifyRepo.LambdaActionRedrawEntity();
@@ -1921,11 +1921,11 @@ namespace AasxPackageExplorer
                             {
                                 // eclass dir?
                                 if (helper.flyoutProvider != null)
-                                    helper.flyoutProvider.MessageBoxFlyoutShow(
+                                    helper.context.MessageBoxFlyoutShow(
                                         "The AASX Package Explore can take over eCl@ss definition. " +
                                         "In order to do so, the commandine parameter -eclass has" +
                                         "to refer to a folder withe eCl@ss XML files.", "Information",
-                                        MessageBoxButton.OK, MessageBoxImage.Information);
+                                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Information);
                                 return new ModifyRepo.LambdaActionNone();
                             }
 
@@ -1933,7 +1933,8 @@ namespace AasxPackageExplorer
                             string resIRDI = null;
                             AdminShell.ConceptDescription resCD = null;
                             if (helper.SmartSelectEclassEntity(
-                                SelectEclassEntityFlyout.SelectMode.ConceptDescription, ref resIRDI, ref resCD))
+                                AnyUiDialogueDataSelectEclassEntity.SelectMode.ConceptDescription, 
+                                ref resIRDI, ref resCD))
                             {
                                 // create the concept description itself, if available,
                                 // if not exactly the same is present
@@ -2456,10 +2457,10 @@ namespace AasxPackageExplorer
                     {
                         if (buttonNdx == 0)
                         {
-                            var uc = new TextEditorFlyout($"Edit Property '{"" + p.idShort}'");
-                            uc.SetMimeTypeAndText("", p.value);
-                            helper.flyoutProvider?.StartFlyoverModal(uc);
-                            if (uc.Result)
+                            var uc = new AnyUiDialogueDataTextEditor(
+                                caption: $"Edit Property '{"" + p.idShort}'",
+                                text: p.value);                            
+                            if (helper.context.StartModalDialogue(uc))
                             {
                                 p.value = uc.Text;
                                 return new ModifyRepo.LambdaActionRedrawEntity();
@@ -2667,9 +2668,9 @@ namespace AasxPackageExplorer
                             if (buttonNdx == 0 && fl.value.HasContent())
                             {
                                 if (helper.flyoutProvider != null &&
-                                    MessageBoxResult.Yes == helper.flyoutProvider.MessageBoxFlyoutShow(
+                                    AnyUiMessageBoxResult.Yes == helper.context.MessageBoxFlyoutShow(
                                     "Delete selected entity? This operation can not be reverted!", "AASX",
-                                    MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                                    AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Warning))
                                 {
                                     try
                                     {
@@ -2731,7 +2732,7 @@ namespace AasxPackageExplorer
                                     helper.flyoutProvider?.MessageBoxFlyoutShow(
                                         $"The supplementary file {ptd + ptfn} is already existing in the " +
                                         "package. Please re-try with a different file name.", "Create text file",
-                                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Warning);
                                     return new ModifyRepo.LambdaActionNone();
                                 }
 
@@ -2807,10 +2808,11 @@ namespace AasxPackageExplorer
                                     }
 
                                     // edit
-                                    var uc = new TextEditorFlyout($"Edit text-file '{fl.value}'");
-                                    uc.SetMimeTypeAndText(fl.mimeType, contents);
-                                    helper.flyoutProvider?.StartFlyoverModal(uc);
-                                    if (!uc.Result)
+                                    var uc = new AnyUiDialogueDataTextEditor(
+                                                caption: $"Edit text-file '{fl.value}'",
+                                                mimeType: fl.mimeType,
+                                                text: contents);
+                                    if (!helper.context.StartModalDialogue(uc))
                                         return new ModifyRepo.LambdaActionNone();
 
                                     // save
@@ -2948,10 +2950,11 @@ namespace AasxPackageExplorer
                     {
                         if (buttonNdx == 0)
                         {
-                            var uc = new TextEditorFlyout($"Edit Blob '{"" + blb.idShort}'");
-                            uc.SetMimeTypeAndText(blb.mimeType, blb.value);
-                            helper.flyoutProvider?.StartFlyoverModal(uc);
-                            if (uc.Result)
+                            var uc = new AnyUiDialogueDataTextEditor(
+                                                caption: $"Edit Blob '{"" + blb.idShort}'",
+                                                mimeType: blb.mimeType,
+                                                text: blb.value);
+                            if (helper.context.StartModalDialogue(uc))
                             {
                                 blb.value = uc.Text;
                                 return new ModifyRepo.LambdaActionRedrawEntity();

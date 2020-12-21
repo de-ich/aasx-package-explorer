@@ -95,9 +95,9 @@ namespace AasxPackageExplorer
 
             if (cmd == "new")
             {
-                if (MessageBoxResult.Yes == MessageBoxFlyoutShow(
+                if (AnyUiMessageBoxResult.Yes == MessageBoxFlyoutShow(
                     "Create new Adminshell environment? This operation can not be reverted!", "AASX",
-                    MessageBoxButton.YesNo, MessageBoxImage.Warning))
+                    AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Warning))
                 {
                     try
                     {
@@ -155,7 +155,7 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "No open AASX file to be saved.",
-                        "Save", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        "Save", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Hand);
                     return;
                 }
 
@@ -294,9 +294,9 @@ namespace AasxPackageExplorer
 
             if (cmd == "close" && _packageCentral?.Main != null)
             {
-                if (MessageBoxResult.Yes == MessageBoxFlyoutShow(
+                if (AnyUiMessageBoxResult.Yes == MessageBoxFlyoutShow(
                     "Do you want to close the open package? Please make sure that you have saved before.",
-                    "Close Package?", MessageBoxButton.YesNo, MessageBoxImage.Question))
+                    "Close Package?", AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Question))
                     try
                     {
                         _packageCentral.MainItem.Close();
@@ -446,7 +446,7 @@ namespace AasxPackageExplorer
                 MessageBoxFlyoutShow(
                     "In future versions, this feature will allow connecting to an online Administration Shell " +
                     "via OPC UA or similar.",
-                    "Connect", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    "Connect", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Hand);
 
             if (cmd == "about")
             {
@@ -628,7 +628,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No package/ environment open. Aborting.", msgBoxHeadline,
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -662,7 +662,7 @@ namespace AasxPackageExplorer
                 AasxPackageExplorer.Log.Singleton.Error(ex, "Checking model contents");
                 MessageBoxFlyoutShow(
                     "Error while checking model contents. Aborting.", msgBoxHeadline,
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -671,7 +671,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                    "No issues found. Done.", msgBoxHeadline,
-                   MessageBoxButton.OK, MessageBoxImage.Information);
+                   AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Information);
                 return;
             }
 
@@ -701,7 +701,7 @@ namespace AasxPackageExplorer
                     AasxPackageExplorer.Log.Singleton.Error(ex, "Fixing model contents");
                     MessageBoxFlyoutShow(
                         "Error while fixing issues. Aborting.", msgBoxHeadline,
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -709,7 +709,7 @@ namespace AasxPackageExplorer
                 MessageBoxFlyoutShow(
                    $"Corresponding {done} issues were fixed. Please check the changes and consider saving " +
                    "with a new filename.", msgBoxHeadline,
-                   MessageBoxButton.OK, MessageBoxImage.Information);
+                   AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Information);
 
                 // redraw
                 CommandExecution_RedrawAll();
@@ -724,7 +724,7 @@ namespace AasxPackageExplorer
                         "Create new (empty) file repository? It will be added to list of repos on the lower/ " +
                         "left of the screen.",
                         "AASX File Repository",
-                        MessageBoxButton.OKCancel, MessageBoxImage.Hand))
+                        AnyUiMessageBoxButton.OKCancel, AnyUiMessageBoxImage.Hand))
                     return;
 
                 this.UiAssertFileRepository(visible: true);
@@ -751,11 +751,14 @@ namespace AasxPackageExplorer
 
             if (cmd == "filerepoconnectrepository")
             {
-                // read server address
-                var uc = new TextBoxFlyout("REST endpoint (without \"/server/listaas\"):", MessageBoxImage.Question);
-                uc.Text = "" + Options.Curr.DefaultConnectRepositoryLocation;
-                this.StartFlyoverModal(uc);
-                if (!uc.Result)
+                // any repository
+                if (packages.FileRepository == null)
+                {
+                    MessageBoxFlyoutShow(
+                        "No repository currently opened!",
+                        "AASX File Repository",
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Hand);
+
                     return;
 
                 var fr = new PackageContainerListHttpRestRepository(uc.Text);
@@ -772,7 +775,7 @@ namespace AasxPackageExplorer
                     MessageBoxFlyoutShow(
                         "No repository currently available! Please open.",
                         "AASX File Repository",
-                        MessageBoxButton.OK, MessageBoxImage.Hand);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Hand);
 
                     return;
                 }
@@ -974,7 +977,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No asset selected for printing code sheet.", "Print code sheet",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -1207,7 +1210,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No valid SubModel selected for BMEcat information.", "BMEcat import",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -1246,7 +1249,7 @@ namespace AasxPackageExplorer
             if (ve == null || ve.theSubmodel == null || ve.theEnv == null)
             {
                 MessageBoxFlyoutShow(
-                    "No valid SubModel selected.", "CSV import", MessageBoxButton.OK, MessageBoxImage.Error);
+                    "No valid SubModel selected.", "CSV import", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -1285,7 +1288,7 @@ namespace AasxPackageExplorer
             if (ve == null || ve.theSubmodel == null || ve.theEnv == null)
             {
                 MessageBoxFlyoutShow(
-                    "No valid SubModel selected.", "Import", MessageBoxButton.OK, MessageBoxImage.Error);
+                    "No valid SubModel selected.", "Import", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -1327,8 +1330,8 @@ namespace AasxPackageExplorer
                         $"which needs to be added to the command line, with an action named '{actionName}'. " +
                         "Press 'OK' to show help page on GitHub.",
                         "Plug-in not present",
-                        MessageBoxButton.OKCancel, MessageBoxImage.Hand);
-                if (res == MessageBoxResult.OK)
+                        AnyUiMessageBoxButton.OKCancel, AnyUiMessageBoxImage.Hand);
+                if (res == AnyUiMessageBoxResult.OK)
                 {
                     ShowHelp();
                 }
@@ -1414,7 +1417,7 @@ namespace AasxPackageExplorer
             if (ve1 == null || ve1.theSubmodel == null || ve1.theEnv == null)
             {
                 MessageBoxFlyoutShow(
-                    "No valid SubModel selected.", "Submodel Write", MessageBoxButton.OK, MessageBoxImage.Error);
+                    "No valid SubModel selected.", "Submodel Write", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
             var obj = ve1.theSubmodel;
@@ -1450,7 +1453,7 @@ namespace AasxPackageExplorer
             if (ve1 == null || ve1.theSubmodel == null || ve1.theEnv == null)
             {
                 MessageBoxFlyoutShow(
-                    "No valid SubModel selected.", "Submodel Read", MessageBoxButton.OK, MessageBoxImage.Error);
+                    "No valid SubModel selected.", "Submodel Read", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
             var obj = ve1.theSubmodel;
@@ -1487,7 +1490,7 @@ namespace AasxPackageExplorer
                 catch (Exception)
                 {
                     MessageBoxFlyoutShow(
-                        "Can not read SubModel.", "Submodel Read", MessageBoxButton.OK, MessageBoxImage.Error);
+                        "Can not read SubModel.", "Submodel Read", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -1496,7 +1499,7 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "Identification of SubModel is (null).", "Submodel Read",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -1505,7 +1508,7 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "Error accessing internal data structures.", "Submodel Read",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -1542,7 +1545,7 @@ namespace AasxPackageExplorer
             if (ve1 == null || ve1.theSubmodel == null || ve1.theEnv == null)
             {
                 MessageBoxFlyoutShow(
-                    "No valid SubModel selected.", "PUT Submodel", MessageBoxButton.OK, MessageBoxImage.Information);
+                    "No valid SubModel selected.", "PUT Submodel", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Information);
                 return;
             }
 
@@ -1562,7 +1565,7 @@ namespace AasxPackageExplorer
             if (ve1 == null || ve1.theSubmodel == null || ve1.theEnv == null)
             {
                 MessageBoxFlyoutShow(
-                    "No valid SubModel selected.", "PUT Submodel", MessageBoxButton.OK, MessageBoxImage.Error);
+                    "No valid SubModel selected.", "PUT Submodel", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
             var obj = ve1.theSubmodel;
@@ -1591,7 +1594,7 @@ namespace AasxPackageExplorer
             if (ve1 == null || ve1.theSubmodel == null || ve1.theEnv == null)
             {
                 MessageBoxFlyoutShow(
-                    "No valid SubModel selected.", "GET Submodel", MessageBoxButton.OK, MessageBoxImage.Information);
+                    "No valid SubModel selected.", "GET Submodel", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Information);
                 return;
             }
 
@@ -1635,7 +1638,7 @@ namespace AasxPackageExplorer
                 catch (Exception)
                 {
                     MessageBoxFlyoutShow(
-                        "Can not read SubModel.", "Submodel Read", MessageBoxButton.OK, MessageBoxImage.Error);
+                        "Can not read SubModel.", "Submodel Read", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -1644,7 +1647,7 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "Identification of SubModel is (null).", "Submodel Read",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -1653,7 +1656,7 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "Error accessing internal data structures.", "Submodel Read",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -1689,7 +1692,7 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "No valid SubModel selected for OPC import.", "OPC import",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -1834,7 +1837,7 @@ namespace AasxPackageExplorer
                 else
                 {
                     MessageBoxFlyoutShow("Please select the administration shell for the submodel import.",
-                        "Submodel Import", MessageBoxButton.OK, MessageBoxImage.Error);
+                        "Submodel Import", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
             }
@@ -1879,7 +1882,7 @@ namespace AasxPackageExplorer
             else
             {
                 MessageBoxFlyoutShow("Please select the submodel for the submodel element import.",
-                    "Submodel Element Import", MessageBoxButton.OK, MessageBoxImage.Error);
+                    "Submodel Element Import", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2022,7 +2025,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No valid element selected.", "Copy selected elements",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2050,7 +2053,7 @@ namespace AasxPackageExplorer
             if (!_packageCentral.MainStorable)
             {
                 MessageBoxFlyoutShow(
-                    "An AASX package needs to be open", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    "An AASX package needs to be open", "Error", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Exclamation);
                 return;
             }
 
@@ -2063,7 +2066,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No valid SubModel selected for exporting options file for GenericForms.", "Generic Forms",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2104,7 +2107,7 @@ namespace AasxPackageExplorer
             if (!_packageCentral.MainAvailable)
             {
                 MessageBoxFlyoutShow(
-                    "An AASX package needs to be open", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    "An AASX package needs to be open", "Error", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Exclamation);
                 return;
             }
 
@@ -2117,7 +2120,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No valid SubModel selected for exporting snippets.", "Snippets for PredefinedConcepts",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2159,7 +2162,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "An AASX package needs to be open for storage", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Exclamation);
                 return;
             }
 
@@ -2176,7 +2179,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No valid Referable selected for conversion.", "Convert Referable",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2186,7 +2189,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No valid conversion offers found for this Referable. Aborting.", "Convert Referable",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2227,7 +2230,7 @@ namespace AasxPackageExplorer
             if (!_packageCentral.MainAvailable)
             {
                 MessageBoxFlyoutShow(
-                    "An AASX package needs to be open", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    "An AASX package needs to be open", "Error", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Exclamation);
                 return;
             }
 
@@ -2240,7 +2243,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No valid SubModel selected for exporting table.", "Export Table",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2255,8 +2258,8 @@ namespace AasxPackageExplorer
                         $"which needs to be added to the command line, with an action named '{actionName}'. " +
                         $"Press 'OK' to show help page on GitHub.",
                         "Plug-in not present",
-                        MessageBoxButton.OKCancel, MessageBoxImage.Hand);
-                if (res == MessageBoxResult.OK)
+                        AnyUiMessageBoxButton.OKCancel, AnyUiMessageBoxImage.Hand);
+                if (res == AnyUiMessageBoxResult.OK)
                 {
                     ShowHelp();
                 }
@@ -2274,7 +2277,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "An AASX package needs to be open for storage", "Error"
-                    , MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    , AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Exclamation);
                 return;
             }
 
@@ -2287,7 +2290,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No valid AAS selected for creating a new Submodel.", "New Submodel from plugins",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2321,7 +2324,7 @@ namespace AasxPackageExplorer
             {
                 MessageBoxFlyoutShow(
                     "No plugins generating Submodels found. Aborting.", "New Submodel from plugins",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
 
@@ -2341,7 +2344,7 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "Error accessing plugins. Aborting.", "New Submodel from plugins",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
@@ -2371,7 +2374,7 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "Error accessing plugins. Aborting.", "New Submodel from plugins",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                     return;
                 }
 
