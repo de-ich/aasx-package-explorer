@@ -14,6 +14,8 @@ using System.Web.Helpers;
 using System.Windows;
 using System.Windows.Forms;
 using AasxOpenIdClient;
+using AasxPackageExplorer;
+using AnyUi;
 using IdentityModel;
 using IdentityModel.Client;
 using Jose;
@@ -177,10 +179,45 @@ namespace AasxOpenIdClient
                             switch (operation)
                             {
                                 case "/server/listaas/":
-                                    System.Windows.Forms.MessageBox.Show(
-                                    "SelectFromListFlyoutItem missing", "SelectFromListFlyoutItem missing",
-                                    MessageBoxButtons.OK);
-                                    return;
+                                    var listOfAas = new List<AnyUiDialogueListItem>();
+                                    string[] split = urlContents.Split('\n');
+                                    int i = 0;
+                                    int offset = 0;
+                                    foreach (string s in split)
+                                    {
+                                        if (offset >= 2 && offset < split.Length - 2)
+                                        {
+                                            listOfAas.Add(new AnyUiDialogueListItem(s, new Tuple<int>(i++)));
+                                        }
+                                        offset++;
+                                    }
+                                    if (listOfAas.Count < 1)
+                                    {
+                                        System.Windows.Forms.MessageBox.Show(
+                                            "No AAS found. Aborting.", "Select AAS to get ..",
+                                            MessageBoxButtons.OK);
+                                        return;
+                                    }
+                                    var uc = new SelectFromListFlyout();
+                                    uc.DiaData.Caption = "Select AAS to get ..";
+                                    uc.DiaData.ListOfItems = listOfAas;
+                                    flyoutProvider.StartFlyoverModal(uc);
+                                    if (uc.DiaData.ResultItem != null && uc.DiaData.ResultItem.Tag != null &&
+                                        uc.DiaData.ResultItem.Tag is Tuple<int>)
+                                    {
+                                        // get result arguments
+                                        var TagTuple = uc.DiaData.ResultItem.Tag as Tuple<int>;
+                                        value = TagTuple.Item1.ToString();
+                                    }
+                                    else
+                                    {
+                                        System.Windows.Forms.MessageBox.Show(
+                                            "No AAS found. Aborting.", "Select AAS to get ..",
+                                            MessageBoxButtons.OK);
+                                        return;
+                                    }
+                                    operation = "/server/getaasx2/";
+                                    break;
                                 case "/server/getaasx2/":
                                     try
                                     {

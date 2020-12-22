@@ -1177,19 +1177,19 @@ namespace AasxPackageExplorer
                 // Select AAS entity
                 //=======================
 
-                var evSelectEntity = evt as AasxIntegrationBase.AasxPluginResultEventSelectAasEntity;
-                if (evSelectEntity != null)
-                {
-                    var uc = new SelectAasEntityFlyout(
-                        _packageCentral, PackageCentral.Selector.MainAuxFileRepo,
-                        evSelectEntity.filterEntities);
-                    this.StartFlyoverModal(uc);
-                    if (uc.ResultKeys != null)
+                    var evSelectEntity = evt as AasxIntegrationBase.AasxPluginResultEventSelectAasEntity;
+                    if (evSelectEntity != null)
                     {
-                        // formulate return event
-                        var retev = new AasxIntegrationBase.AasxPluginEventReturnSelectAasEntity();
-                        retev.sourceEvent = evt;
-                        retev.resultKeys = uc.ResultKeys;
+                        var uc = new SelectAasEntityFlyout(
+                            packages, PackageCentral.Selector.MainAuxFileRepo,
+                            evSelectEntity.filterEntities);
+                        this.StartFlyoverModal(uc);
+                        if (uc.DiaData.ResultKeys != null)
+                        {
+                            // formulate return event
+                            var retev = new AasxIntegrationBase.AasxPluginEventReturnSelectAasEntity();
+                            retev.sourceEvent = evt;
+                            retev.resultKeys = uc.DiaData.ResultKeys;
 
                         // fire back
                         pluginInstance?.InvokeAction("event-return", retev);
