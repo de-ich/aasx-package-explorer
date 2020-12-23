@@ -15,14 +15,15 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+//using System.Windows;
+//using System.Windows.Controls;
+//using System.Windows.Input;
+//using System.Windows.Media;
 using AasxIntegrationBase;
 using AasxWpfControlLibrary.PackageCentral;
 using AdminShellNS;
 using AnyUi;
+using AnyUi.AAS;
 
 namespace AasxPackageExplorer
 {
@@ -40,18 +41,18 @@ namespace AasxPackageExplorer
         {
             public string[] auxTitles = null;
             public string[] auxToolTips = null;
-            public Func<int, ModifyRepo.LambdaAction> auxLambda = null;
+            public Func<int, AnyUiLambdaActionBase> auxLambda = null;
 
             public DispEditInjectAction() { }
 
-            public DispEditInjectAction(string[] auxTitles, Func<int, ModifyRepo.LambdaAction> auxLambda)
+            public DispEditInjectAction(string[] auxTitles, Func<int, AnyUiLambdaActionBase> auxLambda)
             {
                 this.auxTitles = auxTitles;
                 this.auxLambda = auxLambda;
             }
 
             public DispEditInjectAction(string[] auxTitles, string[] auxToolTips,
-                Func<int, ModifyRepo.LambdaAction> auxActions)
+                Func<int, AnyUiLambdaActionBase> auxActions)
             {
                 this.auxTitles = auxTitles;
                 this.auxToolTips = auxToolTips;
@@ -116,7 +117,7 @@ namespace AasxPackageExplorer
             });
             this.AddKeyValueRef(
                 stack, "idShort", referable, ref referable.idShort, null, repo,
-                v => { referable.idShort = v as string; return new ModifyRepo.LambdaActionNone(); },
+                v => { referable.idShort = v as string; return new AnyUiLambdaActionNone(); },
                 auxButtonTitles: DispEditInjectAction.GetTitles(null, injectToIdShort),
                 auxButtonToolTips: DispEditInjectAction.GetToolTips(null, injectToIdShort),
                 auxButtonLambda: injectToIdShort?.auxLambda
@@ -131,7 +132,7 @@ namespace AasxPackageExplorer
             this.AddHintBubble(stack, hintMode, this.ConcatHintChecks(null, addHintsCategory));
             this.AddKeyValueRef(
                 stack, "category", referable, ref referable.category, null, repo,
-                v => { referable.category = v as string; return new ModifyRepo.LambdaActionNone(); },
+                v => { referable.category = v as string; return new AnyUiLambdaActionNone(); },
                 comboBoxItems: AdminShell.Referable.ReferableCategoryNames, comboBoxIsEditable: true);
 
             this.AddHintBubble(
@@ -154,7 +155,7 @@ namespace AasxPackageExplorer
             if (this.SafeguardAccess(stack, repo, referable.description, "description:", "Create data element!", v =>
             {
                 referable.description = new AdminShell.Description();
-                return new ModifyRepo.LambdaActionRedrawEntity();
+                return new AnyUiLambdaActionRedrawEntity();
             }))
             {
                 this.AddHintBubble(
@@ -211,7 +212,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         identifiable.identification = new AdminShell.Identification();
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
             {
                 this.AddKeyValueRef(
@@ -219,13 +220,13 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         identifiable.identification.idType = v as string;
-                        return new ModifyRepo.LambdaActionNone();
+                        return new AnyUiLambdaActionNone();
                     },
                     comboBoxItems: AdminShell.Key.IdentifierTypeNames);
 
                 this.AddKeyValueRef(
                     stack, "id", identifiable, ref identifiable.identification.id, null, repo,
-                    v => { identifiable.identification.id = v as string; return new ModifyRepo.LambdaActionNone(); },
+                    v => { identifiable.identification.id = v as string; return new AnyUiLambdaActionNone(); },
                     auxButtonTitles: DispEditInjectAction.GetTitles(new[] { "Generate" }, injectToId),
                     auxButtonLambda: (i) =>
                     {
@@ -234,14 +235,14 @@ namespace AasxPackageExplorer
                             identifiable.identification.idType = AdminShell.Identification.IRI;
                             identifiable.identification.id = Options.Curr.GenerateIdAccordingTemplate(
                                 templateForIdString);
-                            return new ModifyRepo.LambdaActionRedrawAllElements(nextFocus: identifiable);
+                            return new AnyUiLambdaActionRedrawAllElements(nextFocus: identifiable);
                         }
                         if (i >= 1)
                         {
                             var la = injectToId?.auxLambda?.Invoke(i - 1);
                             return la;
                         }
-                        return new ModifyRepo.LambdaActionNone();
+                        return new AnyUiLambdaActionNone();
                     });
             }
 
@@ -266,7 +267,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         identifiable.administration = new AdminShell.Administration();
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
             {
                 this.AddKeyValueRef(
@@ -275,7 +276,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         identifiable.administration.version = v as string;
-                        return new ModifyRepo.LambdaActionNone();
+                        return new AnyUiLambdaActionNone();
                     });
 
                 this.AddKeyValueRef(
@@ -284,7 +285,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         identifiable.administration.revision = v as string;
-                        return new ModifyRepo.LambdaActionNone();
+                        return new AnyUiLambdaActionNone();
                     });
             }
         }
@@ -319,7 +320,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         setOutput?.Invoke(new AdminShell.HasDataSpecification());
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
             {
                 if (editMode)
@@ -339,7 +340,7 @@ namespace AasxPackageExplorer
                                 hasDataSpecification.RemoveAt(
                                     hasDataSpecification.Count - 1);
 
-                            return new ModifyRepo.LambdaActionRedrawEntity();
+                            return new AnyUiLambdaActionRedrawEntity();
                         });
                 }
 
@@ -378,7 +379,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         setOutput?.Invoke(new List<AdminShell.Reference>());
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
             {
                 this.AddGroup(stack, $"{entityName}:", levelColors.SubSection);
@@ -396,7 +397,7 @@ namespace AasxPackageExplorer
                             if (buttonNdx == 1 && references.Count > 0)
                                 references.RemoveAt(references.Count - 1);
 
-                            return new ModifyRepo.LambdaActionRedrawEntity();
+                            return new AnyUiLambdaActionRedrawEntity();
                         });
                 }
 
@@ -444,12 +445,12 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         setOutput?.Invoke(new AdminShell.AssetKind());
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }
                     ))
                 this.AddKeyValueRef(
                     stack, "kind", kind, ref kind.kind, null, repo,
-                    v => { kind.kind = v as string; return new ModifyRepo.LambdaActionNone(); },
+                    v => { kind.kind = v as string; return new AnyUiLambdaActionNone(); },
                     new[] { "Template", "Instance" });
         }
 
@@ -481,12 +482,12 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         setOutput?.Invoke(new AdminShell.ModelingKind());
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }
                     ))
                 this.AddKeyValueRef(
                     stack, "kind", kind, ref kind.kind, null, repo,
-                    v => { kind.kind = v as string; return new ModifyRepo.LambdaActionNone(); },
+                    v => { kind.kind = v as string; return new AnyUiLambdaActionNone(); },
                     new[] { "Template", "Instance" });
         }
 
@@ -535,7 +536,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         setOutput?.Invoke(new AdminShell.SemanticId());
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
                 this.AddKeyListKeys(
                     stack, "semanticId", semanticId.Keys, repo,
@@ -546,7 +547,7 @@ namespace AasxPackageExplorer
                     addPresetKeyLists: bufferKeys.Item2,
                     jumpLambda: (kl) =>
                     {
-                        return new ModifyRepo.LambdaActionNavigateTo(AdminShell.Reference.CreateNew(kl));
+                        return new AnyUiLambdaActionNavigateTo(AdminShell.Reference.CreateNew(kl));
                     });
         }
 
@@ -570,7 +571,7 @@ namespace AasxPackageExplorer
                 v =>
                 {
                     setOutput?.Invoke(new AdminShell.QualifierCollection());
-                    return new ModifyRepo.LambdaActionRedrawEntity();
+                    return new AnyUiLambdaActionRedrawEntity();
                 }))
             {
                 this.QualifierHelper(stack, repo, qualifiers);
@@ -610,7 +611,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         dsiec.preferredName = new AdminShell.LangStringSetIEC61360();
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
                 this.AddKeyListLangStr(stack, "preferredName", dsiec.preferredName, repo);
 
@@ -634,7 +635,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         dsiec.shortName = new AdminShell.LangStringSetIEC61360();
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
                 this.AddKeyListLangStr(stack, "shortName", dsiec.shortName, repo);
 
@@ -653,7 +654,7 @@ namespace AasxPackageExplorer
             });
             this.AddKeyValueRef(
                 stack, "unit", dsiec, ref dsiec.unit, null, repo,
-                v => { dsiec.unit = v as string; return new ModifyRepo.LambdaActionNone(); });
+                v => { dsiec.unit = v as string; return new AnyUiLambdaActionNone(); });
 
             this.AddHintBubble(
                 stack, hintMode,
@@ -673,7 +674,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         dsiec.unitId = new AdminShell.UnitId();
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
             {
                 this.AddKeyListKeys(
@@ -684,7 +685,7 @@ namespace AasxPackageExplorer
 
             this.AddKeyValueRef(
                 stack, "valueFormat", dsiec, ref dsiec.valueFormat, null, repo,
-                v => { dsiec.valueFormat = v as string; return new ModifyRepo.LambdaActionNone(); });
+                v => { dsiec.valueFormat = v as string; return new AnyUiLambdaActionNone(); });
 
             this.AddHintBubble(
                 stack, hintMode,
@@ -703,7 +704,7 @@ namespace AasxPackageExplorer
                 v =>
                 {
                     dsiec.sourceOfDefinition = v as string;
-                    return new ModifyRepo.LambdaActionNone();
+                    return new AnyUiLambdaActionNone();
                 });
 
             this.AddHintBubble(
@@ -716,7 +717,7 @@ namespace AasxPackageExplorer
                 });
             this.AddKeyValueRef(
                 stack, "symbol", dsiec, ref dsiec.symbol, null, repo,
-                v => { dsiec.symbol = v as string; return new ModifyRepo.LambdaActionNone(); });
+                v => { dsiec.symbol = v as string; return new AnyUiLambdaActionNone(); });
 
             this.AddHintBubble(
                 stack, hintMode,
@@ -728,7 +729,7 @@ namespace AasxPackageExplorer
                 });
             this.AddKeyValueRef(
                 stack, "dataType", dsiec, ref dsiec.dataType, null, repo,
-                v => { dsiec.dataType = v as string; return new ModifyRepo.LambdaActionNone(); },
+                v => { dsiec.dataType = v as string; return new AnyUiLambdaActionNone(); },
                 comboBoxIsEditable: true,
                 comboBoxItems: AdminShell.DataSpecificationIEC61360.DataTypeNames);
 
@@ -751,7 +752,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         dsiec.definition = new AdminShell.LangStringSetIEC61360();
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
                 this.AddKeyListLangStr(stack, "definition", dsiec.definition, repo);
         }
@@ -782,7 +783,7 @@ namespace AasxPackageExplorer
                     v =>
                     {
                         setOutput?.Invoke(new AdminShell.SubmodelRef());
-                        return new ModifyRepo.LambdaActionRedrawEntity();
+                        return new AnyUiLambdaActionRedrawEntity();
                     }))
             {
                 this.AddGroup(

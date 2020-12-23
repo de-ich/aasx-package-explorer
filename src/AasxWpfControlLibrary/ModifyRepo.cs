@@ -15,6 +15,7 @@ using System.Windows.Input;
 using AdminShellNS;
 using AnyUi;
 
+
 namespace AasxPackageExplorer
 {
     //
@@ -23,6 +24,7 @@ namespace AasxPackageExplorer
 
     public class ModifyRepo
     {
+#if cddcd
         // some types for LambdaAction
         public class LambdaAction : AnyUiLambdaActionBase { }
         public class LambdaActionNone : LambdaAction { }
@@ -241,7 +243,7 @@ namespace AasxPackageExplorer
                                 it2.setValueLambda(files[0]);
 
                                 // contents changed
-                                WishForOutsideAction.Add(new LambdaActionContentsChanged());
+                                WishForOutsideAction.Add(new AnyUiLambdaActionContentsChanged());
                             }
 
                         }
@@ -264,7 +266,7 @@ namespace AasxPackageExplorer
                         it.setValueLambda((string)cb.SelectedItem);
 
                     // contents changed
-                    WishForOutsideAction.Add(new LambdaActionContentsTakeOver());
+                    WishForOutsideAction.Add(new AnyUiLambdaActionContentsTakeOver());
 
                     // TODO (MIHO, 2020-12-23) remove "false"
                     if (it.takeOverLambda != null && false)
@@ -289,7 +291,7 @@ namespace AasxPackageExplorer
                         it.setValueLambda(cb.IsChecked == true);
 
                     // contents changed
-                    WishForOutsideAction.Add(new LambdaActionContentsTakeOver());
+                    WishForOutsideAction.Add(new AnyUiLambdaActionContentsTakeOver());
 
                     if (it.takeOverLambda != null)
                         WishForOutsideAction.Add(it.takeOverLambda);
@@ -338,7 +340,7 @@ namespace AasxPackageExplorer
                         it.setValueLambda(cb.Text);
 
                     // contents changed
-                    WishForOutsideAction.Add(new LambdaActionContentsChanged());
+                    WishForOutsideAction.Add(new AnyUiLambdaActionContentsChanged());
                 }
             }
             catch (Exception ex)
@@ -355,7 +357,7 @@ namespace AasxPackageExplorer
                 {
                     e.Handled = true;
                     // send a take over
-                    WishForOutsideAction.Add(new LambdaActionContentsTakeOver());
+                    WishForOutsideAction.Add(new AnyUiLambdaActionContentsTakeOver());
                     // more?
                     if (sender is Control && fwElemToItem.ContainsKey(sender as Control))
                     {
@@ -399,5 +401,7 @@ namespace AasxPackageExplorer
                 AasxPackageExplorer.Log.Singleton.Error(ex, "While in user callback (modify repo lambda)");
             }
         }
+#endif
     }
 }
+

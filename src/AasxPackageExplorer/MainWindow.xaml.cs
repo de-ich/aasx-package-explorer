@@ -26,6 +26,7 @@ using AasxWpfControlLibrary.PackageCentral;
 using AdminShellEvents;
 using AdminShellNS;
 using AnyUi;
+using AnyUi.AAS;
 using ExhaustiveMatch = ExhaustiveMatching.ExhaustiveMatch;
 
 namespace AasxPackageExplorer
@@ -811,7 +812,7 @@ namespace AasxPackageExplorer
 
             // add to "normal" event quoue
             DispEditEntityPanel.AddWishForOutsideAction(
-                new ModifyRepo.LambdaActionRedrawAllElements(
+                new AnyUiLambdaActionRedrawAllElements(
                     nextFocus: resultItem.businessObject,
                     highlightField: new DispEditHighlight.HighlightFieldInfo(
                         resultItem.containingObject, resultItem.foundObject, resultItem.foundHash),
@@ -893,7 +894,7 @@ namespace AasxPackageExplorer
                         DispEditEntityPanel.WishForOutsideAction.RemoveAt(0);
 
                         // what to do?
-                        if (temp is ModifyRepo.LambdaActionRedrawAllElements wish)
+                        if (temp is AnyUiLambdaActionRedrawAllElements wish)
                         {
                             // edit mode affects the total element view
                             if (!wish.OnlyReFocus)
@@ -909,19 +910,19 @@ namespace AasxPackageExplorer
                             ContentTakeOver.IsEnabled = false;
                         }
 
-                        if (temp is ModifyRepo.LambdaActionContentsChanged)
+                        if (temp is AnyUiLambdaActionContentsChanged)
                         {
                             // enable button
                             ContentTakeOver.IsEnabled = true;
                         }
 
-                        if (temp is ModifyRepo.LambdaActionContentsTakeOver)
+                        if (temp is AnyUiLambdaActionContentsTakeOver)
                         {
                             // rework list
                             ContentTakeOver_Click(null, null);
                         }
 
-                        if (temp is ModifyRepo.LambdaActionNavigateTo tempNavTo)
+                        if (temp is AnyUiLambdaActionNavigateTo tempNavTo)
                         {
                             // do some more adoptions
                             var rf = new AdminShell.Reference(tempNavTo.targetReference);
@@ -1168,11 +1169,11 @@ namespace AasxPackageExplorer
                             DisplayElements.SelectedItem != null)
                             nextFocus = DisplayElements.SelectedItem.GetMainDataObject();
 
-                        // add to "normal" event quoue
-                        DispEditEntityPanel.AddWishForOutsideAction(
-                            new ModifyRepo.LambdaActionRedrawAllElements(nextFocus));
+                            // add to "normal" event quoue
+                            DispEditEntityPanel.AddWishForOutsideAction(
+                                new AnyUiLambdaActionRedrawAllElements(nextFocus));
+                        }
                     }
-                }
 
                 // Select AAS entity
                 //=======================
