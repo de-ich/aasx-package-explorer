@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2021 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
+Copyright (c) 2018-2019 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Michael Hoffmeister
 
 This source code is licensed under the Apache License 2.0 (see LICENSE.txt).
@@ -11,10 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Media;
+using AnyUi;
 using Newtonsoft.Json;
 
-namespace AasxPackageExplorer
+namespace AasxPackageLogic
 {
     /// <summary>
     /// This attribute indicates, that it should e.g. serialized in JSON.
@@ -209,12 +209,24 @@ namespace AasxPackageExplorer
         /// </summary>
         public string WriteDefaultOptionsFN = null;
 
+        public enum ColorNames
+        {
+            LightAccentColor = 0, DarkAccentColor, DarkestAccentColor, FocusErrorBrush, FocusErrorColor
+        };
+
         /// <summary>
         /// Dictionary of override colors
         /// </summary>
         [SettableOption]
-        public Dictionary<int, System.Windows.Media.Color> AccentColors =
-            new Dictionary<int, System.Windows.Media.Color>();
+        public Dictionary<ColorNames, AnyUiColor> AccentColors =
+            new Dictionary<ColorNames, AnyUiColor>();
+
+        public AnyUiColor GetColor(ColorNames c)
+        {
+            if (AccentColors != null && AccentColors.ContainsKey(c))
+                return AccentColors[c];
+            return AnyUiColors.Black;
+        }
 
         /// <summary>
         /// Contains a list of remarks. Intended use: disabling lines of preferences.
@@ -233,43 +245,10 @@ namespace AasxPackageExplorer
         public bool LoadWithoutPrompt = false;
 
         /// <summary>
-        /// When activated, the UI will check if identifications and other texts are
-        /// starting with schemes like http:// and will render IRIs for them
-        /// </summary>
-        public bool ShowIdAsIri = false;
-
-        /// <summary>
-        /// Default value for the StayConnected options of PackageContainer.
-        /// That is, a loaded container will automatically try receive events, e.g. for value update.
-        /// </summary>
-        public bool DefaultStayConnected = false;
-
-        /// <summary>
-        /// CONSTANT for the DefaultUpdatePeriod option.
-        /// </summary>
-        public const int MinimumUpdatePeriod = 200;
-
-        /// <summary>
-        /// Default value for the update period in [ms] for StayConnect containers.
-        /// </summary>
-        public int DefaultUpdatePeriod = 0;
-
-        /// <summary>
-        /// Preset shown in the file repo connect to AAS repository dialogue
-        /// </summary>
-        public string DefaultConnectRepositoryLocation = "";
-
-        /// <summary>
         /// Point to a list of SecureConnectPresets for the respective dialogue
         /// </summary>
         [JetBrains.Annotations.UsedImplicitly]
         public Newtonsoft.Json.Linq.JToken SecureConnectPresets;
-
-        /// <summary>
-        /// Point to a list of SecureConnectPresets for the respective dialogue
-        /// </summary>
-        [JetBrains.Annotations.UsedImplicitly]
-        public Newtonsoft.Json.Linq.JToken IntegratedConnectPresets;
 
         public class PluginDllInfo
         {
@@ -372,16 +351,6 @@ namespace AasxPackageExplorer
                 if (arg == "-load-without-prompt")
                 {
                     optionsInformation.LoadWithoutPrompt = true;
-                    continue;
-                }
-                if (arg == "-show-id-as-iri")
-                {
-                    optionsInformation.ShowIdAsIri = true;
-                    continue;
-                }
-                if (arg == "-stay-connected")
-                {
-                    optionsInformation.DefaultStayConnected = true;
                     continue;
                 }
 
@@ -575,13 +544,6 @@ namespace AasxPackageExplorer
                     index++;
                     continue;
                 }
-                if (arg == "-update-period" && morearg > 0)
-                {
-                    if (Int32.TryParse(args[index + 1], out int i))
-                        optionsInformation.DefaultUpdatePeriod = i;
-                    index++;
-                    continue;
-                }
 
                 // Colors
                 {
@@ -592,8 +554,8 @@ namespace AasxPackageExplorer
                             // ReSharper disable PossibleNullReferenceException
                             try
                             {
-                                var c = (Color)ColorConverter.ConvertFromString(args[index + 1]);
-                                optionsInformation.AccentColors.Add(i, c);
+                                var c =AnyUiColor.FromString(args[index + 1].Trim());
+                                optionsInformation.AccentColors.Add((ColorNames)i, c);
                             }
                             catch (Exception ex)
                             {

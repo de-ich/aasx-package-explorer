@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2018-2021 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
+Copyright (c) 2018-2019 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Michael Hoffmeister
 
 This source code is licensed under the Apache License 2.0 (see LICENSE.txt).
@@ -14,7 +14,7 @@ using System.Reflection;
 using AasxIntegrationBase;
 using Newtonsoft.Json;
 
-namespace AasxPackageExplorer
+namespace AasxPackageLogic
 {
     /// <summary>
     /// This class holds all loaded plug-ins. It implements a singleton.

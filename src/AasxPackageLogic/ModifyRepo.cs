@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2021 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
+Copyright (c) 2018-2019 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Michael Hoffmeister
 
 This source code is licensed under the Apache License 2.0 (see LICENSE.txt).
@@ -9,14 +9,14 @@ This source code may use other Open Source software components (see LICENSE.txt)
 
 using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+//using System.Windows;
+//using System.Windows.Controls;
+//using System.Windows.Input;
 using AdminShellNS;
 using AnyUi;
 
 
-namespace AasxPackageExplorer
+namespace AasxPackageLogic
 {
     //
     // Modify Repo
@@ -47,19 +47,17 @@ namespace AasxPackageExplorer
                 this.OnlyReFocus = onlyReFocus;
             }
         }
-        public class LambdaActionContentsChanged : LambdaAction { }
-        public class LambdaActionContentsTakeOver : LambdaAction { }
-        public class LambdaActionNavigateTo : LambdaAction
-        {
-            public LambdaActionNavigateTo() { }
-            public LambdaActionNavigateTo(AdminShell.Reference targetReference, bool translateAssetToAAS = false)
-            {
-                this.targetReference = targetReference;
-                this.translateAssetToAAS = translateAssetToAAS;
-            }
-            public AdminShell.Reference targetReference;
-            public bool translateAssetToAAS;
-        }
+        //public class LambdaActionContentsChanged : LambdaAction { }
+        //public class LambdaActionContentsTakeOver : LambdaAction { }
+        //public class LambdaActionNavigateTo : LambdaAction
+        //{
+        //    public LambdaActionNavigateTo() { }
+        //    public LambdaActionNavigateTo(AdminShell.Reference targetReference)
+        //    {
+        //        this.targetReference = targetReference;
+        //    }
+        //    public AdminShell.Reference targetReference;
+        //}
 
         // some flags for the main application
         public List<LambdaAction> WishForOutsideAction = new List<LambdaAction>();

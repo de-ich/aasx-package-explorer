@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2018-2021 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
+Copyright (c) 2018-2019 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Michael Hoffmeister
 
 This source code is licensed under the Apache License 2.0 (see LICENSE.txt).
@@ -11,29 +11,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Media;
 using AdminShellNS;
 using AnyUi;
 
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace AasxPackageExplorer
+namespace AasxPackageLogic
 {
-    /// <summary>
-    /// This interface is implemented by the visual tree, which shows the different element of
-    /// one or more AASX packages, environments, AAS and so forth.
-    /// </summary>
-    public interface IManageVisualAasxElements
-    {
-        VisualElementGeneric GetSelectedItem();
-    }
-
     public class TreeViewLineCache
     {
         public Dictionary<object, bool> IsExpanded = new Dictionary<object, bool>();
     }
 
-    public class VisualElementGeneric : INotifyPropertyChanged, ITreeViewSelectable
+    public class VisualElementGeneric : INotifyPropertyChanged /* , ITreeViewSelectable */
     {
         // bi-directional tree
         public VisualElementGeneric Parent = null;
@@ -51,10 +41,10 @@ namespace AasxPackageExplorer
         public string Info { get; set; }
         public string Value { get; set; }
         public string ValueInfo { get; set; }
-        public Brush Background { get; set; }
-        public Brush Border { get; set; }
-        public Brush TagFg { get; set; }
-        public Brush TagBg { get; set; }
+        public AnyUiColor Background { get; set; }
+        public AnyUiColor Border { get; set; }
+        public AnyUiColor TagFg { get; set; }
+        public AnyUiColor TagBg { get; set; }
         public bool IsTopLevel = false;
 
         public VisualElementGeneric()
@@ -248,75 +238,6 @@ namespace AasxPackageExplorer
                 if (p(e))
                     yield return e;
         }
-
-        public VisualElementGeneric FindFirstParent(
-            Predicate<VisualElementGeneric> p, bool includeThis = false)
-        {
-            foreach (var x in FindAllParents(p, includeThis))
-                return x;
-            return null;
-        }
-
-        public AdminShell.KeyList BuildKeyListToTop(
-            bool includeAas = false)
-        {
-            // prepare result
-            var res = new AdminShell.KeyList();
-            var ve = this;
-            while (ve != null)
-            {
-                if (ve is VisualElementSubmodelRef smr)
-                {
-                    // import special case, as Submodel ref is important part of the chain!
-                    if (smr.theSubmodel != null)
-                        res.Insert(
-                            0,
-                            AdminShell.Key.CreateNew(
-                                smr.theSubmodel.GetElementName(), true,
-                                smr.theSubmodel.identification.idType,
-                                smr.theSubmodel.identification.id));
-
-                    // include aas
-                    if (includeAas && ve.Parent is VisualElementAdminShell veAas
-                        && veAas.theAas?.identification != null)
-                    {
-                        res.Insert(
-                            0,
-                            AdminShell.Key.CreateNew(
-                                AdminShell.Key.AAS, true,
-                                veAas.theAas.identification.idType,
-                                veAas.theAas.identification.id));
-                    }
-
-                    break;
-                }
-                else
-                if (ve.GetMainDataObject() is AdminShell.Identifiable iddata)
-                {
-                    // a Identifiable will terminate the list of keys
-                    res.Insert(
-                        0,
-                        AdminShell.Key.CreateNew(
-                            iddata.GetElementName(), true, iddata.identification.idType, iddata.identification.id));
-                    break;
-                }
-                else
-                if (ve.GetMainDataObject() is AdminShell.Referable rf)
-                {
-                    // add a key and go up ..
-                    res.Insert(
-                        0,
-                        AdminShell.Key.CreateNew(rf.GetElementName(), true, "IdShort", rf.idShort));
-                }
-                else
-                // uups!
-                { }
-                // need to go up
-                ve = ve.Parent;
-            }
-
-            return res;
-        }
     }
 
     public class VisualElementEnvironmentItem : VisualElementGeneric
@@ -330,15 +251,13 @@ namespace AasxPackageExplorer
             "Environment", "AdministrationShells", "Assets", "ConceptDescriptions", "Package", "Orphan Submodels",
             "All Submodels", "Supplementary files", "Empty" };
 
-        public string thePackageSourceFn;
         public AdminShellPackageEnv thePackage = null;
         public AdminShell.AdministrationShellEnv theEnv = null;
         public ItemType theItemType = ItemType.Env;
 
         public VisualElementEnvironmentItem(
             VisualElementGeneric parent, TreeViewLineCache cache, AdminShellPackageEnv package,
-            AdminShell.AdministrationShellEnv env, ItemType itemType,
-            string packageSourceFn = null)
+            AdminShell.AdministrationShellEnv env, ItemType itemType)
         : base()
         {
             this.Parent = parent;
@@ -346,12 +265,11 @@ namespace AasxPackageExplorer
             this.thePackage = package;
             this.theEnv = env;
             this.theItemType = itemType;
-            this.thePackageSourceFn = packageSourceFn;
 
-            this.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkAccentColor"];
-            this.Border = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkAccentColor);
+            this.Border = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagBg = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagFg = AnyUiColors.White;
 
             this.Caption = $"\"{ItemTypeNames[(int)itemType]}\"";
             this.Info = "";
@@ -365,10 +283,7 @@ namespace AasxPackageExplorer
             if (theItemType == ItemType.Package && thePackage != null)
             {
                 this.TagString = "\u25a2";
-                if (thePackageSourceFn != null)
-                    this.Info += "" + thePackageSourceFn;
-                else
-                    this.Info += "" + thePackage.Filename;
+                this.Info += "" + thePackage.Filename;
             }
             RestoreFromCache();
         }
@@ -406,10 +321,10 @@ namespace AasxPackageExplorer
             this.theEnv = env;
             this.theAas = aas;
 
-            this.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkAccentColor"];
-            this.Border = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkAccentColor);
+            this.Border = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagBg = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "AAS";
             RefreshFromMainData();
@@ -450,10 +365,10 @@ namespace AasxPackageExplorer
             this.theEnv = env;
             this.theAsset = asset;
 
-            this.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkAccentColor"];
-            this.Border = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkAccentColor);
+            this.Border = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagBg = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "Asset";
             RefreshFromMainData();
@@ -493,10 +408,10 @@ namespace AasxPackageExplorer
             this.theSubmodelRef = smr;
             this.theSubmodel = sm;
 
-            this.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["LightAccentColor"];
-            this.Border = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = Options.Curr.GetColor(OptionsInformation.ColorNames.LightAccentColor);
+            this.Border = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagBg = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "SM";
             RefreshFromMainData();
@@ -545,10 +460,10 @@ namespace AasxPackageExplorer
             this.theEnv = env;
             this.theSubmodel = sm;
 
-            this.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D0D0D0"));
-            this.Border = (SolidColorBrush)(new BrushConverter().ConvertFrom("#606060"));
-            this.TagBg = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070")); ;
-            this.TagFg = Brushes.White;
+            this.Background = new AnyUiColor(0xffd0d0d0u);
+            this.Border = new AnyUiColor(0xff606060u);
+            this.TagBg = new AnyUiColor(0xff707070u);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "SM";
             RefreshFromMainData();
@@ -587,10 +502,10 @@ namespace AasxPackageExplorer
             this.theEnv = env;
             this.theView = vw;
 
-            this.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkAccentColor"];
-            this.Border = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkAccentColor);
+            this.Border = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagBg = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "View";
             RefreshFromMainData();
@@ -629,10 +544,10 @@ namespace AasxPackageExplorer
             this.theEnv = env;
             this.theReference = rf;
 
-            this.Background = Brushes.White;
-            this.Border = Brushes.White;
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = AnyUiColors.White;
+            this.Border = AnyUiColors.White;
+            this.TagBg = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "\u2b95";
             RefreshFromMainData();
@@ -674,10 +589,10 @@ namespace AasxPackageExplorer
             this.theContainer = parentContainer;
             this.theWrapper = wrap;
 
-            this.Background = Brushes.White;
-            this.Border = Brushes.White;
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = AnyUiColors.White;
+            this.Border = AnyUiColors.White;
+            this.TagBg = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = wrap.GetElementAbbreviation();
 
@@ -797,10 +712,10 @@ namespace AasxPackageExplorer
             this.theOpVar = opvar;
             this.theDir = dir;
 
-            this.Background = Brushes.White;
-            this.Border = Brushes.White;
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = AnyUiColors.White;
+            this.Border = AnyUiColors.White;
+            this.TagBg = new AnyUiColor(0xff707070u);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "In";
             if (this.theDir == AdminShell.OperationVariable.Direction.Out)
@@ -808,8 +723,6 @@ namespace AasxPackageExplorer
             if (this.theDir == AdminShell.OperationVariable.Direction.InOut)
                 this.TagString = "InOut";
 
-            this.TagBg = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070")); ;
-            this.TagFg = Brushes.White;
             RefreshFromMainData();
             RestoreFromCache();
         }
@@ -854,10 +767,10 @@ namespace AasxPackageExplorer
             this.theEnv = env;
             this.theCD = cd;
 
-            this.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D0D0D0"));
-            this.Border = (SolidColorBrush)(new BrushConverter().ConvertFrom("#606060"));
-            this.TagBg = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070")); ;
-            this.TagFg = Brushes.White;
+            this.Background = new AnyUiColor(0xffd0d0d0u);
+            this.Border = new AnyUiColor(0xff606060u);
+            this.TagBg = new AnyUiColor(0xff707070u);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "CD";
 
@@ -897,10 +810,10 @@ namespace AasxPackageExplorer
             this.thePackage = package;
             this.theFile = sf;
 
-            this.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D0D0D0"));
-            this.Border = (SolidColorBrush)(new BrushConverter().ConvertFrom("#606060"));
-            this.TagBg = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070")); ;
-            this.TagFg = Brushes.White;
+            this.Background = new AnyUiColor(0xffd0d0d0u);
+            this.Border = new AnyUiColor(0xff606060u);
+            this.TagBg = new AnyUiColor(0xff707070u);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "\u25a4";
 
@@ -958,10 +871,10 @@ namespace AasxPackageExplorer
             this.thePlugin = plugin;
             this.theExt = ext;
 
-            this.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#A0A0A0"));
-            this.Border = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
-            this.TagBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkestAccentColor"];
-            this.TagFg = Brushes.White;
+            this.Background = new AnyUiColor(0xffa0a0a0u);
+            this.Border = new AnyUiColor(0xff707070u);
+            this.TagBg = Options.Curr.GetColor(OptionsInformation.ColorNames.DarkestAccentColor);
+            this.TagFg = AnyUiColors.White;
 
             this.TagString = "" + ext?.Tag;
 
@@ -1001,7 +914,7 @@ namespace AasxPackageExplorer
 
     public static class Generators
     {
-        private static void GenerateVisualElementsFromShellEnvAddElements(
+        public static void GenerateVisualElementsFromShellEnvAddElements(
             TreeViewLineCache cache, AdminShell.AdministrationShellEnv env, VisualElementGeneric parent,
             AdminShell.Referable parentContainer, AdminShell.SubmodelElementWrapper el)
         {
@@ -1049,7 +962,6 @@ namespace AasxPackageExplorer
 
         public static List<VisualElementGeneric> GenerateVisualElementsFromShellEnv(
             TreeViewLineCache cache, AdminShell.AdministrationShellEnv env, AdminShellPackageEnv package = null,
-            string packageSourceFn = null,
             bool editMode = false, int expandMode = 0)
         {
             // clear tree
@@ -1083,7 +995,7 @@ namespace AasxPackageExplorer
                     }
                 }
 
-            // many operations -> make it bulletproof
+            // many operytions -> make it bulletproof
             try
             {
 
@@ -1091,8 +1003,7 @@ namespace AasxPackageExplorer
                 {
                     // package
                     tiPackage = new VisualElementEnvironmentItem(
-                        null /* Parent */, cache, package, env, VisualElementEnvironmentItem.ItemType.Package,
-                        packageSourceFn);
+                        null /* Parent */, cache, package, env, VisualElementEnvironmentItem.ItemType.Package);
                     tiPackage.SetIsExpandedIfNotTouched(true);
                     res.Add(tiPackage);
 

@@ -111,7 +111,7 @@ namespace AasxPackageExplorer
                     }
                     catch (Exception ex)
                     {
-                        AasxPackageExplorer.Log.Singleton.Error(ex, "When creating new AASX, an error occurred");
+                        Log.Singleton.Error(ex, "When creating new AASX, an error occurred");
                         return;
                     }
                 }
@@ -175,7 +175,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "When saving AASX, an error occurred");
+                    Log.Singleton.Error(ex, "When saving AASX, an error occurred");
                     return;
                 }
                 Log.Singleton.Info("AASX saved successfully: {0}", _packageCentral.MainItem.Filename);
@@ -271,7 +271,7 @@ namespace AasxPackageExplorer
                     }
                     catch (Exception ex)
                     {
-                        AasxPackageExplorer.Log.Singleton.Error(ex, "When saving AASX, an error occurred");
+                        Log.Singleton.Error(ex, "When saving AASX, an error occurred");
                         return;
                     }
                     AasxPackageExplorer.Log.Singleton.Info("AASX saved successfully as: {0}", dlg.FileName);
@@ -305,7 +305,7 @@ namespace AasxPackageExplorer
                     }
                     catch (Exception ex)
                     {
-                        AasxPackageExplorer.Log.Singleton.Error(ex, "When closing AASX, an error occurred");
+                        Log.Singleton.Error(ex, "When closing AASX, an error occurred");
                     }
             }
 
@@ -437,7 +437,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "When closing auxiliary AASX, an error occurred");
+                    Log.Singleton.Error(ex, "When closing auxiliary AASX, an error occurred");
                 }
 
             if (cmd == "exit")
@@ -660,7 +660,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(ex, "Checking model contents");
+                Log.Singleton.Error(ex, "Checking model contents");
                 MessageBoxFlyoutShow(
                     "Error while checking model contents. Aborting.", msgBoxHeadline,
                     AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
@@ -699,7 +699,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "Fixing model contents");
+                    Log.Singleton.Error(ex, "Fixing model contents");
                     MessageBoxFlyoutShow(
                         "Error while fixing issues. Aborting.", msgBoxHeadline,
                         AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
@@ -879,12 +879,12 @@ namespace AasxPackageExplorer
             uc2.EnableLargeScreen();
 
             // do some statistics
-            AasxPackageExplorer.Log.Singleton.Info("Start secure connect ..");
-            AasxPackageExplorer.Log.Singleton.Info("Protocol: {0}", preset.Protocol.Value);
-            AasxPackageExplorer.Log.Singleton.Info("AuthorizationServer: {0}", preset.AuthorizationServer.Value);
-            AasxPackageExplorer.Log.Singleton.Info("AasServer: {0}", preset.AasServer.Value);
-            AasxPackageExplorer.Log.Singleton.Info("CertificateFile: {0}", preset.CertificateFile.Value);
-            AasxPackageExplorer.Log.Singleton.Info("Password: {0}", preset.Password.Value);
+            Log.Singleton.Info("Start secure connect ..");
+            Log.Singleton.Info("Protocol: {0}", preset.Protocol.Value);
+            Log.Singleton.Info("AuthorizationServer: {0}", preset.AuthorizationServer.Value);
+            Log.Singleton.Info("AasServer: {0}", preset.AasServer.Value);
+            Log.Singleton.Info("CertificateFile: {0}", preset.CertificateFile.Value);
+            Log.Singleton.Info("Password: {0}", preset.Password.Value);
 
             logger.Info("Protocol: {0}", preset.Protocol.Value);
             logger.Info("AuthorizationServer: {0}", preset.AuthorizationServer.Value);
@@ -930,7 +930,7 @@ namespace AasxPackageExplorer
             }
 
             // done
-            AasxPackageExplorer.Log.Singleton.Info("Secure connect done.");
+            Log.Singleton.Info("Secure connect done.");
         }
 
         public void CommandBinding_ConnectIntegrated()
@@ -994,7 +994,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(ex, "When printing, an error occurred");
+                Log.Singleton.Error(ex, "When printing, an error occurred");
             }
 
             if (Options.Curr.UseFlyovers) this.CloseFlyover();
@@ -1183,7 +1183,7 @@ namespace AasxPackageExplorer
                 else
                 {
                     var url = uc.Text;
-                    AasxPackageExplorer.Log.Singleton.Info($"Connecting to REST server {url} ..");
+                    Log.Singleton.Info($"Connecting to REST server {url} ..");
 
                     try
                     {
@@ -1195,7 +1195,7 @@ namespace AasxPackageExplorer
                     }
                     catch (Exception ex)
                     {
-                        AasxPackageExplorer.Log.Singleton.Error(ex, $"Connecting to REST server {url}");
+                        Log.Singleton.Error(ex, $"Connecting to REST server {url}");
                     }
                 }
             }
@@ -1235,7 +1235,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "When importing BMEcat, an error occurred");
+                    Log.Singleton.Error(ex, "When importing BMEcat, an error occurred");
                 }
 
             if (Options.Curr.UseFlyovers) this.CloseFlyover();
@@ -1274,7 +1274,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "When importing CSV, an error occurred");
+                    Log.Singleton.Error(ex, "When importing CSV, an error occurred");
                 }
 
             if (Options.Curr.UseFlyovers) this.CloseFlyover();
@@ -1313,7 +1313,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "When importing, an error occurred");
+                    Log.Singleton.Error(ex, "When importing, an error occurred");
                 }
 
             if (Options.Curr.UseFlyovers) this.CloseFlyover();
@@ -1558,7 +1558,7 @@ namespace AasxPackageExplorer
                 return;
             }
             PUTURL = input.Text;
-            AasxPackageExplorer.Log.Singleton.Info($"Connecting to REST server {PUTURL} ..");
+            Log.Singleton.Info($"Connecting to REST server {PUTURL} ..");
 
             if (DisplayElements.SelectedItem != null && DisplayElements.SelectedItem is VisualElementSubmodelRef)
                 ve1 = DisplayElements.SelectedItem as VisualElementSubmodelRef;
@@ -1579,7 +1579,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(ex, $"Connecting to REST server {PUTURL}");
+                Log.Singleton.Error(ex, $"Connecting to REST server {PUTURL}");
             }
         }
 
@@ -1607,7 +1607,7 @@ namespace AasxPackageExplorer
                 return;
             }
             GETURL = input.Text;
-            AasxPackageExplorer.Log.Singleton.Info($"Connecting to REST server {GETURL} ..");
+            Log.Singleton.Info($"Connecting to REST server {GETURL} ..");
 
             var obj = ve1.theSubmodel;
             var sm = "";
@@ -1618,7 +1618,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(ex, $"Connecting to REST server {GETURL}");
+                Log.Singleton.Error(ex, $"Connecting to REST server {GETURL}");
             }
 
             {
@@ -1766,7 +1766,7 @@ namespace AasxPackageExplorer
                             var pi = Plugins.FindPluginInstance("AasxPluginOpcUaClient");
                             if (pi == null || !pi.HasAction("create-client") || !pi.HasAction("read-sme-value"))
                             {
-                                AasxPackageExplorer.Log.Singleton.Error(
+                                Log.Singleton.Error(
                                     "No plug-in 'AasxPluginOpcUaClient' with appropriate " +
                                     "actions 'create-client()', 'read-sme-value()' found.");
                                 return;
@@ -1781,7 +1781,7 @@ namespace AasxPackageExplorer
                             // ReSharper enable ConditionIsAlwaysTrueOrFalse
                             if (resClient == null || resClient.obj == null)
                             {
-                                AasxPackageExplorer.Log.Singleton.Error(
+                                Log.Singleton.Error(
                                     "Plug-in 'AasxPluginOpcUaClient' cannot create client access!");
                                 return;
                             }
@@ -1820,7 +1820,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "executing OPC UA client");
+                    Log.Singleton.Error(ex, "executing OPC UA client");
                 }
             }
 
@@ -1854,7 +1854,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception e)
             {
-                AasxPackageExplorer.Log.Singleton.Error(e, "An error occurred during the submodel import.");
+                Log.Singleton.Error(e, "An error occurred during the submodel import.");
             }
 
             if (dataChanged)
@@ -1895,7 +1895,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception e)
             {
-                AasxPackageExplorer.Log.Singleton.Error(e, "An error occurred during the submodel element import.");
+                Log.Singleton.Error(e, "An error occurred during the submodel element import.");
             }
 
             if (dataChanged)
@@ -1928,7 +1928,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(ex, "When importing AML, an error occurred");
+                Log.Singleton.Error(ex, "When importing AML, an error occurred");
             }
 
             if (Options.Curr.UseFlyovers) this.CloseFlyover();
@@ -1960,7 +1960,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(ex, "When exporting AML, an error occurred");
+                Log.Singleton.Error(ex, "When exporting AML, an error occurred");
             }
 
             if (Options.Curr.UseFlyovers) this.CloseFlyover();
@@ -1995,7 +1995,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(
+                Log.Singleton.Error(
                     ex, "When exporting UA nodeset via plug-in, an error occurred");
             }
 
@@ -2040,11 +2040,11 @@ namespace AasxPackageExplorer
             if (jsonStr != null && jsonStr != "")
             {
                 System.Windows.Clipboard.SetText(jsonStr);
-                AasxPackageExplorer.Log.Singleton.Info("Copied selected element to clipboard.");
+                Log.Singleton.Info("Copied selected element to clipboard.");
             }
             else
             {
-                AasxPackageExplorer.Log.Singleton.Info("No JSON text could be generated for selected element.");
+                Log.Singleton.Info("No JSON text could be generated for selected element.");
             }
         }
 
@@ -2086,7 +2086,7 @@ namespace AasxPackageExplorer
             {
                 if (res == true)
                 {
-                    AasxPackageExplorer.Log.Singleton.Info(
+                    Log.Singleton.Info(
                         "Exporting add-options file to GenericForm: {0}", dlg.FileName);
                     RememberForInitialDirectory(dlg.FileName);
                     AasxIntegrationBase.AasForms.AasFormUtils.ExportAsGenericFormsOptions(
@@ -2095,7 +2095,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(
+                Log.Singleton.Error(
                     ex, "When exporting options file for GenericForms, an error occurred");
             }
 
@@ -2141,7 +2141,7 @@ namespace AasxPackageExplorer
                 if (res == true)
                 {
                     RememberForInitialDirectory(dlg.FileName);
-                    AasxPackageExplorer.Log.Singleton.Info(
+                    Log.Singleton.Info(
                         "Exporting text snippets for PredefinedConcepts: {0}", dlg.FileName);
                     AasxPredefinedConcepts.ExportPredefinedConcepts.Export(
                         _packageCentral.Main.AasEnv, ve1.theSubmodel, dlg.FileName);
@@ -2149,7 +2149,7 @@ namespace AasxPackageExplorer
             }
             catch (Exception ex)
             {
-                AasxPackageExplorer.Log.Singleton.Error(
+                Log.Singleton.Error(
                     ex, "When exporting text snippets for PredefinedConcepts, an error occurred");
             }
 
@@ -2217,7 +2217,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "Executing user defined conversion");
+                    Log.Singleton.Error(ex, "Executing user defined conversion");
                 }
 
             // redisplay
@@ -2411,7 +2411,7 @@ namespace AasxPackageExplorer
                             ve1.theEnv.ConceptDescriptions.Add(newCd);
                             nr++;
                         }
-                        AasxPackageExplorer.Log.Singleton.Info(
+                        Log.Singleton.Info(
                             $"added {nr} ConceptDescritions for Submodel {smres.idShort}.");
                     }
 
@@ -2421,7 +2421,7 @@ namespace AasxPackageExplorer
                 }
                 catch (Exception ex)
                 {
-                    AasxPackageExplorer.Log.Singleton.Error(ex, "when adding Submodel to AAS");
+                    Log.Singleton.Error(ex, "when adding Submodel to AAS");
                 }
             }
         }

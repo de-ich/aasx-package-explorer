@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2018-2021 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
+Copyright (c) 2018-2019 Festo AG & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Michael Hoffmeister
 
 This source code is licensed under the Apache License 2.0 (see LICENSE.txt).
@@ -17,13 +17,10 @@ using System.Text.RegularExpressions;
 //using System.Windows.Controls;
 //using System.Windows.Media;
 using AasxIntegrationBase;
-using AasxWpfControlLibrary;
-using AasxWpfControlLibrary.PackageCentral;
 using AdminShellNS;
 using AnyUi;
-using AnyUi.AAS;
 
-namespace AasxPackageExplorer
+namespace AasxPackageLogic
 {
     //
     // Hinting (will be used below)
@@ -105,16 +102,12 @@ namespace AasxPackageExplorer
 
         public PackageCentral packages = null;
 
-        public IFlyoutProvider flyoutProvider = null;
-        public IPushApplicationEvent appEventsProvider = null; 
-
         public DispLevelColors levelColors = null;
 
         public int standardFirstColWidth = 100;
 
         public bool editMode = false;
         public bool hintMode = false;
-        public bool showIriMode = false;
 
         public ModifyRepo repo = null;
 
@@ -506,39 +499,10 @@ namespace AasxPackageExplorer
             if (background != null)
                 lab.Background = background;
             if (setBold)
-                lab.FontWeight = FontWeights.Bold;
-
-            // check, which content
-            if (this.showIriMode 
-                && content.HasContent()
-                && (content.Trim().ToLower().StartsWith("http://")
-                 || content.Trim().ToLower().StartsWith("https://")))
-            {
-                var hl = new Hyperlink() { 
-                    NavigateUri = new Uri(content),                    
-                };
-                hl.Inlines.Add(content);
-                hl.RequestNavigate += (sender, e) =>
-                {
-                    if (appEventsProvider != null)
-                        appEventsProvider.PushApplicationEvent(new AasxPluginResultEventDisplayContentFile()
-                        {
-                            fn = e.Uri.ToString(),
-                            preferInternalDisplay = true
-                        });
-                    else
-                        System.Diagnostics.Process.Start(e.Uri.ToString());
-                };
-                lab.Inlines.Clear();
-                lab.Inlines.Add(hl);                    
-            }
-            else
-            {
-                lab.Text = content;
-            }
-
-            Grid.SetRow(lab, row);
-            Grid.SetColumn(lab, col);
+                lab.FontWeight = AnyUiFontWeight.Bold;
+            lab.Text = content;
+            AnyUiGrid.SetRow(lab, row);
+            AnyUiGrid.SetColumn(lab, col);
             g.Children.Add(lab);
             return (lab);
         }
@@ -1212,9 +1176,8 @@ namespace AasxPackageExplorer
             bool addEclassIrdi = false,
             bool addFromPool = false,
             string[] addPresetNames = null, AdminShell.KeyList[] addPresetKeyLists = null,
-            Func<AdminShell.KeyList, ModifyRepo.LambdaAction> jumpLambda = null,
-            ModifyRepo.LambdaAction takeOverLambdaAction = null,
-            Action<AdminShell.KeyList> noEditJumpLambda = null)
+            Func<AdminShell.KeyList, AnyUiLambdaActionBase> jumpLambda = null,
+            AnyUiLambdaActionBase takeOverLambdaAction = null)
         {
             // sometimes needless to show
             if (repo == null && (keys == null || keys.Count < 1))
@@ -1224,6 +1187,8 @@ namespace AasxPackageExplorer
                 rows = keys.Count;
             int rowOfs = 0;
             if (repo != null)
+                rowOfs = 1;
+            if (jumpLambda != null)
                 rowOfs = 1;
 
             // Grid
@@ -1280,8 +1245,7 @@ namespace AasxPackageExplorer
 
             if (repo == null)
             {
-                // TODO (Michael Hoffmeister, 2020-08-01): possibly [Jump] button??               
-                // no .. see furthermore below
+                // TODO (Michael Hoffmeister, 2020-08-01): possibly [Jump] button??
             }
             else
             if (keys != null)
@@ -1455,23 +1419,8 @@ namespace AasxPackageExplorer
                             g, 0 + i + rowOfs, 4,
                             padding: new AnyUiThickness(2, 0, 0, 0),
                             content: "" + keys[i].value);
-
-                        // jump
-                        /* TODO (MIHO, 2021-02-16): this mechanism is ugly and only intended to be temporary!
-                           It shall be replaced (after intergrating AnyUI) by a better repo handling */  
-                        if (noEditJumpLambda != null && i== 0)
-                        {
-                            var jmpBtn = AddSmallButtonTo(
-                                g, 0 + + rowOfs, 5,
-                                margin: new Thickness(2, 2, 2, 2),
-                                padding: new Thickness(5, 0, 5, 0),
-                                content: "Jump");
-                            jmpBtn.Click += (s, e) =>
-                            {
-                                noEditJumpLambda.Invoke(keys);
-                            };
-                        }
                     }
+
                     else
                     {
                         // save in current context
