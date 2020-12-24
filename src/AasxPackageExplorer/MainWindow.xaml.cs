@@ -21,12 +21,12 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using AasxIntegrationBase;
+using AasxPackageLogic;
 using AasxWpfControlLibrary;
 using AasxWpfControlLibrary.PackageCentral;
 using AdminShellEvents;
 using AdminShellNS;
 using AnyUi;
-using AnyUi.AAS;
 using ExhaustiveMatch = ExhaustiveMatching.ExhaustiveMatch;
 
 namespace AasxPackageExplorer

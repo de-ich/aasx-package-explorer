@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AasxWpfControlLibrary"
+             xmlns:local="clr-namespace:AasxPackageExplorer"
+             xmlns:anyui="clr-namespace:AnyUi"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="300"
              Loaded="UserControl_Loaded" MouseLeave="UserControl_MouseLeave"
@@ -152,6 +153,10 @@
     <ScrollViewer> -->
     
     <Grid>
+        <Grid.Resources>
+            <anyui:AnyUiBrushToWpfBrushConverter x:Key="AnyUiBrushToWpfBrushConverter" />
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -223,9 +228,11 @@
                                     <Image Grid.Row="0" Grid.Column="1" 
                                            Source="{StaticResource Icon_AASX}" Width="40" Height="40"/>
 
-                                    <Border Grid.Row="0" Grid.Column="1"
-                                            BorderBrush="{Binding Path=VisualLabelBackground}" Background="{Binding Path=VisualLabelBackground}" CornerRadius="4" Margin="4">
-                                        <TextBlock Text="{Binding Path=VisualLabelText}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                    <Border BorderBrush="{Binding Path=VisualLabelBackground, Converter={StaticResource AnyUiBrushToWpfBrushConverter}}" 
+                                            Background="{Binding Path=VisualLabelBackground, Converter={StaticResource AnyUiBrushToWpfBrushConverter}}" 
+                                            CornerRadius="4" Margin="4">
+                                        <TextBlock Text="{Binding Path=VisualLabelText}" Foreground="White" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
                                     </Border>
 
                                     <Border Grid.Row="0" Grid.Column="1"
