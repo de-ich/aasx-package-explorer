@@ -3152,6 +3152,38 @@ namespace AasxPackageExplorer
             public bool showDataPanel = true;
         }
 
+        // TODO (MIHO, 2020-12-24): check if required
+        private DispLevelColors GetLevelColorsFromResources()
+        {
+            // ReSharper disable CoVariantArrayConversion            
+            var res = new DispLevelColors()
+            {
+                MainSection = new AnyUiBrushTuple(
+                    AnyUiDisplayContextWpf.GetAnyUiBrush((SolidColorBrush)
+                        System.Windows.Application.Current.Resources["DarkestAccentColor"]),
+                    AnyUiBrushes.White),
+                SubSection = new AnyUiBrushTuple(
+                    AnyUiDisplayContextWpf.GetAnyUiBrush((SolidColorBrush)
+                        System.Windows.Application.Current.Resources["LightAccentColor"]),
+                    AnyUiBrushes.Black),
+                SubSubSection = new AnyUiBrushTuple(
+                    AnyUiDisplayContextWpf.GetAnyUiBrush((SolidColorBrush)
+                        System.Windows.Application.Current.Resources["LightAccentColor"]),
+                    AnyUiBrushes.Black),
+                HintSeverityHigh = new AnyUiBrushTuple(
+                    AnyUiDisplayContextWpf.GetAnyUiBrush((SolidColorBrush)
+                        System.Windows.Application.Current.Resources["FocusErrorBrush"]),
+                    AnyUiBrushes.White),
+                HintSeverityNotice = new AnyUiBrushTuple(
+                    AnyUiDisplayContextWpf.GetAnyUiBrush((SolidColorBrush)
+                        System.Windows.Application.Current.Resources["LightAccentColor"]),
+                    AnyUiDisplayContextWpf.GetAnyUiBrush((SolidColorBrush)
+                        System.Windows.Application.Current.Resources["DarkestAccentColor"]))
+            };
+            // ReSharper enable CoVariantArrayConversion
+            return res;
+        }
+
         public DisplayRenderHints DisplayOrEditVisualAasxElement(
             PackageCentral packages,
             VisualElementGeneric entity,
