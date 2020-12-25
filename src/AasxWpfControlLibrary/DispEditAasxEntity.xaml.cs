@@ -3411,6 +3411,55 @@ namespace AasxPackageExplorer
                 helper.AddGroup(stack, "Entity is unknown!", helper.levelColors.MainSection);
 
             // now render master stack
+#if __export_BLAZOR
+            var fn = @"fileEdit.json";
+            if (!editMode)
+            {
+                count = 0;
+                var jsonSerializerSettings = new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.All,
+                    Formatting = Formatting.Indented
+                };
+                var json = JsonConvert.SerializeObject(stack, jsonSerializerSettings);
+                System.IO.File.WriteAllText(fn, json);
+            }
+            if (editMode)
+            {
+                if (true && count == 2)
+                {
+                    count = 0;
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        // SerializationBinder = new DisplayNameSerializationBinder(
+                        //    new[] { typeof(AasxIntegrationBase.AasForms.FormDescListOfElement), typeof(AasxIntegrationBase.AasForms.FormDescProperty) }),
+                        // SerializationBinder = new DisplayNameSerializationBinder(
+                        //     new[] { typeof(AnyUiStackPanel), typeof(AnyUiUIElement) }),
+                        // NullValueHandling = NullValueHandling.Ignore,
+                        ReferenceLoopHandling = ReferenceLoopHandling.Error,
+                        TypeNameHandling = TypeNameHandling.All,
+                        Formatting = Formatting.Indented
+                    };
+
+                    //if (stack is AnyUiPanel pan)
+                    //{
+                    //    for (int i = 0; i < pan.Children.Count; i++)
+                    //    {
+                    //        var json = JsonConvert.SerializeObject(pan.Children[i], settings);
+                    //        System.IO.File.WriteAllText(fn+"."+i, json);
+                    //    }
+                    //}
+                    var json = JsonConvert.SerializeObject(stack, settings);
+                    System.IO.File.WriteAllText(fn, json);
+                }
+                count++;
+                /*
+                var writer = new System.Xml.Serialization.XmlSerializer(typeof(AnyUiUIElement));
+                var wfile = new System.IO.StreamWriter(@"c:\development\fileEdit.xml");
+                writer.Serialize(wfile, stack);
+                wfile.Close();
+                */
+            }
 
 #if MONOUI
 #else
