@@ -99,6 +99,7 @@
     <div><a class="xref" href="AdminShellNS.AdminShellV20.IAasElement.html">AdminShellV20.IAasElement</a></div>
     <div><span class="xref">System.IDisposable</span></div>
     <div><a class="xref" href="AdminShellNS.AdminShellV20.IGetReference.html">AdminShellV20.IGetReference</a></div>
+    <div><a class="xref" href="AdminShellNS.AdminShellV20.IGetSemanticId.html">AdminShellV20.IGetSemanticId</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -115,6 +116,9 @@
       <a class="xref" href="AdminShellNS.AdminShellV20.DataElement.html#AdminShellNS_AdminShellV20_DataElement_ValueTypeItems">AdminShellV20.DataElement.ValueTypeItems</a>
     </div>
     <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.DataElement.html#AdminShellNS_AdminShellV20_DataElement_ValueTypes_Number">AdminShellV20.DataElement.ValueTypes_Number</a>
+    </div>
+    <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_PROP_MLP">AdminShellV20.SubmodelElement.PROP_MLP</a>
     </div>
     <div>
@@ -128,6 +132,9 @@
     </div>
     <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_semanticId">AdminShellV20.SubmodelElement.semanticId</a>
+    </div>
+    <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_GetSemanticId">AdminShellV20.SubmodelElement.GetSemanticId()</a>
     </div>
     <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_qualifiers">AdminShellV20.SubmodelElement.qualifiers</a>
@@ -151,10 +158,16 @@
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_GetReference">AdminShellV20.SubmodelElement.GetReference()</a>
     </div>
     <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_FindAllParents_Predicate_AdminShellNS_AdminShellV20_Referable__System_Boolean_System_Boolean_">AdminShellV20.SubmodelElement.FindAllParents(Predicate&lt;AdminShellV20.Referable&gt;, Boolean, Boolean)</a>
+    </div>
+    <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_ToCaptionInfo">AdminShellV20.SubmodelElement.ToCaptionInfo()</a>
     </div>
     <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_ToString">AdminShellV20.SubmodelElement.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_ValueAsDouble">AdminShellV20.SubmodelElement.ValueAsDouble()</a>
     </div>
     <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_Validate_AdminShellNS_AasValidationRecordList_">AdminShellV20.SubmodelElement.Validate(AasValidationRecordList)</a>
@@ -218,7 +231,7 @@
   <h6><strong>Assembly</strong>: AasxCsharpLibrary.dll</h6>
   <h5 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MultiLanguageProperty : AdminShellV20.DataElement, AdminShellV20.IValidateEntity, AdminShellV20.IAasElement, System.IDisposable, AdminShellV20.IGetReference</code></pre>
+    <pre><code class="lang-csharp hljs">public class MultiLanguageProperty : AdminShellV20.DataElement, AdminShellV20.IValidateEntity, AdminShellV20.IAasElement, System.IDisposable, AdminShellV20.IGetReference, AdminShellV20.IGetSemanticId</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -227,7 +240,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty__ctor.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6234">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6403">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty__ctor_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.#ctor*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty__ctor" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.#ctor">MultiLanguageProperty()</h4>
@@ -242,7 +255,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty__ctor_AdminShellNS_AdminShellV20_SubmodelElement_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.%23ctor(AdminShellNS.AdminShellV20.SubmodelElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6236">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6405">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty__ctor_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.#ctor*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty__ctor_AdminShellNS_AdminShellV20_SubmodelElement_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.#ctor(AdminShellNS.AdminShellV20.SubmodelElement)">MultiLanguageProperty(AdminShellV20.SubmodelElement)</h4>
@@ -276,7 +289,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_value.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.value%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6229">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6398">View Source</a>
   </span>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_value" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.value">value</h4>
   <div class="markdown level1 summary"></div>
@@ -305,7 +318,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_valueId.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.valueId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6230">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6399">View Source</a>
   </span>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_valueId" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.valueId">valueId</h4>
   <div class="markdown level1 summary"></div>
@@ -336,7 +349,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_JsonModelType.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.JsonModelType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6220">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6389">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty_JsonModelType_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.JsonModelType*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_JsonModelType" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.JsonModelType">JsonModelType</h4>
@@ -368,7 +381,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_CreateNew_System_String_System_String_AdminShellNS_AdminShellV20_Key_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.CreateNew(System.String%2CSystem.String%2CAdminShellNS.AdminShellV20.Key)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6251">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6420">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty_CreateNew_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.CreateNew*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_CreateNew_System_String_System_String_AdminShellNS_AdminShellV20_Key_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.CreateNew(System.String,System.String,AdminShellNS.AdminShellV20.Key)">CreateNew(String, String, AdminShellV20.Key)</h4>
@@ -425,7 +438,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_GetSelfDescription.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.GetSelfDescription%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6259">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6428">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty_GetSelfDescription_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.GetSelfDescription*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_GetSelfDescription" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.GetSelfDescription">GetSelfDescription()</h4>
@@ -457,7 +470,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_AdminShellNS_AdminShellV20_LangStr_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.Set(AdminShellNS.AdminShellV20.LangStr)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6276">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6445">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.Set*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_AdminShellNS_AdminShellV20_LangStr_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.Set(AdminShellNS.AdminShellV20.LangStr)">Set(AdminShellV20.LangStr)</h4>
@@ -504,7 +517,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_AdminShellNS_AdminShellV20_LangStringSet_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.Set(AdminShellNS.AdminShellV20.LangStringSet)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6264">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6433">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.Set*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_AdminShellNS_AdminShellV20_LangStringSet_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.Set(AdminShellNS.AdminShellV20.LangStringSet)">Set(AdminShellV20.LangStringSet)</h4>
@@ -551,7 +564,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_AdminShellNS_AdminShellV20_ListOfLangStr_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.Set(AdminShellNS.AdminShellV20.ListOfLangStr)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6270">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6439">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.Set*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_AdminShellNS_AdminShellV20_ListOfLangStr_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.Set(AdminShellNS.AdminShellV20.ListOfLangStr)">Set(AdminShellV20.ListOfLangStr)</h4>
@@ -598,7 +611,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_System_String_System_String_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.Set(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6284">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6453">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.Set*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_Set_System_String_System_String_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.Set(System.String,System.String)">Set(String, String)</h4>
@@ -650,7 +663,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty_ValueAsText_System_String_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty.ValueAsText(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6289">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6458">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_MultiLanguageProperty_ValueAsText_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.ValueAsText*"></a>
   <h4 id="AdminShellNS_AdminShellV20_MultiLanguageProperty_ValueAsText_System_String_" data-uid="AdminShellNS.AdminShellV20.MultiLanguageProperty.ValueAsText(System.String)">ValueAsText(String)</h4>
@@ -707,6 +720,9 @@
   <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.IGetReference.html">AdminShellV20.IGetReference</a>
   </div>
+  <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.IGetSemanticId.html">AdminShellV20.IGetSemanticId</a>
+  </div>
 </article>
           </div>
           
@@ -718,7 +734,7 @@
                     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_MultiLanguageProperty.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.MultiLanguageProperty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6217" class="contribution-link">View Source</a>
+                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6386" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

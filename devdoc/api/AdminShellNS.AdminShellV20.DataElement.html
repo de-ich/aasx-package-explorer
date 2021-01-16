@@ -105,6 +105,7 @@
     <div><a class="xref" href="AdminShellNS.AdminShellV20.IAasElement.html">AdminShellV20.IAasElement</a></div>
     <div><span class="xref">System.IDisposable</span></div>
     <div><a class="xref" href="AdminShellNS.AdminShellV20.IGetReference.html">AdminShellV20.IGetReference</a></div>
+    <div><a class="xref" href="AdminShellNS.AdminShellV20.IGetSemanticId.html">AdminShellV20.IGetSemanticId</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -125,6 +126,9 @@
     </div>
     <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_semanticId">AdminShellV20.SubmodelElement.semanticId</a>
+    </div>
+    <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_GetSemanticId">AdminShellV20.SubmodelElement.GetSemanticId()</a>
     </div>
     <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_qualifiers">AdminShellV20.SubmodelElement.qualifiers</a>
@@ -148,6 +152,9 @@
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_GetReference">AdminShellV20.SubmodelElement.GetReference()</a>
     </div>
     <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_FindAllParents_Predicate_AdminShellNS_AdminShellV20_Referable__System_Boolean_System_Boolean_">AdminShellV20.SubmodelElement.FindAllParents(Predicate&lt;AdminShellV20.Referable&gt;, Boolean, Boolean)</a>
+    </div>
+    <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_ToCaptionInfo">AdminShellV20.SubmodelElement.ToCaptionInfo()</a>
     </div>
     <div>
@@ -155,6 +162,9 @@
     </div>
     <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_ValueAsText_System_String_">AdminShellV20.SubmodelElement.ValueAsText(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_ValueAsDouble">AdminShellV20.SubmodelElement.ValueAsDouble()</a>
     </div>
     <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.SubmodelElement.html#AdminShellNS_AdminShellV20_SubmodelElement_Validate_AdminShellNS_AasValidationRecordList_">AdminShellV20.SubmodelElement.Validate(AasValidationRecordList)</a>
@@ -218,7 +228,7 @@
   <h6><strong>Assembly</strong>: AasxCsharpLibrary.dll</h6>
   <h5 id="AdminShellNS_AdminShellV20_DataElement_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DataElement : AdminShellV20.SubmodelElement, AdminShellV20.IValidateEntity, AdminShellV20.IAasElement, System.IDisposable, AdminShellV20.IGetReference</code></pre>
+    <pre><code class="lang-csharp hljs">public class DataElement : AdminShellV20.SubmodelElement, AdminShellV20.IValidateEntity, AdminShellV20.IAasElement, System.IDisposable, AdminShellV20.IGetReference, AdminShellV20.IGetSemanticId</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -227,7 +237,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement__ctor.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6080">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6229">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_DataElement__ctor_" data-uid="AdminShellNS.AdminShellV20.DataElement.#ctor*"></a>
   <h4 id="AdminShellNS_AdminShellV20_DataElement__ctor" data-uid="AdminShellNS.AdminShellV20.DataElement.#ctor">DataElement()</h4>
@@ -242,7 +252,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement__ctor_AasxCompatibilityModels_AdminShellV10_DataElement_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.%23ctor(AasxCompatibilityModels.AdminShellV10.DataElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6087">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6236">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_DataElement__ctor_" data-uid="AdminShellNS.AdminShellV20.DataElement.#ctor*"></a>
   <h4 id="AdminShellNS_AdminShellV20_DataElement__ctor_AasxCompatibilityModels_AdminShellV10_DataElement_" data-uid="AdminShellNS.AdminShellV20.DataElement.#ctor(AasxCompatibilityModels.AdminShellV10.DataElement)">DataElement(AdminShellV10.DataElement)</h4>
@@ -274,7 +284,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement__ctor_AdminShellNS_AdminShellV20_DataElement_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.%23ctor(AdminShellNS.AdminShellV20.DataElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6084">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6233">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_DataElement__ctor_" data-uid="AdminShellNS.AdminShellV20.DataElement.#ctor*"></a>
   <h4 id="AdminShellNS_AdminShellV20_DataElement__ctor_AdminShellNS_AdminShellV20_DataElement_" data-uid="AdminShellNS.AdminShellV20.DataElement.#ctor(AdminShellNS.AdminShellV20.DataElement)">DataElement(AdminShellV20.DataElement)</h4>
@@ -306,7 +316,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement__ctor_AdminShellNS_AdminShellV20_SubmodelElement_.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.%23ctor(AdminShellNS.AdminShellV20.SubmodelElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6082">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6231">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_DataElement__ctor_" data-uid="AdminShellNS.AdminShellV20.DataElement.#ctor*"></a>
   <h4 id="AdminShellNS_AdminShellV20_DataElement__ctor_AdminShellNS_AdminShellV20_SubmodelElement_" data-uid="AdminShellNS.AdminShellV20.DataElement.#ctor(AdminShellNS.AdminShellV20.SubmodelElement)">DataElement(AdminShellV20.SubmodelElement)</h4>
@@ -340,7 +350,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement_ValueType_BOOLEAN.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.ValueType_BOOLEAN%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6069">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6212">View Source</a>
   </span>
   <h4 id="AdminShellNS_AdminShellV20_DataElement_ValueType_BOOLEAN" data-uid="AdminShellNS.AdminShellV20.DataElement.ValueType_BOOLEAN">ValueType_BOOLEAN</h4>
   <div class="markdown level1 summary"></div>
@@ -369,7 +379,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement_ValueType_DATE.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.ValueType_DATE%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6068">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6211">View Source</a>
   </span>
   <h4 id="AdminShellNS_AdminShellV20_DataElement_ValueType_DATE" data-uid="AdminShellNS.AdminShellV20.DataElement.ValueType_DATE">ValueType_DATE</h4>
   <div class="markdown level1 summary"></div>
@@ -398,7 +408,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement_ValueType_STRING.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.ValueType_STRING%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6067">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6210">View Source</a>
   </span>
   <h4 id="AdminShellNS_AdminShellV20_DataElement_ValueType_STRING" data-uid="AdminShellNS.AdminShellV20.DataElement.ValueType_STRING">ValueType_STRING</h4>
   <div class="markdown level1 summary"></div>
@@ -427,7 +437,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement_ValueTypeItems.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.ValueTypeItems%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6071">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6214">View Source</a>
   </span>
   <h4 id="AdminShellNS_AdminShellV20_DataElement_ValueTypeItems" data-uid="AdminShellNS.AdminShellV20.DataElement.ValueTypeItems">ValueTypeItems</h4>
   <div class="markdown level1 summary"></div>
@@ -451,6 +461,35 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement_ValueTypes_Number.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.ValueTypes_Number%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6223">View Source</a>
+  </span>
+  <h4 id="AdminShellNS_AdminShellV20_DataElement_ValueTypes_Number" data-uid="AdminShellNS.AdminShellV20.DataElement.ValueTypes_Number">ValueTypes_Number</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string[] ValueTypes_Number</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -458,7 +497,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement_GetSelfDescription.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement.GetSelfDescription%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6092">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6241">View Source</a>
   </span>
   <a id="AdminShellNS_AdminShellV20_DataElement_GetSelfDescription_" data-uid="AdminShellNS.AdminShellV20.DataElement.GetSelfDescription*"></a>
   <h4 id="AdminShellNS_AdminShellV20_DataElement_GetSelfDescription" data-uid="AdminShellNS.AdminShellV20.DataElement.GetSelfDescription">GetSelfDescription()</h4>
@@ -498,6 +537,9 @@
   <div>
       <a class="xref" href="AdminShellNS.AdminShellV20.IGetReference.html">AdminShellV20.IGetReference</a>
   </div>
+  <div>
+      <a class="xref" href="AdminShellNS.AdminShellV20.IGetSemanticId.html">AdminShellV20.IGetSemanticId</a>
+  </div>
 </article>
           </div>
           
@@ -509,7 +551,7 @@
                     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AdminShellNS_AdminShellV20_DataElement.md&amp;value=---%0Auid%3A%20AdminShellNS.AdminShellV20.DataElement%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6065" class="contribution-link">View Source</a>
+                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs/#L6208" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
