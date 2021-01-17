@@ -170,8 +170,8 @@ Michael Hoffmeister,
 
 ## AasxCsharpLibrary\AdminShell.cs
 
-[Line 1207, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L1207
+[Line 1139, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L1139
 ), 
 MIHO,
 2020-08-30
@@ -179,32 +179,32 @@ MIHO,
     this does not prevent the corner case, that we could have
     * multiple dataSpecificationIEC61360 in this list, which would be an error
 
-[Line 2951, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2951
+[Line 2878, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2878
 ), 
 MIHO,
 2020-08-27
 
     According to spec, cardinality is [1..1][1..n]
 
-[Line 2955, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2955
+[Line 2882, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2882
 ), 
 MIHO,
 2020-08-27
 
     According to spec, cardinality is [0..1][1..n]
 
-[Line 2986, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2986
+[Line 2913, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L2913
 ), 
 MIHO,
 2020-08-27
 
     According to spec, cardinality is [0..1][1..n]
 
-[Line 3265, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L3265
+[Line 3192, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L3192
 ), 
 MIHO,
 2020-08-30
@@ -212,24 +212,24 @@ MIHO,
     align wording of the member ("embeddedDataSpecification") with the 
     * wording of the other entities ("hasDataSpecification")
 
-[Line 3966, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L3966
+[Line 3877, column 29](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L3877
 ), 
 MIHO,
 2020-08-26
 
     not very elegant, yet. Avoid temporary collection
 
-[Line 4646, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L4646
+[Line 4550, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L4550
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     check, if Json has Qualifiers or not
 
-[Line 5423, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L5423
+[Line 5292, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShell.cs#L5292
 ), 
 MIHO,
 2020-07-31
@@ -238,53 +238,42 @@ MIHO,
 
 ## AasxCsharpLibrary\AdminShellPackageEnv.cs
 
-[Line 268, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L268
+[Line 241, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L241
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     use a unified function to create a serializer
 
-[Line 454, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L454
+[Line 427, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L427
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     use a unified function to create a serializer
 
-[Line 497, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L497
+[Line 470, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L470
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     use a unified function to create a serializer
 
-[Line 532, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L532
+[Line 505, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L505
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     use a unified function to create a serializer
-
-[Line 586, column 37](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellPackageEnv.cs#L586
-), 
-MIHO,
-2021-01-02
-
-    check again.
-    * Revisiting this code after a while, and after
-    * the code has undergo some changes by MR, the following copy command needed
-    * to be amended with a if to protect against self-copy.
 
 ## AasxCsharpLibrary\AdminShellUtil.cs
 
-[Line 212, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellUtil.cs#L212
+[Line 195, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary/AdminShellUtil.cs#L195
 ), 
 MIHO,
 2020-11-12
@@ -355,16 +344,6 @@ mristin,
 2020-11-13
 
     @MIHO please check -- Options should be null, not empty?
-
-## AasxPluginPlotting\PlottingViewControl.xaml.cs
-
-[Line 225, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxPluginPlotting/PlottingViewControl.xaml.cs#L225
-), 
-MIHO,
-2021-01-04
-
-    consider at least to include MLP, as well
 
 ## AasxPluginUaNetClient\UASampleClient.cs
 
@@ -614,19 +593,20 @@ Michael Hoffmeister,
 
     Fraunhofer IOSB: Check ReSharper settings to be OK
 
-## AasxWpfControlLibrary\DiplayVisualAasxElements.xaml.cs
+## AasxWpfControlLibrary\AasxFileRepository.cs
 
-[Line 434, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DiplayVisualAasxElements.xaml.cs#L434
+[Line 592, column 9](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/AasxFileRepository.cs#L592
 ), 
 MIHO,
-2021-01-04
+2020-08-05
 
-    check to replace all occurences of RefreshFromMainData() by
-    * making the tree-items ObservableCollection and INotifyPropertyChanged
+    refacture this with DispEditHelper.cs
 
-[Line 753, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DiplayVisualAasxElements.xaml.cs#L753
+## AasxWpfControlLibrary\DiplayVisualAasxElements.xaml.cs
+
+[Line 721, column 21](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DiplayVisualAasxElements.xaml.cs#L721
 ), 
 MIHO,
 2020-07-21
@@ -635,8 +615,8 @@ MIHO,
 
 ## AasxWpfControlLibrary\DispEditAasxEntity.xaml.cs
 
-[Line 1550, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditAasxEntity.xaml.cs#L1550
+[Line 1549, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditAasxEntity.xaml.cs#L1549
 ), 
 MIHO,
 2020-09-01
@@ -645,16 +625,16 @@ MIHO,
 
 ## AasxWpfControlLibrary\DispEditHelperBasics.cs
 
-[Line 1304, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1304
+[Line 1303, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1303
 ), 
 Michael Hoffmeister,
 2020-08-01
 
     possibly [Jump] button??
 
-[Line 1484, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1484
+[Line 1483, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/DispEditHelperBasics.cs#L1483
 ), 
 Michael Hoffmeister,
 2020-08-01
@@ -679,116 +659,10 @@ Michael Hoffmeister,
 
     Operation mssing here?
 
-## AasxWpfControlLibrary\PackageCentral\PackageCentral.cs
-
-[Line 237, column 9](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageCentral.cs#L237
-), 
-MIHO,
-2021-01-07
-
-    rename to plural
-
-## AasxWpfControlLibrary\PackageCentral\PackageConnectorHttpRest.cs
-
-[Line 274, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageConnectorHttpRest.cs#L274
-), 
-MIHO,
-2021-01-03
-
-    check to handle more SMEs for AasEventMsgUpdateValue
-
-[Line 275, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageConnectorHttpRest.cs#L275
-), 
-MIHO,
-2021-01-04
-
-    ValueIds still missing ..
-
-## AasxWpfControlLibrary\PackageCentral\PackageContainerBase.cs
-
-[Line 238, column 29](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs#L238
-), 
-MIHO,
-2021-01-03
-
-    check to handle more SMEs for AasEventMsgUpdateValue
-
-## AasxWpfControlLibrary\PackageCentral\PackageContainerBuffered.cs
-
-[Line 66, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBuffered.cs#L66
-), 
-MIHO,
-2020-12-25
-
-    think of creating a temp file which resemebles the source file
-
-## AasxWpfControlLibrary\PackageCentral\PackageContainerListBase.cs
-
-[Line 349, column 9](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerListBase.cs#L349
-), 
-MIHO,
-2020-08-05
-
-    refacture this with DispEditHelper.cs
-
-## AasxWpfControlLibrary\PackageCentral\PackageContainerListHttpRestRepository.cs
-
-[Line 103, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerListHttpRestRepository.cs#L103
-), 
-MIHO,
-2021-01-08
-
-    check, how to make absolute
-
-## AasxWpfControlLibrary\PackageCentral\PackageContainerListOfListControl.xaml.cs
-
-[Line 115, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerListOfListControl.xaml.cs#L115
-), 
-MIHO,
-2021-01-09
-
-    check to use moveup/down of the PackageContainerListBase
-
-[Line 126, column 21](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerListOfListControl.xaml.cs#L126
-), 
-MIHO,
-2021-01-09
-
-    check to use moveup/down of the PackageContainerListBase
-
-## AasxWpfControlLibrary\PackageCentral\PackageContainerLocalFile.cs
-
-[Line 141, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerLocalFile.cs#L141
-), 
-MIHO,
-2020-12-15
-
-    consider removing "indirectLoadSave" from AdminShellPackageEnv
-
-## AasxWpfControlLibrary\PackageCentral\PackageContainerRepoItem.cs
-
-[Line 122, column 9](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerRepoItem.cs#L122
-), 
-MIHO,
-2021-01-08
-
-    add SubmodelIds
-
 ## AasxWpfControlLibrary\VisualAasxElements.cs
 
-[Line 152, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/VisualAasxElements.cs#L152
+[Line 143, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/VisualAasxElements.cs#L143
 ), 
 MIHO,
 2020-07-31
