@@ -9481,15 +9481,12 @@
       "version": ""
     },
     {
-      "log_codes": [
-        "InvalidFileLink"
-      ],
       "type": "Toc",
       "source_relative_path": "getting-started/toc.yml",
       "output": {
         ".html": {
           "relative_path": "getting-started/toc.html",
-          "hash": "9xdIcFs9WhN6OBwitBXuiA=="
+          "hash": "DB5RIXIZBBw9wYEoEOVMFg=="
         }
       },
       "is_incremental": false,
