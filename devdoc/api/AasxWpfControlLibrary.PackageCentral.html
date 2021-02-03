@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PackageCentral
+    <title>Namespace AasxWpfControlLibrary.PackageCentral
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PackageCentral
+    <meta name="title" content="Namespace AasxWpfControlLibrary.PackageCentral
    ">
     <meta name="generator" content="docfx 2.56.1.0">
     
@@ -80,292 +80,175 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="AasxWpfControlLibrary.PackageCentral">
   
-  
-  <h1 id="AasxWpfControlLibrary_PackageCentral" data-uid="AasxWpfControlLibrary.PackageCentral" class="text-break">Class PackageCentral
+  <h1 id="AasxWpfControlLibrary_PackageCentral" data-uid="AasxWpfControlLibrary.PackageCentral" class="text-break">Namespace AasxWpfControlLibrary.PackageCentral
   </h1>
-  <div class="markdown level0 summary"><p>This class (more: a singleton) centralized the information on open package environments for the
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageCentral.html">PackageCentral</a></h4>
+      <section><p>This class (more: a singleton) centralized the information on open package environments for the
 Pakcage Explorer. It hold Main and Aux packages, but also the open file repositories. In future,
 it might store multiple open packages for the same time, as AASX Server might require, and Main
-might only an index into these.</p>
-</div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">PackageCentral</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="AasxWpfControlLibrary.html">AasxWpfControlLibrary</a></h6>
-  <h6><strong>Assembly</strong>: AasxWpfControlLibrary.dll</h6>
-  <h5 id="AasxWpfControlLibrary_PackageCentral_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PackageCentral</code></pre>
-  </div>
-  <h3 id="properties">Properties
+might only an index into these.
+Note: this class works on application level; it means to be resilient, reports errors to the Log
+instead of throwing exceptions, works in small portions and such ..</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageCentralException.html">PackageCentralException</a></h4>
+      <section><p>Excpetions thrown when handling PackageContainer or PackageCentral</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageCentralItem.html">PackageCentralItem</a></h4>
+      <section><p>This class is an item maintained by the PackageCentral.
+Note: this class works on application level; it means to be resilient, reports errors to the Log
+instead of throwing exceptions, works in small portions and such ..</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageConnectorBase.html">PackageConnectorBase</a></h4>
+      <section><p>A package connector create a &quot;live&quot; link to a package residing on another server.
+The &quot;live&quot; link coulbe be e.g. events based, but also be a OPC UA connection, a
+file watcher instance, a ODBC connection or somethink else.
+The thinking is, that a FULL package is being retrieved by a PackageConnector,
+while parts are being retrieved or updated (in both directions) by a PackageConnector.
+Therefore, the PackageConnector is seen as an extension, ALWAYS maintaining the link
+to an underlying <code>PackageContainerBase.</code></p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageConnectorEventStore.html">PackageConnectorEventStore</a></h4>
+      <section><p>Holds a memory of event messages delivered by PackageCentral.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageConnectorException.html">PackageConnectorException</a></h4>
+      <section><p>Exceptions thrown when handling PackageConnectors</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageConnectorHttpRest.html">PackageConnectorHttpRest</a></h4>
+      <section><p>Holds a live-link to AAS exposing the (standadized) HTTP REST interface.
+Note: as of Jan 2021, the REST routes of contemporary aasx-server (prototype AO, MIHO) are being used.
+In a later stage, this shall switch to the &quot;official&quot; HTPP REST routes of AASiD.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.html">PackageContainerBase</a></h4>
+      <section><p>The container wraps an AdminShellPackageEnv with the availability to upload, download, re-new the package env
+and to transport further information (future use).</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBuffered.html">PackageContainerBuffered</a></h4>
+      <section><p>This container add functionalities for &quot;indirect load/ save&quot; and backing up file contents</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerCredentials.html">PackageContainerCredentials</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerException.html">PackageContainerException</a></h4>
+      <section><p>Exceptions thrown when handling PackageContainer or PackageCentral</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerFactory.html">PackageContainerFactory</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerGuess.html">PackageContainerGuess</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListBase.html">PackageContainerListBase</a></h4>
+      <section><p>This class takes over source code from the legacy <code>AasxFileRepoBase</code>.
+It therefore realizes a list of items, which associated some ids (AasId, AssetId, SubmodelIds) with
+AASX Package files.
+In DEC 2020, the PackageComtainers were introduced to leverage the hosting of AASX Package files and
+to enhance and abstract them by providing online connections and event management.
+In JAN 2021, the idea is now to join these capabilities.
+This class implements a list of <code>PackageContainerRepoItem</code>, so it can provide information, which
+AASX Package file is to be loaded and hosted and functinality, HOW this can be done.
+This class is intended to be a base class, so classes for local repos, AAS repos, AAS registries are
+deriving from it.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListControl.html">PackageContainerListControl</a></h4>
+      <section><p>PackageContainerListControl</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListFactory.html">PackageContainerListFactory</a></h4>
+      <section><p>A little factory class to help creating the correct instances from <code>AasxFileRepoBase</code>.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListHttpRestRegistry.html">PackageContainerListHttpRestRegistry</a></h4>
+      <section><p>AasxFileRepository, which is build temporarily from a AAS registry query.
+Just a deriative from <code>PackageContainerListBase</code>. Only small additions.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListHttpRestRepository.html">PackageContainerListHttpRestRepository</a></h4>
+      <section><p>AasxFileRepository, which is held synchronized with a AAS REST repository interface.
+Just a deriative from <code>PackageContainerListBase</code>. Only small additions.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListLastRecentlyUsed.html">PackageContainerListLastRecentlyUsed</a></h4>
+      <section><p>A container list (&quot;repository&quot; of local files) which lies on local storage.
+Just a deriative from <code>PackageContainerListBase</code>. Only small additions.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListLocal.html">PackageContainerListLocal</a></h4>
+      <section><p>A container list (&quot;repository&quot; of local files) which lies on local storage.
+Just a deriative from <code>PackageContainerListBase</code>. Only small additions.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListLocalBase.html">PackageContainerListLocalBase</a></h4>
+      <section><p>A container list (&quot;repository&quot; of local files) which lies on local storage.
+Just a deriative from <code>PackageContainerListBase</code>. Only small additions.
+Note: this is a base class for the PackageContainerListLocal, PackageContainerListLastRecentlyUsed</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListOfList.html">PackageContainerListOfList</a></h4>
+      <section><p>This class is a business logic for maintaining a list of repositories. This could be &quot;informal&quot;
+repos load from a JSON file (AasxFileRepo) or repos given by AAS(X) repositories and registries.
+This business logic object is intended to be paired with a view / view model.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListOfListControl.html">PackageContainerListOfListControl</a></h4>
+      <section><p>PackageContainerListOfListControl</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerLocalFile.html">PackageContainerLocalFile</a></h4>
+      <section><p>This container represents a file, which is locally accessible via the computer's file system.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerNetworkHttpFile.html">PackageContainerNetworkHttpFile</a></h4>
+      <section><p>This container represents a file, which is retrieved by an network/ HTTP commands and
+buffered locally.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerOptionsBase.html">PackageContainerOptionsBase</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerRepoItem.html">PackageContainerRepoItem</a></h4>
+      <section><p>This (rather base) container class integrates the former <code>AasxFileRepoItem</code> class, which implemented
+back in JAN 2021 the (updated) AASX file repository (a serialized list of file informations, which was
+extended to a set of repo lists clickable by the user).
+In this version, this class takes over (on source code level) the members of <code>AasxFileRepoItem</code>
+and associated code and makes the legacy code therefore OBSOLETE (and to be removed).
+The idea is, to inject the visual properties and the ability of serialization of information to
+JSON files directly into the single container class and therefore unify the capabilities of these
+two class systems.
+Note: As the would mean, that deriatives from this class will be serialized by JSON, for all
+runtime properties a [JsonIgnore] attribute is required in ALL DERIVED CLASSES.</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerTakenOver.html">PackageContainerTakenOver</a></h4>
+      <section><p>This container was taken over from AasxPackageEnv and lacks therefore further
+load/ store information</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions.html">PackCntRuntimeOptions</a></h4>
+      <section><p>Extendable run-time options</p>
+</section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.ProgressableStreamContent.html">ProgressableStreamContent</a></h4>
+      <section></section>
+    <h3 id="interfaces">Interfaces
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_Aux.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.Aux%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L58">View Source</a>
-  </span>
-  <a id="AasxWpfControlLibrary_PackageCentral_Aux_" data-uid="AasxWpfControlLibrary.PackageCentral.Aux*"></a>
-  <h4 id="AasxWpfControlLibrary_PackageCentral_Aux" data-uid="AasxWpfControlLibrary.PackageCentral.Aux">Aux</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AdminShellPackageEnv Aux { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="AdminShellNS.AdminShellPackageEnv.html">AdminShellPackageEnv</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_AuxAvailable.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.AuxAvailable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L82">View Source</a>
-  </span>
-  <a id="AasxWpfControlLibrary_PackageCentral_AuxAvailable_" data-uid="AasxWpfControlLibrary.PackageCentral.AuxAvailable*"></a>
-  <h4 id="AasxWpfControlLibrary_PackageCentral_AuxAvailable" data-uid="AasxWpfControlLibrary.PackageCentral.AuxAvailable">AuxAvailable</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool AuxAvailable { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_AuxContainer.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.AuxContainer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L47">View Source</a>
-  </span>
-  <a id="AasxWpfControlLibrary_PackageCentral_AuxContainer_" data-uid="AasxWpfControlLibrary.PackageCentral.AuxContainer*"></a>
-  <h4 id="AasxWpfControlLibrary_PackageCentral_AuxContainer" data-uid="AasxWpfControlLibrary.PackageCentral.AuxContainer">AuxContainer</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PackageContainer AuxContainer { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="AasxWpfControlLibrary.PackageContainer.html">PackageContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_FileRepository.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.FileRepository%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L66">View Source</a>
-  </span>
-  <a id="AasxWpfControlLibrary_PackageCentral_FileRepository_" data-uid="AasxWpfControlLibrary.PackageCentral.FileRepository*"></a>
-  <h4 id="AasxWpfControlLibrary_PackageCentral_FileRepository" data-uid="AasxWpfControlLibrary.PackageCentral.FileRepository">FileRepository</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AasxFileRepository FileRepository { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="AasxPackageExplorer.AasxFileRepository.html">AasxFileRepository</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_Main.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.Main%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L52">View Source</a>
-  </span>
-  <a id="AasxWpfControlLibrary_PackageCentral_Main_" data-uid="AasxWpfControlLibrary.PackageCentral.Main*"></a>
-  <h4 id="AasxWpfControlLibrary_PackageCentral_Main" data-uid="AasxWpfControlLibrary.PackageCentral.Main">Main</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AdminShellPackageEnv Main { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="AdminShellNS.AdminShellPackageEnv.html">AdminShellPackageEnv</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_MainAvailable.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.MainAvailable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L72">View Source</a>
-  </span>
-  <a id="AasxWpfControlLibrary_PackageCentral_MainAvailable_" data-uid="AasxWpfControlLibrary.PackageCentral.MainAvailable*"></a>
-  <h4 id="AasxWpfControlLibrary_PackageCentral_MainAvailable" data-uid="AasxWpfControlLibrary.PackageCentral.MainAvailable">MainAvailable</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool MainAvailable { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_MainContainer.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.MainContainer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L42">View Source</a>
-  </span>
-  <a id="AasxWpfControlLibrary_PackageCentral_MainContainer_" data-uid="AasxWpfControlLibrary.PackageCentral.MainContainer*"></a>
-  <h4 id="AasxWpfControlLibrary_PackageCentral_MainContainer" data-uid="AasxWpfControlLibrary.PackageCentral.MainContainer">MainContainer</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PackageContainer MainContainer { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="AasxWpfControlLibrary.PackageContainer.html">PackageContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_MainStorable.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.MainStorable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L77">View Source</a>
-  </span>
-  <a id="AasxWpfControlLibrary_PackageCentral_MainStorable_" data-uid="AasxWpfControlLibrary.PackageCentral.MainStorable*"></a>
-  <h4 id="AasxWpfControlLibrary_PackageCentral_MainStorable" data-uid="AasxWpfControlLibrary.PackageCentral.MainStorable">MainStorable</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool MainStorable { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.IPackageConnectorManageEvents.html">IPackageConnectorManageEvents</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.IPackageContainerFind.html">IPackageContainerFind</a></h4>
+      <section><p>This interface allows to find some <code>PackageContainerRepoItem</code> by asking for AAS or AssetId.
+It does not intend to be a full fledged query interface, but allow to retrieve what is usful for
+automatic Reference link following etc.</p>
+</section>
+    <h3 id="enums">Enums
+  </h3>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageCentral.Selector.html">PackageCentral.Selector</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.BackupType.html">PackageContainerBase.BackupType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.CopyMode.html">PackageContainerBase.CopyMode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Format.html">PackageContainerBase.Format</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerListControl.CustomButton.html">PackageContainerListControl.CustomButton</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerRepoItem.VisualStateEnum.html">PackageContainerRepoItem.VisualStateEnum</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions.Progress.html">PackCntRuntimeOptions.Progress</a></h4>
+      <section></section>
+    <h3 id="delegates">Delegates
+  </h3>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions.AskForCredentialsHandler.html">PackCntRuntimeOptions.AskForCredentialsHandler</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions.AskForSelectFromListHandler.html">PackCntRuntimeOptions.AskForSelectFromListHandler</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions.ProgressChangedHandler.html">PackCntRuntimeOptions.ProgressChangedHandler</a></h4>
+      <section></section>
 </article>
           </div>
           
@@ -373,12 +256,6 @@ might only an index into these.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li>
-                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral.cs/#L35" class="contribution-link">View Source</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

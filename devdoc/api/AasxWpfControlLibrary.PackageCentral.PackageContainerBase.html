@@ -1,0 +1,963 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PackageContainerBase
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PackageContainerBase
+   ">
+    <meta name="generator" content="docfx 2.56.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/adminshellio-48x48.jpg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase">
+  
+  
+  <h1 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase" class="text-break">Class PackageContainerBase
+  </h1>
+  <div class="markdown level0 summary"><p>The container wraps an AdminShellPackageEnv with the availability to upload, download, re-new the package env
+and to transport further information (future use).</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">PackageContainerBase</span></div>
+      <div class="level2"><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerRepoItem.html">PackageContainerRepoItem</a></div>
+      <div class="level2"><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerTakenOver.html">PackageContainerTakenOver</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="AasxWpfControlLibrary.PackageCentral.IPackageConnectorManageEvents.html">IPackageConnectorManageEvents</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AasxWpfControlLibrary.PackageCentral.html">AasxWpfControlLibrary.PackageCentral</a></h6>
+  <h6><strong>Assembly</strong>: AasxWpfControlLibrary.dll</h6>
+  <h5 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PackageContainerBase : IPackageConnectorManageEvents</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L124">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.#ctor*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.#ctor">PackageContainerBase()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PackageContainerBase()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor_AasxWpfControlLibrary_PackageCentral_PackageCentral_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.%23ctor(AasxWpfControlLibrary.PackageCentral.PackageCentral)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L126">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.#ctor*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor_AasxWpfControlLibrary_PackageCentral_PackageCentral_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.#ctor(AasxWpfControlLibrary.PackageCentral.PackageCentral)">PackageContainerBase(PackageCentral)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PackageContainerBase(PackageCentral packageCentral)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageCentral.html">PackageCentral</a></td>
+        <td><span class="parametername">packageCentral</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor_AasxWpfControlLibrary_PackageCentral_PackageContainerBase_CopyMode_AasxWpfControlLibrary_PackageCentral_PackageContainerBase_AasxWpfControlLibrary_PackageCentral_PackageCentral_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.%23ctor(AasxWpfControlLibrary.PackageCentral.PackageContainerBase.CopyMode%2CAasxWpfControlLibrary.PackageCentral.PackageContainerBase%2CAasxWpfControlLibrary.PackageCentral.PackageCentral)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L131">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.#ctor*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase__ctor_AasxWpfControlLibrary_PackageCentral_PackageContainerBase_CopyMode_AasxWpfControlLibrary_PackageCentral_PackageContainerBase_AasxWpfControlLibrary_PackageCentral_PackageCentral_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.#ctor(AasxWpfControlLibrary.PackageCentral.PackageContainerBase.CopyMode,AasxWpfControlLibrary.PackageCentral.PackageContainerBase,AasxWpfControlLibrary.PackageCentral.PackageCentral)">PackageContainerBase(PackageContainerBase.CopyMode, PackageContainerBase, PackageCentral)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PackageContainerBase(PackageContainerBase.CopyMode mode, PackageContainerBase other, PackageCentral packageCentral = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.CopyMode.html">PackageContainerBase.CopyMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.html">PackageContainerBase</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageCentral.html">PackageCentral</a></td>
+        <td><span class="parametername">packageCentral</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase__location.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase._location%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L108">View Source</a>
+  </span>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase__location" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase._location">_location</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected string _location</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_ConnectorPrimary.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.ConnectorPrimary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L99">View Source</a>
+  </span>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_ConnectorPrimary" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.ConnectorPrimary">ConnectorPrimary</h4>
+  <div class="markdown level1 summary"><p>If the connection shall stay alive, a appropriate connector needs to be created.
+Note, that the connector is an indeppendent object, but will have a link to this
+container!</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PackageConnectorBase ConnectorPrimary</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageConnectorBase.html">PackageConnectorBase</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_ConnectorSecondary.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.ConnectorSecondary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L106">View Source</a>
+  </span>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_ConnectorSecondary" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.ConnectorSecondary">ConnectorSecondary</h4>
+  <div class="markdown level1 summary"><p>Holds secondary connectors, which might also want to register to the SAME AAS!
+Examples could be plugins for different interface standards.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;PackageConnectorBase&gt; ConnectorSecondary</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageConnectorBase.html">PackageConnectorBase</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_ContainerOptions.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.ContainerOptions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L91">View Source</a>
+  </span>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_ContainerOptions" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.ContainerOptions">ContainerOptions</h4>
+  <div class="markdown level1 summary"><p>Holds the container (user) options in a base oder derived class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PackageContainerOptionsBase ContainerOptions</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerOptionsBase.html">PackageContainerOptionsBase</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_Env.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Env%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L78">View Source</a>
+  </span>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_Env" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Env">Env</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AdminShellPackageEnv Env</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AdminShellNS.AdminShellPackageEnv.html">AdminShellPackageEnv</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_FormatExt.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.FormatExt%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L70">View Source</a>
+  </span>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_FormatExt" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.FormatExt">FormatExt</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string[] FormatExt</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_IsFormat.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.IsFormat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L80">View Source</a>
+  </span>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_IsFormat" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.IsFormat">IsFormat</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PackageContainerBase.Format IsFormat</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Format.html">PackageContainerBase.Format</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_IsOpen.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.IsOpen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L156">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_IsOpen_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.IsOpen*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_IsOpen" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.IsOpen">IsOpen</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsOpen { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_Location.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Location%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L114">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_Location_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Location*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_Location" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Location">Location</h4>
+  <div class="markdown level1 summary"><p>Location of the Container in a certain storage container, e.g. a local or network based
+repository. In this base implementation, it maps to a empty string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string Location { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_PackageCentral.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.PackageCentral%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L84">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_PackageCentral_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.PackageCentral*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_PackageCentral" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.PackageCentral">PackageCentral</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PackageCentral PackageCentral { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageCentral.html">PackageCentral</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_BackupInDir_System_String_System_Int32_AasxWpfControlLibrary_PackageCentral_PackageContainerBase_BackupType_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.BackupInDir(System.String%2CSystem.Int32%2CAasxWpfControlLibrary.PackageCentral.PackageContainerBase.BackupType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L172">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_BackupInDir_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.BackupInDir*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_BackupInDir_System_String_System_Int32_AasxWpfControlLibrary_PackageCentral_PackageContainerBase_BackupType_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.BackupInDir(System.String,System.Int32,AasxWpfControlLibrary.PackageCentral.PackageContainerBase.BackupType)">BackupInDir(String, Int32, PackageContainerBase.BackupType)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void BackupInDir(string backupDir, int maxFiles, PackageContainerBase.BackupType backupType = PackageContainerBase.BackupType.XML)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">backupDir</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">maxFiles</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.BackupType.html">PackageContainerBase.BackupType</a></td>
+        <td><span class="parametername">backupType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_Close.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Close%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L159">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_Close_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Close*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_Close" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Close">Close()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Close()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_EvalFormat_System_String_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.EvalFormat(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L145">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_EvalFormat_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.EvalFormat*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_EvalFormat_System_String_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.EvalFormat(System.String)">EvalFormat(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PackageContainerBase.Format EvalFormat(string fn)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fn</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.Format.html">PackageContainerBase.Format</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_GetAllConnectors.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.GetAllConnectors%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L202">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_GetAllConnectors_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.GetAllConnectors*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_GetAllConnectors" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.GetAllConnectors">GetAllConnectors()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;PackageConnectorBase&gt; GetAllConnectors()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackageConnectorBase.html">PackageConnectorBase</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_LoadFromSourceAsync_System_String_AasxWpfControlLibrary_PackageCentral_PackCntRuntimeOptions_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.LoadFromSourceAsync(System.String%2CAasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L176">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_LoadFromSourceAsync_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.LoadFromSourceAsync*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_LoadFromSourceAsync_System_String_AasxWpfControlLibrary_PackageCentral_PackCntRuntimeOptions_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.LoadFromSourceAsync(System.String,AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions)">LoadFromSourceAsync(String, PackCntRuntimeOptions)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task LoadFromSourceAsync(string fullItemLocation, PackCntRuntimeOptions runtimeOptions = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fullItemLocation</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions.html">PackCntRuntimeOptions</a></td>
+        <td><span class="parametername">runtimeOptions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_LoadResidentIfPossible_System_String_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.LoadResidentIfPossible(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L167">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_LoadResidentIfPossible_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.LoadResidentIfPossible*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_LoadResidentIfPossible_System_String_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.LoadResidentIfPossible(System.String)">LoadResidentIfPossible(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task LoadResidentIfPossible(string fullItemLocation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fullItemLocation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_PushEvent_AdminShellEvents_AasEventMsgEnvelope_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.PushEvent(AdminShellEvents.AasEventMsgEnvelope)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L285">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_PushEvent_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.PushEvent*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_PushEvent_AdminShellEvents_AasEventMsgEnvelope_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.PushEvent(AdminShellEvents.AasEventMsgEnvelope)">PushEvent(AasEventMsgEnvelope)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool PushEvent(AasEventMsgEnvelope ev)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AdminShellEvents.AasEventMsgEnvelope.html">AasEventMsgEnvelope</a></td>
+        <td><span class="parametername">ev</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_SaveLocalCopyAsync_System_String_AasxWpfControlLibrary_PackageCentral_PackCntRuntimeOptions_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.SaveLocalCopyAsync(System.String%2CAasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L183">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_SaveLocalCopyAsync_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.SaveLocalCopyAsync*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_SaveLocalCopyAsync_System_String_AasxWpfControlLibrary_PackageCentral_PackCntRuntimeOptions_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.SaveLocalCopyAsync(System.String,AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions)">SaveLocalCopyAsync(String, PackCntRuntimeOptions)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; SaveLocalCopyAsync(string targetFilename, PackCntRuntimeOptions runtimeOptions = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetFilename</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions.html">PackCntRuntimeOptions</a></td>
+        <td><span class="parametername">runtimeOptions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase_SaveToSourceAsync_System_String_AdminShellNS_AdminShellPackageEnv_SerializationFormat_AasxWpfControlLibrary_PackageCentral_PackCntRuntimeOptions_.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase.SaveToSourceAsync(System.String%2CAdminShellNS.AdminShellPackageEnv.SerializationFormat%2CAasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L191">View Source</a>
+  </span>
+  <a id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_SaveToSourceAsync_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.SaveToSourceAsync*"></a>
+  <h4 id="AasxWpfControlLibrary_PackageCentral_PackageContainerBase_SaveToSourceAsync_System_String_AdminShellNS_AdminShellPackageEnv_SerializationFormat_AasxWpfControlLibrary_PackageCentral_PackCntRuntimeOptions_" data-uid="AasxWpfControlLibrary.PackageCentral.PackageContainerBase.SaveToSourceAsync(System.String,AdminShellNS.AdminShellPackageEnv.SerializationFormat,AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions)">SaveToSourceAsync(String, AdminShellPackageEnv.SerializationFormat, PackCntRuntimeOptions)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task SaveToSourceAsync(string saveAsNewFileName = null, AdminShellPackageEnv.SerializationFormat prefFmt = AdminShellPackageEnv.SerializationFormat.None, PackCntRuntimeOptions runtimeOptions = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">saveAsNewFileName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AdminShellNS.AdminShellPackageEnv.SerializationFormat.html">AdminShellPackageEnv.SerializationFormat</a></td>
+        <td><span class="parametername">prefFmt</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AasxWpfControlLibrary.PackageCentral.PackCntRuntimeOptions.html">PackCntRuntimeOptions</a></td>
+        <td><span class="parametername">runtimeOptions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="AasxWpfControlLibrary.PackageCentral.IPackageConnectorManageEvents.html">IPackageConnectorManageEvents</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxWpfControlLibrary_PackageCentral_PackageContainerBase.md&amp;value=---%0Auid%3A%20AasxWpfControlLibrary.PackageCentral.PackageContainerBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageContainerBase.cs/#L67" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
