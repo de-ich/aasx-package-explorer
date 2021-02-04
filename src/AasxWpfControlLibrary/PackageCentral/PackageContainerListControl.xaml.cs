@@ -90,7 +90,12 @@ namespace AasxWpfControlLibrary.PackageCentral
             // set header
             var header = FileRepository?.Header;
             if (!header.HasContent())
-                header = "Unnamed repository";
+            {
+                if (FileRepository is PackageContainerListHttpRestRepository repo)
+                    header = repo.Endpoint.Authority;
+                else
+                    header = "Unnamed repository";
+            }
             TextBoxRepoHeader.Text = "" + header;
 
             // Timer for animations
