@@ -87,6 +87,11 @@ machine as well as Github workflows to run remotely.</p>
 <p>To build the solution for debugging and testing, invoke:</p>
 <pre><code class="lang-powershell">.\src\BuildForDebug.ps1
 </code></pre>
+<p>You can also build a single project.
+This is practical when you want to manually test something and do not want to
+waste time on MSBuild inspecting which projects need to be rebuilt:</p>
+<pre><code class="lang-powershell">.\src\BuildForDebug.ps1 -Project AasxToolkit
+</code></pre>
 <p>To clean the build, call:</p>
 <pre><code class="lang-powershell">.\src\BuildForDebug.ps1 -clean
 </code></pre>
