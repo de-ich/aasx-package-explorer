@@ -188,16 +188,16 @@ namespace AasxPackageExplorer
                 {
                     MessageBoxFlyoutShow(
                         "No open AASX file to be saved.",
-                        "Save", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        "Save", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Hand);
                     return;
                 }
 
                 // shall be a local file?!
                 var isLocalFile = _packageCentral.MainItem.Container is PackageContainerLocalFile;
                 if (!isLocalFile)
-                    if (MessageBoxResult.Yes != MessageBoxFlyoutShow(
+                    if (AnyUiMessageBoxResult.Yes != MessageBoxFlyoutShow(
                         "Current AASX file is not a local file. Proceed and convert to local AASX file?",
-                        "Save", MessageBoxButton.YesNo, MessageBoxImage.Hand))
+                        "Save", AnyUiMessageBoxButton.YesNo, AnyUiMessageBoxImage.Hand))
                         return;
 
                 // where
@@ -236,7 +236,7 @@ namespace AasxPackageExplorer
                                 // Abort
                                 MessageBoxFlyoutShow(
                                     "Not able to copy current AASX file to local file. Aborting!",
-                                    "Save", MessageBoxButton.OK, MessageBoxImage.Hand);
+                                    "Save", AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Hand);
                                 return;
                             }
 
@@ -721,7 +721,7 @@ namespace AasxPackageExplorer
         {
             if (cmd == "filereponew")
             {
-                if (MessageBoxResult.OK != MessageBoxFlyoutShow(
+                if (AnyUiMessageBoxResult.OK != MessageBoxFlyoutShow(
                         "Create new (empty) file repository? It will be added to list of repos on the lower/ " +
                         "left of the screen.",
                         "AASX File Repository",
@@ -750,23 +750,25 @@ namespace AasxPackageExplorer
                 }
             }
 
-            if (cmd == "filerepoconnectrepository")
-            {
-                // any repository
-                if (packages.FileRepository == null)
-                {
-                    MessageBoxFlyoutShow(
-                        "No repository currently opened!",
-                        "AASX File Repository",
-                        AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Hand);
+            // TODO
 
-                    return;
+            //if (cmd == "filerepoconnectrepository")
+            //{
+            //    // any repository
+            //    if (packages.FileRepository == null)
+            //    {
+            //        MessageBoxFlyoutShow(
+            //            "No repository currently opened!",
+            //            "AASX File Repository",
+            //            AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Hand);
 
-                var fr = new PackageContainerListHttpRestRepository(uc.Text);
-                await fr.SyncronizeFromServerAsync();
-                this.UiAssertFileRepository(visible: true);
-                _packageCentral.Repositories.AddAtTop(fr);
-            }
+            //        return;
+
+            //    var fr = new PackageContainerListHttpRestRepository(uc.Text);
+            //    await fr.SyncronizeFromServerAsync();
+            //    this.UiAssertFileRepository(visible: true);
+            //    _packageCentral.Repositories.AddAtTop(fr);
+            //}
 
             if (cmd == "filerepoquery")
             {
@@ -823,13 +825,13 @@ namespace AasxPackageExplorer
 
             if (cmd == "filerepocreatelru")
             {
-                if (MessageBoxResult.OK != MessageBoxFlyoutShow(
+                if (AnyUiMessageBoxResult.OK != MessageBoxFlyoutShow(
                         "Create new (empty) \"Last Recently Used (LRU)\" list? " +
                         "It will be added to list of repos on the lower/ left of the screen. " +
                         "It will be saved under \"last-recently-used.json\" in the binaries folder. " +
                         "It will replace an existing LRU list w/o prompt!",
                         "Last Recently Used AASX Packages",
-                        MessageBoxButton.OKCancel, MessageBoxImage.Hand))
+                        AnyUiMessageBoxButton.OKCancel, AnyUiMessageBoxImage.Hand))
                     return;
 
                 var lruFn = PackageContainerListLastRecentlyUsed.BuildDefaultFilename();
