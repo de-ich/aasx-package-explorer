@@ -81,6 +81,14 @@ namespace AasxPackageExplorer
 
         public void ControlStart()
         {
+            if (sender == ComboBoxFilter)
+            {
+                DiaData.Filter = ComboBoxFilter.SelectedItem.ToString();
+                if (DiaData.Filter == "All")
+                    DiaData.Filter = null;
+                // fill contents
+                FilterFor(DiaData.Filter);
+            }
         }
 
         public void ControlPreviewKeyDown(KeyEventArgs e)

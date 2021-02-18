@@ -826,7 +826,7 @@ namespace AasxPackageExplorer
 
             // check for Stored Prints in Log
             StoredPrint sp;
-            while ((sp = AasxPackageExplorer.Log.Singleton.PopLastShortTermPrint()) != null)
+            while ((sp = Log.Singleton.PopLastShortTermPrint()) != null)
             {
                 // pop
                 Message.Content = "" + sp.msg;
@@ -868,7 +868,7 @@ namespace AasxPackageExplorer
             }
 
             // always tell the errors
-            var ne = AasxPackageExplorer.Log.Singleton.NumberErrors;
+            var ne = Log.Singleton.NumberErrors;
             if (ne > 0)
             {
                 LabelNumberErrors.Content = "Errors: " + ne;
