@@ -100,7 +100,7 @@ submodels, collections and properties.  The data is typically stored as a set of
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="AasxDictionaryImport.Model.DataProviderBase.html#AasxDictionaryImport_Model_DataProviderBase_FindDefaultDataSources">DataProviderBase.FindDefaultDataSources()</a>
+      <a class="xref" href="AasxDictionaryImport.Model.DataProviderBase.html#AasxDictionaryImport_Model_DataProviderBase_FindDefaultDataSources_System_String_">DataProviderBase.FindDefaultDataSources(String)</a>
     </div>
     <div>
       <a class="xref" href="AasxDictionaryImport.Model.DataProviderBase.html#AasxDictionaryImport_Model_DataProviderBase_ToString">DataProviderBase.ToString()</a>
@@ -172,20 +172,38 @@ submodels, collections and properties.  The data is typically stored as a set of
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Cdd_DataProvider_GetDefaultPaths.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Cdd.DataProvider.GetDefaultPaths%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Cdd_DataProvider_GetDefaultPaths_System_String_.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Cdd.DataProvider.GetDefaultPaths(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Cdd/Model.cs/#L31">View Source</a>
   </span>
   <a id="AasxDictionaryImport_Cdd_DataProvider_GetDefaultPaths_" data-uid="AasxDictionaryImport.Cdd.DataProvider.GetDefaultPaths*"></a>
-  <h4 id="AasxDictionaryImport_Cdd_DataProvider_GetDefaultPaths" data-uid="AasxDictionaryImport.Cdd.DataProvider.GetDefaultPaths">GetDefaultPaths()</h4>
+  <h4 id="AasxDictionaryImport_Cdd_DataProvider_GetDefaultPaths_System_String_" data-uid="AasxDictionaryImport.Cdd.DataProvider.GetDefaultPaths(System.String)">GetDefaultPaths(String)</h4>
   <div class="markdown level1 summary"><p>Returns all paths that could contain a default data source.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override IEnumerable&lt;string&gt; GetDefaultPaths()</code></pre>
+    <pre><code class="lang-csharp hljs">protected override IEnumerable&lt;string&gt; GetDefaultPaths(string dir)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dir</span></td>
+        <td><p>The search path for the default data sources, e. g. the current working directory</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -203,7 +221,7 @@ submodels, collections and properties.  The data is typically stored as a set of
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="AasxDictionaryImport.Model.DataProviderBase.html#AasxDictionaryImport_Model_DataProviderBase_GetDefaultPaths">DataProviderBase.GetDefaultPaths()</a></div>
+  <div><a class="xref" href="AasxDictionaryImport.Model.DataProviderBase.html#AasxDictionaryImport_Model_DataProviderBase_GetDefaultPaths_System_String_">DataProviderBase.GetDefaultPaths(String)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Cdd_DataProvider_IsValidPath_System_String_.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Cdd.DataProvider.IsValidPath(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>

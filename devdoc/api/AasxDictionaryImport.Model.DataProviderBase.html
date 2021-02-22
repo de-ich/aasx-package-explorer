@@ -130,7 +130,7 @@
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_Name.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L321">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L322">View Source</a>
   </span>
   <a id="AasxDictionaryImport_Model_DataProviderBase_Name_" data-uid="AasxDictionaryImport.Model.DataProviderBase.Name*"></a>
   <h4 id="AasxDictionaryImport_Model_DataProviderBase_Name" data-uid="AasxDictionaryImport.Model.DataProviderBase.Name">Name</h4>
@@ -160,21 +160,39 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_FindDefaultDataSources.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.FindDefaultDataSources%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_FindDefaultDataSources_System_String_.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.FindDefaultDataSources(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L324">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L325">View Source</a>
   </span>
   <a id="AasxDictionaryImport_Model_DataProviderBase_FindDefaultDataSources_" data-uid="AasxDictionaryImport.Model.DataProviderBase.FindDefaultDataSources*"></a>
-  <h4 id="AasxDictionaryImport_Model_DataProviderBase_FindDefaultDataSources" data-uid="AasxDictionaryImport.Model.DataProviderBase.FindDefaultDataSources">FindDefaultDataSources()</h4>
+  <h4 id="AasxDictionaryImport_Model_DataProviderBase_FindDefaultDataSources_System_String_" data-uid="AasxDictionaryImport.Model.DataProviderBase.FindDefaultDataSources(System.String)">FindDefaultDataSources(String)</h4>
   <div class="markdown level1 summary"><p>Returns a list of all default data sources for this provider, i. e. all data sources that have been shipped
 with the AASX Package Explorer or that are freely available on the internet.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;IDataSource&gt; FindDefaultDataSources()</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;IDataSource&gt; FindDefaultDataSources(string dir)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dir</span></td>
+        <td><p>The search path for the default data sources, e. g. the current working directory</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -193,20 +211,38 @@ with the AASX Package Explorer or that are freely available on the internet.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_GetDefaultPaths.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.GetDefaultPaths%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_GetDefaultPaths_System_String_.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.GetDefaultPaths(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L346">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L348">View Source</a>
   </span>
   <a id="AasxDictionaryImport_Model_DataProviderBase_GetDefaultPaths_" data-uid="AasxDictionaryImport.Model.DataProviderBase.GetDefaultPaths*"></a>
-  <h4 id="AasxDictionaryImport_Model_DataProviderBase_GetDefaultPaths" data-uid="AasxDictionaryImport.Model.DataProviderBase.GetDefaultPaths">GetDefaultPaths()</h4>
+  <h4 id="AasxDictionaryImport_Model_DataProviderBase_GetDefaultPaths_System_String_" data-uid="AasxDictionaryImport.Model.DataProviderBase.GetDefaultPaths(System.String)">GetDefaultPaths(String)</h4>
   <div class="markdown level1 summary"><p>Returns all paths that could contain a default data source.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract IEnumerable&lt;string&gt; GetDefaultPaths()</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract IEnumerable&lt;string&gt; GetDefaultPaths(string dir)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dir</span></td>
+        <td><p>The search path for the default data sources, e. g. the current working directory</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -228,7 +264,7 @@ with the AASX Package Explorer or that are freely available on the internet.</p>
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_IsValidPath_System_String_.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.IsValidPath(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L336">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L337">View Source</a>
   </span>
   <a id="AasxDictionaryImport_Model_DataProviderBase_IsValidPath_" data-uid="AasxDictionaryImport.Model.DataProviderBase.IsValidPath*"></a>
   <h4 id="AasxDictionaryImport_Model_DataProviderBase_IsValidPath_System_String_" data-uid="AasxDictionaryImport.Model.DataProviderBase.IsValidPath(System.String)">IsValidPath(String)</h4>
@@ -280,7 +316,7 @@ opened using the <a class="xref" href="AasxDictionaryImport.Model.IDataProvider.
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_OpenPath_System_String_.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.OpenPath(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L339">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L340">View Source</a>
   </span>
   <a id="AasxDictionaryImport_Model_DataProviderBase_OpenPath_" data-uid="AasxDictionaryImport.Model.DataProviderBase.OpenPath*"></a>
   <h4 id="AasxDictionaryImport_Model_DataProviderBase_OpenPath_System_String_" data-uid="AasxDictionaryImport.Model.DataProviderBase.OpenPath(System.String)">OpenPath(String)</h4>
@@ -348,7 +384,7 @@ data provider</p>
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_OpenPath_System_String_AasxDictionaryImport_Model_DataSourceType_.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.OpenPath(System.String%2CAasxDictionaryImport.Model.DataSourceType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L358">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L360">View Source</a>
   </span>
   <a id="AasxDictionaryImport_Model_DataProviderBase_OpenPath_" data-uid="AasxDictionaryImport.Model.DataProviderBase.OpenPath*"></a>
   <h4 id="AasxDictionaryImport_Model_DataProviderBase_OpenPath_System_String_AasxDictionaryImport_Model_DataSourceType_" data-uid="AasxDictionaryImport.Model.DataProviderBase.OpenPath(System.String,AasxDictionaryImport.Model.DataSourceType)">OpenPath(String, DataSourceType)</h4>
@@ -423,7 +459,7 @@ data provider</p>
     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase_ToString.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L333">View Source</a>
+    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L334">View Source</a>
   </span>
   <a id="AasxDictionaryImport_Model_DataProviderBase_ToString_" data-uid="AasxDictionaryImport.Model.DataProviderBase.ToString*"></a>
   <h4 id="AasxDictionaryImport_Model_DataProviderBase_ToString" data-uid="AasxDictionaryImport.Model.DataProviderBase.ToString">ToString()</h4>
@@ -465,7 +501,7 @@ data provider</p>
                     <a href="https://github.com/admin-shell-io/aasx-package-explorer/new/master/apiSpec/new?filename=AasxDictionaryImport_Model_DataProviderBase.md&amp;value=---%0Auid%3A%20AasxDictionaryImport.Model.DataProviderBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L318" class="contribution-link">View Source</a>
+                    <a href="https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Model.cs/#L319" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

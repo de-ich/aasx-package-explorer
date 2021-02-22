@@ -312,8 +312,8 @@ Robin,
 
 ## AasxDictionaryImport.Tests\Cdd\TestModel.cs
 
-[Line 562, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport.Tests/Cdd/TestModel.cs#L562
+[Line 555, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport.Tests/Cdd/TestModel.cs#L555
 ), 
 krahlro-sick,
 2020-07-31
