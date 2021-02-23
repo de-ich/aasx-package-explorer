@@ -320,26 +320,44 @@ krahlro-sick,
 
     make sure that there are no duplicates
 
+## AasxDictionaryImport\Eclass\Model.cs
+
+[Line 296, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Eclass/Model.cs#L296
+), 
+krahlro-sick,
+2021-02-03
+
+    HTML-decode SI code
+
+[Line 721, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Eclass/Model.cs#L721
+), 
+krahlro-sick,
+2021-02-23
+
+    This logic is copied from EclassUtils.GenerateConceptDescription -- does
+
 ## AasxDictionaryImport\Iec61360Utils.cs
 
-[Line 122, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Iec61360Utils.cs#L122
+[Line 126, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Iec61360Utils.cs#L126
 ), 
 Robin,
 2020-09-03
 
     MIHO is not sure, if the data spec reference is correct; please check
 
-[Line 138, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Iec61360Utils.cs#L138
+[Line 142, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Iec61360Utils.cs#L142
 ), 
 Robin,
 2020-09-03
 
     MIHO is not sure, if the data spec reference is correct; please check
 
-[Line 154, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Iec61360Utils.cs#L154
+[Line 158, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Iec61360Utils.cs#L158
 ), 
 Robin,
 2020-09-03

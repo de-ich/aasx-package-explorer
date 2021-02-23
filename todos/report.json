@@ -269,26 +269,45 @@
     ]
   },
   {
+    "path": "AasxDictionaryImport\\Eclass\\Model.cs",
+    "records": [
+      {
+        "prefix": "TODO",
+        "suffix": " (krahlro-sick, 2021-02-03): HTML-decode SI code",
+        "line": 295,
+        "column": 24,
+        "status": "ok"
+      },
+      {
+        "prefix": "TODO",
+        "suffix": " (krahlro-sick, 2021-02-23): This logic is copied from EclassUtils.GenerateConceptDescription -- does",
+        "line": 720,
+        "column": 12,
+        "status": "ok"
+      }
+    ]
+  },
+  {
     "path": "AasxDictionaryImport\\Iec61360Utils.cs",
     "records": [
       {
         "prefix": "TODO",
         "suffix": " (Robin, 2020-09-03): MIHO is not sure, if the data spec reference is correct; please check",
-        "line": 121,
+        "line": 125,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Robin, 2020-09-03): MIHO is not sure, if the data spec reference is correct; please check",
-        "line": 137,
+        "line": 141,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Robin, 2020-09-03): check this code",
-        "line": 153,
+        "line": 157,
         "column": 12,
         "status": "ok"
       }

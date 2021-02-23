@@ -1614,7 +1614,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Cdd.ClassWrapper.html",
-          "hash": "NXOiEXVgbrZ33JwOcawikg=="
+          "hash": "vV8RPlSh8iL77NAcfYyiYg=="
         }
       },
       "is_incremental": false,
@@ -1626,7 +1626,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Cdd.Context.html",
-          "hash": "A75giYNHZxO4xbB6S+l0Ng=="
+          "hash": "qGNI5aPzpIwQKRcA2zmZTQ=="
         }
       },
       "is_incremental": false,
@@ -1638,7 +1638,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Cdd.DataProvider.html",
-          "hash": "zdxM8vMGMI/wUUFq/bHtkw=="
+          "hash": "GggDeX1LahrzFnkhYgl4AQ=="
         }
       },
       "is_incremental": false,
@@ -1650,7 +1650,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Cdd.DataSource.html",
-          "hash": "dWQFs9eQ6U8QtSX7k0lqHA=="
+          "hash": "8hO9hg6OWRl8SS+I9ofRrQ=="
         }
       },
       "is_incremental": false,
@@ -1686,7 +1686,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Cdd.ElementWrapper-1.html",
-          "hash": "vX5VigMwYd+Gm5Cvq8dFQw=="
+          "hash": "6aT6JVtnY6wQV4TNRvzkGw=="
         }
       },
       "is_incremental": false,
@@ -1818,7 +1818,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Cdd.PropertyWrapper.html",
-          "hash": "cRYPzQX/lCtlXmpMzfp/mw=="
+          "hash": "eZkiM2SIiXo8KWpnOaVAaA=="
         }
       },
       "is_incremental": false,
@@ -1898,11 +1898,95 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/AasxDictionaryImport.Eclass.Class.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxDictionaryImport.Eclass.Class.html",
+          "hash": "04fJA3f2t5e2T3EaS7scOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxDictionaryImport.Eclass.Context.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxDictionaryImport.Eclass.Context.html",
+          "hash": "O3J1D5Gnq9pVeCjTr/wX8Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxDictionaryImport.Eclass.DataProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxDictionaryImport.Eclass.DataProvider.html",
+          "hash": "+cS4gSVjqHXJxj8tt47OKA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxDictionaryImport.Eclass.DataSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxDictionaryImport.Eclass.DataSource.html",
+          "hash": "JqS6N4Dq/xIrX6x6/kpc4Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxDictionaryImport.Eclass.Element.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxDictionaryImport.Eclass.Element.html",
+          "hash": "gltkQQUbzRle5xYSPGauZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxDictionaryImport.Eclass.Property.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxDictionaryImport.Eclass.Property.html",
+          "hash": "ts+3vuxg966yFpByzwiisw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxDictionaryImport.Eclass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxDictionaryImport.Eclass.html",
+          "hash": "+MnbgVj/XtNVOYRtOg85dQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/AasxDictionaryImport.Iec61360Data.yml",
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Iec61360Data.html",
-          "hash": "SXHoObTBBLsRM8Trde3qkg=="
+          "hash": "rm7Vttv3VU5fZ5jXTr6mvA=="
         }
       },
       "is_incremental": false,
@@ -1914,7 +1998,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Iec61360Utils.html",
-          "hash": "DujVlviqiBpWeSotCbbh0Q=="
+          "hash": "VwCQvII8ViSaGd2nH8cJYg=="
         }
       },
       "is_incremental": false,
@@ -1938,7 +2022,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Model.DataProviderBase.html",
-          "hash": "Q6JK1hgjCzKIs42oEfREWw=="
+          "hash": "tjXrIaKhLRGmPD8mcwpghg=="
         }
       },
       "is_incremental": false,
@@ -1962,7 +2046,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Model.ElementBase.html",
-          "hash": "aDoS9I6oJ/aUa4eeIWtbiw=="
+          "hash": "X+HQb0X6Bsc8zbugpw0yPw=="
         }
       },
       "is_incremental": false,
@@ -1974,7 +2058,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Model.FileSystemDataSource.html",
-          "hash": "hDqSu8TeuRl41VBthnaAUA=="
+          "hash": "Zr4kBhBmd+WalFEV2SQ1Bg=="
         }
       },
       "is_incremental": false,
@@ -2022,7 +2106,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Model.IElement.html",
-          "hash": "Ht699654zLK50aqV4znQuA=="
+          "hash": "bkSZv+A5+Fz4uqffJMNklQ=="
         }
       },
       "is_incremental": false,
@@ -2034,7 +2118,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Model.ImportException.html",
-          "hash": "GeI2kJxKOZW9AOTPXWbkOQ=="
+          "hash": "lrua9e12BYMB6KCPGbRDzA=="
         }
       },
       "is_incremental": false,
@@ -2046,7 +2130,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Model.LazyElementBase.html",
-          "hash": "5d/PdiWqUjvq+knXGJbpig=="
+          "hash": "q9+bfN2r6Qx3yA/sA1Mkqw=="
         }
       },
       "is_incremental": false,
@@ -2058,7 +2142,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.Model.UnknownReference.html",
-          "hash": "w2hfJ7DyF6weVCzaRjDsLA=="
+          "hash": "SI9QdENaOkoTLzS7N4h+Dg=="
         }
       },
       "is_incremental": false,
@@ -2082,7 +2166,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxDictionaryImport.MultiString.html",
-          "hash": "8yhiw0fjC2ugZJEPpuOL+w=="
+          "hash": "KA30sLlvZDoOwkajrcU68Q=="
         }
       },
       "is_incremental": false,
@@ -10242,7 +10326,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "EQ9Rrhf1t7s8QmemMVcKyQ=="
+          "hash": "+cFW48cXi1DNE0DyGj0GaA=="
         }
       },
       "is_incremental": false,
@@ -10444,7 +10528,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 851,
+          "total_file_count": 858,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
