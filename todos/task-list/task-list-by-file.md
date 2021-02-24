@@ -322,16 +322,24 @@ krahlro-sick,
 
 ## AasxDictionaryImport\Eclass\Model.cs
 
-[Line 296, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Eclass/Model.cs#L296
+[Line 142, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Eclass/Model.cs#L142
+), 
+aorzelski,
+2021-02-24
+
+    Use system certificate storage
+
+[Line 367, column 25](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Eclass/Model.cs#L367
 ), 
 krahlro-sick,
 2021-02-03
 
     HTML-decode SI code
 
-[Line 721, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Eclass/Model.cs#L721
+[Line 792, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxDictionaryImport/Eclass/Model.cs#L792
 ), 
 krahlro-sick,
 2021-02-23
