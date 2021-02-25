@@ -273,22 +273,15 @@
     "records": [
       {
         "prefix": "TODO",
-        "suffix": " (aorzelski, 2021-02-24): Use system certificate storage",
-        "line": 141,
-        "column": 16,
-        "status": "ok"
-      },
-      {
-        "prefix": "TODO",
         "suffix": " (krahlro-sick, 2021-02-03): HTML-decode SI code",
-        "line": 366,
+        "line": 393,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (krahlro-sick, 2021-02-23): This logic is copied from EclassUtils.GenerateConceptDescription -- does",
-        "line": 791,
+        "line": 818,
         "column": 12,
         "status": "ok"
       }
