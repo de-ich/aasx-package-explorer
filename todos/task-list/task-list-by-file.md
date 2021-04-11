@@ -709,24 +709,24 @@ MIHO,
 
 ## AasxWpfControlLibrary\PackageCentral\PackageConnectorHttpRest.cs
 
-[Line 232, column 17](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageConnectorHttpRest.cs#L232
+[Line 234, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageConnectorHttpRest.cs#L234
 ), 
 all,
 2021-01-30
 
     check periodically for supported element types
 
-[Line 287, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageConnectorHttpRest.cs#L287
+[Line 289, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageConnectorHttpRest.cs#L289
 ), 
 MIHO,
 2021-01-03
 
     check to handle more SMEs for AasEventMsgUpdateValue
 
-[Line 288, column 13](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageConnectorHttpRest.cs#L288
+[Line 290, column 13](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxWpfControlLibrary/PackageCentral/PackageConnectorHttpRest.cs#L290
 ), 
 MIHO,
 2021-01-04
