@@ -2862,7 +2862,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxIntegrationBase.AasxPluginOptionsBase.html",
-          "hash": "w1sDRH7TWtRZvB3SkyKYbw=="
+          "hash": "l3TXBHYVSVctyYXySMyLJA=="
         }
       },
       "is_incremental": false,
@@ -3906,7 +3906,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPackageExplorer.MainWindow.html",
-          "hash": "FfuVzGq4A11XrTrmMMlGyg=="
+          "hash": "odb7UOksTubmruK5xJJV8w=="
         }
       },
       "is_incremental": false,
@@ -5378,6 +5378,246 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.AASRestClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.AASRestClient.html",
+          "hash": "kmquErPfU/Uoo05HzQMdDA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.BillOfMaterial.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.BillOfMaterial.html",
+          "hash": "thOCkKgudrv8fFZjBDTp0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.EClass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.EClass.html",
+          "hash": "i5WggKkfpF8rf6VImgWYMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.Exporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.Exporter.html",
+          "hash": "gXY+YVQI37tMYWNx+TW5JQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.IOput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.IOput.html",
+          "hash": "Nvhg3ZABFMqPgWSgih+rgA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.IdTables.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.IdTables.html",
+          "hash": "BnBuvF7h0UKDar5qw4Ri6Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.Mapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.Mapping.html",
+          "hash": "kS2L49fSc4AexPd1ZdPPqA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.Model.BomSubmodel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.Model.BomSubmodel.html",
+          "hash": "EZupIYbIhXQ8+7v6BwYlnw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.Model.SemanticPort.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.Model.SemanticPort.html",
+          "hash": "rCtkiAosGN9KBAcDGkV99A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.Model.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.Model.html",
+          "hash": "d2fx8ztE7JmlkG2DHwWNNA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.RelationshipElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.RelationshipElement.html",
+          "hash": "juokLNPnn/orEkVLMscKow=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.SMD.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.SMD.html",
+          "hash": "Tv1f/ieCJPXqWWho7rCHRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.SimulationModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.SimulationModel.html",
+          "hash": "b1pRB9Q1uMqxheLwcanD1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.SmdExporterOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.SmdExporterOptions.html",
+          "hash": "V5H4xiiX9ftpcqb4i2POdg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.SmdExporterOptionsRecord.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.SmdExporterOptionsRecord.html",
+          "hash": "tbPbzzswHiiKKwomWCb01Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.SummingPoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.SummingPoint.html",
+          "hash": "LORWNtH9x+brbb5zCaqywg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.TextUI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.TextUI.html",
+          "hash": "Xhy4AeMB1MdBaMm5vt/BAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.View.PhysicalDialog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.View.PhysicalDialog.html",
+          "hash": "4e3hy6kphf3ogkTZb1Yizw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.View.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.View.html",
+          "hash": "Rwms/3IRiN4JG/TUu1MBYQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AasxPluginSmdExporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPluginSmdExporter.html",
+          "hash": "nI+wB2ghl4h85KbhXMzQBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/AasxPluginTechnicalData.TechDataFooterControl.yml",
       "output": {
         ".html": {
@@ -5598,7 +5838,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPredefinedConcepts.AasxDefinitionBase.html",
-          "hash": "UOfwpuCyK3qagXtc9ANC8g=="
+          "hash": "72PziPmlI7Hc6Gz0MPrRQQ=="
         }
       },
       "is_incremental": false,
@@ -6062,6 +6302,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/AasxPredefinedConcepts.SmdExporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AasxPredefinedConcepts.SmdExporter.html",
+          "hash": "qSJO2X4cMi1lZnyhBVPCgg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/AasxPredefinedConcepts.VDI2770v11.yml",
       "output": {
         ".html": {
@@ -6090,7 +6342,7 @@
       "output": {
         ".html": {
           "relative_path": "api/AasxPredefinedConcepts.html",
-          "hash": "Cm78Q9xS9Z6cwt4WVGA4qA=="
+          "hash": "UqvK/6npJJ5J25mRpPpLUw=="
         }
       },
       "is_incremental": false,
@@ -10326,7 +10578,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "+cFW48cXi1DNE0DyGj0GaA=="
+          "hash": "iCN99pombZcjDYARJWMNVg=="
         }
       },
       "is_incremental": false,
@@ -10528,7 +10780,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 858,
+          "total_file_count": 879,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
