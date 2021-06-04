@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../">
     
@@ -67,14 +67,7 @@
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
-        <div class="sidenav hide-when-search">
-          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
-          <div class="sidetoggle collapse" id="sidetoggle">
-            <div id="sidetoc"></div>
-          </div>
-        </div>
-        <div class="article row grid-right">
+        <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="api-documentation">API Documentation</h1>
@@ -89,48 +82,48 @@ points are clearly visible.</p>
 give you an overview of the code structure and how individual parts fit
 together.</p>
 <h2 id="entry-point">Entry Point</h2>
-<p>Current entry point to the program is: <a href="AasxPackageExplorer.App.html">AasxPackageExplorer.App</a>. This class parses the command-line arguments and instantiates
-the <a href="AasxPackageExplorer.MainWindow.html">AasxPackageExplorer.MainWindow</a>.</p>
+<p>Current entry point to the program is: <a href="AasxPackageExplorer.App.yml">AasxPackageExplorer.App</a>. This class parses the command-line arguments and instantiates
+the <a href="AasxPackageExplorer.MainWindow.yml">AasxPackageExplorer.MainWindow</a>.</p>
 <p>The graphical user interface (GUI) is implemented in the namespace
-<a href="AasxPackageExplorer.html">AasxPackageExplorer</a>.</p>
+<a href="AasxPackageExplorer.yml">AasxPackageExplorer</a>.</p>
 <h2 id="data-model">Data Model</h2>
-<p>The data model of the AASX lives in the <a href="AdminShellNS.html">AdminShellNS</a>
+<p>The data model of the AASX lives in the <a href="AdminShellNS.yml">AdminShellNS</a>
 namespace. Any changes and extensions to the data model should go there.</p>
 <p>Since the data model is still evolving (August 2020), we put the code
 responsible for managing the legacy data models (<em>e.g.</em>, AASX V1.0) to
-the namespace <a href="AasxCompatibilityModels.html">AasxCompatibilityModels</a>.</p>
+the namespace <a href="AasxCompatibilityModels.yml">AasxCompatibilityModels</a>.</p>
 <p>The pre-defined concepts (such as <a href="https://www.vdi.de/richtlinien/details/vdi-2770-blatt-1-betrieb-verfahrenstechnischer-anlagen-mindestanforderungen-an-digitale-herstellerinformationen-fuer-die-prozessindustrie-grundlagen">VDI 2770</a>) reside in the namespace
-<a href="AasxPredefinedConcepts.html">AasxPredefinedConcepts</a>.</p>
+<a href="AasxPredefinedConcepts.yml">AasxPredefinedConcepts</a>.</p>
 <h2 id="package-signatures">Package Signatures</h2>
 <p>Package signatures (<em>e.g.</em>, using <a href="https://en.wikipedia.org/wiki/X.509">X.509</a>
-standard) are handled in the namespace <a href="AasxSignature.html">AasxSignature</a>.</p>
+standard) are handled in the namespace <a href="AasxSignature.yml">AasxSignature</a>.</p>
 <h2 id="clients">Clients</h2>
 <p>AASX Package Explorer uses various clients to communicate with the external
 sources. The clients are compartmentalized in the individual <code>*Client</code>
-namespaces (<em>e.g.</em>, <a href="AasxMqttClient.html">AasxMqttClient</a> and
-<a href="AasxOpenIdClient.html">AasxOpenIdClient</a>).</p>
+namespaces (<em>e.g.</em>, <a href="AasxMqttClient.yml">AasxMqttClient</a> and
+<a href="AasxOpenIdClient.yml">AasxOpenIdClient</a>).</p>
 <h2 id="imports-and-exports">Imports and Exports</h2>
 <p>Imports and exports from different data formats are handled in <code>*ImExport</code>
-namespaces such as <a href="AasxAmlImExport.html">AasxAmlImExport</a> and
-<a href="AasxUANodesetImExport.html">AasxUANodesetImExport</a>.</p>
+namespaces such as <a href="AasxAmlImExport.yml">AasxAmlImExport</a> and
+<a href="AasxUANodesetImExport.yml">AasxUANodesetImExport</a>.</p>
 <h2 id="plug-ins">Plug-ins</h2>
 <p>AASX Package Explorer uses plug-ins to reduce the size of the different
 binary releases. For example, a plug-in web browser
-(<a href="AasxPluginWebBrowser.html">AasxPluginWebBrowser</a>) is pretty heavy in size
+(<a href="AasxPluginWebBrowser.yml">AasxPluginWebBrowser</a>) is pretty heavy in size
 (about 60 Mb), but many users do not actually need it. Hence they can download
 a much skinnier release without the browser (only about 2 Mb).</p>
-<p>The namespace <a href="AasxIntegrationBase.html">AasxIntegrationBase</a> provides all the
+<p>The namespace <a href="AasxIntegrationBase.yml">AasxIntegrationBase</a> provides all the
 functionality needed to integrate the plug-ins.</p>
 <h2 id="aasxtoolkit-program">AasxToolkit Program</h2>
 <p>Apart from the main AASX Package Explorer, we include an additional
-program, <a href="AasxToolkit.html">AasxToolkit</a>, to generate and manipulate AASX
+program, <a href="AasxToolkit.yml">AasxToolkit</a>, to generate and manipulate AASX
 packages from the command line. This program is also a good entry point if you
 want to see how you can perform operations on AASX in code (rather than using
 a GUI tool).</p>
 <h2 id="what-is-a-rest-server-doing-here">What is a REST Server Doing Here?</h2>
 <p>It might seem confusing that we include a REST server in the application (
-<a href="AasxRestConsoleServer.html">AasxRestConsoleServer</a> and
-<a href="AasxRestServerLibrary.html">AasxRestServerLibrary</a>). The rationale behind this
+<a href="AasxRestConsoleServer.yml">AasxRestConsoleServer</a> and
+<a href="AasxRestServerLibrary.yml">AasxRestServerLibrary</a>). The rationale behind this
 inclusion is to make the demonstrations and local tests simple &amp; easy.</p>
 <p>However, from the software engineering point of view, this code does not really
 belong to the Package Explorer and should be refactored out of it. We are
