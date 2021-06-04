@@ -130,56 +130,56 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-30): this does not prevent the corner case, that we could have\r\n                            * multiple dataSpecificationIEC61360 in this list, which would be an error",
-        "line": 1206,
+        "line": 1231,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-27): According to spec, cardinality is [1..1][1..n]",
-        "line": 2950,
+        "line": 2994,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-27): According to spec, cardinality is [0..1][1..n]",
-        "line": 2954,
+        "line": 2998,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-27): According to spec, cardinality is [0..1][1..n]",
-        "line": 2985,
+        "line": 3029,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-30): align wording of the member (\u0022embeddedDataSpecification\u0022) with the \r\n                * wording of the other entities (\u0022hasDataSpecification\u0022)",
-        "line": 3264,
+        "line": 3308,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-26): not very elegant, yet. Avoid temporary collection",
-        "line": 3965,
+        "line": 4009,
         "column": 28,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): check, if Json has Qualifiers or not",
-        "line": 4645,
+        "line": 4694,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-31): would be nice to use IEnumerateChildren for this ..",
-        "line": 5422,
+        "line": 5481,
         "column": 20,
         "status": "ok"
       }
@@ -191,35 +191,35 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 267,
+        "line": 277,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 453,
+        "line": 463,
         "column": 20,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 496,
+        "line": 506,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): use a unified function to create a serializer",
-        "line": 531,
+        "line": 541,
         "column": 24,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2021-01-02): check again.\r\n                                     * Revisiting this code after a while, and after\r\n                                     * the code has undergo some changes by MR, the following copy command needed\r\n                                     * to be amended with a if to protect against self-copy.",
-        "line": 585,
+        "line": 595,
         "column": 36,
         "status": "ok"
       }
@@ -309,6 +309,18 @@
         "suffix": " (Robin, 2020-09-03): check this code",
         "line": 157,
         "column": 12,
+        "status": "ok"
+      }
+    ]
+  },
+  {
+    "path": "AasxFormatCst\\AasxToCst.cs",
+    "records": [
+      {
+        "prefix": "TODO",
+        "suffix": " (MIHO, 2021-05-28): extend Parse() to parse also ECLASS, IEC CDD",
+        "line": 226,
+        "column": 28,
         "status": "ok"
       }
     ]
@@ -592,14 +604,14 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2021-01-04): check to replace all occurences of RefreshFromMainData() by\r\n             * making the tree-items ObservableCollection and INotifyPropertyChanged",
-        "line": 433,
+        "line": 345,
         "column": 12,
         "status": "ok"
       },
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-21): was because of multi-select",
-        "line": 752,
+        "line": 659,
         "column": 20,
         "status": "ok"
       }
@@ -611,8 +623,15 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-09-01): extend the lines below to cover also data spec. for units",
-        "line": 1549,
+        "line": 1576,
         "column": 12,
+        "status": "ok"
+      },
+      {
+        "prefix": "TODO",
+        "suffix": " (MIHO, 2021-02-16): this mechanism is ugly and only intended to be temporary!\r\n                           It shall be replaced (after intergrating AnyUI) by a better repo handling",
+        "line": 3183,
+        "column": 20,
         "status": "ok"
       }
     ]
@@ -623,14 +642,21 @@
       {
         "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): possibly [Jump] button??",
-        "line": 1303,
+        "line": 1335,
         "column": 16,
         "status": "ok"
       },
       {
         "prefix": "TODO",
+        "suffix": " (MIHO, 2021-02-16): this mechanism is ugly and only intended to be temporary!\r\n                           It shall be replaced (after intergrating AnyUI) by a better repo handling",
+        "line": 1511,
+        "column": 24,
+        "status": "ok"
+      },
+      {
+        "prefix": "TODO",
         "suffix": " (Michael Hoffmeister, 2020-08-01): Needs to be revisited",
-        "line": 1483,
+        "line": 1531,
         "column": 24,
         "status": "ok"
       }
@@ -661,7 +687,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2021-01-07): rename to plural",
-        "line": 252,
+        "line": 257,
         "column": 8,
         "status": "ok"
       }
@@ -690,6 +716,34 @@
         "line": 289,
         "column": 12,
         "status": "ok"
+      },
+      {
+        "prefix": "TODO",
+        "suffix": " (MIHO, 2021-05-21): make sure, this is required by the specification!",
+        "line": 715,
+        "column": 16,
+        "status": "ok"
+      },
+      {
+        "prefix": "TODO",
+        "suffix": " (MIHO, 2021-05-28): implmenent",
+        "line": 787,
+        "column": 16,
+        "status": "ok"
+      },
+      {
+        "prefix": "TODO",
+        "suffix": " (MIHO, 2021-05-28): implmenent",
+        "line": 796,
+        "column": 16,
+        "status": "ok"
+      },
+      {
+        "prefix": "TODO",
+        "suffix": " (MIHO, 2021-05-28): implmenent",
+        "line": 805,
+        "column": 16,
+        "status": "ok"
       }
     ]
   },
@@ -699,7 +753,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2021-01-03): check to handle more SMEs for AasEventMsgUpdateValue",
-        "line": 250,
+        "line": 375,
         "column": 28,
         "status": "ok"
       }
@@ -723,7 +777,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2021-02-01): check, if demo option is still required",
-        "line": 152,
+        "line": 154,
         "column": 12,
         "status": "ok"
       }
@@ -735,7 +789,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-08-05): refacture this with DispEditHelper.cs",
-        "line": 317,
+        "line": 320,
         "column": 8,
         "status": "ok"
       }
@@ -747,7 +801,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2021-01-08): check, how to make absolute",
-        "line": 102,
+        "line": 106,
         "column": 12,
         "status": "ok"
       }
@@ -802,7 +856,7 @@
       {
         "prefix": "TODO",
         "suffix": " (MIHO, 2020-07-31): check if commented out because of non-working multi-select?",
-        "line": 151,
+        "line": 166,
         "column": 16,
         "status": "ok"
       }
