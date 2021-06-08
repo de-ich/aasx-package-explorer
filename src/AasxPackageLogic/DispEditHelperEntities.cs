@@ -930,7 +930,6 @@ namespace AasxPackageLogic
                 checkForIri: true);
 
             // use some asset reference
-
             var asset = env.FindAsset(aas.assetRef);
 
             // derivedFrom
@@ -960,9 +959,17 @@ namespace AasxPackageLogic
                 }))
             {
                 this.AddGroup(stack, "Derived From", this.levelColors.SubSection);
+
+                Func<AdminShell.KeyList, AnyUiLambdaActionBase> lambda = (kl) =>
+                {
+                    return new AnyUiLambdaActionNavigateTo(
+                        AdminShell.Reference.CreateNew(kl), translateAssetToAAS: true);
+                };
+
                 this.AddKeyListKeys(
                     stack, "derivedFrom", aas.derivedFrom.Keys, repo,
-                    packages, PackageCentral.PackageCentral.Selector.MainAuxFileRepo, "AssetAdministrationShell");
+                    packages, PackageCentral.PackageCentral.Selector.MainAuxFileRepo, "AssetAdministrationShell",
+                    jumpLambda: lambda, noEditJumpLambda: lambda);
             }
 
             // assetRef
@@ -984,8 +991,16 @@ namespace AasxPackageLogic
                 }))
             {
                 this.AddGroup(stack, "Asset Reference", this.levelColors.SubSection);
+
+                Func<AdminShell.KeyList, AnyUiLambdaActionBase> lambda = (kl) =>
+                {
+                    return new AnyUiLambdaActionNavigateTo(
+                        AdminShell.Reference.CreateNew(kl), translateAssetToAAS: false);
+                };
+
                 this.AddKeyListKeys(stack, "assetRef", aas.assetRef.Keys, repo,
-                    packages, PackageCentral.PackageCentral.Selector.Main, "Asset");
+                    packages, PackageCentral.PackageCentral.Selector.Main, "Asset",
+                    jumpLambda: lambda, noEditJumpLambda: lambda);
             }
 
             //
@@ -1166,7 +1181,7 @@ namespace AasxPackageLogic
                         return new AnyUiLambdaActionNone();
                     });
 
-                // create ConceptDescriptions for eCl@ss
+                // create ConceptDescriptions for ECLASS
                 var targets = new List<AdminShell.SubmodelElement>();
                 this.IdentifyTargetsForEclassImportOfCDs(
                     env, AdminShell.SubmodelElementWrapper.ListOfWrappersToListOfElems(submodel.submodelElements),
@@ -1180,11 +1195,11 @@ namespace AasxPackageLogic
                                 return submodel.submodelElements != null && submodel.submodelElements.Count > 0  &&
                                     targets.Count > 0;
                             },
-                            "Consider importing ConceptDescriptions from eCl@ss for existing SubmodelElements.",
+                            "Consider importing ConceptDescriptions from ECLASS for existing SubmodelElements.",
                             severityLevel: HintCheck.Severity.Notice)
                 });
                 this.AddAction(
-                    stack, "ConceptDescriptions from eCl@ss:",
+                    stack, "ConceptDescriptions from ECLASS:",
                     new[] { "Import missing" },
                     repo,
                     (buttonNdx) =>
@@ -1798,7 +1813,7 @@ namespace AasxPackageLogic
                     });
                 this.AddAction(
                     stack, "Concept Description:",
-                    new[] { "Assign to existing CD", "Create empty and assign", "Create and assign from eCl@ss" },
+                    new[] { "Assign to existing CD", "Create empty and assign", "Create and assign from ECLASS" },
                     repo,
                     (buttonNdx) =>
                     {
@@ -1863,9 +1878,9 @@ namespace AasxPackageLogic
                             {
                                 // eclass dir?
                                 this.context?.MessageBoxFlyoutShow(
-                                        "The AASX Package Explore can take over eCl@ss definition. " +
+                                        "The AASX Package Explore can take over ECLASS definition. " +
                                         "In order to do so, the commandine parameter -eclass has" +
-                                        "to refer to a folder withe eCl@ss XML files.", "Information",
+                                        "to refer to a folder withe ECLASS XML files.", "Information",
                                         AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Information);
                                 return new AnyUiLambdaActionNone();
                             }
@@ -1912,7 +1927,7 @@ namespace AasxPackageLogic
                         return new AnyUiLambdaActionNone();
                     });
 
-                // create ConceptDescriptions for eCl@ss
+                // create ConceptDescriptions for ECLASS
                 var targets = new List<AdminShell.SubmodelElement>();
                 this.IdentifyTargetsForEclassImportOfCDs(
                     env, new List<AdminShell.SubmodelElement>(new[] { sme }), ref targets);
@@ -1920,11 +1935,11 @@ namespace AasxPackageLogic
                     stack, hintMode,
                     new[] {
                         new HintCheck( () => { return targets.Count > 0;  },
-                        "Consider importing a ConceptDescription from eCl@ss for the existing SubmodelElement.",
+                        "Consider importing a ConceptDescription from ECLASS for the existing SubmodelElement.",
                         severityLevel: HintCheck.Severity.Notice)
                     });
                 this.AddAction(
-                    stack, "ConceptDescriptions from eCl@ss:", new[] { "Import missing" }, repo,
+                    stack, "ConceptDescriptions from ECLASS:", new[] { "Import missing" }, repo,
                     (buttonNdx) =>
                     {
                         if (buttonNdx == 0)
@@ -2288,7 +2303,7 @@ namespace AasxPackageLogic
                                 "to the application of the SubmodelElement. \r\n" +
                                 "CONSTANT => A constant property is a property with a value that " +
                                 "does not change over time. " +
-                                "In eCl@ss this kind of category has the category 'Coded Value'. \r\n" +
+                                "In ECLASS this kind of category has the category 'Coded Value'. \r\n" +
                                 "PARAMETER => A parameter property is a property that is once set and " +
                                 "then typically does not change over time. " +
                                 "This is for example the case for configuration parameters. \r\n" +
@@ -2309,7 +2324,7 @@ namespace AasxPackageLogic
                     "understand the meaning of the SubmodelElements and, for example, " +
                     "its unit or logical datatype. " +
                     "The semanticId shall reference to a ConceptDescription within the AAS environment " +
-                    "or an external repository, such as IEC CDD or eCl@ss or " +
+                    "or an external repository, such as IEC CDD or ECLASS or " +
                     "a company / consortia repository.",
                     checkForCD: true,
                     addExistingEntities: AdminShell.Key.ConceptDescription,
@@ -2932,14 +2947,16 @@ namespace AasxPackageLogic
                             return new AnyUiLambdaActionRedrawEntity();
                         }))
                 {
+                    Func<AdminShell.KeyList, AnyUiLambdaActionBase> lambda = (kl) =>
+                    {
+                        return new AnyUiLambdaActionNavigateTo(
+                            AdminShell.Reference.CreateNew(kl), translateAssetToAAS: true);
+                    };
                     this.AddKeyListKeys(stack, "value", rfe.value.Keys, repo,
                         packages, PackageCentral.PackageCentral.Selector.MainAuxFileRepo, AdminShell.Key.AllElements,
                         addPresetNames: bufferKeys.Item1,
                         addPresetKeyLists: bufferKeys.Item2,
-                        jumpLambda: (kl) =>
-                        {
-                            return new AnyUiLambdaActionNavigateTo(AdminShell.Reference.CreateNew(kl));
-                        });
+                        jumpLambda: lambda, noEditJumpLambda: lambda);
                 }
             }
             else
@@ -2950,6 +2967,13 @@ namespace AasxPackageLogic
 
                 // group
                 this.AddGroup(stack, "" + sme.GetElementName(), this.levelColors.MainSection);
+
+                // re-use lambda
+                Func<AdminShell.KeyList, AnyUiLambdaActionBase> lambda = (kl) =>
+                {
+                    return new AnyUiLambdaActionNavigateTo(
+                        AdminShell.Reference.CreateNew(kl), translateAssetToAAS: true);
+                };
 
                 // members
                 this.AddHintBubble(
@@ -2976,10 +3000,7 @@ namespace AasxPackageLogic
                         packages, PackageCentral.PackageCentral.Selector.MainAuxFileRepo, AdminShell.Key.AllElements,
                         addPresetNames: bufferKeys.Item1,
                         addPresetKeyLists: bufferKeys.Item2,
-                        jumpLambda: (kl) =>
-                        {
-                            return new AnyUiLambdaActionNavigateTo(AdminShell.Reference.CreateNew(kl));
-                        });
+                        jumpLambda: lambda, noEditJumpLambda: lambda);
                 }
 
                 this.AddHintBubble(
@@ -3006,10 +3027,7 @@ namespace AasxPackageLogic
                         packages, PackageCentral.PackageCentral.Selector.MainAuxFileRepo, AdminShell.Key.AllElements,
                         addPresetNames: bufferKeys.Item1,
                         addPresetKeyLists: bufferKeys.Item2,
-                        jumpLambda: (kl) =>
-                        {
-                            return new AnyUiLambdaActionNavigateTo(AdminShell.Reference.CreateNew(kl));
-                        });
+                        jumpLambda: lambda, noEditJumpLambda: lambda);
                 }
 
                 // specifically for annotated relationship?
@@ -3096,24 +3114,20 @@ namespace AasxPackageLogic
                             return new AnyUiLambdaActionRedrawEntity();
                         }))
                 {
+                    Func<AdminShell.KeyList, AnyUiLambdaActionBase> lambda = (kl) =>
+                    {
+                        return new AnyUiLambdaActionNavigateTo(
+                            AdminShell.Reference.CreateNew(kl), translateAssetToAAS: true);
+                    };
                     this.AddKeyListKeys(
                         /* TODO (MIHO, 2021-02-16): this mechanism is ugly and only intended to be temporary!
                            It shall be replaced (after intergrating AnyUI) by a better repo handling */
+                        /* Update: already better! */
                         stack, "Asset", ent.assetRef.Keys, repo, packages, 
                         PackageCentral.PackageCentral.Selector.MainAuxFileRepo,
                         AdminShell.Key.AllElements,
-                        jumpLambda: (kl) =>
-                        {
-                            return new AnyUiLambdaActionNavigateTo(
-                                AdminShell.Reference.CreateNew(kl), translateAssetToAAS: true);
-                        },
-                        noEditJumpLambda: (kl) =>
-                        {
-                            // TODO-ANYUI: add
-                            //AddWishForOutsideAction(new AnyUiLambdaActionNavigateTo(
-                            //    AdminShell.Reference.CreateNew(kl), translateAssetToAAS: true));
-                            throw new NotImplementedException("AnyUI: missing");
-                        });
+                        jumpLambda: lambda,
+                        noEditJumpLambda: lambda);
                 }
 
             }

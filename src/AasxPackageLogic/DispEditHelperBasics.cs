@@ -517,11 +517,11 @@ namespace AasxPackageLogic
             }
         }
 
-        public AnyUiTextBlock AddSmallLabelTo(
+        public AnyUiSelectableTextBlock AddSmallLabelTo(
             AnyUiGrid g, int row, int col, AnyUiThickness margin = null, AnyUiThickness padding = null,
             string content = "", AnyUiBrush foreground = null, AnyUiBrush background = null, bool setBold = false)
         {
-            var lab = new AnyUiTextBlock();
+            var lab = new AnyUiSelectableTextBlock();
 
             lab.Margin = margin;
             lab.Padding = padding;
@@ -532,6 +532,23 @@ namespace AasxPackageLogic
             if (setBold)
                 lab.FontWeight = AnyUiFontWeight.Bold;
             lab.Text = content;
+
+            // check, which content
+            if (this.showIriMode
+                && content.HasContent()
+                && (content.Trim().ToLower().StartsWith("http://")
+                 || content.Trim().ToLower().StartsWith("https://")))
+            {
+                // mark as hyperlink
+                lab.TextAsHyperlink = true;
+
+                // directly assign lambda
+                lab.setValueLambda = (o) =>
+                {
+                    return new AnyUiLambdaActionDisplayContentFile(content, preferInternalDisplay: true);
+                };
+            }
+
             AnyUiGrid.SetRow(lab, row);
             AnyUiGrid.SetColumn(lab, col);
             g.Children.Add(lab);
@@ -1210,7 +1227,7 @@ namespace AasxPackageLogic
             string[] addPresetNames = null, AdminShell.KeyList[] addPresetKeyLists = null,
             Func<AdminShell.KeyList, AnyUiLambdaActionBase> jumpLambda = null,
             AnyUiLambdaActionBase takeOverLambdaAction = null,
-            Action<AdminShell.KeyList> noEditJumpLambda = null)
+            Func<AdminShell.KeyList, AnyUiLambdaActionBase> noEditJumpLambda = null)
         {
             // sometimes needless to show
             if (repo == null && (keys == null || keys.Count < 1))
@@ -1283,7 +1300,7 @@ namespace AasxPackageLogic
             else
             if (keys != null)
             {
-                // populate [+], [Select], [eCl@ss], [Copy] buttons
+                // populate [+], [Select], [ECLASS], [Copy] buttons
                 var colDescs = new List<string>(new[] { "*", "#", "#", "#", "#", "#", "#" });
                 for (int i = 0; i < presetNo; i++)
                     colDescs.Add("#");
@@ -1464,11 +1481,10 @@ namespace AasxPackageLogic
                                     margin: new AnyUiThickness(2, 2, 2, 2),
                                     padding: new AnyUiThickness(5, 0, 5, 0),
                                     content: "Jump"),
-                                    (o) => {
-                                        // TODO-ANYUI: check
-                                        noEditJumpLambda.Invoke(keys);
-                                        return new AnyUiLambdaActionNone();
-                                    }) ;
+                                    (o) =>
+                                    {
+                                        return noEditJumpLambda(keys);
+                                    });
                         }
                     }
 
@@ -1816,7 +1832,7 @@ namespace AasxPackageLogic
         }
 
         //
-        // Identify eCl@ss properties to be imported
+        // Identify ECLASS properties to be imported
         //
 
         public void IdentifyTargetsForEclassImportOfCDs(
@@ -1836,7 +1852,7 @@ namespace AasxPackageLogic
                     // already in CDs?
                     var x = env.FindConceptDescription(elem.semanticId[0]);
                     if (x == null)
-                        // this one has the potential to get imported eCl@ss CD
+                        // this one has the potential to get imported ECLASS CD
                         targets.Add(elem);
                 }
 
@@ -1857,7 +1873,7 @@ namespace AasxPackageLogic
             if (env == null || targets == null)
                 return false;
 
-            // use eCl@ss utilities
+            // use ECLASS utilities
             var fullfn = System.IO.Path.GetFullPath(Options.Curr.EclassDir);
             var jobData = new EclassUtils.SearchJobData(fullfn);
             foreach (var t in targets)
@@ -1869,7 +1885,7 @@ namespace AasxPackageLogic
 
             // make a progress flyout
             var uc = new AnyUiDialogueDataProgress(
-                "Import ConceptDescriptions from eCl@ss",
+                "Import ConceptDescriptions from ECLASS",
                 info: "Preparing ...", symbol: AnyUiMessageBoxImage.Information);
             uc.Progress = 0.0;
             // show this
@@ -1883,7 +1899,7 @@ namespace AasxPackageLogic
                 System.Threading.Thread.Sleep(10);
 
                 // longrunnig task for searching IRDIs ..
-                uc.Info = "Collecting eCl@ss Data ..";
+                uc.Info = "Collecting ECLASS Data ..";
                 EclassUtils.SearchForIRDIinEclassFiles(jobData, (frac) =>
                 {
                     uc.Progress = frac;

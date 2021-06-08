@@ -134,15 +134,18 @@ namespace BlazorUI
             Array.Sort(aasxFiles);
             loadAasx(aasxFiles[0]);
         }
+        
         public static void Main(string[] args)
         {
-            // env = new AdminShellPackageEnv("Example_AAS_ServoDCMotor_21.aasx");
+            //// env = new AdminShellPackageEnv("Example_AAS_ServoDCMotor_21.aasx");
 
             loadAasxFiles();
 #if __test__PackageLogic
 #else
 
             packages = new PackageCentral();
+            // TODO (MIHO, 2021-06-07): how to initialize?
+            //// packages.Main = env;
             // packages.Main = env;
 
             helper = new DispEditHelperEntities();
