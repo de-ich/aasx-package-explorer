@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AasxPackageLogic;
+using AasxPackageLogic.PackageCentral;
 using AdminShellNS;
 using AnyUi;
 using Microsoft.AspNetCore;
@@ -142,7 +143,7 @@ namespace BlazorUI
 #else
 
             packages = new PackageCentral();
-            packages.Main = env;
+            // packages.Main = env;
 
             helper = new DispEditHelperEntities();
             helper.levelColors = DispLevelColors.GetLevelColorsFromOptions(Options.Curr);

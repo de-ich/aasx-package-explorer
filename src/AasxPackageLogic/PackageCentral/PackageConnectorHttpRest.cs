@@ -21,6 +21,7 @@ using AasxIntegrationBase;
 using AasxOpenIdClient;
 using AasxPackageLogic.AdminShellEvents;
 using AdminShellNS;
+using IdentityModel.Client;
 using Newtonsoft.Json;
 
 namespace AasxPackageLogic.PackageCentral
@@ -391,7 +392,7 @@ namespace AasxPackageLogic.PackageCentral
                 if (OpenIDClient.token != "")
                 {
                     // ANYUI-TODO Andreas
-                    // _client.SetBearerToken(OpenIDClient.token);
+                    _client.SetBearerToken(OpenIDClient.token);
                     throw new NotImplementedException("AnyUi: .net standard missing SetBearerToken!");
                 }
 
