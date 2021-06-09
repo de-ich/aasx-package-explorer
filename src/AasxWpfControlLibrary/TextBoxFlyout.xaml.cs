@@ -23,8 +23,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AasxIntegrationBase;
-using Newtonsoft.Json;
 using AnyUi;
+using Newtonsoft.Json;
 
 namespace AasxPackageExplorer
 {

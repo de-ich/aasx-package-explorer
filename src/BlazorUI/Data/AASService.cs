@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdminShellNS;
-using static BlazorUI.Pages.Index;
-using static AdminShellNS.AdminShellV20;
 using BlazorUI;
+using static AdminShellNS.AdminShellV20;
+using static BlazorUI.Pages.Index;
 
 namespace BlazorUI.Data
 {
@@ -77,31 +77,31 @@ namespace BlazorUI.Data
                                 childs.Add(smItem);
                                 List<Item> smChilds = new List<Item>();
                                 if (sm.submodelElements != null)
-                                foreach (var sme in sm.submodelElements)
-                                {
-                                    var smeItem = new Item();
-                                    smeItem.envIndex = i;
-                                    smeItem.Text = sme.submodelElement.idShort;
-                                    smeItem.Tag = sme.submodelElement;
-                                    smeItem.ParentContainer = sm;
-                                    smeItem.Wrapper = sme;
-                                    smChilds.Add(smeItem);
-                                    if (sme.submodelElement is SubmodelElementCollection)
+                                    foreach (var sme in sm.submodelElements)
                                     {
-                                        var smec = sme.submodelElement as SubmodelElementCollection;
-                                        createSMECItems(smeItem, smec, i);
+                                        var smeItem = new Item();
+                                        smeItem.envIndex = i;
+                                        smeItem.Text = sme.submodelElement.idShort;
+                                        smeItem.Tag = sme.submodelElement;
+                                        smeItem.ParentContainer = sm;
+                                        smeItem.Wrapper = sme;
+                                        smChilds.Add(smeItem);
+                                        if (sme.submodelElement is SubmodelElementCollection)
+                                        {
+                                            var smec = sme.submodelElement as SubmodelElementCollection;
+                                            createSMECItems(smeItem, smec, i);
+                                        }
+                                        if (sme.submodelElement is Operation)
+                                        {
+                                            var o = sme.submodelElement as Operation;
+                                            createOperationItems(smeItem, o, i);
+                                        }
+                                        if (sme.submodelElement is Entity)
+                                        {
+                                            var e = sme.submodelElement as Entity;
+                                            createEntityItems(smeItem, e, i);
+                                        }
                                     }
-                                    if (sme.submodelElement is Operation)
-                                    {
-                                        var o = sme.submodelElement as Operation;
-                                        createOperationItems(smeItem, o, i);
-                                    }
-                                    if (sme.submodelElement is Entity)
-                                    {
-                                        var e = sme.submodelElement as Entity;
-                                        createEntityItems(smeItem, e, i);
-                                    }
-                                }
                                 smItem.Childs = smChilds;
                                 foreach (var c in smChilds)
                                     c.parent = smItem;

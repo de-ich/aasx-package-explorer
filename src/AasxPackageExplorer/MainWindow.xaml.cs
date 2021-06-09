@@ -20,15 +20,15 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using AdminShellNS;
 using AasxIntegrationBase;
 using AasxPackageLogic;
-using AasxPackageLogic.PackageCentral;
 using AasxPackageLogic.AdminShellEvents;
+using AasxPackageLogic.PackageCentral;
 using AasxWpfControlLibrary;
+using AasxWpfControlLibrary.PackageCentral;
+using AdminShellNS;
 using AnyUi;
 using ExhaustiveMatch = ExhaustiveMatching.ExhaustiveMatch;
-using AasxWpfControlLibrary.PackageCentral;
 
 namespace AasxPackageExplorer
 {

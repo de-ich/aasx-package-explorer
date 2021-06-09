@@ -1109,7 +1109,7 @@ namespace AasxPackageLogic
         }
 
         public List<AdminShell.Key> SmartSelectAasEntityKeys(
-            PackageCentral.PackageCentral packages, 
+            PackageCentral.PackageCentral packages,
             PackageCentral.PackageCentral.Selector selector, string filter = null)
         {
             var uc = new AnyUiDialogueDataSelectAasEntity(
