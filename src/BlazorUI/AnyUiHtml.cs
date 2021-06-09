@@ -4,16 +4,16 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows;
-using AasxIntegrationBase;
-using AdminShellNS;
-using System.Windows.Input;
-using Newtonsoft.Json;
-using AasxPackageLogic;
-using BlazorUI;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using AasxIntegrationBase;
+using AasxPackageLogic;
 using AasxPackageLogic.PackageCentral;
+using AdminShellNS;
+using BlazorUI;
+using Newtonsoft.Json;
 
 namespace AnyUi
 {
@@ -47,7 +47,7 @@ namespace AnyUi
             bool newData = false;
             while (true)
             {
-                lock(htmlDotnetLock)
+                lock (htmlDotnetLock)
                 {
                     if (htmlDotnetEventIn)
                     {
@@ -68,7 +68,7 @@ namespace AnyUi
                                 htmlEventIn = true;
                                 Program.signalNewData(1); // same tree, but structure may change
 
-                                while (!htmlEventOut);
+                                while (!htmlEventOut) ;
                                 int bufferedI = 0;
                                 if (htmlEventOutputs.Count == 1)
                                 {
@@ -84,7 +84,7 @@ namespace AnyUi
                                 // AnyUiLambdaActionBase ret = el.setValueLambda?.Invoke(o);
                                 break;
                         }
-                        while (htmlDotnetEventOut);
+                        while (htmlDotnetEventOut) ;
                         htmlDotnetEventIn = false;
                         newData = true;
                     }
@@ -102,7 +102,7 @@ namespace AnyUi
         {
             lock (htmlDotnetLock)
             {
-                while (htmlDotnetEventIn);
+                while (htmlDotnetEventIn) ;
                 htmlDotnetEventType = "setValueLambda";
                 htmlDotnetEventInputs.Add(el);
                 htmlDotnetEventInputs.Add(o);
@@ -114,7 +114,7 @@ namespace AnyUi
         {
             lock (htmlDotnetLock)
             {
-                while (htmlDotnetEventIn);
+                while (htmlDotnetEventIn) ;
                 htmlDotnetEventType = "contextMenu";
                 htmlDotnetEventInputs.Add(el);
                 htmlDotnetEventInputs.Add(cntlcm);
@@ -140,7 +140,7 @@ namespace AnyUi
             htmlEventIn = true;
             Program.signalNewData(2); // build new tree
 
-            while (!htmlEventOut);
+            while (!htmlEventOut) ;
             AnyUiMessageBoxResult r = AnyUiMessageBoxResult.None;
             if (htmlEventOutputs.Count == 1)
                 r = (AnyUiMessageBoxResult)htmlEventOutputs[0];

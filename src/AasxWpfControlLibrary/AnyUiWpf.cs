@@ -15,16 +15,16 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using AasxIntegrationBase;
 using AasxPackageExplorer;
-using AdminShellNS;
-using AasxWpfControlLibrary;
-using System.Windows.Input;
-using Newtonsoft.Json;
 using AasxPackageLogic;
-using System.Windows.Data;
 using AasxPackageLogic.PackageCentral;
+using AasxWpfControlLibrary;
+using AdminShellNS;
+using Newtonsoft.Json;
 
 namespace AnyUi
 {
@@ -433,7 +433,7 @@ namespace AnyUi
                             {
                                 // normal procedure
                                 var action = cntl.setValueLambda?.Invoke(cntl);
-                                EmitOutsideAction(action);                                
+                                EmitOutsideAction(action);
                             };
                             wpf.Inlines.Clear();
                             wpf.Inlines.Add(hl);

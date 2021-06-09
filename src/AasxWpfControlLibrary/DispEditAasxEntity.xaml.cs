@@ -19,11 +19,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using AasxIntegrationBase;
 using AasxPackageLogic;
+using AasxPackageLogic.PackageCentral;
 using AasxWpfControlLibrary;
 using AdminShellNS;
 using AnyUi;
 using Newtonsoft.Json;
-using AasxPackageLogic.PackageCentral;
 
 namespace AasxPackageExplorer
 {
@@ -476,7 +476,7 @@ namespace AasxPackageExplorer
 
             // return render hints
             return renderHints;
-        }        
+        }
 
         #endregion
     }

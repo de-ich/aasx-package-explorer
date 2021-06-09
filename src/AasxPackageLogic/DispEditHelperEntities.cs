@@ -774,7 +774,7 @@ namespace AasxPackageLogic
                                 return new AnyUiLambdaActionNone();
 
                             // select existing Submodel
-                            var ks = this.SmartSelectAasEntityKeys(packages, 
+                            var ks = this.SmartSelectAasEntityKeys(packages,
                                         PackageCentral.PackageCentral.Selector.Main,
                                         "Submodel");
                             if (ks != null)
@@ -2491,7 +2491,7 @@ namespace AasxPackageLogic
                     this.AddGroup(stack, "ValueID", this.levelColors.SubSection);
                     this.AddKeyListKeys(
                         stack, "valueId", mlp.valueId.Keys, repo,
-                        packages, PackageCentral.PackageCentral.Selector.MainAuxFileRepo, 
+                        packages, PackageCentral.PackageCentral.Selector.MainAuxFileRepo,
                         AdminShell.Key.GlobalReference);
                 }
             }
@@ -3123,7 +3123,7 @@ namespace AasxPackageLogic
                         /* TODO (MIHO, 2021-02-16): this mechanism is ugly and only intended to be temporary!
                            It shall be replaced (after intergrating AnyUI) by a better repo handling */
                         /* Update: already better! */
-                        stack, "Asset", ent.assetRef.Keys, repo, packages, 
+                        stack, "Asset", ent.assetRef.Keys, repo, packages,
                         PackageCentral.PackageCentral.Selector.MainAuxFileRepo,
                         AdminShell.Key.AllElements,
                         jumpLambda: lambda,
@@ -3180,7 +3180,7 @@ namespace AasxPackageLogic
         //
 
         public void DisplayOrEditAasEntityView(
-            PackageCentral.PackageCentral packages, 
+            PackageCentral.PackageCentral packages,
             AdminShell.AdministrationShellEnv env, AdminShell.AdministrationShell shell,
             AdminShell.View view, bool editMode, AnyUiStackPanel stack,
             bool hintMode = false)
