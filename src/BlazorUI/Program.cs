@@ -130,11 +130,12 @@ namespace BlazorUI
             return (mode);
         }
 
-        public static void loadAasxFiles()
+        public static void loadAasxFiles(bool load = true)
         {
             aasxFiles = Directory.GetFiles(".", "*.aasx");
             Array.Sort(aasxFiles);
-            loadAasx(aasxFiles[0]);
+            if (load)
+                loadAasx(aasxFiles[0]);
         }
 
         public static async Task getAasxAsync(string input)
@@ -169,7 +170,7 @@ namespace BlazorUI
             {
                 await contentStream.CopyToAsync(file);
             }
-            loadAasxFiles();
+            loadAasxFiles(false);
             loadAasx(contentFn);
         }
 
