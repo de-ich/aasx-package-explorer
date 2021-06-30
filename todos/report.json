@@ -50,15 +50,15 @@
       {
         "prefix": "TODO",
         "suffix": " (mristin, 2020-10-05): This test has been temporary disabled so that we can merge in the branch\r\n        MIHO/EnhanceDocumentShelf. The test should be fixed in a future pull request and we will then re-enable it\r\n        again.\r\n\r\n        Please do not forget to remove the Resharper directive at the top of this class.\r\n\r\n        [Test]\r\n\r\n        dead-csharp ignore this comment",
-        "line": 137,
+        "line": 131,
         "column": 8,
         "status": "ok"
       },
       {
         "prefix": "TODO",
-        "suffix": " (mristin, 2020-09-17): Remove autofix once XSD and Aasx library in sync\r\n\r\n                          Package has been loaded, now we need to do an automatic check \u0026 fix.\r\n\r\n                          This is necessary as Aasx library is still not conform with the XSD AASX schema and breaks\r\n                          certain constraints (*e.g.*, the cardinality of langString = 1..*).",
-        "line": 162,
-        "column": 24,
+        "suffix": " (mristin, 2020-09-17): Remove autofix once XSD and Aasx library in sync\r\n\r\n                      Package has been loaded, now we need to do an automatic check \u0026 fix.\r\n\r\n                      This is necessary as Aasx library is still not conform with the XSD AASX schema and breaks\r\n                      certain constraints (*e.g.*, the cardinality of langString = 1..*).",
+        "line": 154,
+        "column": 16,
         "status": "ok"
       }
     ]

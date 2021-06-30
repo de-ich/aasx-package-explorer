@@ -73,8 +73,8 @@ mristin,
     
     dead-csharp ignore this comment
 
-[Line 138, column 9](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary.Tests/TestLoadSaveChain.cs#L138
+[Line 132, column 9](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary.Tests/TestLoadSaveChain.cs#L132
 ), 
 mristin,
 2020-10-05
@@ -89,8 +89,8 @@ mristin,
     
     dead-csharp ignore this comment
 
-[Line 163, column 25](
-https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary.Tests/TestLoadSaveChain.cs#L163
+[Line 155, column 17](
+https://github.com/admin-shell-io/aasx-package-explorer/blob/master/src/AasxCsharpLibrary.Tests/TestLoadSaveChain.cs#L155
 ), 
 mristin,
 2020-09-17
