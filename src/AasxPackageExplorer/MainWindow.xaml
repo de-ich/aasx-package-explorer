@@ -113,6 +113,7 @@
                     <RoutedUICommand x:Key="FaqGithub" Text="FaqGithub" />
                     <RoutedUICommand x:Key="HelpIssues" Text="HelpIssues" />
                     <RoutedUICommand x:Key="HelpOptionsInfo" Text="HelpOptionsInfo" />
+                    <RoutedUICommand x:Key="ImportVEC" Text="ImportVEC" />
 
                     <RoutedUICommand x:Key="FileRepoNew" Text="FileRepoNew" />
                     <RoutedUICommand x:Key="FileRepoOpen" Text="FileRepoOpen" />
@@ -290,6 +291,7 @@
         <CommandBinding Command="{StaticResource FaqGithub}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource HelpIssues}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource HelpOptionsInfo}" Executed="CommandBinding_Executed"/>
+        <CommandBinding Command="{StaticResource ImportVEC}" Executed="CommandBinding_Executed"/>
 
         <CommandBinding Command="{StaticResource FileRepoNew}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource FileRepoOpen}" Executed="CommandBinding_Executed"/>
@@ -389,6 +391,7 @@
                             <MenuItem Header="Import BAMM RDF into AASX .." Command="{StaticResource RDFRead}"/>
                             <MenuItem Header="Read time series values into SubModel .." Command="{StaticResource ImportTimeSeries}"/>
                             <MenuItem Header="Import SubmodelElements from Table .." Command="{StaticResource ImportTable}"/>
+                            <MenuItem Header="Import VEC file into AASX .." Command="{StaticResource ImportVEC}"/>
                         </MenuItem>
                         <MenuItem Header="Export ..">
                             <MenuItem Header="Export AutomationML .." Command="{StaticResource ExportAML}"/>

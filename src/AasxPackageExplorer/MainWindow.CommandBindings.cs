@@ -1388,6 +1388,9 @@ namespace AasxPackageExplorer
 
             if (cmd == "exportsubmodeljsonschema")
                 CommandBinding_ExportSubmodelJsonSchema();
+
+            if (cmd == "importvec")
+                CommandBinding_ImportVEC();
         }
 
         public void CommandBinding_TDImport()
@@ -3676,6 +3679,61 @@ namespace AasxPackageExplorer
                 }
             }
             if (Options.Curr.UseFlyovers) this.CloseFlyover();
+        }
+
+        public void CommandBinding_ImportVEC()
+        {
+            // trivial things
+            if (!_packageCentral.MainStorable)
+            {
+                MessageBoxFlyoutShow(
+                    "An AASX package needs to be open", "Error",
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Exclamation);
+                return;
+            }
+            // check, if required plugin can be found
+            var pluginName = "AasxPluginVec";
+            var actionName = "import-vec";
+            var pi = Plugins.FindPluginInstance(pluginName);
+            if (pi == null || !pi.HasAction(actionName))
+            {
+                var res = MessageBoxFlyoutShow(
+                        $"This function requires a binary plug-in file named '{pluginName}', " +
+                        $"which needs to be added to the command line, with an action named '{actionName}'." +
+                        $"Press 'OK' to show help page on GitHub.",
+                        "Plug-in not present",
+                        AnyUiMessageBoxButton.OKCancel, AnyUiMessageBoxImage.Hand);
+                if (res == AnyUiMessageBoxResult.OK)
+                {
+                    ShowHelp();
+                }
+                return;
+            }
+
+            VisualElementSubmodelRef ve = null;
+            if (DisplayElements.SelectedItem != null && DisplayElements.SelectedItem is VisualElementSubmodelRef)
+                ve = DisplayElements.SelectedItem as VisualElementSubmodelRef;
+
+            if (ve == null || ve.theSubmodel == null || ve.theEnv == null)
+            {
+                MessageBoxFlyoutShow(
+                    "No valid SubModel selected for VEC integration.", "VEC import",
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
+                return;
+            }
+
+
+            // Invoke Plugin
+            var ret = pi.InvokeAction(actionName,
+                                      this,
+                                      ve.theEnv,
+                                      ve.theSubmodel);
+
+
+            //--------------------------------
+            // Redraw for changes to be visible
+            RedrawAllAasxElements();
+            //-----------------------------------
         }
     }
 }
