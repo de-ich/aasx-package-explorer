@@ -154,7 +154,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 }
                 dlg.Title = "Select VEC file to import ..";
                 dlg.DefaultExt = "*.vec";
-                dlg.Filter = "VEC container files (*.vec)";
+                dlg.Filter = "VEC container files (*.vec)|*.vec|Alle Dateien (*.*)|*.*";
 
                 fop?.StartFlyover(new EmptyFlyout());
                 var fnres = dlg.ShowDialog(fop?.GetWin32Window());
