@@ -3710,14 +3710,14 @@ namespace AasxPackageExplorer
                 return;
             }
 
-            VisualElementSubmodelRef ve = null;
-            if (DisplayElements.SelectedItem != null && DisplayElements.SelectedItem is VisualElementSubmodelRef)
-                ve = DisplayElements.SelectedItem as VisualElementSubmodelRef;
+            VisualElementAdminShell ve = null;
+            if (DisplayElements.SelectedItem != null && DisplayElements.SelectedItem is VisualElementAdminShell)
+                ve = DisplayElements.SelectedItem as VisualElementAdminShell;
 
-            if (ve == null || ve.theSubmodel == null || ve.theEnv == null)
+            if (ve == null || ve.theEnv == null || ve.thePackage == null)
             {
                 MessageBoxFlyoutShow(
-                    "No valid SubModel selected for VEC integration.", "VEC import",
+                    "No valid AAS selected for VEC integration.", "VEC import",
                     AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
@@ -3726,8 +3726,9 @@ namespace AasxPackageExplorer
             // Invoke Plugin
             var ret = pi.InvokeAction(actionName,
                                       this,
+                                      ve.thePackage,
                                       ve.theEnv,
-                                      ve.theSubmodel);
+                                      ve.theAas);
 
 
             //--------------------------------

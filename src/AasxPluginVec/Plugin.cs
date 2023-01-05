@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using AasxPluginVec;
 using AdminShellNS;
 using AnyUi;
 using JetBrains.Annotations;
@@ -124,22 +125,22 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             if (action == "import-vec"
                 && args != null && args.Length >= 3
-                && args[0] is IFlyoutProvider && args[1] is AdminShell.AdministrationShellEnv
-                && args[2] is AdminShell.Submodel)
+                && args[0] is IFlyoutProvider 
+                && args[1] is AdminShellPackageEnv
+                && args[2] is AdminShell.AdministrationShellEnv
+                && args[3] is AdminShellV20.AdministrationShell)
             {
-                var fn = (args.Length >= 4) ? args[3] as string : null;
+                var fn = (args.Length >= 5) ? args[4] as string : null;
 
                 // flyout provider (will be required in the future)
                 var fop = args[0] as IFlyoutProvider;
 
                 // which Submodel
-                var env = args[1] as AdminShell.AdministrationShellEnv;
-                var sm = args[2] as AdminShell.Submodel;
-                if (env == null || sm == null)
+                var packageEnv = args[1] as AdminShellPackageEnv;
+                var env = args[2] as AdminShell.AdministrationShellEnv;
+                var aas = args[3] as AdminShellV20.AdministrationShell;
+                if (packageEnv == null || env == null || aas == null)
                     return null;
-
-                // the Submodel elements need to have parents
-                sm.SetAllParents();
 
                 // ask for filename
                 var dlg = new Microsoft.Win32.OpenFileDialog();
@@ -165,8 +166,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
                 // use functionality
                 Log.Info($"Importing VEC container from file: {fn} ..");
-                // FIXME actual import logic
-                //ImportTimeSeries.ImportTimeSeriesFromFile(env, sm, uc.Result, fn, Log);
+                VecImporter.ImportVecFromFile(packageEnv, env, aas, fn, options, Log);
             }
 
             // default
