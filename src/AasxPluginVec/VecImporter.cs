@@ -9,21 +9,12 @@ This source code may use other Open Source software components (see LICENSE.txt)
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using AasxIntegrationBase;
-using AasxIntegrationBase.AasForms;
 using AdminShellNS;
-using Newtonsoft.Json;
+using static AdminShellNS.AdminShellV20;
 
 namespace AasxPluginVec
 {
@@ -40,8 +31,8 @@ namespace AasxPluginVec
 
         public static void ImportVecFromFile(
             AdminShellPackageEnv packageEnv,
-            AdminShell.AdministrationShellEnv env,
-            AdminShellV20.AdministrationShell aas,
+            AdministrationShellEnv env,
+            AdministrationShell aas,
             string fn,
             VecOptions options,
             LogInstance log = null)
@@ -71,34 +62,39 @@ namespace AasxPluginVec
 
         protected VecImporter(
             AdminShellPackageEnv packageEnv,
-            AdminShell.AdministrationShellEnv env,
-            AdminShellV20.AdministrationShell aas,
+            AdministrationShellEnv env,
+            AdministrationShell aas,
             string fn,
             VecOptions options,
             LogInstance log = null)
         {
-            this.packageEnv = packageEnv;
-            this.env = env;
-            this.aas = aas;
+            if (string.IsNullOrEmpty(fn))
+            {
+                throw new ArgumentException($"'{nameof(fn)}' cannot be null or empty.", nameof(fn));
+            }
+
+            this.packageEnv = packageEnv ?? throw new ArgumentNullException(nameof(packageEnv));
+            this.env = env ?? throw new ArgumentNullException(nameof(env));
+            this.aas = aas ?? throw new ArgumentNullException(nameof(aas));
             this.fn = fn;
-            this.options = options;
-            this.log = log;
+            this.options = options ?? throw new ArgumentNullException(nameof(options));
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.vecSubmodel = null;
-            this.bomSubmodels = new List<AdminShellV20.Submodel>();
+            this.bomSubmodels = new List<Submodel>();
             this.vecFile = ParseVecFile(fn);
             this.vecFileSubmodelElement = null;
         }
 
         protected AdminShellPackageEnv packageEnv;
-        protected AdminShell.AdministrationShellEnv env;
-        protected AdminShellV20.AdministrationShell aas;
-        protected AdminShell.Submodel vecSubmodel;
-        protected List<AdminShell.Submodel> bomSubmodels;
+        protected AdministrationShellEnv env;
+        protected AdministrationShell aas;
+        protected Submodel vecSubmodel;
+        protected List<Submodel> bomSubmodels;
         protected string fn;
         protected VecOptions options;
         protected LogInstance log;
         protected XDocument vecFile;
-        protected AdminShellV20.File vecFileSubmodelElement;
+        protected AdminShell.File vecFileSubmodelElement;
 
 
         protected void ImportVec()
@@ -109,7 +105,7 @@ namespace AasxPluginVec
 
             if (harnessDescriptions.Count == 0)
             {
-                log.Error("Unable to find HarnessDescription in VEC file...");
+                log?.Error("Unable to find HarnessDescription in VEC file...");
                 return;
             }
 
@@ -126,9 +122,9 @@ namespace AasxPluginVec
             packageEnv.AddSupplementaryFileToStore(fn, localFilePath, false);
 
             // create the VEC submodel
-            vecSubmodel = new AdminShell.Submodel();
-            vecSubmodel.SetIdentification(AdminShell.Identification.IRI, AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdConceptDescription), "VEC");
-            vecSubmodel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("Submodel", true, "IRI", "http://arena2036.de/vws4ls/vec/VecFileReference/1/0"));
+            vecSubmodel = new Submodel();
+            vecSubmodel.SetIdentification(Identification.IRI, AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdConceptDescription), "VEC");
+            vecSubmodel.semanticId = new SemanticId(new Key("Submodel", true, "IRI", "http://arena2036.de/vws4ls/vec/VecFileReference/1/0"));
             env.Submodels.Add(vecSubmodel);
             aas.AddSubmodelRef(vecSubmodel.GetSubmodelRef());
 
@@ -137,7 +133,7 @@ namespace AasxPluginVec
             file.idShort = "VEC";
             file.mimeType = "text/xml";
             file.value = localFilePath;
-            vecSubmodel.AddChild(new AdminShellV20.SubmodelElementWrapper(file));
+            vecSubmodel.AddChild(new SubmodelElementWrapper(file));
             this.vecFileSubmodelElement = file;
         }
 
@@ -148,13 +144,13 @@ namespace AasxPluginVec
 
             if (harnessId == null)
             {
-                log.Error("Unable to determine ID of harness description!");
+                log?.Error("Unable to determine ID of harness description!");
                 return;
             }
 
             if (harnessDocumentNumber == null)
             {
-                log.Error("Unable to determine DocumentNumber of harness description!");
+                log?.Error("Unable to determine DocumentNumber of harness description!");
                 return;
             }
 
@@ -163,10 +159,10 @@ namespace AasxPluginVec
             CreateComponentEntities(bomSubmodel, mainEntity, harnessDescription, harnessId);
         }
 
-        private AdminShellV20.Submodel InitializeBomSubmodel()
+        private Submodel InitializeBomSubmodel()
         {
             // create the BOM submodel
-            var bomSubmodel = new AdminShell.Submodel();
+            var bomSubmodel = new Submodel();
             bomSubmodels.Add(bomSubmodel);
 
             var id = AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdConceptDescription);
@@ -176,15 +172,15 @@ namespace AasxPluginVec
             id = id.Substring(0, id.Length - 1) + bomSubmodels.Count();
 
             var idShort = "LS_BOM_" + bomSubmodels.Count().ToString().PadLeft(2, '0');
-            bomSubmodel.SetIdentification(AdminShell.Identification.IRI, id, idShort);
-            bomSubmodel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("Submodel", false, "IRI", "http://example.com/id/type/submodel/BOM/1/1"));
+            bomSubmodel.SetIdentification(Identification.IRI, id, idShort);
+            bomSubmodel.semanticId = new SemanticId(new Key("Submodel", false, "IRI", "http://example.com/id/type/submodel/BOM/1/1"));
             env.Submodels.Add(bomSubmodel);
             aas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
 
             return bomSubmodel;
         }
 
-        private AdminShellV20.Entity CreateMainEntity(AdminShellV20.Submodel bomSubmodel, string harnessId, string harnessDocumentNumber)
+        private Entity CreateMainEntity(Submodel bomSubmodel, string harnessId, string harnessDocumentNumber)
         {
             // create the main entity
             var mainEntity = new AdminShell.Entity();
@@ -200,7 +196,7 @@ namespace AasxPluginVec
             return mainEntity;
         }
 
-        private void CreateComponentEntities(AdminShellV20.Submodel bomSubmodel, AdminShellV20.Entity mainEntity, XElement harnessDescription, string harnessId)
+        private void CreateComponentEntities(Submodel bomSubmodel, Entity mainEntity, XElement harnessDescription, string harnessId)
         {
             var compositionSpecifications = harnessDescription.Elements(XName.Get("Specification")).
                             Where(spec => spec.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance"))?.Value == "vec:CompositionSpecification");
@@ -215,25 +211,25 @@ namespace AasxPluginVec
             }
         }
 
-        private AdminShellV20.Entity CreateComponentEntity(AdminShellV20.Submodel bomSubmodel, AdminShellV20.Entity mainEntity, XElement component, string harnessId)
+        private Entity CreateComponentEntity(Submodel bomSubmodel, Entity mainEntity, XElement component, string harnessId)
         {
             string componentId = component.Attribute(XName.Get("id"))?.Value ?? null;
             string componentName = component.Element(XName.Get("Identification"))?.Value ?? null;
 
             if (componentId == null)
             {
-                log.Error("Unable to determine ID of component!");
+                log?.Error("Unable to determine ID of component!");
                 return null;
             }
 
             if (componentName == null)
             {
-                log.Error("Unable to determine name of component");
+                log?.Error("Unable to determine name of component");
                 return null;
             }
 
             // create the entity
-            var componentEntity = new AdminShell.Entity();
+            var componentEntity = new Entity();
             componentEntity.idShort = componentName;
             componentEntity.entityType = "SelfManagedEntity";
             bomSubmodel.Add(componentEntity);
@@ -248,7 +244,7 @@ namespace AasxPluginVec
             return componentEntity;
         }
 
-        protected AdminShellV20.SubmodelElementWrapper CreateVecRelationship(AdminShellV20.SubmodelElement first, string xpathToSecond)
+        protected SubmodelElementWrapper CreateVecRelationship(SubmodelElement first, string xpathToSecond)
         {
             var rel = new AdminShellV20.RelationshipElement();
             rel.idShort = "VEC_Reference";
@@ -262,13 +258,13 @@ namespace AasxPluginVec
             return new AdminShellV20.SubmodelElementWrapper(rel);
         }
 
-        protected AdminShellV20.SubmodelElementWrapper CreateBomRelationship(string idShort, AdminShellV20.SubmodelElement first, AdminShellV20.SubmodelElement second)
+        protected SubmodelElementWrapper CreateBomRelationship(string idShort, SubmodelElement first, SubmodelElement second)
         {
-            var rel = new AdminShellV20.RelationshipElement();
+            var rel = new RelationshipElement();
             rel.idShort = idShort;
-            rel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("ConceptDescription", false, "IRI", "http://admin-shell.io/sandbox/CompositeComponent/General/IsPartOfForBOM/1/0"));
+            rel.semanticId = new SemanticId(new Key("ConceptDescription", false, "IRI", "http://admin-shell.io/sandbox/CompositeComponent/General/IsPartOfForBOM/1/0"));
             rel.Set(first.GetReference(), second.GetReference());
-            return new AdminShellV20.SubmodelElementWrapper(rel);
+            return new SubmodelElementWrapper(rel);
         }
 
         protected string GetDocumentVersionFragment(string documentVersionId)

@@ -9,15 +9,9 @@ This source code may use other Open Source software components (see LICENSE.txt)
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using AasxPluginVec;
 using AdminShellNS;
-using AnyUi;
 using JetBrains.Annotations;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
@@ -28,7 +22,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
     {
         public LogInstance Log = new LogInstance();
         private PluginEventStack _eventStack = new PluginEventStack();
-        private AasxPluginVec.VecOptions options = new AasxPluginVec.VecOptions();
+        private VecOptions options = new VecOptions();
 
         public string GetPluginName()
         {
@@ -41,7 +35,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             Log.Info("InitPlugin() called with args = {0}", (args == null) ? "" : string.Join(", ", args));
 
             // .. with built-in options
-            options = AasxPluginVec.VecOptions.CreateDefault();
+            options = VecOptions.CreateDefault();
 
             // try load defaults options from assy directory
             try
