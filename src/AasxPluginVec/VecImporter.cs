@@ -83,20 +83,40 @@ namespace AasxPluginVec
             this.fn = fn;
             this.options = options;
             this.log = log;
+            this.vecSubmodel = null;
+            this.bomSubmodels = new List<AdminShellV20.Submodel>();
             this.vecFile = ParseVecFile(fn);
         }
 
         protected AdminShellPackageEnv packageEnv;
         protected AdminShell.AdministrationShellEnv env;
         protected AdminShellV20.AdministrationShell aas;
-        protected AdminShell.Submodel vecSubmodel = null;
-        protected AdminShell.Submodel bomSubmodel = null;
+        protected AdminShell.Submodel vecSubmodel;
+        protected List<AdminShell.Submodel> bomSubmodels;
         protected string fn;
         private VecOptions options;
-        protected LogInstance log = null;
-        protected XDocument vecFile = null;
+        protected LogInstance log;
+        protected XDocument vecFile;
 
         protected void ImportVec()
+        {
+            CreateVecSubmodel();
+
+            var harnessDescriptions = vecFile.Descendants(XName.Get("DocumentVersion")).Where(doc => doc.Element(XName.Get("DocumentType"))?.Value == "HarnessDescription").ToList();
+
+            if (harnessDescriptions.Count == 0)
+            {
+                log.Error("Unable to find HarnessDescription in VEC file...");
+                return;
+            }
+
+            foreach (var harness in harnessDescriptions)
+            {
+                CreateBomSubmodel(harness);
+            }
+        }
+
+        protected void CreateVecSubmodel()
         {
             // add the file to the package
             var localFilePath = "/aasx/files/" + Path.GetFileName(fn);
@@ -111,18 +131,36 @@ namespace AasxPluginVec
 
             // create the VEC file submodel element
             var file = new AdminShell.File();
-            file.value = 
+            file.value =
             file.idShort = "VEC";
             file.mimeType = "text/xml";
             file.value = localFilePath;
             vecSubmodel.AddChild(new AdminShellV20.SubmodelElementWrapper(file));
+        }
 
+        protected void CreateBomSubmodel(XElement harnessDescription)
+        {
             // create the BOM submodel
-            bomSubmodel = new AdminShell.Submodel();
-            bomSubmodel.SetIdentification(AdminShell.Identification.IRI, AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdConceptDescription), "LS_BOM");
-            bomSubmodel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("Submodel", true, "IRI", "http://example.com/id/type/submodel/BOM/1/1"));
+            var bomSubmodel = new AdminShell.Submodel();
+            bomSubmodels.Add(bomSubmodel);
+
+            var id = AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdConceptDescription);
+
+            // 'GenerateIdAccordingTemplate' does not seem to generate unique ids when called multiple times
+            // in too short of a time span so we ensure uniqueness manually
+            id = id.Substring(0, id.Length - 1) + bomSubmodels.Count();
+
+            var idShort = "LS_BOM_" + bomSubmodels.Count().ToString().PadLeft(2, '0');
+            bomSubmodel.SetIdentification(AdminShell.Identification.IRI, id, idShort);
+            bomSubmodel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("Submodel", false, "IRI", "http://example.com/id/type/submodel/BOM/1/1"));
             env.Submodels.Add(bomSubmodel);
             aas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
+
+            // create the main entity
+            var mainEntity = new AdminShell.Entity();
+            mainEntity.idShort = harnessDescription.Element(XName.Get("DocumentNumber"))?.Value;
+            bomSubmodel.Add(mainEntity);
+
         }
 
         protected XDocument ParseVecFile(string fn)
