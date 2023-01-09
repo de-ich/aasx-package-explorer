@@ -215,6 +215,7 @@ namespace AasxPluginVec
         {
             string componentId = component.Attribute(XName.Get("id"))?.Value ?? null;
             string componentName = component.Element(XName.Get("Identification"))?.Value ?? null;
+            var partId = component.Element(XName.Get("Part"))?.Value ?? null;
 
             if (componentId == null)
             {
@@ -231,8 +232,18 @@ namespace AasxPluginVec
             // create the entity
             var componentEntity = new Entity();
             componentEntity.idShort = componentName;
-            componentEntity.entityType = "SelfManagedEntity";
             bomSubmodel.Add(componentEntity);
+
+            // if an asset ID is defined for the referenced part (in the plugin options), use this as asset reference
+            var partNumber = GetPartNumberByPartId(partId);
+            if (partNumber == null || !this.options.AssetIdByPartNumberDict.ContainsKey(partNumber))
+            {
+                componentEntity.entityType = "CoManagedEntity";
+            } else
+            {
+                componentEntity.entityType = "SelfManagedEntity";
+                componentEntity.assetRef = new AssetRef(new Reference(new Key("AssetAdministrationShell", false, "IRI", this.options.AssetIdByPartNumberDict[partNumber])));
+            }
 
             // create the fragment relationship pointing to the Component element for the current component
             var fragmentRelationship = CreateVecRelationship(componentEntity, GetComponentFragment(harnessId, componentId));
@@ -267,6 +278,18 @@ namespace AasxPluginVec
             return new SubmodelElementWrapper(rel);
         }
 
+        protected string GetPartNumberByPartId(string partId)
+        {
+            if (partId == null)
+            {
+                return null;
+            }
+
+            var parts = this.vecFile?.Descendants(XName.Get("PartVersion")).ToList() ?? new List<XElement>();
+
+            return parts.Find(part => part.Attribute("id")?.Value == partId)?.Element(XName.Get("PartNumber"))?.Value ?? null;
+        }
+        
         protected string GetDocumentVersionFragment(string documentVersionId)
         {
             return "//DocumentVersion[@id=" + documentVersionId + "]";

@@ -41,7 +41,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             try
             {
                 var newOpt =
-                    AasxPluginOptionsBase.LoadDefaultOptionsFromAssemblyDir<AasxPluginVec.VecOptions>(
+                    AasxPluginOptionsBase.LoadDefaultOptionsFromAssemblyDir<VecOptions>(
                         this.GetPluginName(), Assembly.GetExecutingAssembly());
                 if (newOpt != null)
                     this.options = newOpt;

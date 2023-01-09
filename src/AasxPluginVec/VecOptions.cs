@@ -19,6 +19,7 @@ namespace AasxPluginVec
     public class VecOptions : AasxIntegrationBase.AasxPluginOptionsBase
     {
         public string TemplateIdConceptDescription = "www.example.com/ids/cd/DDDD_DDDD_DDDD_DDDD";
+        public Dictionary<string, string> AssetIdByPartNumberDict = new Dictionary<string, string>();
 
         /// <summary>
         /// Create a set of minimal options
