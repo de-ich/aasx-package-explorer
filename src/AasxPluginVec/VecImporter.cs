@@ -83,6 +83,7 @@ namespace AasxPluginVec
             this.bomSubmodels = new List<Submodel>();
             this.vecFile = ParseVecFile(fn);
             this.vecFileSubmodelElement = null;
+            this.ComponentEntitiesById = new Dictionary<string, Entity>();
         }
 
         protected AdminShellPackageEnv packageEnv;
@@ -95,6 +96,7 @@ namespace AasxPluginVec
         protected LogInstance log;
         protected XDocument vecFile;
         protected AdminShell.File vecFileSubmodelElement;
+        protected Dictionary<String, Entity> ComponentEntitiesById;
 
 
         protected void ImportVec()
@@ -144,6 +146,7 @@ namespace AasxPluginVec
             var bomSubmodel = InitializeBomSubmodel();
             var mainEntity = CreateMainEntity(bomSubmodel, harnessDescription);
             CreateComponentEntities(bomSubmodel, mainEntity, harnessDescription);
+            CreateModuleEntities(bomSubmodel, mainEntity, harnessDescription);
         }
 
         private Submodel InitializeBomSubmodel()
@@ -220,6 +223,7 @@ namespace AasxPluginVec
             var componentEntity = new Entity();
             componentEntity.idShort = componentName;
             bomSubmodel.Add(componentEntity);
+            this.ComponentEntitiesById[component.Attribute(XName.Get("id"))?.Value] = componentEntity;
 
             // if an asset ID is defined for the referenced part (in the plugin options), use this as asset reference
             var partNumber = GetPartNumberByPartId(partId);
@@ -240,6 +244,31 @@ namespace AasxPluginVec
             mainEntity.AddChild(CreateBomRelationship(componentName, mainEntity, componentEntity));
 
             return componentEntity;
+        }
+        private void CreateModuleEntities(Submodel bomSubmodel, Entity mainEntity, XElement harnessDescription)
+        {
+            var partStructureSpecifications = harnessDescription.Elements(XName.Get("Specification")).
+                            Where(spec => spec.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance"))?.Value == "vec:PartStructureSpecification");
+
+            foreach (var spec in partStructureSpecifications)
+            {
+                var moduleEntity = CreateComponentEntity(bomSubmodel, mainEntity, spec);
+
+                var inBillOfMaterial = spec.Element(XName.Get("InBillOfMaterial"))?.Value ?? null;
+
+                if (inBillOfMaterial == null)
+                {
+                    continue;
+                }
+
+                var componentIds = inBillOfMaterial.Split(' ');
+                
+                foreach (var id in componentIds)
+                {
+                    var componentEntity = this.ComponentEntitiesById[id];
+                    moduleEntity.AddChild(CreateBomRelationship(componentEntity.idShort, moduleEntity, componentEntity));
+                }
+            }
         }
 
         protected SubmodelElementWrapper CreateVecRelationship(SubmodelElement first, string xpathToSecond)
