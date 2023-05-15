@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2023 Festo SE & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Matthias Freund
 
@@ -139,24 +139,11 @@ namespace AasxPluginVec
 
         protected void CreateBomSubmodel(XElement harnessDescription)
         {
-            string harnessId = harnessDescription.Attribute(XName.Get("id"))?.Value ?? null;
-            string harnessDocumentNumber = harnessDescription.Element(XName.Get("DocumentNumber"))?.Value ?? null;
-
-            if (harnessId == null)
-            {
-                log?.Error("Unable to determine ID of harness description!");
-                return;
-            }
-
-            if (harnessDocumentNumber == null)
-            {
-                log?.Error("Unable to determine DocumentNumber of harness description!");
-                return;
-            }
+            
 
             var bomSubmodel = InitializeBomSubmodel();
-            var mainEntity = CreateMainEntity(bomSubmodel, harnessId, harnessDocumentNumber);
-            CreateComponentEntities(bomSubmodel, mainEntity, harnessDescription, harnessId);
+            var mainEntity = CreateMainEntity(bomSubmodel, harnessDescription);
+            CreateComponentEntities(bomSubmodel, mainEntity, harnessDescription);
         }
 
         private Submodel InitializeBomSubmodel()
@@ -180,23 +167,23 @@ namespace AasxPluginVec
             return bomSubmodel;
         }
 
-        private Entity CreateMainEntity(Submodel bomSubmodel, string harnessId, string harnessDocumentNumber)
+        private Entity CreateMainEntity(Submodel bomSubmodel, XElement harnessDescription)
         {
             // create the main entity
             var mainEntity = new AdminShell.Entity();
-            mainEntity.idShort = harnessDocumentNumber;
+            mainEntity.idShort = GetDocumentNumber(harnessDescription);
             mainEntity.entityType = "SelfManagedEntity";
             mainEntity.assetRef = this.aas.assetRef;
             bomSubmodel.Add(mainEntity);
 
             // create the fragment relationship pointing to the DocumentVersion for the current harness
-            var fragmentRelationship = CreateVecRelationship(mainEntity, GetDocumentVersionFragment(harnessId));
+            var fragmentRelationship = CreateVecRelationship(mainEntity, GetElementFragment(harnessDescription));
             mainEntity.AddChild(fragmentRelationship);
 
             return mainEntity;
         }
 
-        private void CreateComponentEntities(Submodel bomSubmodel, Entity mainEntity, XElement harnessDescription, string harnessId)
+        private void CreateComponentEntities(Submodel bomSubmodel, Entity mainEntity, XElement harnessDescription)
         {
             var compositionSpecifications = harnessDescription.Elements(XName.Get("Specification")).
                             Where(spec => spec.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance"))?.Value == "vec:CompositionSpecification");
@@ -206,12 +193,12 @@ namespace AasxPluginVec
                 var components = spec.Elements(XName.Get("Component"));
                 foreach (var component in components)
                 {
-                    CreateComponentEntity(bomSubmodel, mainEntity, component, harnessId);
+                    CreateComponentEntity(bomSubmodel, mainEntity, component);
                 }
             }
         }
 
-        private Entity CreateComponentEntity(Submodel bomSubmodel, Entity mainEntity, XElement component, string harnessId)
+        private Entity CreateComponentEntity(Submodel bomSubmodel, Entity mainEntity, XElement component)
         {
             string componentId = component.Attribute(XName.Get("id"))?.Value ?? null;
             string componentName = component.Element(XName.Get("Identification"))?.Value ?? null;
@@ -246,7 +233,7 @@ namespace AasxPluginVec
             }
 
             // create the fragment relationship pointing to the Component element for the current component
-            var fragmentRelationship = CreateVecRelationship(componentEntity, GetComponentFragment(harnessId, componentId));
+            var fragmentRelationship = CreateVecRelationship(componentEntity, GetElementFragment(component));
             componentEntity.AddChild(fragmentRelationship);
 
             // create the relationship between the main and the component entity
@@ -291,14 +278,69 @@ namespace AasxPluginVec
             return parts.Find(part => part.Attribute("id")?.Value == partId)?.Element(XName.Get("PartNumber"))?.Value ?? null;
         }
         
-        protected string GetDocumentVersionFragment(string documentVersionId)
+        protected string GetElementFragment(XElement element)
         {
-            return "//DocumentVersion[@id=" + documentVersionId + "]";
+            string name = element.Name.LocalName;
+
+            if (name == "DocumentVersion")
+            {
+                string companyName = GetCompanyName(element);
+                string documentNumber = GetDocumentNumber(element);
+                string documentVersion = GetDocumentVersion(element);
+
+                return $"//DocumentVersion[./CompanyName='{companyName}'][./DocumentNumber='{documentNumber}']​[./DocumentVersion='{documentVersion}']";
+            } 
+
+            string identification = GetIdentification(element);
+
+            if (identification != null)
+            {
+                return GetElementFragment(element.Parent) + $"/{name}[./Identification='{identification}']";
+            }
+
+            throw new Exception($"Unable to compile XPath fragment for element type {name}!");
+
         }
 
-        protected string GetComponentFragment(string documentVersionID, string componentVersionId)
+        protected string GetIdentification(XElement element)
         {
-            return GetDocumentVersionFragment(documentVersionID) +  "//Component[@id=" + componentVersionId + "]";
+            return element.Element(XName.Get("Identification"))?.Value ?? null;
+        }
+
+        protected string GetCompanyName(XElement documentVersionElement)
+        {
+            string companyName = documentVersionElement.Element(XName.Get("CompanyName"))?.Value ?? null;
+            
+            if (companyName == null)
+            {
+                throw new Exception("Unable to determine CompanyName of harness description!");
+            }
+
+            return companyName;
+        }
+
+        protected string GetDocumentNumber(XElement documentVersionElement)
+        {
+            string documentNumber = documentVersionElement.Element(XName.Get("DocumentNumber"))?.Value ?? null;
+
+            if (documentNumber == null)
+            {
+                throw new Exception("Unable to determine DocumentNumber of harness description!");
+            }
+
+            return documentNumber;
+        }
+
+        protected string GetDocumentVersion(XElement documentVersionElement)
+        {
+            string documentVersion = documentVersionElement.Element(XName.Get("DocumentVersion"))?.Value ?? null;
+
+            if (documentVersion == null)
+            {
+                throw new Exception("Unable to determine DocumentVersion of harness description!");
+            }
+
+            return documentVersion;
         }
 
         protected XDocument ParseVecFile(string fn)
