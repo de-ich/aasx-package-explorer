@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2023 Festo SE & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Matthias Freund
 
@@ -261,7 +261,8 @@ namespace AasxPluginVec
             rel.idShort = "VEC_Reference";
             rel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("ConceptDescription", false, "IRI", "http://arena2036.de/vws4ls/vec/VecPartReference/1/0"));
 
-            var second = this.vecFileSubmodelElement.GetReference();
+            var second = this.vecSubmodel.GetReference();
+            second.Keys.AddRange(this.vecFileSubmodelElement.GetReference().Keys);
             second.Keys.Add(new AdminShellV20.Key("FragmentReference", true, "FragmentId", xpathToSecond));
 
             rel.Set(first.GetReference(), second);
