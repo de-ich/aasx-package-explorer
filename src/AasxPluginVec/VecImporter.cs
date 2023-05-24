@@ -163,7 +163,14 @@ namespace AasxPluginVec
 
             var idShort = "LS_BOM_" + bomSubmodels.Count().ToString().PadLeft(2, '0');
             bomSubmodel.SetIdentification(Identification.IRI, id, idShort);
-            bomSubmodel.semanticId = new SemanticId(new Key("Submodel", false, "IRI", "http://example.com/id/type/submodel/BOM/1/1"));
+            bomSubmodel.semanticId = new SemanticId(new Key("Submodel", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel"));
+
+            var archeTypeProperty = new Property();
+            archeTypeProperty.semanticId = new SemanticId(new Key("Property", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0"));
+            archeTypeProperty.idShort = "ArcheType";
+            archeTypeProperty.value = "Full";
+            bomSubmodel.AddChild(new SubmodelElementWrapper(archeTypeProperty));
+
             env.Submodels.Add(bomSubmodel);
             aas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
 
@@ -174,7 +181,8 @@ namespace AasxPluginVec
         {
             // create the main entity
             var mainEntity = new AdminShell.Entity();
-            mainEntity.idShort = GetDocumentNumber(harnessDescription);
+            mainEntity.semanticId = new SemanticId(new Key("Entity", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0"));
+            mainEntity.idShort = "EntryNode"; // GetDocumentNumber(harnessDescription);
             mainEntity.entityType = "SelfManagedEntity";
             mainEntity.assetRef = this.aas.assetRef;
             bomSubmodel.Add(mainEntity);
@@ -221,8 +229,9 @@ namespace AasxPluginVec
 
             // create the entity
             var componentEntity = new Entity();
+            componentEntity.semanticId = new SemanticId(new Key("Entity", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/Node/1/0"));
             componentEntity.idShort = componentName;
-            bomSubmodel.Add(componentEntity);
+            mainEntity.Add(componentEntity);
             this.ComponentEntitiesById[component.Attribute(XName.Get("id"))?.Value] = componentEntity;
 
             // if an asset ID is defined for the referenced part (in the plugin options), use this as asset reference
@@ -275,7 +284,7 @@ namespace AasxPluginVec
         {
             var rel = new AdminShellV20.RelationshipElement();
             rel.idShort = "VEC_Reference";
-            rel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("ConceptDescription", false, "IRI", "http://arena2036.de/vws4ls/vec/VecPartReference/1/0"));
+            rel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("ConceptDescription", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0"));
 
             var second = this.vecSubmodel.GetReference();
             second.Keys.AddRange(this.vecFileSubmodelElement.GetReference().Keys);
@@ -289,8 +298,8 @@ namespace AasxPluginVec
         protected SubmodelElementWrapper CreateBomRelationship(string idShort, SubmodelElement first, SubmodelElement second)
         {
             var rel = new RelationshipElement();
-            rel.idShort = idShort;
-            rel.semanticId = new SemanticId(new Key("ConceptDescription", false, "IRI", "http://admin-shell.io/sandbox/CompositeComponent/General/IsPartOfForBOM/1/0"));
+            rel.idShort = "HasPart_" + idShort;
+            rel.semanticId = new SemanticId(new Key("ConceptDescription", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/HasPart/1/0"));
             rel.Set(first.GetReference(), second.GetReference());
             return new SubmodelElementWrapper(rel);
         }
