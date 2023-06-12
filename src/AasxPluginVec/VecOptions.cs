@@ -18,7 +18,9 @@ namespace AasxPluginVec
 {
     public class VecOptions : AasxIntegrationBase.AasxPluginOptionsBase
     {
-        public string TemplateIdConceptDescription = "www.example.com/ids/cd/DDDD_DDDD_DDDD_DDDD";
+        public string TemplateIdAsset = "www.example.com/ids/asset/DDDD_DDDD_DDDD_DDDD";
+        public string TemplateIdAas = "www.example.com/ids/aas/DDDD_DDDD_DDDD_DDDD";
+        public string TemplateIdSubmodel = "www.example.com/ids/submodel/DDDD_DDDD_DDDD_DDDD";
         public Dictionary<string, string> AssetIdByPartNumberDict = new Dictionary<string, string>();
 
         /// <summary>

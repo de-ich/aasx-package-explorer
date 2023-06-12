@@ -15,6 +15,9 @@ using System.Xml.Linq;
 using AasxIntegrationBase;
 using AdminShellNS;
 using static AdminShellNS.AdminShellV20;
+using static AasxPluginVec.BomSMUtils;
+using static AasxPluginVec.VecSMUtils;
+using static AasxPluginVec.VecProvider;
 
 namespace AasxPluginVec
 {
@@ -33,12 +36,12 @@ namespace AasxPluginVec
             AdminShellPackageEnv packageEnv,
             AdministrationShellEnv env,
             AdministrationShell aas,
-            string fn,
+            string pathToVecFile,
             VecOptions options,
             LogInstance log = null)
         {
             // access
-            if (!fn.HasContent())
+            if (!pathToVecFile.HasContent())
             {
                 log?.Error("Import VEC: no valid filename!");
                 return;
@@ -47,12 +50,12 @@ namespace AasxPluginVec
             // safe
             try
             {
-                var importer = new VecImporter(packageEnv, env, aas, fn, options, log);
+                var importer = new VecImporter(packageEnv, env, aas, pathToVecFile, options, log);
                 importer.ImportVec();
             }
             catch (Exception ex)
             {
-                log?.Error(ex, $"importing VEC file {fn}");
+                log?.Error(ex, $"importing VEC file {pathToVecFile}");
             }
         }
 
@@ -64,24 +67,24 @@ namespace AasxPluginVec
             AdminShellPackageEnv packageEnv,
             AdministrationShellEnv env,
             AdministrationShell aas,
-            string fn,
+            string pathToVecFile,
             VecOptions options,
             LogInstance log = null)
         {
-            if (string.IsNullOrEmpty(fn))
+            if (string.IsNullOrEmpty(pathToVecFile))
             {
-                throw new ArgumentException($"'{nameof(fn)}' cannot be null or empty.", nameof(fn));
+                throw new ArgumentException($"'{nameof(pathToVecFile)}' cannot be null or empty.", nameof(pathToVecFile));
             }
 
             this.packageEnv = packageEnv ?? throw new ArgumentNullException(nameof(packageEnv));
             this.env = env ?? throw new ArgumentNullException(nameof(env));
             this.aas = aas ?? throw new ArgumentNullException(nameof(aas));
-            this.fn = fn;
+            this.pathToVecFile = pathToVecFile;
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.vecSubmodel = null;
             this.bomSubmodels = new List<Submodel>();
-            this.vecFile = ParseVecFile(fn);
+            this.vecProvider = new VecProvider(pathToVecFile);
             this.vecFileSubmodelElement = null;
             this.ComponentEntitiesById = new Dictionary<string, Entity>();
         }
@@ -91,10 +94,10 @@ namespace AasxPluginVec
         protected AdministrationShell aas;
         protected Submodel vecSubmodel;
         protected List<Submodel> bomSubmodels;
-        protected string fn;
+        protected string pathToVecFile;
         protected VecOptions options;
         protected LogInstance log;
-        protected XDocument vecFile;
+        protected VecProvider vecProvider;
         protected AdminShell.File vecFileSubmodelElement;
         protected Dictionary<String, Entity> ComponentEntitiesById;
 
@@ -103,15 +106,13 @@ namespace AasxPluginVec
         {
             CreateVecSubmodel();
 
-            var harnessDescriptions = vecFile.Descendants(XName.Get("DocumentVersion")).Where(doc => doc.Element(XName.Get("DocumentType"))?.Value == "HarnessDescription").ToList();
-
-            if (harnessDescriptions.Count == 0)
+            if (vecProvider.HarnessDescriptions.Count == 0)
             {
                 log?.Error("Unable to find HarnessDescription in VEC file...");
                 return;
             }
 
-            foreach (var harness in harnessDescriptions)
+            foreach (var harness in vecProvider.HarnessDescriptions)
             {
                 CreateBomSubmodel(harness);
             }
@@ -119,57 +120,42 @@ namespace AasxPluginVec
 
         protected void CreateVecSubmodel()
         {
-            // add the file to the package
-            var localFilePath = "/aasx/files/" + Path.GetFileName(fn);
-            packageEnv.AddSupplementaryFileToStore(fn, localFilePath, false);
+            var id = AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
 
             // create the VEC submodel
-            vecSubmodel = new Submodel();
-            vecSubmodel.SetIdentification(Identification.IRI, AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdConceptDescription), "VEC");
-            vecSubmodel.semanticId = new SemanticId(new Key("Submodel", true, "IRI", "http://arena2036.de/vws4ls/vec/VecFileReference/1/0"));
-            env.Submodels.Add(vecSubmodel);
-            aas.AddSubmodelRef(vecSubmodel.GetSubmodelRef());
+            var vecSubmodel = VecSMUtils.CreateVecSubmodel(id, pathToVecFile, this.packageEnv);
 
-            // create the VEC file submodel element
-            var file = new AdminShell.File();
-            file.idShort = "VEC";
-            file.mimeType = "text/xml";
-            file.value = localFilePath;
-            vecSubmodel.AddChild(new SubmodelElementWrapper(file));
-            this.vecFileSubmodelElement = file;
+            this.env.Submodels.Add(vecSubmodel);
+            this.aas.AddSubmodelRef(vecSubmodel.GetSubmodelRef());
+
+            this.vecFileSubmodelElement = vecSubmodel.EnumerateChildren().First(w => w.submodelElement.idShort == VEC_FILE_ID_SHORT)?.submodelElement as AdminShellV20.File;
+
+            if (this.vecFileSubmodelElement == null)
+            {
+                log?.Error("Unable to find VEC file element in created VEC submodel...");
+            }
         }
 
         protected void CreateBomSubmodel(XElement harnessDescription)
         {
-            
-
             var bomSubmodel = InitializeBomSubmodel();
             var mainEntity = CreateMainEntity(bomSubmodel, harnessDescription);
-            CreateComponentEntities(bomSubmodel, mainEntity, harnessDescription);
-            CreateModuleEntities(bomSubmodel, mainEntity, harnessDescription);
+            CreateComponentEntities(mainEntity, harnessDescription);
+            CreateModuleEntities(mainEntity, harnessDescription);
         }
 
         private Submodel InitializeBomSubmodel()
         {
-            // create the BOM submodel
-            var bomSubmodel = new Submodel();
-            bomSubmodels.Add(bomSubmodel);
-
-            var id = AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdConceptDescription);
+            var idShort = "LS_BOM_" + (bomSubmodels.Count() + 1).ToString().PadLeft(2, '0');
 
             // 'GenerateIdAccordingTemplate' does not seem to generate unique ids when called multiple times
             // in too short of a time span so we ensure uniqueness manually
+            var id = AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
             id = id.Substring(0, id.Length - 1) + bomSubmodels.Count();
-
-            var idShort = "LS_BOM_" + bomSubmodels.Count().ToString().PadLeft(2, '0');
-            bomSubmodel.SetIdentification(Identification.IRI, id, idShort);
-            bomSubmodel.semanticId = new SemanticId(new Key("Submodel", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel"));
-
-            var archeTypeProperty = new Property();
-            archeTypeProperty.semanticId = new SemanticId(new Key("Property", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0"));
-            archeTypeProperty.idShort = "ArcheType";
-            archeTypeProperty.value = "Full";
-            bomSubmodel.AddChild(new SubmodelElementWrapper(archeTypeProperty));
+            
+            // create the BOM submodel
+            var bomSubmodel = BomSMUtils.CreateBomSubmodel(idShort, id);
+            bomSubmodels.Add(bomSubmodel);
 
             env.Submodels.Add(bomSubmodel);
             aas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
@@ -180,46 +166,77 @@ namespace AasxPluginVec
         private Entity CreateMainEntity(Submodel bomSubmodel, XElement harnessDescription)
         {
             // create the main entity
-            var mainEntity = new AdminShell.Entity();
-            mainEntity.semanticId = new SemanticId(new Key("Entity", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0"));
-            mainEntity.idShort = "EntryNode"; // GetDocumentNumber(harnessDescription);
-            mainEntity.entityType = "SelfManagedEntity";
-            mainEntity.assetRef = this.aas.assetRef;
-            bomSubmodel.Add(mainEntity);
-
+            var mainEntity = CreateEntryNode(bomSubmodel, this.aas.assetRef);
+            
             // create the fragment relationship pointing to the DocumentVersion for the current harness
-            var fragmentRelationship = CreateVecRelationship(mainEntity, GetElementFragment(harnessDescription));
-            mainEntity.AddChild(fragmentRelationship);
+            CreateVecRelationship(mainEntity, GetElementFragment(harnessDescription), this.vecFileSubmodelElement);
 
             return mainEntity;
         }
 
-        private void CreateComponentEntities(Submodel bomSubmodel, Entity mainEntity, XElement harnessDescription)
+        private void CreateComponentEntities(Entity mainEntity, XElement harnessDescription)
         {
-            var compositionSpecifications = harnessDescription.Elements(XName.Get("Specification")).
-                            Where(spec => spec.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance"))?.Value == "vec:CompositionSpecification");
+            var compositionSpecifications = FindCompositionSpecifications(harnessDescription);
 
-            foreach (var spec in compositionSpecifications)
+            foreach (var component in compositionSpecifications.SelectMany(spec => FindComponentsInComposition(spec)))
             {
-                var components = spec.Elements(XName.Get("Component"));
-                foreach (var component in components)
+                CreateComponentEntity(mainEntity, component);
+            }
+        }
+
+        private Entity CreateComponentEntity(Entity mainEntity, XElement component)
+        {
+            string componentName = GetIdentification(component);
+
+            if (componentName == null)
+            {
+                log?.Error("Unable to determine name of component");
+                return null;
+            }
+
+            var partId = GetPartId(component);
+
+            // if an asset ID is defined for the referenced part (in the plugin options), use this as asset reference
+            var partNumber = this.vecProvider.GetPartNumber(partId);
+            string assetId = null;
+            if (partNumber != null)
+            {
+                this.options.AssetIdByPartNumberDict.TryGetValue(partNumber, out assetId);
+            }
+            
+            // create the entity
+            var componentEntity = CreateNode(componentName, mainEntity, 
+                assetId != null ? new AssetRef(new Reference(new Key("AssetAdministrationShell", false, "IRI", assetId))) : null);
+            this.ComponentEntitiesById[GetXmlId(component)] = componentEntity;
+
+            // create the fragment relationship pointing to the Component element for the current component
+            CreateVecRelationship(componentEntity, GetElementFragment(component), this.vecFileSubmodelElement);
+
+            // create the relationship between the main and the component entity
+            CreateHasPartRelationship(mainEntity, componentEntity);
+
+            return componentEntity;
+        }
+
+        private void CreateModuleEntities(Entity mainEntity, XElement harnessDescription)
+        {
+            var partStructureSpecifications = FindPartStructureSpecifications(harnessDescription);
+
+            foreach (var spec in partStructureSpecifications)
+            {
+                var moduleEntity = CreateModuleEntity(mainEntity, spec);
+                
+                foreach (var id in FindIdsOfContainedParts(spec))
                 {
-                    CreateComponentEntity(bomSubmodel, mainEntity, component);
+                    var componentEntity = this.ComponentEntitiesById[id];
+                    CreateHasPartRelationship(moduleEntity, componentEntity);
                 }
             }
         }
 
-        private Entity CreateComponentEntity(Submodel bomSubmodel, Entity mainEntity, XElement component)
+        private Entity CreateModuleEntity(Entity mainEntity, XElement component)
         {
-            string componentId = component.Attribute(XName.Get("id"))?.Value ?? null;
-            string componentName = component.Element(XName.Get("Identification"))?.Value ?? null;
-            var partId = component.Element(XName.Get("Part"))?.Value ?? null;
-
-            if (componentId == null)
-            {
-                log?.Error("Unable to determine ID of component!");
-                return null;
-            }
+            string componentName = GetIdentification(component);
 
             if (componentName == null)
             {
@@ -228,162 +245,15 @@ namespace AasxPluginVec
             }
 
             // create the entity
-            var componentEntity = new Entity();
-            componentEntity.semanticId = new SemanticId(new Key("Entity", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/Node/1/0"));
-            componentEntity.idShort = componentName;
-            mainEntity.Add(componentEntity);
-            this.ComponentEntitiesById[component.Attribute(XName.Get("id"))?.Value] = componentEntity;
-
-            // if an asset ID is defined for the referenced part (in the plugin options), use this as asset reference
-            var partNumber = GetPartNumberByPartId(partId);
-            if (partNumber == null || !this.options.AssetIdByPartNumberDict.ContainsKey(partNumber))
-            {
-                componentEntity.entityType = "CoManagedEntity";
-            } else
-            {
-                componentEntity.entityType = "SelfManagedEntity";
-                componentEntity.assetRef = new AssetRef(new Reference(new Key("AssetAdministrationShell", false, "IRI", this.options.AssetIdByPartNumberDict[partNumber])));
-            }
+            var componentEntity = CreateNode(componentName, mainEntity);
 
             // create the fragment relationship pointing to the Component element for the current component
-            var fragmentRelationship = CreateVecRelationship(componentEntity, GetElementFragment(component));
-            componentEntity.AddChild(fragmentRelationship);
+            CreateVecRelationship(componentEntity, GetElementFragment(component), this.vecFileSubmodelElement);
 
             // create the relationship between the main and the component entity
-            mainEntity.AddChild(CreateBomRelationship(componentName, mainEntity, componentEntity));
+            CreateHasPartRelationship(mainEntity, componentEntity);
 
             return componentEntity;
-        }
-        private void CreateModuleEntities(Submodel bomSubmodel, Entity mainEntity, XElement harnessDescription)
-        {
-            var partStructureSpecifications = harnessDescription.Elements(XName.Get("Specification")).
-                            Where(spec => spec.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance"))?.Value == "vec:PartStructureSpecification");
-
-            foreach (var spec in partStructureSpecifications)
-            {
-                var moduleEntity = CreateComponentEntity(bomSubmodel, mainEntity, spec);
-
-                var inBillOfMaterial = spec.Element(XName.Get("InBillOfMaterial"))?.Value ?? null;
-
-                if (inBillOfMaterial == null)
-                {
-                    continue;
-                }
-
-                var componentIds = inBillOfMaterial.Split(' ');
-                
-                foreach (var id in componentIds)
-                {
-                    var componentEntity = this.ComponentEntitiesById[id];
-                    moduleEntity.AddChild(CreateBomRelationship(componentEntity.idShort, moduleEntity, componentEntity));
-                }
-            }
-        }
-
-        protected SubmodelElementWrapper CreateVecRelationship(SubmodelElement first, string xpathToSecond)
-        {
-            var rel = new AdminShellV20.RelationshipElement();
-            rel.idShort = "VEC_Reference";
-            rel.semanticId = new AdminShellV20.SemanticId(new AdminShellV20.Key("ConceptDescription", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0"));
-
-            var second = this.vecSubmodel.GetReference();
-            second.Keys.AddRange(this.vecFileSubmodelElement.GetReference().Keys);
-            second.Keys.Add(new AdminShellV20.Key("FragmentReference", true, "FragmentId", xpathToSecond));
-
-            rel.Set(first.GetReference(), second);
-
-            return new AdminShellV20.SubmodelElementWrapper(rel);
-        }
-
-        protected SubmodelElementWrapper CreateBomRelationship(string idShort, SubmodelElement first, SubmodelElement second)
-        {
-            var rel = new RelationshipElement();
-            rel.idShort = "HasPart_" + idShort;
-            rel.semanticId = new SemanticId(new Key("ConceptDescription", false, "IRI", "https://admin-shell.io/idta/HierarchicalStructures/HasPart/1/0"));
-            rel.Set(first.GetReference(), second.GetReference());
-            return new SubmodelElementWrapper(rel);
-        }
-
-        protected string GetPartNumberByPartId(string partId)
-        {
-            if (partId == null)
-            {
-                return null;
-            }
-
-            var parts = this.vecFile?.Descendants(XName.Get("PartVersion")).ToList() ?? new List<XElement>();
-
-            return parts.Find(part => part.Attribute("id")?.Value == partId)?.Element(XName.Get("PartNumber"))?.Value ?? null;
-        }
-        
-        protected string GetElementFragment(XElement element)
-        {
-            string name = element.Name.LocalName;
-
-            if (name == "DocumentVersion")
-            {
-                string companyName = GetCompanyName(element);
-                string documentNumber = GetDocumentNumber(element);
-                string documentVersion = GetDocumentVersion(element);
-
-                return $"//DocumentVersion[./CompanyName='{companyName}'][./DocumentNumber='{documentNumber}']​[./DocumentVersion='{documentVersion}']";
-            } 
-
-            string identification = GetIdentification(element);
-
-            if (identification != null)
-            {
-                return GetElementFragment(element.Parent) + $"/{name}[./Identification='{identification}']";
-            }
-
-            throw new Exception($"Unable to compile XPath fragment for element type {name}!");
-
-        }
-
-        protected string GetIdentification(XElement element)
-        {
-            return element.Element(XName.Get("Identification"))?.Value ?? null;
-        }
-
-        protected string GetCompanyName(XElement documentVersionElement)
-        {
-            string companyName = documentVersionElement.Element(XName.Get("CompanyName"))?.Value ?? null;
-            
-            if (companyName == null)
-            {
-                throw new Exception("Unable to determine CompanyName of harness description!");
-            }
-
-            return companyName;
-        }
-
-        protected string GetDocumentNumber(XElement documentVersionElement)
-        {
-            string documentNumber = documentVersionElement.Element(XName.Get("DocumentNumber"))?.Value ?? null;
-
-            if (documentNumber == null)
-            {
-                throw new Exception("Unable to determine DocumentNumber of harness description!");
-            }
-
-            return documentNumber;
-        }
-
-        protected string GetDocumentVersion(XElement documentVersionElement)
-        {
-            string documentVersion = documentVersionElement.Element(XName.Get("DocumentVersion"))?.Value ?? null;
-
-            if (documentVersion == null)
-            {
-                throw new Exception("Unable to determine DocumentVersion of harness description!");
-            }
-
-            return documentVersion;
-        }
-
-        protected XDocument ParseVecFile(string fn)
-        {
-            return XDocument.Load(fn);
         }
     }
 }
