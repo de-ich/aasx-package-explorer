@@ -13,6 +13,7 @@ using System.Reflection;
 using AasxPluginVec;
 using AdminShellNS;
 using JetBrains.Annotations;
+using System.Linq;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -75,6 +76,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     "get-events", "Pops and returns the earliest event from the event stack."));
             res.Add(new AasxPluginActionDescriptionBase(
                 "import-vec", "Import VEC file and create BOM submodel."));
+            res.Add(new AasxPluginActionDescriptionBase(
+                "derive-subassembly", "Derive new subassembly from selected entities."));
             return res.ToArray();
         }
 
@@ -161,6 +164,37 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 // use functionality
                 Log.Info($"Importing VEC container from file: {fn} ..");
                 VecImporter.ImportVecFromFile(packageEnv, env, aas, fn, options, Log);
+            }
+
+            if (action == "derive-subassembly" && args != null && args.Length >= 4)
+            {
+                // flyout provider (will be required in the future)
+                var fop = args[0] as IFlyoutProvider;
+
+                var env = args[1] as AdminShellV20.AdministrationShellEnv;
+                var aas = args[2] as AdminShellV20.AdministrationShell;
+                var selectedEntities = (args[3] as IEnumerable<AdminShellV20.Entity>)?.ToList();
+
+                if (fop == null || env == null || aas == null || selectedEntities == null)
+                {
+                    return null;
+                }
+
+                // ask for filename
+                var dlg = new GetSubassemblyNameDialog(fop?.GetWin32Window(), selectedEntities);
+
+                fop?.StartFlyover(new EmptyFlyout());
+                var fnres = dlg.ShowDialog();
+                fop?.CloseFlyover();
+                if (fnres != true)
+                    return null;
+
+                var subassemblyName = dlg.SubassemblyName;
+                var partNames = dlg.PartNames;
+
+                SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, subassemblyName, partNames, options, Log);
+
+                Log.Info($"Deriving subassembly...");
             }
 
             // default

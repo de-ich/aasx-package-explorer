@@ -1391,6 +1391,11 @@ namespace AasxPackageExplorer
 
             if (cmd == "importvec")
                 CommandBinding_ImportVEC();
+
+            if (cmd == "derivesubassembly")
+            {
+                CommandBinding_DeriveSubassembly();
+            }
         }
 
         public void CommandBinding_TDImport()
@@ -3729,6 +3734,69 @@ namespace AasxPackageExplorer
                                       ve.thePackage,
                                       ve.theEnv,
                                       ve.theAas);
+
+
+            //--------------------------------
+            // Redraw for changes to be visible
+            RedrawAllAasxElements();
+            //-----------------------------------
+        }
+
+        public void CommandBinding_DeriveSubassembly()
+        {
+            // trivial things
+            if (!_packageCentral.MainStorable)
+            {
+                MessageBoxFlyoutShow(
+                    "An AASX package needs to be open", "Error",
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Exclamation);
+                return;
+            }
+            // check, if required plugin can be found
+            var pluginName = "AasxPluginVec";
+            var actionName = "derive-subassembly";
+            var pi = Plugins.FindPluginInstance(pluginName);
+            if (pi == null || !pi.HasAction(actionName))
+            {
+                var res = MessageBoxFlyoutShow(
+                        $"This function requires a binary plug-in file named '{pluginName}', " +
+                        $"which needs to be added to the command line, with an action named '{actionName}'." +
+                        $"Press 'OK' to show help page on GitHub.",
+                        "Plug-in not present",
+                        AnyUiMessageBoxButton.OKCancel, AnyUiMessageBoxImage.Hand);
+                if (res == AnyUiMessageBoxResult.OK)
+                {
+                    ShowHelp();
+                }
+                return;
+            }
+
+            var selectedItems = DisplayElements.SelectedItems;
+            if (selectedItems != null && selectedItems.Count >= 1 &&
+                !selectedItems.All(item => item.GetMainDataObject() is AdminShellV20.Entity))
+            {
+                MessageBoxFlyoutShow(
+                    "No valid selection for deriving a subassembly. Only entities may be selected!", "Derive Subassembly",
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
+                return;
+            }
+                
+            if (!selectedItems.AllWithSameParent())
+            {
+                MessageBoxFlyoutShow(
+                    "No valid selection for deriving a subassembly. Only entities below the same parent element may be selected!", "Derive Subassembly",
+                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
+                return;
+            }
+
+            var firstSelectedElement = selectedItems.First() as VisualElementSubmodelElement;
+
+            // Invoke Plugin
+            var ret = pi.InvokeAction(actionName,
+                                      this,
+                                      firstSelectedElement.theEnv,
+                                      firstSelectedElement.FindFirstParent(p => p is VisualElementAdminShell).GetMainDataObject() as AdminShellV20.AdministrationShell,
+                                      selectedItems.Select(item => item.GetMainDataObject() as AdminShellV20.Entity));
 
 
             //--------------------------------
