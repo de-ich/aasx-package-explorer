@@ -98,7 +98,7 @@ namespace AasxPluginVec
         {
             var rel = new RelationshipElement();
             rel.idShort = idShort;
-            if (semanticId == null)
+            if (semanticId != null)
             {
                 rel.semanticId = semanticId;
             }
