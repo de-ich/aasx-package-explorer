@@ -24,16 +24,27 @@ namespace AasxPluginVec
             var localFilePath = "/aasx/files/" + System.IO.Path.GetFileName(pathToVecFile);
             packageEnv.AddSupplementaryFileToStore(pathToVecFile, localFilePath, false);
 
+            // create the VEC file submodel element
+            var file = new File();
+            file.idShort = VEC_FILE_ID_SHORT;
+            file.mimeType = "text/xml";
+            file.value = localFilePath;
+
+            // create the VEC submodel
+            var vecSubmodel = CreateVecSubmodel(iri, file);
+
+            return vecSubmodel;
+        }
+
+        public static Submodel CreateVecSubmodel(string iri, File vecFile)
+        {
             // create the VEC submodel
             var vecSubmodel = new Submodel();
             vecSubmodel.SetIdentification(Identification.IRI, iri, VEC_SUBMODEL_ID_SHORT);
             vecSubmodel.semanticId = new SemanticId(new Key("Submodel", true, "IRI", SEM_ID_VEC_FILE_REFERENCE));
 
             // create the VEC file submodel element
-            var file = new File();
-            file.idShort = VEC_FILE_ID_SHORT;
-            file.mimeType = "text/xml";
-            file.value = localFilePath;
+            var file = new File(vecFile);
             vecSubmodel.AddChild(new SubmodelElementWrapper(file));
 
             return vecSubmodel;
@@ -49,6 +60,11 @@ namespace AasxPluginVec
             second.Keys.Add(new Key("FragmentReference", true, "FragmentId", xpathToVecElement));
 
             return CreateRelationship(source.GetReference(), second, source, idShort, semanticId);
+        }
+
+        public static RelationshipElement GetVecRelationship(Entity entity)
+        {
+            return entity?.FindSubmodelElementWrapper(VEC_REFERENCE_ID_SHORT)?.submodelElement as RelationshipElement;
         }
     }
 }

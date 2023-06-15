@@ -18,6 +18,7 @@ using static AdminShellNS.AdminShellV20;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.VecProvider;
+using static AasxPluginVec.BasicAasUtils;
 
 namespace AasxPluginVec
 {
@@ -150,8 +151,7 @@ namespace AasxPluginVec
 
             // 'GenerateIdAccordingTemplate' does not seem to generate unique ids when called multiple times
             // in too short of a time span so we ensure uniqueness manually
-            var id = AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
-            id = id.Substring(0, id.Length - 1) + bomSubmodels.Count();
+            var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
             
             // create the BOM submodel
             var bomSubmodel = BomSMUtils.CreateBomSubmodel(idShort, id);

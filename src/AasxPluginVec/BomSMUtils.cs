@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static AdminShellNS.AdminShellV20;
+using static AasxPluginVec.BasicAasUtils;
 
 namespace AasxPluginVec
 {
@@ -117,48 +118,6 @@ namespace AasxPluginVec
             parent.Add(rel);
 
             return rel;
-        }
-
-        /**
-         * An adapted version of 'GetReference' from 'AdminShell.cs'. This version does not include
-         * the id of the containing AAS in the reference keys because this leads to errors with
-         * the 'jump' function in the package explorer
-         */
-        public static Reference GetReference(SubmodelElement element, bool includeParents = true)
-        {
-            Reference r = new Reference();
-            // this is the tail of our referencing chain ..
-            r.Keys.Add(Key.CreateNew(element.GetElementName(), true, "IdShort", element.idShort));
-            // try to climb up ..
-            var current = element.parent;
-            while (includeParents && current != null)
-            {
-                if (current is Identifiable cid)
-                {
-                    // add big information set
-                    r.Keys.Insert(0, Key.CreateNew(
-                        current.GetElementName(),
-                        true,
-                        cid.identification.idType,
-                        cid.identification.id));
-                    break; // changed from the official version
-                }
-                else
-                if (current is Referable crf)
-                {
-                    // reference via idShort
-                    r.Keys.Insert(0, Key.CreateNew(
-                        current.GetElementName(),
-                        true,
-                        "IdShort", crf.idShort));
-                }
-
-                if (current is Referable crf2)
-                    current = crf2.parent;
-                else
-                    current = null;
-            }
-            return r;
         }
 
         public static List<RelationshipElement> GetHasPartRelationships(Entity entity)
