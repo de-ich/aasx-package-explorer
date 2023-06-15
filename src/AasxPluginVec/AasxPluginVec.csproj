@@ -18,6 +18,9 @@
     <None Update="AasxPluginVec.options.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="AasxPluginVec.plugin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Update="GetSubassemblyNameDialog.xaml">
