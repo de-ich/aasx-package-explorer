@@ -189,10 +189,11 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 if (fnres != true)
                     return null;
 
-                var subassemblyName = dlg.SubassemblyName;
+                var subassemblyAASName = dlg.SubassemblyAASName;
+                var subassemblyEntityName = dlg.SubassemblyEntityName;
                 var partNames = dlg.PartNames;
 
-                SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, subassemblyName, partNames, options, Log);
+                SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, subassemblyAASName, subassemblyEntityName, partNames, options, Log);
 
                 Log.Info($"Deriving subassembly...");
             }

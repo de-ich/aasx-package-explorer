@@ -34,7 +34,8 @@ namespace AasxPluginVec
             AdministrationShellEnv env,
             AdministrationShell aas,
             IEnumerable<Entity> entities,
-            string subassemblyName,
+            string subassemblyAASName,
+            string subassemblyEntityName,
             Dictionary<string, string> partNames,
             VecOptions options,
             LogInstance log = null)
@@ -42,7 +43,7 @@ namespace AasxPluginVec
             // safe
             try
             {
-                var deriver = new SubassemblyDeriver(env, aas, entities, subassemblyName, partNames, options, log);
+                var deriver = new SubassemblyDeriver(env, aas, entities, subassemblyAASName, subassemblyEntityName, partNames, options, log);
                 deriver.DeriveSubassembly();
             }
             catch (Exception ex)
@@ -59,7 +60,8 @@ namespace AasxPluginVec
             AdministrationShellEnv env,
             AdministrationShell aas,
             IEnumerable<Entity> entities,
-            string subassemblyName,
+            string subassemblyAASName,
+            string subassemblyEntityName,
             Dictionary<string, string> partNames,
             VecOptions options,
             LogInstance log = null)
@@ -68,12 +70,12 @@ namespace AasxPluginVec
 
             this.env = env ?? throw new ArgumentNullException(nameof(env));
             this.aas = aas ?? throw new ArgumentNullException(nameof(aas));
-            this.entities = entities ?? throw new ArgumentNullException(nameof(entities));
-            this.subassemblyName = subassemblyName ?? throw new ArgumentNullException(nameof(subassemblyName));
+            this.entitiesToBeMadeSubassembly = entities ?? throw new ArgumentNullException(nameof(entities));
+            this.subassemblyAASName = subassemblyAASName ?? throw new ArgumentNullException(nameof(subassemblyAASName));
+            this.subassemblyEntityName = subassemblyEntityName ?? throw new ArgumentNullException(nameof(subassemblyEntityName));
             this.partNames = partNames ?? throw new ArgumentNullException(nameof(partNames));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
-            this.entitiesInNewSubAssemblyByOriginalEntities = new Dictionary<Entity, Entity>();
             this.vecSubmodel = null;
             this.bomSubmodel = null;
             this.subassemblyAas = null;
@@ -81,86 +83,110 @@ namespace AasxPluginVec
 
         protected AdministrationShellEnv env;
         protected AdministrationShell aas;
-        protected IEnumerable<Entity> entities;
-        protected string subassemblyName;
+        protected IEnumerable<Entity> entitiesToBeMadeSubassembly;
+        protected string subassemblyAASName;
+        protected string subassemblyEntityName;
         protected Dictionary<string, string> partNames;
         protected Submodel vecSubmodel;
         protected Submodel bomSubmodel;
         protected AdministrationShell subassemblyAas;
         protected VecOptions options;
         protected LogInstance log;
-        protected Dictionary<Entity, Entity> entitiesInNewSubAssemblyByOriginalEntities;
-
-
-
 
         protected void DeriveSubassembly()
         {
             // parent is the (common) container of all entities that are to be converted into a sub-assembly
-            var parent = entities.First().parent as Entity;
+            var parent = entitiesToBeMadeSubassembly.First().parent as Entity;
             if (parent == null)
             {
                 return;
             }
 
+            bomSubmodel = parent.FindParentFirstIdentifiable() as Submodel;
+            if (bomSubmodel == null)
+            {
+                return;
+            }
+
             // the AAS for the new sub-assembly
-            var aas = CreateSubassemblyAas();
+            var newSubassemblyAAS = CreateSubassemblyAas();
+            var newBomSubmodel = InitializeBomSubmodel(newSubassemblyAAS, env);            
+            var mainEntityInNewBomSubmodel = CreateMainEntity(newBomSubmodel);
 
             // the entity representing the sub-assembly in the BOM SM of the original AAS (the harness AAS)
-            var subAssemblyEntityIdShort = "Subassembly_" + string.Join("_", entities.Select(e => e.idShort));
-            var subassemblyEntity = CreateNode(subAssemblyEntityIdShort, parent, aas.assetRef);
-            CreateHasPartRelationship(parent, subassemblyEntity);
+            var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, parent, newSubassemblyAAS.assetRef);
+            CreateHasPartRelationship(parent, subassemblyEntityInOriginalAAS);
 
-            foreach (var entity in entities)
+            foreach (var partEntityInOriginalAAS in entitiesToBeMadeSubassembly)
             {
-                var entityInNewSubAssembly = this.entitiesInNewSubAssemblyByOriginalEntities[entity];
+                CreateHasPartRelationship(subassemblyEntityInOriginalAAS, partEntityInOriginalAAS);
 
-                CreateHasPartRelationship(subassemblyEntity, entity);
-                CreateSameAsRelationship(entity, entityInNewSubAssembly, subassemblyEntity);
+                var idShort = this.partNames[partEntityInOriginalAAS.idShort];
+                var partEntityInNewAAS = CreatePartEntitiesInNewSubmodelRecursively(partEntityInOriginalAAS, mainEntityInNewBomSubmodel, mainEntityInNewBomSubmodel, idShort);
 
-                if (RepresentsSubAssembly(entity))
+                CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.idShort + "_SameAs_" + idShort);
+            }
+        }
+
+        protected Entity CreatePartEntitiesInNewSubmodelRecursively(Entity partEntityInOriginalAAS, Entity subassemblyEntityInNewAAS, Entity parent, string idShort = null)
+        {
+            var partEntityInNewAAS = CreatePartEntity(parent, partEntityInOriginalAAS, idShort);
+
+            if (RepresentsSubAssembly(partEntityInOriginalAAS))
+            {
+                var sameAsRelationships = GetSameAsRelationships(partEntityInOriginalAAS);
+                var hasPartRelationships = GetHasPartRelationships(partEntityInOriginalAAS);
+
+                foreach (var rel in hasPartRelationships)
                 {
-                    log?.Error(entity.ToIdShortString() + "is sub assembly");
-                    // TODO add 'same as' relationship between 
+                    Entity subPartEntityInOriginalAAS = bomSubmodel.FindDeep<Entity>(e => GetReference(e).Matches(rel.second)).FirstOrDefault();
+                    if (subPartEntityInOriginalAAS == null)
+                    {
+                        this.log?.Error("Unable to find targetEntity for hasPart relationship " + rel.idShort);
+                        continue;
+                    }
+
+                    var sameAsRelationship = sameAsRelationships.Find(sameAsRel => sameAsRel.first.Matches(rel.second));
+                    var subPartIdShort = sameAsRelationship.second.Keys.Last().value;
+                    var subPartEntityInNewSubmodel = CreatePartEntitiesInNewSubmodelRecursively(subPartEntityInOriginalAAS, subassemblyEntityInNewAAS, parent, subPartIdShort);
+
+                    CreateHasPartRelationship(partEntityInNewAAS, subPartEntityInNewSubmodel);
+                    CreateSameAsRelationship(GetReference(subPartEntityInNewSubmodel), sameAsRelationship.second, partEntityInNewAAS, subPartEntityInNewSubmodel.idShort + "_SameAs_" + sameAsRelationship.second.Keys.Last().value);
                 }
-            }      
-            
-            
+            }
+
+            return partEntityInNewAAS;
         }
 
         protected bool RepresentsSubAssembly(Entity entity)
         {
-            var sameAsRels = entity.EnumerateChildren().
-                Where(c => c.submodelElement is RelationshipElement).
-                Select(c => c.submodelElement as RelationshipElement).
-                Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS)));
-
-            return sameAsRels.Any(r =>
+            var sameAsRelationships = GetSameAsRelationships(entity);
+            var hasSameAsRelationshipToOtherEntityInDifferentBOM = sameAsRelationships.Any(r =>
             {
-                var firstKeyOfFirst = r.first.Keys[0];
                 return r.first.Keys.Last().type == "Entity" && r.second.Keys.Last().type == "Entity" &&
-                    r.first.Keys.First().type == "Submodel" && r.second.Keys.Last().type == "Submodel" &&
-                    r.first.Keys.First().Matches(entity.FindParentFirstIdentifiable().ToKey()) && !r.first.Keys.First().Matches(entity.FindParentFirstIdentifiable().ToKey());
+                    r.first.Keys.First().type == "Submodel" && r.second.Keys.First().type == "Submodel" &&
+                    r.first.Keys.First().Matches(entity.FindParentFirstIdentifiable().ToKey()) && !r.second.Keys.First().Matches(entity.FindParentFirstIdentifiable().ToKey());
             });
+
+            if (!hasSameAsRelationshipToOtherEntityInDifferentBOM)
+            {
+                return false;
+            }
+
+            var hasPartRelationships = GetHasPartRelationships(entity);
+            return hasPartRelationships.Count > 0;
         }
 
         protected AdministrationShell CreateSubassemblyAas()
         {
             var aas = new AdministrationShell();
-            aas.idShort = this.subassemblyName;
+            aas.idShort = this.subassemblyAASName;
             aas.identification = new Identification(new Key("AssetAdministrationShell", false, "IRI", AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdAas)));
 
             var asset = new Asset();
-            asset.idShort = this.subassemblyName + "_Asset";
+            asset.idShort = this.subassemblyAASName + "_Asset";
             asset.identification = new Identification(new Key("Asset", false, "IRI", AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdAsset)));
             aas.assetRef = asset.GetAssetReference();
-
-            var bomSubmodel = InitializeBomSubmodel(aas, env);
-            var mainEntity = CreateMainEntity(bomSubmodel);
-            foreach (var entity in entities) {
-                var subAssemblyEntity = CreatePartEntity(bomSubmodel, mainEntity, entity);
-                this.entitiesInNewSubAssemblyByOriginalEntities[entity] = subAssemblyEntity;
-            }
 
             this.subassemblyAas = aas;
             this.env.AdministrationShells.Add(aas);
@@ -189,12 +215,11 @@ namespace AasxPluginVec
             return CreateEntryNode(bomSubmodel, this.aas.assetRef);
         }
 
-        private Entity CreatePartEntity(Submodel bomSubmodel, Entity mainEntity, Entity sourceEntity)
+        private Entity CreatePartEntity(Entity mainEntity, Entity sourceEntity, string idShort = null)
         {
             // create the entity
-            var idShort = this.partNames[sourceEntity.idShort];
             AssetRef assetRef = sourceEntity.assetRef;
-            var componentEntity = CreateNode(idShort, mainEntity, assetRef);
+            var componentEntity = CreateNode(idShort ?? sourceEntity.idShort, mainEntity, assetRef);
 
             // create the relationship between the main and the component entity
             CreateHasPartRelationship(mainEntity, componentEntity);

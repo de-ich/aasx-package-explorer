@@ -5,25 +5,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
-             MinWidth="300" SizeToContent="WidthAndHeight" Title="Define Name of Subassembly"
-             WindowStartupLocation="CenterOwner">
+             MinWidth="300" SizeToContent="WidthAndHeight" Title="Configure Subassembly"
+             WindowStartupLocation="CenterOwner" d:DesignWidth="491.806">
 
     <DockPanel Margin="5" LastChildFill="False">
         <Grid DockPanel.Dock="Top" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition />
                 <RowDefinition/>
             </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" x:Name="LabelSubassemblyEntityName"
+                   Content="Name of Subassembly Entity in existing AAS:" Margin="0,0,0,0" VerticalAlignment="Center" Height="26" Grid.RowSpan="1"/>
+            <TextBox Grid.Row="0" x:Name="TextBoxSubassemblyEntityName" Text="{Binding SubassemblyEntityName}" MinWidth="150"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="18" Margin="2,4.4,0,3.2" Grid.Column="1"/>
+            <Label Grid.Row="1" Grid.Column="0" x:Name="LabelSubassemblyAASName"
+                   Content="Name of new Subassembly AAS:" Margin="0,0,0,0" VerticalAlignment="Center" Height="26" Grid.RowSpan="1"/>
+            <TextBox Grid.Row="1" x:Name="TextBoxSubassemblyAASName" Text="{Binding SubassemblyAASName}" MinWidth="150"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="18" Margin="2,4.4,0,3.2" Grid.Column="1"/>
 
-            <Label Grid.Row="1" Grid.Column="0" x:Name="LabelSubassemblyName"
-                   Content="Subassembly Name:" Margin="0,0,10.4,-0.4" VerticalAlignment="Center" Height="26" Grid.RowSpan="3"/>
-            <TextBox Grid.Row="1" x:Name="TextBoxSubassemblyName" Text="{Binding SubassemblyName}" MinWidth="150"
-                VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Height="18" Margin="127,4,0,3.6"/>
+
         </Grid>
-        <Label DockPanel.Dock="Top">Define Subassembly Part Names:</Label>
+        <Label DockPanel.Dock="Top" Content="Define Names of Subassembly Parts in new AAS:"/>
         <Grid DockPanel.Dock="Top" VerticalAlignment="Stretch" x:Name="SubAssemblyParts">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>

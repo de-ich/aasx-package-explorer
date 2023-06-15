@@ -20,14 +20,16 @@ namespace AasxIntegrationBase
 {
     internal partial class GetSubassemblyNameDialog : Window
     {
-        public string SubassemblyName { get; set; } = string.Empty;
+        public string SubassemblyAASName { get; set; } = string.Empty;
+        public string SubassemblyEntityName { get; set; } = string.Empty;
         public Dictionary<string, string> PartNames { get; } = new Dictionary<string, string>();
 
         public GetSubassemblyNameDialog(Window owner, IEnumerable<Entity> entities)
         {
             this.Owner = owner;
             DataContext = this;
-            SubassemblyName = string.Join("_", entities.Select(e => e.idShort));
+            SubassemblyAASName = string.Join("_", entities.Select(e => e.idShort));
+            SubassemblyEntityName = "Subassembly_" + string.Join("_", entities.Select(e => e.idShort));
             InitializeComponent();
 
             foreach(var entity in entities)

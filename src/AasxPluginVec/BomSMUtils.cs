@@ -80,11 +80,21 @@ namespace AasxPluginVec
 
         public static RelationshipElement CreateSameAsRelationship(Entity first, Entity second, Entity parent, string relName = null)
         {
+            return CreateSameAsRelationship(
+                GetReference(first),
+                GetReference(second),
+                parent,
+                relName ?? "SameAs_" + second.idShort
+            );
+        }
+
+        public static RelationshipElement CreateSameAsRelationship(Reference first, Reference second, Entity parent, string relName)
+        {
             return CreateRelationship(
                 first,
                 second,
                 parent,
-                relName ?? "SameAs_" + second.idShort,
+                relName,
                 new SemanticId(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS))
             );
         }
@@ -149,6 +159,22 @@ namespace AasxPluginVec
                     current = null;
             }
             return r;
+        }
+
+        public static List<RelationshipElement> GetHasPartRelationships(Entity entity)
+        {
+            return entity.EnumerateChildren().
+               Where(c => c.submodelElement is RelationshipElement).
+               Select(c => c.submodelElement as RelationshipElement).
+               Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_HAS_PART))).ToList();
+        }
+
+        public static List<RelationshipElement> GetSameAsRelationships(Entity entity)
+        {
+            return entity.EnumerateChildren().
+               Where(c => c.submodelElement is RelationshipElement).
+               Select(c => c.submodelElement as RelationshipElement).
+               Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS))).ToList();
         }
 
     }
