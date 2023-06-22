@@ -15,6 +15,7 @@ namespace AasxPluginVec
         public const string VEC_SUBMODEL_ID_SHORT = "VEC";
         public const string VEC_FILE_ID_SHORT = "VEC";
         public const string VEC_REFERENCE_ID_SHORT = "VEC_Reference";
+        public const string SEM_ID_VEC_SUBMODEL = "http://arena2036.de/vws4ls/vec/VecSubmodel/1/0";
         public const string SEM_ID_VEC_FILE_REFERENCE = "http://arena2036.de/vws4ls/vec/VecFileReference/1/0";
         public const string SEM_ID_VEC_FRAGMENT_REFERENCE = "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0";
 
@@ -41,10 +42,11 @@ namespace AasxPluginVec
             // create the VEC submodel
             var vecSubmodel = new Submodel();
             vecSubmodel.SetIdentification(Identification.IRI, iri, VEC_SUBMODEL_ID_SHORT);
-            vecSubmodel.semanticId = new SemanticId(new Key("Submodel", true, "IRI", SEM_ID_VEC_FILE_REFERENCE));
+            vecSubmodel.semanticId = new SemanticId(new Key("Submodel", true, "IRI", SEM_ID_VEC_SUBMODEL));
 
             // create the VEC file submodel element
             var file = new File(vecFile);
+            file.semanticId = new SemanticId(new Key("Submodel", true, "IRI", SEM_ID_VEC_FILE_REFERENCE));
             vecSubmodel.AddChild(new SubmodelElementWrapper(file));
 
             return vecSubmodel;
