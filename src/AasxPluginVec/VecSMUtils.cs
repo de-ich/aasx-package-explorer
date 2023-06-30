@@ -52,6 +52,11 @@ namespace AasxPluginVec
             return vecSubmodel;
         }
 
+        public static File GetVecFileElement(Submodel submodel)
+        {
+            return submodel?.FindSubmodelElementWrapper(VEC_FILE_ID_SHORT)?.submodelElement as File;
+        }
+
         public static RelationshipElement CreateVecRelationship(Entity source, string xpathToVecElement, File vecFileSubmodelElement)
         {
 

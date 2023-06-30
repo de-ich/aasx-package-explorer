@@ -14,6 +14,7 @@ using AasxPluginVec;
 using AdminShellNS;
 using JetBrains.Annotations;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -24,6 +25,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
         public LogInstance Log = new LogInstance();
         private PluginEventStack _eventStack = new PluginEventStack();
         private VecOptions options = new VecOptions();
+        private VecTreeView treeView = new VecTreeView();
 
         public string GetPluginName()
         {
@@ -64,6 +66,10 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             var res = new List<AasxPluginActionDescriptionBase>();
             res.Add(
                 new AasxPluginActionDescriptionBase(
+                    "call-check-visual-extension",
+                    "When called with Referable, returns possibly visual extension for it."));
+            res.Add(
+                new AasxPluginActionDescriptionBase(
                     "get-licenses", "Gets a description of used licenses."));
             res.Add(
                 new AasxPluginActionDescriptionBase(
@@ -78,11 +84,43 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 "import-vec", "Import VEC file and create BOM submodel."));
             res.Add(new AasxPluginActionDescriptionBase(
                 "derive-subassembly", "Derive new subassembly from selected entities."));
+            res.Add(
+                new AasxPluginActionDescriptionBase(
+                    "get-check-visual-extension", "Returns true, if plug-ins checks for visual extension."));
+            res.Add(
+                new AasxPluginActionDescriptionBase(
+                    "fill-panel-visual-extension",
+                    "When called, fill given WPF panel with control for graph display."));
             return res.ToArray();
         }
 
         public AasxPluginResultBase ActivateAction(string action, params object[] args)
         {
+            if (action == "call-check-visual-extension")
+            {
+                // arguments
+                if (args.Length < 1)
+                    return null;
+
+                // looking only for Submodels
+                var sm = args[0] as AdminShell.Submodel;
+                if (sm == null)
+                    return null;
+
+                // check for a record in options, that matches Submodel
+                var isVecSubmodel = sm.semanticId?.Matches("Submodel", true, "IRI", VecSMUtils.SEM_ID_VEC_SUBMODEL) ?? false;
+
+                if (!isVecSubmodel)
+                    return null;
+                // ReSharper enable UnusedVariable
+
+                // success prepare record
+                var cve = new AasxPluginResultVisualExtension("VEC", "VEC Tree Viewer");
+
+                // ok
+                return cve;
+            }
+
             if (action == "set-json-options" && args != null && args.Length >= 1 && args[0] is string)
             {
                 var newOpt = Newtonsoft.Json.JsonConvert.DeserializeObject<AasxPluginVec.VecOptions>(
@@ -196,6 +234,34 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, subassemblyAASName, subassemblyEntityName, partNames, options, Log);
 
                 Log.Info($"Deriving subassembly...");
+            }
+
+            if (action == "get-check-visual-extension")
+            {
+                var cve = new AasxPluginResultBaseObject();
+                cve.strType = "True";
+                cve.obj = true;
+                return cve;
+            }
+
+            if (action == "fill-panel-visual-extension")
+            {
+                // arguments
+                if (args == null || args.Length < 3)
+                    return null;
+
+                var env = args[0] as AdminShellPackageEnv;
+                var submodel = args[1] as AdminShellV20.Submodel;
+                var panel = args[2] as DockPanel;
+
+                object resobj = this.treeView.FillWithWpfControls(env, submodel, panel);
+
+                // give object back
+                var res = new AasxPluginResultBaseObject();
+                res.obj = resobj;
+                return res;
+
+
             }
 
             // default
