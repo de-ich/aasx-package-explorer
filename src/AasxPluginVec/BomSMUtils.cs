@@ -33,11 +33,22 @@ namespace AasxPluginVec
 
             return bomSubmodel;
         }
+
+        public static Submodel FindBomSubmodel(AdministrationShell aas, AdministrationShellEnv env)
+        {
+            var submodelRefs = aas?.submodelRefs;
+            var submodels = submodelRefs?.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
+            return submodels?.First(sm => sm.semanticId.Last.value == SEM_ID_BOM_SM);
+        }
         
         public static Entity CreateEntryNode(Submodel parent, AssetRef referencedAsset)
         {
             var semanticId = new SemanticId(new Key("Entity", false, "IRI", SEM_ID_ENTRY_NODE));
             return CreateEntity("EntryNode", parent, referencedAsset, semanticId);
+        }
+
+        public static Entity FindEntryNode(Submodel bomSubmodel) {
+            return bomSubmodel?.FindSubmodelElementWrapper("EntryNode")?.submodelElement as Entity;
         }
 
         public static Entity CreateNode(string idShort, IManageSubmodelElements parent, AssetRef referencedAsset = null)
@@ -122,19 +133,32 @@ namespace AasxPluginVec
 
         public static List<RelationshipElement> GetHasPartRelationships(Entity entity)
         {
-            return entity.EnumerateChildren().
+            return entity?.EnumerateChildren().
                Where(c => c.submodelElement is RelationshipElement).
                Select(c => c.submodelElement as RelationshipElement).
-               Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_HAS_PART))).ToList();
+               Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_HAS_PART))).ToList() ?? new List<RelationshipElement>();
         }
 
         public static List<RelationshipElement> GetSameAsRelationships(Entity entity)
         {
-            return entity.EnumerateChildren().
+            return entity?.EnumerateChildren().
                Where(c => c.submodelElement is RelationshipElement).
                Select(c => c.submodelElement as RelationshipElement).
-               Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS))).ToList();
+               Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS))).ToList() ?? new List<RelationshipElement>();
         }
 
+        public static List<Entity> GetLeafNodes(Submodel submodel) {
+            var entryNode = FindEntryNode(submodel);
+            return entryNode?.EnumerateChildren().Select(c => c.submodelElement as Entity).Where(IsLeafNode).ToList() ?? new List<Entity>();
+        }
+
+        public static bool IsLeafNode(Entity node)
+        {
+            if (node == null)
+            {
+                return false;
+            }
+            return GetHasPartRelationships(node).Count() == 0;
+        }
     }
 }

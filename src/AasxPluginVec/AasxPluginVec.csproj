@@ -27,6 +27,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="ReuseSubassemblyDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GetSubassemblyNameDialog.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>

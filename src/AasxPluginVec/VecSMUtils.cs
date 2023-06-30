@@ -71,7 +71,14 @@ namespace AasxPluginVec
 
         public static RelationshipElement GetVecRelationship(Entity entity)
         {
-            return entity?.FindSubmodelElementWrapper(VEC_REFERENCE_ID_SHORT)?.submodelElement as RelationshipElement;
+            var rel = entity?.FindSubmodelElementWrapper(VEC_REFERENCE_ID_SHORT)?.submodelElement as RelationshipElement;
+
+            return IsVecRelationship(rel) ? rel : null;
+        }
+
+        public static bool IsVecRelationship(RelationshipElement rel)
+        {
+            return rel?.idShort == VEC_REFERENCE_ID_SHORT && rel?.semanticId?.Last?.value == SEM_ID_VEC_FRAGMENT_REFERENCE;
         }
     }
 }

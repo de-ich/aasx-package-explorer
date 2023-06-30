@@ -115,6 +115,7 @@
                     <RoutedUICommand x:Key="HelpOptionsInfo" Text="HelpOptionsInfo" />
                     <RoutedUICommand x:Key="ImportVEC" Text="ImportVEC" />
                     <RoutedUICommand x:Key="DeriveSubassembly" Text="DeriveSubassembly" />
+                    <RoutedUICommand x:Key="ReuseSubassembly" Text="ReuseSubassembly" />
 
                     <RoutedUICommand x:Key="FileRepoNew" Text="FileRepoNew" />
                     <RoutedUICommand x:Key="FileRepoOpen" Text="FileRepoOpen" />
@@ -294,6 +295,7 @@
         <CommandBinding Command="{StaticResource HelpOptionsInfo}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource ImportVEC}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource DeriveSubassembly}" Executed="CommandBinding_Executed"/>
+        <CommandBinding Command="{StaticResource ReuseSubassembly}" Executed="CommandBinding_Executed"/>
 
         <CommandBinding Command="{StaticResource FileRepoNew}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource FileRepoOpen}" Executed="CommandBinding_Executed"/>
@@ -435,6 +437,7 @@
                             <MenuItem x:Name="MenuItemWorkspaceNewSubmodelFromPlugin" Header="New Submodel" InputGestureText="Ctrl+Shift+M" Command="{StaticResource NewSubmodelFromPlugin}"/>
                             <MenuItem Header="VEC">
                                 <MenuItem x:Name="MenuItemDeriveSubassembly" Header="Derive Subassembly" Command="{StaticResource DeriveSubassembly}"/>
+                                <MenuItem x:Name="MenuItemReuseSubassembly" Header="Reuse Existing Subassembly" Command="{StaticResource ReuseSubassembly}"/>
                             </MenuItem>
                         </MenuItem>
                         <Separator/>

@@ -84,6 +84,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 "import-vec", "Import VEC file and create BOM submodel."));
             res.Add(new AasxPluginActionDescriptionBase(
                 "derive-subassembly", "Derive new subassembly from selected entities."));
+            res.Add(new AasxPluginActionDescriptionBase(
+                "reuse-subassembly", "Reuse existing subassembly for selected entities."));
             res.Add(
                 new AasxPluginActionDescriptionBase(
                     "get-check-visual-extension", "Returns true, if plug-ins checks for visual extension."));
@@ -234,6 +236,39 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, subassemblyAASName, subassemblyEntityName, partNames, options, Log);
 
                 Log.Info($"Deriving subassembly...");
+            }
+
+            if (action == "reuse-subassembly" && args != null && args.Length >= 4)
+            {
+                // flyout provider (will be required in the future)
+                var fop = args[0] as IFlyoutProvider;
+
+                var env = args[1] as AdminShellV20.AdministrationShellEnv;
+                var aas = args[2] as AdminShellV20.AdministrationShell;
+                var selectedEntities = (args[3] as IEnumerable<AdminShellV20.Entity>)?.ToList();
+
+                if (fop == null || env == null || aas == null || selectedEntities == null)
+                {
+                    return null;
+                }
+
+                // ask for filename
+                var dlg = new ReuseSubassemblyNameDialog(fop?.GetWin32Window(), selectedEntities, env);
+
+                fop?.StartFlyover(new EmptyFlyout());
+                var fnres = dlg.ShowDialog();
+                fop?.CloseFlyover();
+                if (fnres != true)
+                    return null;
+
+                //var subassemblyAASName = dlg.SubassemblyAASName;
+                var subassemblyEntityName = dlg.SubassemblyEntityName;
+                var nameOfAasToReuse = dlg.AasToReuse;
+                var partNames = dlg.PartNames;
+
+                SubassemblyReuser.ReuseSubassembly(env, aas, selectedEntities, nameOfAasToReuse, subassemblyEntityName, partNames, options, Log);
+
+                Log.Info($"Reusing subassembly...");
             }
 
             if (action == "get-check-visual-extension")

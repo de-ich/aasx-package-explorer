@@ -22,9 +22,8 @@ using static AasxPluginVec.BasicAasUtils;
 namespace AasxPluginVec
 {
     /// <summary>
-    /// This class allows importing a VEC file into an existing submodel.
-    /// Additionally, it allows to generate a BOM submodel based on the contents
-    /// in the VEC file.
+    /// This class allows to derive a subassembly based on a set of selected entities
+    /// in a BOM submodel.
     /// </summary>
     public class SubassemblyDeriver
     {
@@ -110,7 +109,7 @@ namespace AasxPluginVec
                 return;
             }
 
-            var entryNode = existingBomSubmodel.FindSubmodelElementWrapper("EntryNode")?.submodelElement as Entity;
+            var entryNode = FindEntryNode(existingBomSubmodel);
             var existingVecFileSME = FindReferencedVecFileSME(entryNode);
             if (existingVecFileSME == null)
             {
