@@ -84,7 +84,8 @@ namespace AasxPluginVec
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.vecSubmodel = null;
-            this.bomSubmodels = new List<Submodel>();
+            this.bomComponentSubmodels = new List<Submodel>();
+            this.bomModuleSubmodels = new List<Submodel>();
             this.vecProvider = new VecProvider(pathToVecFile);
             this.vecFileSubmodelElement = null;
             this.ComponentEntitiesById = new Dictionary<string, Entity>();
@@ -94,7 +95,8 @@ namespace AasxPluginVec
         protected AdministrationShellEnv env;
         protected AdministrationShell aas;
         protected Submodel vecSubmodel;
-        protected List<Submodel> bomSubmodels;
+        protected List<Submodel> bomComponentSubmodels;
+        protected List<Submodel> bomModuleSubmodels;
         protected string pathToVecFile;
         protected VecOptions options;
         protected LogInstance log;
@@ -115,7 +117,7 @@ namespace AasxPluginVec
 
             foreach (var harness in vecProvider.HarnessDescriptions)
             {
-                CreateBomSubmodel(harness);
+                CreateBomSubmodels(harness);
             }
         }
 
@@ -137,17 +139,23 @@ namespace AasxPluginVec
             }
         }
 
-        protected void CreateBomSubmodel(XElement harnessDescription)
+        protected void CreateBomSubmodels(XElement harnessDescription)
         {
-            var bomSubmodel = InitializeBomSubmodel();
-            var mainEntity = CreateMainEntity(bomSubmodel, harnessDescription);
-            CreateComponentEntities(mainEntity, harnessDescription);
-            CreateModuleEntities(mainEntity, harnessDescription);
+            var index = (bomComponentSubmodels.Count() + 1).ToString().PadLeft(2, '0');
+
+            var bomComponentsSubmodelIdShort = "LS_BOM_Components_" + index;
+            var bomComponentsSubmodel = InitializeBomSubmodel(bomComponentsSubmodelIdShort);
+            var bomComponentsEntryNode = CreateMainEntity(bomComponentsSubmodel, harnessDescription);
+            CreateComponentEntities(bomComponentsEntryNode, harnessDescription);
+
+            var bomModulesSubmodelIdShort = "LS_BOM_Modules_" + index;
+            var bomModulesSubmodel = InitializeBomSubmodel(bomModulesSubmodelIdShort);
+            var bomModulesEntryNode = CreateMainEntity(bomModulesSubmodel, harnessDescription);
+            CreateModuleEntities(bomModulesEntryNode, harnessDescription);
         }
 
-        private Submodel InitializeBomSubmodel()
+        private Submodel InitializeBomSubmodel(string idShort)
         {
-            var idShort = "LS_BOM_" + (bomSubmodels.Count() + 1).ToString().PadLeft(2, '0');
 
             // 'GenerateIdAccordingTemplate' does not seem to generate unique ids when called multiple times
             // in too short of a time span so we ensure uniqueness manually
@@ -155,7 +163,7 @@ namespace AasxPluginVec
             
             // create the BOM submodel
             var bomSubmodel = BomSMUtils.CreateBomSubmodel(idShort, id);
-            bomSubmodels.Add(bomSubmodel);
+            bomComponentSubmodels.Add(bomSubmodel);
 
             env.Submodels.Add(bomSubmodel);
             aas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
