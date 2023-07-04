@@ -43,7 +43,7 @@ namespace AasxPluginVec
         public static IEnumerable<Submodel> FindBomSubmodels(AdministrationShell aas, AdministrationShellEnv env)
         {
             var submodels = FindAllSubmodels(aas, env);
-            return submodels.Where(sm => sm.semanticId?.Matches("Submodel", false, "IRI", SEM_ID_BOM_SM) ?? false) ?? new List<Submodel>();
+            return submodels.Where(sm => sm.semanticId?.Matches("Submodel", false, "IRI", SEM_ID_BOM_SM) ?? false);
         }
 
         public static Entity CreateEntryNode(Submodel parent, AssetRef referencedAsset)
@@ -95,6 +95,11 @@ namespace AasxPluginVec
             );
         }
 
+        public static bool IsHasPartRelationship(RelationshipElement rel)
+        {
+            return rel?.semanticId?.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_HAS_PART)) ?? false;
+        }
+
         public static RelationshipElement CreateSameAsRelationship(Entity first, Entity second, Entity parent, string relName = null)
         {
             return CreateSameAsRelationship(
@@ -114,6 +119,11 @@ namespace AasxPluginVec
                 relName,
                 new SemanticId(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS))
             );
+        }
+
+        public static bool IsSameAsRelationship(RelationshipElement rel)
+        {
+            return rel?.semanticId?.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS)) ?? false;
         }
 
         public static RelationshipElement CreateRelationship(SubmodelElement first, SubmodelElement second, IManageSubmodelElements parent, string idShort, SemanticId semanticId = null)

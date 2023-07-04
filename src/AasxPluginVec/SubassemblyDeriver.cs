@@ -137,7 +137,7 @@ namespace AasxPluginVec
 
             var existingVecFileSME = referencedVecFileSMEs.First();
 
-            existingBuildingBlocksBomSubmodel = allBomSubmodels.FirstOrDefault(IsBuildingBlocksSubmodel);
+            existingBuildingBlocksBomSubmodel = FindBuildingBlocksSubmodel(aas, env);
             if (existingBuildingBlocksBomSubmodel == null)
             {
                 if (submodelsContainingSelectedEntities.Count == 2)
@@ -178,12 +178,36 @@ namespace AasxPluginVec
 
             foreach (var partEntityInOriginalAAS in entitiesToBeMadeSubassembly)
             {
-                CreateHasPartRelationship(subassemblyEntityInOriginalAAS, partEntityInOriginalAAS);
-
                 var idShort = this.partNames[partEntityInOriginalAAS.idShort];
                 var partEntityInNewAAS = CreatePartEntitiesInNewSubmodelRecursively(partEntityInOriginalAAS, mainEntityInNewBomSubmodel, mainEntityInNewBomSubmodel, idShort);
 
-                CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.idShort + "_SameAs_" + idShort);
+                if (RepresentsSubAssembly(partEntityInOriginalAAS))
+                {
+                    // move each child of the "old" subassembly to the new one because we only keep the uppermost layer of subassemblies in the building blocks submodel
+                    foreach(var child in partEntityInOriginalAAS.EnumerateChildren()) {
+                        var rel = child?.submodelElement as RelationshipElement;
+                        if (IsSameAsRelationship(rel))
+                        {
+                            // redirect the "same as" relationship pointing to the inner part entity from the old subassembly AAS to the new subassembly AAS
+                            rel.second.Keys.First().value = newBomSubmodel.identification.id;
+                        } else if(IsHasPartRelationship(rel))
+                        {
+                            // change the "has part" relationship so that the parent is the new subassembly entity
+                            rel.first.Keys.Last().value = subassemblyEntityInOriginalAAS.idShort;
+                        }
+                        subassemblyEntityInOriginalAAS.AddChild(child);
+                    }
+
+                    // delete the "old" subassembly because we only keep the uppermost layer of subassemblies in the building blocks submodel
+                    var parent = partEntityInOriginalAAS.parent as Entity;
+                    var isPartOfRel = parent.FindSubmodelElementWrapper("HasPart_" + partEntityInOriginalAAS.idShort).submodelElement as RelationshipElement;
+                    parent.Remove(partEntityInOriginalAAS);
+                    parent.Remove(isPartOfRel);
+                } else
+                { 
+                    CreateHasPartRelationship(subassemblyEntityInOriginalAAS, partEntityInOriginalAAS);
+                    CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.idShort + "_SameAs_" + idShort);
+                }
             }
         }        
 
@@ -279,7 +303,7 @@ namespace AasxPluginVec
             return componentEntity;
         }
 
-       protected Submodel InitializeVecSubmodel(AdministrationShell aas, AdministrationShellEnv env, AdminShellV20.File existingVecFileSME)
+        protected Submodel InitializeVecSubmodel(AdministrationShell aas, AdministrationShellEnv env, AdminShellV20.File existingVecFileSME)
         {
             var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
             // create the VEC submodel
