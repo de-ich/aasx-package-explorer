@@ -143,5 +143,12 @@ namespace AasxPluginVec
 
             return submodel.FindDeep<T>(e => GetReference(e).Matches(elementReference)).FirstOrDefault();
         }
+
+        public static IEnumerable<Submodel> FindAllSubmodels(AdministrationShell aas, AdministrationShellEnv env)
+        {
+            var submodelRefs = aas?.submodelRefs ?? new List<SubmodelRef>();
+            var submodels = submodelRefs.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
+            return submodels;
+        }
     }
 }

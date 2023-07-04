@@ -18,6 +18,7 @@ using static AdminShellNS.AdminShellV20;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.BasicAasUtils;
+using static AasxPluginVec.SubassemblyUtils;
 
 namespace AasxPluginVec
 {
@@ -109,13 +110,41 @@ namespace AasxPluginVec
                 return;
             }
 
+            existingBomSubmodel.SetAllParents();
+
+            if (entitiesToBeMadeSubassembly.Any(e => e.FindParentFirstIdentifiable() != existingBomSubmodel))
+            {
+                log?.Error("Entities from more than one BOM submodel selected. This is not supported!");
+                return;
+            }
+
             var bomSubmodelInSubAssemblyAAS = FindFirstBomSubmodel(aasToReuse, env);
             bomSubmodelInSubAssemblyAAS.SetAllParents();
             var atomicComponentEntitiesInSubAssemblyAAS = GetLeafNodes(bomSubmodelInSubAssemblyAAS);
-            
+
+            // get or create the 'building blocks' submodel 
+            var existingBuildingBlocksBomSubmodel = FindBuildingBlocksSubmodel(aas, env);
+            if (existingBuildingBlocksBomSubmodel == null)
+            {
+               
+                // no building blocks submodel seems to exist -> create a new one
+                var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
+                try
+                {
+                    existingBuildingBlocksBomSubmodel = CreateBuildingBlocksSubmodel(id, existingBuildingBlocksBomSubmodel, aas, env);
+                }
+                catch (Exception e)
+                {
+                    log?.Error(e.Message);
+                    return;
+                }
+            }
+
+            var buildingBlocksSubmodelEntryNode = FindEntryNode(existingBuildingBlocksBomSubmodel);
+
             // the entity representing the sub-assembly in the BOM SM of the original AAS (the harness AAS)
-            var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, parent, aasToReuse.assetRef);
-            CreateHasPartRelationship(parent, subassemblyEntityInOriginalAAS);
+            var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, buildingBlocksSubmodelEntryNode, aasToReuse.assetRef);
+            CreateHasPartRelationship(buildingBlocksSubmodelEntryNode, subassemblyEntityInOriginalAAS);
 
             foreach (var partEntityInOriginalAAS in entitiesToBeMadeSubassembly)
             {

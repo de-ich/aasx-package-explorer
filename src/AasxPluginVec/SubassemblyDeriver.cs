@@ -18,7 +18,7 @@ using static AdminShellNS.AdminShellV20;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.BasicAasUtils;
-using System.Text.RegularExpressions;
+using static AasxPluginVec.SubassemblyUtils;
 
 namespace AasxPluginVec
 {
@@ -121,7 +121,7 @@ namespace AasxPluginVec
                 return;
             }
 
-            var referencedVecFileSMEs = submodelsContainingSelectedEntities.Select(sm => FindEntryNode(sm)).Select(n => FindReferencedVecFileSME(n)).Where(v => v != null);
+            var referencedVecFileSMEs = submodelsContainingSelectedEntities.Select(sm => FindEntryNode(sm)).Select(n => FindReferencedVecFileSME(n, env)).Where(v => v != null);
 
             if (referencedVecFileSMEs.Count() != submodelsContainingSelectedEntities.Count)
             {
@@ -149,10 +149,13 @@ namespace AasxPluginVec
                 {
                     // no building blocks submodel seems to exist -> create a new one
                     var bomSubmodel = submodelsContainingSelectedEntities.First();
-                    existingBuildingBlocksBomSubmodel = CreateBuildingBlocksSubmodel(bomSubmodel);
-
-                    if (existingBuildingBlocksBomSubmodel == null)
+                    var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
+                    try
                     {
+                        existingBuildingBlocksBomSubmodel = CreateBuildingBlocksSubmodel(id, bomSubmodel, aas, env);
+                    } catch (Exception e)
+                    {
+                        log?.Error(e.Message);
                         return;
                     }
                 }
@@ -164,7 +167,7 @@ namespace AasxPluginVec
             // the AAS for the new sub-assembly
             var newSubassemblyAAS = CreateSubassemblyAas();
             newBomSubmodel = InitializeBomSubmodel(newSubassemblyAAS, env);   
-            var mainEntityInNewBomSubmodel = CreateMainEntity(newBomSubmodel);
+            var mainEntityInNewBomSubmodel = CreateEntryNode(newBomSubmodel, this.aas.assetRef);
             // FIXME probably, we should not just copy the whole existing VEC file but extract the relevant parts only into a new file
             newVecSubmodel = InitializeVecSubmodel(newSubassemblyAAS, env, existingVecFileSME);
             newVecFileSME = newVecSubmodel.FindSubmodelElementWrapper(VEC_FILE_ID_SHORT)?.submodelElement as AdminShellV20.File;
@@ -182,51 +185,7 @@ namespace AasxPluginVec
 
                 CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.idShort + "_SameAs_" + idShort);
             }
-        }
-
-        protected bool IsBuildingBlocksSubmodel(Submodel submodel)
-        {
-            var entryNode = FindEntryNode(submodel);
-            var entities = entryNode?.EnumerateChildren().Select(c => c.submodelElement).Where(c => c is Entity).Select(c => c as Entity) ?? new List<Entity>();
-            return entities?.Any(RepresentsSubAssembly) ?? false;
-        }
-
-        protected Submodel CreateBuildingBlocksSubmodel(Submodel associatedBomSubmodel)
-        {
-            var vecReference = FindEntryNode(associatedBomSubmodel)?.FindSubmodelElementWrapper(VEC_REFERENCE_ID_SHORT)?.submodelElement as RelationshipElement;
-            if (vecReference == null)
-            {
-                log?.Error("Unable to find VEC reference in existing components BOM submodel!");
-                return null;
-            }
-
-            var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
-            var idShort = "LS_BOM_BuildingBlocks";
-
-            var counterMatches = Regex.Matches(associatedBomSubmodel.idShort, @"_(\d+)$");
-            if (counterMatches.Count > 0)
-            {
-                idShort = idShort + counterMatches[0].Value;
-            }
-            var buildingBlocksSubmodel = CreateBomSubmodel(idShort, id);
-
-            env.Submodels.Add(buildingBlocksSubmodel);
-            aas.AddSubmodelRef(buildingBlocksSubmodel.GetSubmodelRef());
-
-            var entryNode = CreateEntryNode(buildingBlocksSubmodel, this.aas.assetRef);
-            entryNode.AddChild(new SubmodelElementWrapper(vecReference));
-
-            return buildingBlocksSubmodel;
-        }
-
-        protected AdminShellV20.File FindReferencedVecFileSME(Entity entityWithVecRelationship)
-        {
-            var entryNodeVecRelationship = GetVecRelationship(entityWithVecRelationship);
-            var fragmentReferenceKeys = entryNodeVecRelationship?.second?.Keys;
-            var keysToVecFile = fragmentReferenceKeys?.Take(fragmentReferenceKeys.ToList().Count - 1);
-            var referenceToVecFile = Reference.CreateNew(keysToVecFile?.ToList() ?? new List<Key>());
-            return env.FindReferableByReference(referenceToVecFile) as AdminShellV20.File;
-        }
+        }        
 
         protected Entity CreatePartEntitiesInNewSubmodelRecursively(Entity partEntityInOriginalAAS, Entity subassemblyEntityInNewAAS, Entity parent, string idShort = null)
         {
@@ -276,26 +235,6 @@ namespace AasxPluginVec
             return partEntityInNewAAS;
         }
 
-        protected bool RepresentsSubAssembly(Entity entity)
-        {
-            var parentSubmodel = entity.FindParentFirstIdentifiable();
-            var sameAsRelationships = GetSameAsRelationships(entity);
-            var hasSameAsRelationshipToOtherEntityInDifferentBOM = sameAsRelationships.Any(r =>
-            {
-                return r.first.Keys.Last().type == "Entity" && r.second.Keys.Last().type == "Entity" &&
-                    r.first.Keys.First().type == "Submodel" && r.second.Keys.First().type == "Submodel" &&
-                    !r.second.Keys.First().Matches(parentSubmodel.ToKey());
-            });
-
-            if (!hasSameAsRelationshipToOtherEntityInDifferentBOM)
-            {
-                return false;
-            }
-
-            var hasPartRelationships = GetHasPartRelationships(entity);
-            return hasPartRelationships.Count > 0;
-        }
-
         protected AdministrationShell CreateSubassemblyAas()
         {
             var aas = new AdministrationShell();
@@ -326,12 +265,6 @@ namespace AasxPluginVec
             aas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
 
             return bomSubmodel;
-        }
-
-        protected Entity CreateMainEntity(Submodel bomSubmodel)
-        {
-            // create the main entity
-            return CreateEntryNode(bomSubmodel, this.aas.assetRef);
         }
 
         protected Entity CreatePartEntity(Entity mainEntity, Entity sourceEntity, string idShort = null)

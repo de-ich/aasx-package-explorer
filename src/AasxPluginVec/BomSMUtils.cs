@@ -42,8 +42,7 @@ namespace AasxPluginVec
 
         public static IEnumerable<Submodel> FindBomSubmodels(AdministrationShell aas, AdministrationShellEnv env)
         {
-            var submodelRefs = aas?.submodelRefs;
-            var submodels = submodelRefs?.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
+            var submodels = FindAllSubmodels(aas, env);
             return submodels.Where(sm => sm.semanticId?.Matches("Submodel", false, "IRI", SEM_ID_BOM_SM) ?? false) ?? new List<Submodel>();
         }
 

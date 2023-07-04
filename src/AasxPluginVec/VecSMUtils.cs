@@ -80,5 +80,14 @@ namespace AasxPluginVec
         {
             return rel?.idShort == VEC_REFERENCE_ID_SHORT && rel?.semanticId?.Last?.value == SEM_ID_VEC_FRAGMENT_REFERENCE;
         }
+
+        public static AdminShellV20.File FindReferencedVecFileSME(Entity entityWithVecRelationship, AdministrationShellEnv env)
+        {
+            var entryNodeVecRelationship = GetVecRelationship(entityWithVecRelationship);
+            var fragmentReferenceKeys = entryNodeVecRelationship?.second?.Keys;
+            var keysToVecFile = fragmentReferenceKeys?.Take(fragmentReferenceKeys.ToList().Count - 1);
+            var referenceToVecFile = Reference.CreateNew(keysToVecFile?.ToList() ?? new List<Key>());
+            return env.FindReferableByReference(referenceToVecFile) as AdminShellV20.File;
+        }
     }
 }
