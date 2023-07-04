@@ -156,13 +156,10 @@ namespace AasxPluginVec
 
         private Submodel InitializeBomSubmodel(string idShort)
         {
-
-            // 'GenerateIdAccordingTemplate' does not seem to generate unique ids when called multiple times
-            // in too short of a time span so we ensure uniqueness manually
             var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
             
             // create the BOM submodel
-            var bomSubmodel = BomSMUtils.CreateBomSubmodel(idShort, id);
+            var bomSubmodel = CreateBomSubmodel(idShort, id);
             bomComponentSubmodels.Add(bomSubmodel);
 
             env.Submodels.Add(bomSubmodel);

@@ -109,7 +109,7 @@ namespace AasxPluginVec
                 return;
             }
 
-            var bomSubmodelInSubAssemblyAAS = FindBomSubmodel(aasToReuse, env);
+            var bomSubmodelInSubAssemblyAAS = FindFirstBomSubmodel(aasToReuse, env);
             bomSubmodelInSubAssemblyAAS.SetAllParents();
             var atomicComponentEntitiesInSubAssemblyAAS = GetLeafNodes(bomSubmodelInSubAssemblyAAS);
             

@@ -57,7 +57,7 @@ namespace AasxIntegrationBase
 
             if (this.AasToReuse != null)
             {
-                var bomSubmodel = FindBomSubmodel(this.AasToReuse, env);
+                var bomSubmodel = FindFirstBomSubmodel(this.AasToReuse, env);
 
                 var atomicComponentEntities = GetLeafNodes(bomSubmodel);
 

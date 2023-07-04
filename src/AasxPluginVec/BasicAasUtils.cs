@@ -129,5 +129,19 @@ namespace AasxPluginVec
             }
             return r;
         }
+
+        public static T FindReferencedElementInSubmodel<T>(Submodel submodel, Reference elementReference) where T : SubmodelElement
+        {
+            if (submodel == null || submodel.ToKey() == null || elementReference == null || elementReference.Keys == null || elementReference.Keys.IsEmpty)
+            {
+                return null;
+            }
+
+            if (!submodel.ToKey().Matches(elementReference.Keys.First())) {
+                return null;
+            }
+
+            return submodel.FindDeep<T>(e => GetReference(e).Matches(elementReference)).FirstOrDefault();
+        }
     }
 }

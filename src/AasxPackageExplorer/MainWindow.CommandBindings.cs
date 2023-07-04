@@ -3785,14 +3785,6 @@ namespace AasxPackageExplorer
                     AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
                 return;
             }
-                
-            if (!selectedItems.AllWithSameParent())
-            {
-                MessageBoxFlyoutShow(
-                    "No valid selection for deriving a subassembly. Only entities below the same parent element may be selected!", "Derive Subassembly",
-                    AnyUiMessageBoxButton.OK, AnyUiMessageBoxImage.Error);
-                return;
-            }
 
             var firstSelectedElement = selectedItems.First() as VisualElementSubmodelElement;
 

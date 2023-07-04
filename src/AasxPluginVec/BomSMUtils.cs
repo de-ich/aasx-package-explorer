@@ -34,13 +34,19 @@ namespace AasxPluginVec
             return bomSubmodel;
         }
 
-        public static Submodel FindBomSubmodel(AdministrationShell aas, AdministrationShellEnv env)
+        public static Submodel FindFirstBomSubmodel(AdministrationShell aas, AdministrationShellEnv env)
+        {
+            var submodels = FindBomSubmodels(aas, env);
+            return submodels?.First(sm => sm.semanticId.Last.value == SEM_ID_BOM_SM);
+        }
+
+        public static IEnumerable<Submodel> FindBomSubmodels(AdministrationShell aas, AdministrationShellEnv env)
         {
             var submodelRefs = aas?.submodelRefs;
             var submodels = submodelRefs?.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
-            return submodels?.First(sm => sm.semanticId.Last.value == SEM_ID_BOM_SM);
+            return submodels.Where(sm => sm.semanticId?.Matches("Submodel", false, "IRI", SEM_ID_BOM_SM) ?? false) ?? new List<Submodel>();
         }
-        
+
         public static Entity CreateEntryNode(Submodel parent, AssetRef referencedAsset)
         {
             var semanticId = new SemanticId(new Key("Entity", false, "IRI", SEM_ID_ENTRY_NODE));
