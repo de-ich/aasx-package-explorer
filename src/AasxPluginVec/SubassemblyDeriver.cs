@@ -107,6 +107,12 @@ namespace AasxPluginVec
             // make sure all parents are set for all potential submodels involved in this action
             allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
 
+            if (entitiesToBeMadeSubassembly.All(RepresentsSubAssembly))
+            {
+                log?.Error("It seems that only subassemblies where selected. This is currently not supported. At least one basic component needs to be selected!");
+                return;
+            }
+
             var submodelsContainingSelectedEntities = entitiesToBeMadeSubassembly.Select(e => e.FindParentFirstIdentifiable() as Submodel).ToHashSet();
 
             if (submodelsContainingSelectedEntities.Count == 0)
@@ -232,11 +238,11 @@ namespace AasxPluginVec
                 {
                     Reference partElementRef = rel.second;
                     Entity subPartEntityInOriginalAAS = null;
-                    if (partElementRef.Keys.First().Matches(existingComponentBomSubmodel.ToKey()))
+                    if (partElementRef.Keys.First().Matches(existingComponentBomSubmodel?.ToKey()))
                     {
                         subPartEntityInOriginalAAS = FindReferencedElementInSubmodel<Entity>(existingComponentBomSubmodel, partElementRef);
                     }
-                    else if (partElementRef.Keys.First().Matches(existingBuildingBlocksBomSubmodel.ToKey()))
+                    else if (partElementRef.Keys.First().Matches(existingBuildingBlocksBomSubmodel?.ToKey()))
                     {
                         subPartEntityInOriginalAAS = FindReferencedElementInSubmodel<Entity>(existingBuildingBlocksBomSubmodel, partElementRef);
                     }
@@ -252,7 +258,7 @@ namespace AasxPluginVec
                     var subPartEntityInNewSubmodel = CreatePartEntitiesInNewSubmodelRecursively(subPartEntityInOriginalAAS, subassemblyEntityInNewAAS, parent, subPartIdShort);
 
                     CreateHasPartRelationship(partEntityInNewAAS, subPartEntityInNewSubmodel);
-                    CreateSameAsRelationship(GetReference(subPartEntityInNewSubmodel), sameAsRelationship.second, partEntityInNewAAS, subPartEntityInNewSubmodel.idShort + "_SameAs_" + sameAsRelationship.second.Keys.Last().value);
+                    CreateSameAsRelationship(GetReference(subPartEntityInNewSubmodel), new Reference(sameAsRelationship.second), partEntityInNewAAS, subPartEntityInNewSubmodel.idShort + "_SameAs_" + sameAsRelationship.second.Keys.Last().value);
                 }
             }
 
