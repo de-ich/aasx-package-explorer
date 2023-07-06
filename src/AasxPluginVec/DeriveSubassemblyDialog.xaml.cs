@@ -18,13 +18,13 @@ using static AdminShellNS.AdminShellV20;
 
 namespace AasxIntegrationBase
 {
-    internal partial class GetSubassemblyNameDialog : Window
+    internal partial class DeriveSubassemblyDialog : Window
     {
         public string SubassemblyAASName { get; set; } = string.Empty;
         public string SubassemblyEntityName { get; set; } = string.Empty;
         public Dictionary<string, string> PartNames { get; } = new Dictionary<string, string>();
 
-        public GetSubassemblyNameDialog(Window owner, IEnumerable<Entity> entities)
+        public DeriveSubassemblyDialog(Window owner, IEnumerable<Entity> entities)
         {
             this.Owner = owner;
             DataContext = this;

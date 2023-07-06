@@ -223,7 +223,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 }
 
                 // ask for filename
-                var dlg = new GetSubassemblyNameDialog(fop?.GetWin32Window(), selectedEntities);
+                var dlg = new DeriveSubassemblyDialog(fop?.GetWin32Window(), selectedEntities);
 
                 fop?.StartFlyover(new EmptyFlyout());
                 var fnres = dlg.ShowDialog();
