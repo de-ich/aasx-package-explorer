@@ -116,6 +116,7 @@
                     <RoutedUICommand x:Key="ImportVEC" Text="ImportVEC" />
                     <RoutedUICommand x:Key="DeriveSubassembly" Text="DeriveSubassembly" />
                     <RoutedUICommand x:Key="ReuseSubassembly" Text="ReuseSubassembly" />
+                    <RoutedUICommand x:Key="AssociateModuleWithSubassemblies" Text="AssociateModuleWithSubassemblies" />
 
                     <RoutedUICommand x:Key="FileRepoNew" Text="FileRepoNew" />
                     <RoutedUICommand x:Key="FileRepoOpen" Text="FileRepoOpen" />
@@ -296,6 +297,7 @@
         <CommandBinding Command="{StaticResource ImportVEC}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource DeriveSubassembly}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource ReuseSubassembly}" Executed="CommandBinding_Executed"/>
+        <CommandBinding Command="{StaticResource AssociateModuleWithSubassemblies}" Executed="CommandBinding_Executed"/>
 
         <CommandBinding Command="{StaticResource FileRepoNew}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource FileRepoOpen}" Executed="CommandBinding_Executed"/>
@@ -436,8 +438,9 @@
                         <MenuItem Header="Plugins ..">
                             <MenuItem x:Name="MenuItemWorkspaceNewSubmodelFromPlugin" Header="New Submodel" InputGestureText="Ctrl+Shift+M" Command="{StaticResource NewSubmodelFromPlugin}"/>
                             <MenuItem Header="VEC">
-                                <MenuItem x:Name="MenuItemDeriveSubassembly" Header="Derive Subassembly" Command="{StaticResource DeriveSubassembly}"/>
+                                <MenuItem x:Name="MenuItemDeriveSubassembly" Header="Derive New Subassembly" Command="{StaticResource DeriveSubassembly}"/>
                                 <MenuItem x:Name="MenuItemReuseSubassembly" Header="Reuse Existing Subassembly" Command="{StaticResource ReuseSubassembly}"/>
+                                <MenuItem x:Name="MenuItemAssociateSubassemblies" Header="Associate Module with Subassemblies" Command="{StaticResource AssociateModuleWithSubassemblies}"/>
                             </MenuItem>
                         </MenuItem>
                         <Separator/>

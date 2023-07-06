@@ -86,6 +86,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 "derive-subassembly", "Derive new subassembly from selected entities."));
             res.Add(new AasxPluginActionDescriptionBase(
                 "reuse-subassembly", "Reuse existing subassembly for selected entities."));
+            res.Add(new AasxPluginActionDescriptionBase(
+                "associate-subassemblies-with-module", "Associate an orderable module with the subassemblies required for production."));
             res.Add(
                 new AasxPluginActionDescriptionBase(
                     "get-check-visual-extension", "Returns true, if plug-ins checks for visual extension."));
@@ -271,6 +273,36 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 Log.Info($"Reusing subassembly...");
             }
 
+            if (action == "associate-subassemblies-with-module" && args != null && args.Length >= 4)
+            {
+                // flyout provider (will be required in the future)
+                var fop = args[0] as IFlyoutProvider;
+
+                var env = args[1] as AdminShellV20.AdministrationShellEnv;
+                var aas = args[2] as AdminShellV20.AdministrationShell;
+                var selectedEntities = (args[3] as IEnumerable<AdminShellV20.Entity>)?.ToList();
+
+                if (fop == null || env == null || aas == null || selectedEntities == null)
+                {
+                    return null;
+                }
+
+                //TODO ab hier implementieren
+                var dlg = new AssociateSubassembliesWithModuleDialog(fop?.GetWin32Window(), selectedEntities, aas, env);
+
+                fop?.StartFlyover(new EmptyFlyout());
+                var fnres = dlg.ShowDialog();
+                fop?.CloseFlyover();
+                if (fnres != true)
+                    return null;
+
+                var selectedModuleEntity = dlg.SelectedModule;
+
+                SubassemblyToModuleAssociator.AssociateSubassemblies(env, aas, selectedEntities, selectedModuleEntity, options, Log);
+
+                Log.Info($"Associating module with subassembly...");
+            }
+            
             if (action == "get-check-visual-extension")
             {
                 var cve = new AasxPluginResultBaseObject();

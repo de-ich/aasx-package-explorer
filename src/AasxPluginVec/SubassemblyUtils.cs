@@ -72,5 +72,19 @@ namespace AasxPluginVec
             var hasPartRelationships = GetHasPartRelationships(entity);
             return hasPartRelationships.Count > 0;
         }
+
+        public static bool RepresentsBasciComponent(Entity entity)
+        {
+            var parentSubmodel = entity.FindParentFirstIdentifiable();
+            var sameAsRelationships = GetSameAsRelationships(entity);
+
+            if (GetVecRelationship(entity) == null)
+            {
+                return false;
+            }
+
+            var hasPartRelationships = GetHasPartRelationships(entity);
+            return hasPartRelationships.Count == 0;
+        }
     }
 }
