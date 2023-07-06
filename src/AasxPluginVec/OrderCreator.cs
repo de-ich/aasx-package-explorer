@@ -139,6 +139,7 @@ namespace AasxPluginVec
                 var buildingBlockEntity = CreateEntity(associatedSubassembly.idShort, orderBuildingBlocksEntryNode, semanticId: associatedSubassembly.semanticId);
                 buildingBlockEntity.entityType = ASSET_TYPE_SELF_MANAGED_ENTITY; // set to 'self-managed' although we do not yet now the specific instance that will be used in production
 
+                CreateHasPartRelationship(orderBuildingBlocksEntryNode, buildingBlockEntity);
                 CreateSameAsRelationship(buildingBlockEntity, associatedSubassembly, buildingBlockEntity);
             }
         }
