@@ -86,5 +86,21 @@ namespace AasxPluginVec
             var hasPartRelationships = GetHasPartRelationships(entity);
             return hasPartRelationships.Count == 0;
         }
+
+        public static RelationshipElement AssociateSubassemblyWithModule(Entity subassembly, Entity orderableModule)
+        {
+            return CreateHasPartRelationship(orderableModule, subassembly, "Production_Requires_" + subassembly.idShort);
+        }
+
+        public static bool HasAssociatedSubassemblies(Entity orderableModule)
+        {
+            return GetHasPartRelationships(orderableModule).Any(r => r.idShort.StartsWith("Production_Requires_"));
+        }
+
+        public static List<Entity> FindAssociatedSubassemblies(Entity orderableModule, AdministrationShellEnv env)
+        {
+            var relationshipsToAssociatedSubassemblies = GetHasPartRelationships(orderableModule).Where(r => r.idShort.StartsWith("Production_Requires_"));
+            return relationshipsToAssociatedSubassemblies.Select(r => env.FindReferableByReference(r.second) as Entity).ToList();
+        }
     }
 }

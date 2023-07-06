@@ -88,13 +88,13 @@ namespace AasxPluginVec
 
             if (!subassembliesToAssociate.All(e => RepresentsSubAssembly(e) || RepresentsBasciComponent(e)))
             {
-                log?.Error("It seems that entities where selected that do not represent a subassembly or a basic part/component. This is currently supported!");
+                log?.Error("It seems that entities were selected that do not represent a subassembly or a basic part/component. This is currently supported!");
                 return;
             }
 
             foreach (var subassembly in subassembliesToAssociate)
             {
-                CreateHasPartRelationship(this.orderableModule, subassembly, "Production_Requires_" + subassembly.idShort);
+                AssociateSubassemblyWithModule(subassembly, this.orderableModule);
             }
         }        
     }

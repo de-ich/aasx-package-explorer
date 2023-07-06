@@ -88,6 +88,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 "reuse-subassembly", "Reuse existing subassembly for selected entities."));
             res.Add(new AasxPluginActionDescriptionBase(
                 "associate-subassemblies-with-module", "Associate an orderable module with the subassemblies required for production."));
+            res.Add(new AasxPluginActionDescriptionBase(
+                "create-order", "Create a new wire harness order for the selected modules."));
             res.Add(
                 new AasxPluginActionDescriptionBase(
                     "get-check-visual-extension", "Returns true, if plug-ins checks for visual extension."));
@@ -302,7 +304,37 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
                 Log.Info($"Associating module with subassembly...");
             }
-            
+
+            if (action == "create-order" && args != null && args.Length >= 4)
+            {
+                // flyout provider (will be required in the future)
+                var fop = args[0] as IFlyoutProvider;
+
+                var env = args[1] as AdminShellV20.AdministrationShellEnv;
+                var aas = args[2] as AdminShellV20.AdministrationShell;
+                var selectedModules = (args[3] as IEnumerable<AdminShellV20.Entity>)?.ToList();
+
+                if (fop == null || env == null || aas == null || selectedModules == null)
+                {
+                    return null;
+                }
+
+                //TODO ab hier implementieren
+                var dlg = new CreateOrderDialog(fop?.GetWin32Window());
+
+                fop?.StartFlyover(new EmptyFlyout());
+                var fnres = dlg.ShowDialog();
+                fop?.CloseFlyover();
+                if (fnres != true)
+                    return null;
+
+                var orderNumber = dlg.OrderNumber;
+
+                OrderCreator.CreateOrder(env, aas, selectedModules, orderNumber, options, Log);
+
+                Log.Info($"Creating order...");
+            }
+
             if (action == "get-check-visual-extension")
             {
                 var cve = new AasxPluginResultBaseObject();

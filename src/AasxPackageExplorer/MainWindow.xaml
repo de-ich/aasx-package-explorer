@@ -117,6 +117,7 @@
                     <RoutedUICommand x:Key="DeriveSubassembly" Text="DeriveSubassembly" />
                     <RoutedUICommand x:Key="ReuseSubassembly" Text="ReuseSubassembly" />
                     <RoutedUICommand x:Key="AssociateModuleWithSubassemblies" Text="AssociateModuleWithSubassemblies" />
+                    <RoutedUICommand x:Key="CreateWireHarnessOrder" Text="CreateWireHarnessOrder" />
 
                     <RoutedUICommand x:Key="FileRepoNew" Text="FileRepoNew" />
                     <RoutedUICommand x:Key="FileRepoOpen" Text="FileRepoOpen" />
@@ -298,6 +299,7 @@
         <CommandBinding Command="{StaticResource DeriveSubassembly}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource ReuseSubassembly}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource AssociateModuleWithSubassemblies}" Executed="CommandBinding_Executed"/>
+        <CommandBinding Command="{StaticResource CreateWireHarnessOrder}" Executed="CommandBinding_Executed"/>
 
         <CommandBinding Command="{StaticResource FileRepoNew}" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{StaticResource FileRepoOpen}" Executed="CommandBinding_Executed"/>
@@ -441,6 +443,7 @@
                                 <MenuItem x:Name="MenuItemDeriveSubassembly" Header="Derive New Subassembly" Command="{StaticResource DeriveSubassembly}"/>
                                 <MenuItem x:Name="MenuItemReuseSubassembly" Header="Reuse Existing Subassembly" Command="{StaticResource ReuseSubassembly}"/>
                                 <MenuItem x:Name="MenuItemAssociateSubassemblies" Header="Associate Module with Subassemblies" Command="{StaticResource AssociateModuleWithSubassemblies}"/>
+                                <MenuItem x:Name="MenuItemCreateWireHarnessOrder" Header="Create Wire Harness Order" Command="{StaticResource CreateWireHarnessOrder}"/>
                             </MenuItem>
                         </MenuItem>
                         <Separator/>
