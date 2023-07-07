@@ -113,7 +113,7 @@ namespace AasxPluginVec
                 return;
             }
 
-            var submodelsContainingSelectedEntities = entitiesToBeMadeSubassembly.Select(e => e.FindParentFirstIdentifiable() as Submodel).ToHashSet();
+            var submodelsContainingSelectedEntities = FindCommonSubmodelParents(entitiesToBeMadeSubassembly);
 
             if (submodelsContainingSelectedEntities.Count == 0)
             {
@@ -155,10 +155,9 @@ namespace AasxPluginVec
                 {
                     // no building blocks submodel seems to exist -> create a new one
                     var bomSubmodel = submodelsContainingSelectedEntities.First();
-                    var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
                     try
                     {
-                        existingBuildingBlocksBomSubmodel = CreateBuildingBlocksSubmodel(id, bomSubmodel, aas, env);
+                        existingBuildingBlocksBomSubmodel = CreateBuildingBlocksSubmodel(options.TemplateIdSubmodel, bomSubmodel, aas, env);
                     } catch (Exception e)
                     {
                         log?.Error(e.Message);
@@ -171,15 +170,16 @@ namespace AasxPluginVec
             existingComponentBomSubmodel = submodelsContainingSelectedEntities.First(sm => sm != existingBuildingBlocksBomSubmodel);
 
             // the AAS for the new sub-assembly
-            var newSubassemblyAAS = CreateSubassemblyAas();
-            newBomSubmodel = InitializeBomSubmodel(newSubassemblyAAS, env);   
-            var mainEntityInNewBomSubmodel = CreateEntryNode(newBomSubmodel, this.aas.assetRef);
+            this.subassemblyAas = CreateAAS(this.subassemblyAASName, this.subassemblyAASName + "_Asset", options.TemplateIdAas, options.TemplateIdAsset, env);
+
+            newBomSubmodel = CreateBomSubmodel(ID_SHORT_LS_BOM_SM, options.TemplateIdSubmodel, aas: subassemblyAas, env: env);
+            var mainEntityInNewBomSubmodel = FindEntryNode(newBomSubmodel);
             // FIXME probably, we should not just copy the whole existing VEC file but extract the relevant parts only into a new file
-            newVecSubmodel = InitializeVecSubmodel(newSubassemblyAAS, env, existingVecFileSME);
+            newVecSubmodel = InitializeVecSubmodel(subassemblyAas, env, existingVecFileSME);
             newVecFileSME = newVecSubmodel.FindSubmodelElementWrapper(VEC_FILE_ID_SHORT)?.submodelElement as AdminShellV20.File;
 
             // the entity representing the sub-assembly in the building blocks SM of the original AAS (the harness AAS)
-            var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, buildingBlocksSubmodelEntryNode, newSubassemblyAAS.assetRef);
+            var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, buildingBlocksSubmodelEntryNode, subassemblyAas.assetRef);
             CreateHasPartRelationship(buildingBlocksSubmodelEntryNode, subassemblyEntityInOriginalAAS);
 
             foreach (var partEntityInOriginalAAS in entitiesToBeMadeSubassembly)
@@ -263,38 +263,6 @@ namespace AasxPluginVec
             }
 
             return partEntityInNewAAS;
-        }
-
-        protected AdministrationShell CreateSubassemblyAas()
-        {
-            var aas = new AdministrationShell();
-            aas.idShort = this.subassemblyAASName;
-            aas.identification = new Identification(new Key("AssetAdministrationShell", false, "IRI", GenerateIdAccordingTemplate(options.TemplateIdAas)));
-
-            var asset = new Asset();
-            asset.idShort = this.subassemblyAASName + "_Asset";
-            asset.identification = new Identification(new Key("Asset", false, "IRI", GenerateIdAccordingTemplate(options.TemplateIdAsset)));
-            aas.assetRef = asset.GetAssetReference();
-
-            this.subassemblyAas = aas;
-            this.env.AdministrationShells.Add(aas);
-            this.env.Assets.Add(asset);
-
-            return aas;
-        }
-
-        protected Submodel InitializeBomSubmodel(AdministrationShell aas, AdministrationShellEnv env)
-        {
-            var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
-            var idShort = "LS_BOM";
-
-            // create the BOM submodel
-            var bomSubmodel = CreateBomSubmodel(idShort, id);
-
-            env.Submodels.Add(bomSubmodel);
-            aas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
-
-            return bomSubmodel;
         }
 
         protected Entity CreatePartEntity(Entity mainEntity, Entity sourceEntity, string idShort = null)

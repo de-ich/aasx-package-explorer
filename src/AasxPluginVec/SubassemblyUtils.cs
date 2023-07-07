@@ -13,9 +13,16 @@ using System.Text.RegularExpressions;
 
 namespace AasxPluginVec
 {
+
     public class SubassemblyUtils
     {
-        public static Submodel CreateBuildingBlocksSubmodel(string id, Submodel associatedBomSubmodel, AdministrationShell aas, AdministrationShellEnv env)
+        public const string ID_SHORT_LS_BOM_SM = "LS_BOM";
+        public const string ID_SHORT_COMPONENTS_SM = "LS_BOM_Components";
+        public const string ID_SHORT_ORDERABLE_MODULES_SM = "LS_BOM_Modules";
+        public const string ID_SHORT_BUILDING_BLOCKS_SM = "LS_BOM_BuildingBlocks";
+        public const string ID_SHORT_ORDERED_MODULES_SM = "LS_BOM_OrderedModules";
+
+        public static Submodel CreateBuildingBlocksSubmodel(string iriTemplate, Submodel associatedBomSubmodel, AdministrationShell aas, AdministrationShellEnv env)
         {
             var vecReference = FindEntryNode(associatedBomSubmodel)?.FindSubmodelElementWrapper(VEC_REFERENCE_ID_SHORT)?.submodelElement as RelationshipElement;
             if (vecReference == null)
@@ -23,19 +30,15 @@ namespace AasxPluginVec
                 throw new Exception("Unable to find VEC reference in existing components BOM submodel!");
             }
             
-            var idShort = "LS_BOM_BuildingBlocks";
+            var idShort = ID_SHORT_BUILDING_BLOCKS_SM;
 
             var counterMatches = Regex.Matches(associatedBomSubmodel.idShort, @"_(\d+)$");
             if (counterMatches.Count > 0)
             {
                 idShort = idShort + counterMatches[0].Value;
             }
-            var buildingBlocksSubmodel = CreateBomSubmodel(idShort, id);
-
-            env.Submodels.Add(buildingBlocksSubmodel);
-            aas.AddSubmodelRef(buildingBlocksSubmodel.GetSubmodelRef());
-
-            var entryNode = CreateEntryNode(buildingBlocksSubmodel, aas.assetRef);
+            var buildingBlocksSubmodel = CreateBomSubmodel(idShort, iriTemplate, aas: aas, env: env);
+            var entryNode = FindEntryNode(buildingBlocksSubmodel);
             entryNode.AddChild(new SubmodelElementWrapper(vecReference));
 
             return buildingBlocksSubmodel;

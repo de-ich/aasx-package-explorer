@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AdminShellNS;
 using static AdminShellNS.AdminShellV20;
-using static AasxPluginVec.BomSMUtils;
 using System.Xml.Linq;
 
 namespace AasxPluginVec
@@ -130,6 +129,23 @@ namespace AasxPluginVec
             return r;
         }
 
+        public static AdministrationShell CreateAAS(string aasIdShort, string assetIdShort, string aasIriTemplate, string assetIriTemplate, AdministrationShellEnv env)
+        {
+            var aas = new AdministrationShell();
+            aas.idShort = aasIdShort;
+            aas.identification = new Identification(new Key("AssetAdministrationShell", false, "IRI", GenerateIdAccordingTemplate(aasIriTemplate)));
+
+            var asset = new Asset();
+            asset.idShort = assetIdShort;
+            asset.identification = new Identification(new Key("Asset", false, "IRI", GenerateIdAccordingTemplate(assetIriTemplate)));
+            aas.assetRef = asset.GetAssetReference();
+
+            env.AdministrationShells.Add(aas);
+            env.Assets.Add(asset);
+
+            return aas;
+        }
+
         public static T FindReferencedElementInSubmodel<T>(Submodel submodel, Reference elementReference) where T : SubmodelElement
         {
             if (submodel == null || submodel.ToKey() == null || elementReference == null || elementReference.Keys == null || elementReference.Keys.IsEmpty)
@@ -144,11 +160,54 @@ namespace AasxPluginVec
             return submodel.FindDeep<T>(e => GetReference(e).Matches(elementReference)).FirstOrDefault();
         }
 
+        public static Submodel CreateSubmodel(string idShort, string iriTemplate, string semanticId = null, AdministrationShell aas = null, AdministrationShellEnv env = null)
+        {
+            var iri = GenerateIdAccordingTemplate(iriTemplate);
+
+            var submodel = new Submodel();
+            submodel.SetIdentification(Identification.IRI, iri, idShort);
+
+            if (semanticId != null)
+            {
+                submodel.semanticId = new SemanticId(new Key("Submodel", false, "IRI", semanticId));
+            }
+
+            if (env != null)
+            {
+                env.Submodels.Add(submodel);
+            }
+
+            if (aas != null)
+            {
+                aas.AddSubmodelRef(submodel.GetSubmodelRef());
+            }
+
+            return submodel;
+        }
+
         public static IEnumerable<Submodel> FindAllSubmodels(AdministrationShell aas, AdministrationShellEnv env)
         {
             var submodelRefs = aas?.submodelRefs ?? new List<SubmodelRef>();
             var submodels = submodelRefs.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
             return submodels;
+        }
+
+        public static HashSet<Submodel> FindCommonSubmodelParents(IEnumerable<SubmodelElement> elements)
+        {
+            return elements.Select(e => e.FindParentFirstIdentifiable() as Submodel).ToHashSet();
+        }
+
+        public static Submodel FindCommonSubmodelParent(IEnumerable<SubmodelElement> elements)
+        {
+            var submodel = elements.First().FindParentFirstIdentifiable() as Submodel;
+            submodel.SetAllParents();
+            
+            if (elements.Any(e => e.FindParentFirstIdentifiable() != submodel))
+            {
+                return null;
+            }
+
+            return submodel;
         }
     }
 }

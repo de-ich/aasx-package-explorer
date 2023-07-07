@@ -98,17 +98,11 @@ namespace AasxPluginVec
                 return;
             }
 
-            var submodelsContainingSelectedModules = selectedModules.Select(e => e.FindParentFirstIdentifiable() as Submodel).ToHashSet();
+            var submodelContainingSelectedModules = FindCommonSubmodelParent(selectedModules);
 
-            if (submodelsContainingSelectedModules.Count == 0)
+            if (submodelContainingSelectedModules == null)
             {
-                log?.Error("Unable to determine BOM submodel that contains the selected modules!");
-                return;
-            }
-
-            if (submodelsContainingSelectedModules.Count > 1)
-            {
-                log?.Error("Modules from more than 1 BOM submodel selected. This is not supported!");
+                log?.Error("Unable to determine single common BOM submodel that contains the selected modules!");
                 return;
             }
 
@@ -120,19 +114,19 @@ namespace AasxPluginVec
                 return;
             }
 
-            orderAas = CreateOrderAas(aas.idShort + "_Order_" + orderNumber);
+            var orderAasIdShort = aas.idShort + "_Order_" + orderNumber;
+            orderAas = CreateAAS(orderAasIdShort, orderAasIdShort + "_Asset", options.TemplateIdAas, options.TemplateIdAsset, env);
 
-            var orderedModulesSubmodelIdShort = "LS_BOM_OrderedModules";
-            orderedModulesSubmodel = InitializeBomSubmodel(orderedModulesSubmodelIdShort);
-            var orderedModuleEntryNode = CreateEntryNode(orderedModulesSubmodel, this.aas.assetRef);
+            orderedModulesSubmodel = CreateBomSubmodel(ID_SHORT_ORDERED_MODULES_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
+            var orderedModuleEntryNode = FindEntryNode(orderedModulesSubmodel);
 
             foreach(var module in selectedModules)
             {
                 CreateHasPartRelationship(orderedModuleEntryNode, module);
             }
 
-            orderBuildingBlocksSubmodel = InitializeBuildingBlocksSubmodel();
-            var orderBuildingBlocksEntryNode = CreateEntryNode(orderBuildingBlocksSubmodel, this.aas.assetRef);
+            orderBuildingBlocksSubmodel = CreateBomSubmodel(ID_SHORT_BUILDING_BLOCKS_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
+            var orderBuildingBlocksEntryNode = FindEntryNode(orderBuildingBlocksSubmodel);
 
             foreach(var associatedSubassembly in associatedSubassemblies)
             {
@@ -142,49 +136,6 @@ namespace AasxPluginVec
                 CreateHasPartRelationship(orderBuildingBlocksEntryNode, buildingBlockEntity);
                 CreateSameAsRelationship(buildingBlockEntity, associatedSubassembly, buildingBlockEntity);
             }
-        }
-
-        protected AdministrationShell CreateOrderAas(string idShort)
-        {
-            var aas = new AdministrationShell();
-            aas.idShort = idShort;
-            aas.identification = new Identification(new Key("AssetAdministrationShell", false, "IRI", GenerateIdAccordingTemplate(options.TemplateIdAas)));
-
-            var asset = new Asset();
-            asset.idShort = aas.idShort + "_Asset";
-            asset.identification = new Identification(new Key("Asset", false, "IRI", GenerateIdAccordingTemplate(options.TemplateIdAsset)));
-            aas.assetRef = asset.GetAssetReference();
-
-            this.orderAas = aas;
-            this.env.AdministrationShells.Add(aas);
-            this.env.Assets.Add(asset);
-
-            return aas;
-        }
-
-        protected Submodel InitializeBomSubmodel(string idShort)
-        {
-            var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
-
-            // create the BOM submodel
-            var bomSubmodel = CreateBomSubmodel(idShort, id);
-
-            env.Submodels.Add(bomSubmodel);
-            orderAas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
-
-            return bomSubmodel;
-        }
-        protected Submodel InitializeBuildingBlocksSubmodel()
-        {
-            var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
-            var idShort = "LS_BOM_BuildingBlocks";
-
-            var buildingBlocksSubmodel = CreateBomSubmodel(idShort, id);
-
-            env.Submodels.Add(buildingBlocksSubmodel);
-            orderAas.AddSubmodelRef(buildingBlocksSubmodel.GetSubmodelRef());
-
-            return buildingBlocksSubmodel;
         }
     }
 }

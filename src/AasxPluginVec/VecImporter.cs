@@ -18,7 +18,7 @@ using static AdminShellNS.AdminShellV20;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.VecProvider;
-using static AasxPluginVec.BasicAasUtils;
+using static AasxPluginVec.SubassemblyUtils;
 
 namespace AasxPluginVec
 {
@@ -142,41 +142,19 @@ namespace AasxPluginVec
         protected void CreateBomSubmodels(XElement harnessDescription)
         {
             var index = (bomComponentSubmodels.Count() + 1).ToString().PadLeft(2, '0');
+            var harnessFragment = GetElementFragment(harnessDescription);
 
-            var bomComponentsSubmodelIdShort = "LS_BOM_Components_" + index;
-            var bomComponentsSubmodel = InitializeBomSubmodel(bomComponentsSubmodelIdShort);
-            var bomComponentsEntryNode = CreateMainEntity(bomComponentsSubmodel, harnessDescription);
+            var bomComponentsSubmodelIdShort = ID_SHORT_COMPONENTS_SM + "_" + index;
+            var bomComponentsSubmodel = CreateBomSubmodel(bomComponentsSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
+            var bomComponentsEntryNode = FindEntryNode(bomComponentsSubmodel);
+            CreateVecRelationship(bomComponentsEntryNode, harnessFragment, this.vecFileSubmodelElement);
             CreateComponentEntities(bomComponentsEntryNode, harnessDescription);
 
-            var bomModulesSubmodelIdShort = "LS_BOM_Modules_" + index;
-            var bomModulesSubmodel = InitializeBomSubmodel(bomModulesSubmodelIdShort);
-            var bomModulesEntryNode = CreateMainEntity(bomModulesSubmodel, harnessDescription);
+            var bomModulesSubmodelIdShort = ID_SHORT_ORDERABLE_MODULES_SM + "_" + index;
+            var bomModulesSubmodel = CreateBomSubmodel(bomModulesSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
+            var bomModulesEntryNode = FindEntryNode(bomModulesSubmodel);
+            CreateVecRelationship(bomModulesEntryNode, harnessFragment, this.vecFileSubmodelElement);
             CreateModuleEntities(bomModulesEntryNode, harnessDescription);
-        }
-
-        private Submodel InitializeBomSubmodel(string idShort)
-        {
-            var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
-            
-            // create the BOM submodel
-            var bomSubmodel = CreateBomSubmodel(idShort, id);
-            bomComponentSubmodels.Add(bomSubmodel);
-
-            env.Submodels.Add(bomSubmodel);
-            aas.AddSubmodelRef(bomSubmodel.GetSubmodelRef());
-
-            return bomSubmodel;
-        }
-
-        private Entity CreateMainEntity(Submodel bomSubmodel, XElement harnessDescription)
-        {
-            // create the main entity
-            var mainEntity = CreateEntryNode(bomSubmodel, this.aas.assetRef);
-            
-            // create the fragment relationship pointing to the DocumentVersion for the current harness
-            CreateVecRelationship(mainEntity, GetElementFragment(harnessDescription), this.vecFileSubmodelElement);
-
-            return mainEntity;
         }
 
         private void CreateComponentEntities(Entity mainEntity, XElement harnessDescription)

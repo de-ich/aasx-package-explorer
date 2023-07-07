@@ -101,20 +101,10 @@ namespace AasxPluginVec
 
         protected void ReuseSubassembly()
         {
-            // parent is the (common) container of all entities that are to be converted into a sub-assembly
-            var parent = entitiesToBeMadeSubassembly.First().parent as Entity;
-            existingBomSubmodel = parent?.FindParentFirstIdentifiable() as Submodel;
+            existingBomSubmodel = FindCommonSubmodelParent(entitiesToBeMadeSubassembly);
             if (existingBomSubmodel == null)
             {
-                log?.Error("Unable to determine BOM submodel that contains the selected entities!");
-                return;
-            }
-
-            existingBomSubmodel.SetAllParents();
-
-            if (entitiesToBeMadeSubassembly.Any(e => e.FindParentFirstIdentifiable() != existingBomSubmodel))
-            {
-                log?.Error("Entities from more than one BOM submodel selected. This is not supported!");
+                log?.Error("Unable to determine the single common BOM submodel that contains the selected entities!");
                 return;
             }
 
@@ -128,10 +118,9 @@ namespace AasxPluginVec
             {
                
                 // no building blocks submodel seems to exist -> create a new one
-                var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
                 try
                 {
-                    existingBuildingBlocksBomSubmodel = CreateBuildingBlocksSubmodel(id, existingBuildingBlocksBomSubmodel, aas, env);
+                    existingBuildingBlocksBomSubmodel = CreateBuildingBlocksSubmodel(options.TemplateIdSubmodel, existingBuildingBlocksBomSubmodel, aas, env);
                 }
                 catch (Exception e)
                 {

@@ -18,18 +18,20 @@ namespace AasxPluginVec
         public const string SEM_ID_SAME_AS = "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0";
         public const string ASSET_TYPE_CO_MANAGED_ENTITY = "CoManagedEntity";
         public const string ASSET_TYPE_SELF_MANAGED_ENTITY = "SelfManagedEntity";
+        public const string ID_SHORT_ENTRY_NODE = "EntryNode";
+        public const string ID_SHORT_ARCHE_TYPE = "ArcheType";
 
-        public static Submodel CreateBomSubmodel(string idShort, string iri, string archeType = "Full")
+        public static Submodel CreateBomSubmodel(string idShort, string iriTemplate, string archeType = "Full", AdministrationShell aas = null, AdministrationShellEnv env = null)
         {
-            var bomSubmodel = new Submodel();
-            bomSubmodel.SetIdentification(Identification.IRI, iri, idShort);
-            bomSubmodel.semanticId = new SemanticId(new Key("Submodel", false, "IRI", SEM_ID_BOM_SM));
-
+            var bomSubmodel = CreateSubmodel(idShort, iriTemplate, SEM_ID_BOM_SM, aas, env);
+            
             var archeTypeProperty = new Property();
             archeTypeProperty.semanticId = new SemanticId(new Key("Property", false, "IRI", SEM_ID_ARCHE_TYPE));
-            archeTypeProperty.idShort = "ArcheType";
+            archeTypeProperty.idShort = ID_SHORT_ARCHE_TYPE;
             archeTypeProperty.value = archeType;
             bomSubmodel.Add(archeTypeProperty);
+
+            CreateEntryNode(bomSubmodel, aas.assetRef);
 
             return bomSubmodel;
         }
@@ -49,11 +51,11 @@ namespace AasxPluginVec
         public static Entity CreateEntryNode(Submodel parent, AssetRef referencedAsset)
         {
             var semanticId = new SemanticId(new Key("Entity", false, "IRI", SEM_ID_ENTRY_NODE));
-            return CreateEntity("EntryNode", parent, referencedAsset, semanticId);
+            return CreateEntity(ID_SHORT_ENTRY_NODE, parent, referencedAsset, semanticId);
         }
 
         public static Entity FindEntryNode(Submodel bomSubmodel) {
-            return bomSubmodel?.FindSubmodelElementWrapper("EntryNode")?.submodelElement as Entity;
+            return bomSubmodel?.FindSubmodelElementWrapper(ID_SHORT_ENTRY_NODE)?.submodelElement as Entity;
         }
 
         public static Entity CreateNode(string idShort, IManageSubmodelElements parent, AssetRef referencedAsset = null)
