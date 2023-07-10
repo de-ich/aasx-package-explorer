@@ -116,6 +116,7 @@ namespace AasxPluginVec
 
             var orderAasIdShort = aas.idShort + "_Order_" + orderNumber;
             orderAas = CreateAAS(orderAasIdShort, orderAasIdShort + "_Asset", options.TemplateIdAas, options.TemplateIdAsset, env);
+            orderAas.derivedFrom = new AssetAdministrationShellRef(aas.GetReference());
 
             orderedModulesSubmodel = CreateBomSubmodel(ID_SHORT_ORDERED_MODULES_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
             var orderedModuleEntryNode = FindEntryNode(orderedModulesSubmodel);

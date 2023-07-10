@@ -117,7 +117,7 @@ namespace AasxPluginVec
             return r;
         }
 
-        public static AdministrationShell CreateAAS(string aasIdShort, string assetIdShort, string aasIriTemplate, string assetIriTemplate, AdministrationShellEnv env)
+        public static AdministrationShell CreateAAS(string aasIdShort, string assetIdShort, string aasIriTemplate, string assetIriTemplate, AdministrationShellEnv env, string assetKind = "Instance")
         {
             var aas = new AdministrationShell();
             aas.idShort = aasIdShort;
@@ -126,6 +126,7 @@ namespace AasxPluginVec
             var asset = new Asset();
             asset.idShort = assetIdShort;
             asset.identification = new Identification(new Key("Asset", false, "IRI", GenerateIdAccordingTemplate(assetIriTemplate)));
+            asset.kind = new AssetKind(assetKind);
             aas.assetRef = asset.GetAssetReference();
 
             env.AdministrationShells.Add(aas);
