@@ -16,11 +16,10 @@ namespace AasxPluginVec
 
     public class SubassemblyUtils
     {
-        public const string ID_SHORT_LS_BOM_SM = "LS_BOM";
-        public const string ID_SHORT_COMPONENTS_SM = "LS_BOM_Components";
-        public const string ID_SHORT_ORDERABLE_MODULES_SM = "LS_BOM_Modules";
-        public const string ID_SHORT_BUILDING_BLOCKS_SM = "LS_BOM_BuildingBlocks";
-        public const string ID_SHORT_ORDERED_MODULES_SM = "LS_BOM_OrderedModules";
+        public const string ID_SHORT_COMPONENTS_SM = "LS_Product_BOM";
+        public const string ID_SHORT_ORDERABLE_MODULES_SM = "LS_OrderableModules_BOM";
+        public const string ID_SHORT_BUILDING_BLOCKS_SM = "LS_Manufacturing_BOM";
+        public const string ID_SHORT_ORDERED_MODULES_SM = "LS_OrderedModules_BOM";
 
         public static Submodel CreateBuildingBlocksSubmodel(string iriTemplate, Submodel associatedBomSubmodel, AdministrationShell aas, AdministrationShellEnv env)
         {
