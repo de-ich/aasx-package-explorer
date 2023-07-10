@@ -209,11 +209,11 @@ namespace AasxPluginVec
             {
                 var moduleEntity = CreateModuleEntity(mainEntity, spec);
                 
-                foreach (var id in FindIdsOfContainedParts(spec))
+                /*foreach (var id in FindIdsOfContainedParts(spec))
                 {
                     var componentEntity = this.ComponentEntitiesById[id];
                     CreateHasPartRelationship(moduleEntity, componentEntity);
-                }
+                }*/
             }
         }
 

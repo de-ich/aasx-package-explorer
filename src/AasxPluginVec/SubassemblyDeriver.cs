@@ -172,7 +172,7 @@ namespace AasxPluginVec
             // the AAS for the new sub-assembly
             this.subassemblyAas = CreateAAS(this.subassemblyAASName, this.subassemblyAASName + "_Asset", options.TemplateIdAas, options.TemplateIdAsset, env);
 
-            newBomSubmodel = CreateBomSubmodel(ID_SHORT_LS_BOM_SM, options.TemplateIdSubmodel, aas: subassemblyAas, env: env);
+            newBomSubmodel = CreateBomSubmodel(ID_SHORT_COMPONENTS_SM, options.TemplateIdSubmodel, aas: subassemblyAas, env: env);
             var mainEntityInNewBomSubmodel = FindEntryNode(newBomSubmodel);
             // FIXME probably, we should not just copy the whole existing VEC file but extract the relevant parts only into a new file
             newVecSubmodel = InitializeVecSubmodel(subassemblyAas, env, existingVecFileSME);

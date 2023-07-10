@@ -91,17 +91,17 @@ namespace AasxPluginVec
 
         public static RelationshipElement AssociateSubassemblyWithModule(Entity subassembly, Entity orderableModule)
         {
-            return CreateHasPartRelationship(orderableModule, subassembly, "Production_Requires_" + subassembly.idShort);
+            return CreateHasPartRelationship(orderableModule, subassembly);
         }
 
         public static bool HasAssociatedSubassemblies(Entity orderableModule)
         {
-            return GetHasPartRelationships(orderableModule).Any(r => r.idShort.StartsWith("Production_Requires_"));
+            return GetHasPartRelationships(orderableModule).Count() > 0;
         }
 
         public static List<Entity> FindAssociatedSubassemblies(Entity orderableModule, AdministrationShellEnv env)
         {
-            var relationshipsToAssociatedSubassemblies = GetHasPartRelationships(orderableModule).Where(r => r.idShort.StartsWith("Production_Requires_"));
+            var relationshipsToAssociatedSubassemblies = GetHasPartRelationships(orderableModule);
             return relationshipsToAssociatedSubassemblies.Select(r => env.FindReferableByReference(r.second) as Entity).ToList();
         }
     }
