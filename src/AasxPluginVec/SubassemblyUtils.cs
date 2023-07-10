@@ -75,7 +75,7 @@ namespace AasxPluginVec
             return hasPartRelationships.Count > 0;
         }
 
-        public static bool RepresentsBasciComponent(Entity entity)
+        public static bool RepresentsBasicComponent(Entity entity)
         {
             var parentSubmodel = entity.FindParentFirstIdentifiable();
             var sameAsRelationships = GetSameAsRelationships(entity);

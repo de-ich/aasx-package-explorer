@@ -86,9 +86,9 @@ namespace AasxPluginVec
             // make sure all parents are set for all potential submodels involved in this action
             allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
 
-            if (!subassembliesToAssociate.All(e => RepresentsSubAssembly(e) || RepresentsBasciComponent(e)))
+            if (!subassembliesToAssociate.All(RepresentsSubAssembly))
             {
-                log?.Error("It seems that entities were selected that do not represent a subassembly or a basic part/component. This is currently supported!");
+                log?.Error("It seems that entities were selected that do not represent a subassembly. This is not supported!");
                 return;
             }
 
