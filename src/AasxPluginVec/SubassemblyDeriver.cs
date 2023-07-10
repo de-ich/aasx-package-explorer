@@ -81,6 +81,7 @@ namespace AasxPluginVec
             this.existingComponentBomSubmodel = null;
             this.existingBuildingBlocksBomSubmodel = null;
             this.newBomSubmodel = null;
+            this.newMBomSubmodel = null;
             this.newVecSubmodel = null;
             this.newVecFileSME = null;
             this.subassemblyAas = null;
@@ -97,6 +98,7 @@ namespace AasxPluginVec
         protected Submodel existingComponentBomSubmodel;
         protected Submodel existingBuildingBlocksBomSubmodel;
         protected Submodel newBomSubmodel;
+        protected Submodel newMBomSubmodel;
         protected AdministrationShell subassemblyAas;
         protected VecOptions options;
         protected LogInstance log;
@@ -172,11 +174,12 @@ namespace AasxPluginVec
             // the AAS for the new sub-assembly
             this.subassemblyAas = CreateAAS(this.subassemblyAASName, this.subassemblyAASName + "_Asset", options.TemplateIdAas, options.TemplateIdAsset, env);
 
-            newBomSubmodel = CreateBomSubmodel(ID_SHORT_COMPONENTS_SM, options.TemplateIdSubmodel, aas: subassemblyAas, env: env);
-            var mainEntityInNewBomSubmodel = FindEntryNode(newBomSubmodel);
             // FIXME probably, we should not just copy the whole existing VEC file but extract the relevant parts only into a new file
             newVecSubmodel = InitializeVecSubmodel(subassemblyAas, env, existingVecFileSME);
             newVecFileSME = newVecSubmodel.FindSubmodelElementWrapper(VEC_FILE_ID_SHORT)?.submodelElement as AdminShellV20.File;
+
+            newBomSubmodel = CreateBomSubmodel(ID_SHORT_COMPONENTS_SM, options.TemplateIdSubmodel, aas: subassemblyAas, env: env);
+            newMBomSubmodel = CreateBomSubmodel(ID_SHORT_BUILDING_BLOCKS_SM, options.TemplateIdSubmodel, aas: subassemblyAas, env: env);
 
             // the entity representing the sub-assembly in the building blocks SM of the original AAS (the harness AAS)
             var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, buildingBlocksSubmodelEntryNode, subassemblyAas.assetRef);
@@ -184,8 +187,7 @@ namespace AasxPluginVec
 
             foreach (var partEntityInOriginalAAS in entitiesToBeMadeSubassembly)
             {
-                var idShort = this.partNames[partEntityInOriginalAAS.idShort];
-                var partEntityInNewAAS = CreatePartEntitiesInNewSubmodelRecursively(partEntityInOriginalAAS, mainEntityInNewBomSubmodel, mainEntityInNewBomSubmodel, idShort);
+                var partEntityInNewAAS = CreateRelatedEntitiesInNewAdminShell(partEntityInOriginalAAS);
 
                 if (RepresentsSubAssembly(partEntityInOriginalAAS))
                 {
@@ -212,22 +214,16 @@ namespace AasxPluginVec
                 } else
                 { 
                     CreateHasPartRelationship(subassemblyEntityInOriginalAAS, partEntityInOriginalAAS);
-                    CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.idShort + "_SameAs_" + idShort);
+                    var sameAsRelName = partEntityInOriginalAAS.idShort + "_SameAs_" + this.partNames[partEntityInOriginalAAS.idShort];
+                    CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, sameAsRelName);
                 }
             }
         }        
 
-        protected Entity CreatePartEntitiesInNewSubmodelRecursively(Entity partEntityInOriginalAAS, Entity subassemblyEntityInNewAAS, Entity parent, string idShort = null)
+        protected Entity CreateRelatedEntitiesInNewAdminShell(Entity partEntityInOriginalAAS)
         {
-            var partEntityInNewAAS = CreatePartEntity(parent, partEntityInOriginalAAS, idShort);
-
-            var vecRelationship = GetVecRelationship(partEntityInOriginalAAS);
-            if (vecRelationship != null)
-            {
-                var xpathToVecElement = vecRelationship.second.Keys.Last().value;
-                CreateVecRelationship(partEntityInNewAAS, xpathToVecElement, newVecFileSME);
-
-            }
+            var idShort = this.partNames[partEntityInOriginalAAS.idShort];
+            var entityInNewMBomSubmodel = CreatePartEntity(FindEntryNode(newMBomSubmodel), partEntityInOriginalAAS, idShort);
 
             if (RepresentsSubAssembly(partEntityInOriginalAAS))
             {
@@ -255,14 +251,31 @@ namespace AasxPluginVec
 
                     var sameAsRelationship = sameAsRelationships.Find(sameAsRel => sameAsRel.first.Matches(rel.second));
                     var subPartIdShort = sameAsRelationship.second.Keys.Last().value;
-                    var subPartEntityInNewSubmodel = CreatePartEntitiesInNewSubmodelRecursively(subPartEntityInOriginalAAS, subassemblyEntityInNewAAS, parent, subPartIdShort);
+                    var subPartEntityInNewSubmodel = CreatePartEntity(FindEntryNode(newBomSubmodel), subPartEntityInOriginalAAS, subPartIdShort);
+                    CopyVecRelationship(subPartEntityInOriginalAAS, subPartEntityInNewSubmodel);
 
-                    CreateHasPartRelationship(partEntityInNewAAS, subPartEntityInNewSubmodel);
-                    CreateSameAsRelationship(GetReference(subPartEntityInNewSubmodel), new Reference(sameAsRelationship.second), partEntityInNewAAS, subPartEntityInNewSubmodel.idShort + "_SameAs_" + sameAsRelationship.second.Keys.Last().value);
+                    CreateHasPartRelationship(entityInNewMBomSubmodel, subPartEntityInNewSubmodel);
+                    CreateSameAsRelationship(GetReference(subPartEntityInNewSubmodel), new Reference(sameAsRelationship.second), entityInNewMBomSubmodel, subPartEntityInNewSubmodel.idShort + "_SameAs_" + sameAsRelationship.second.Keys.Last().value);
                 }
+            } else
+            {
+                var entityInNewBomSubmodel = CreatePartEntity(FindEntryNode(newBomSubmodel), partEntityInOriginalAAS, idShort);
+                CopyVecRelationship(partEntityInOriginalAAS, entityInNewBomSubmodel);
+                CreateHasPartRelationship(entityInNewMBomSubmodel, entityInNewBomSubmodel);
             }
 
-            return partEntityInNewAAS;
+            return entityInNewMBomSubmodel;
+        }
+
+        private void CopyVecRelationship(Entity partEntityInOriginalAAS, Entity partEntityInNewAAS)
+        {
+            var vecRelationship = GetVecRelationship(partEntityInOriginalAAS);
+            if (vecRelationship != null)
+            {
+                var xpathToVecElement = vecRelationship.second.Keys.Last().value;
+                var vecFileElement = GetVecFileElement(newVecSubmodel);
+                CreateVecRelationship(partEntityInNewAAS, xpathToVecElement, vecFileElement);
+            }
         }
 
         protected Entity CreatePartEntity(Entity mainEntity, Entity sourceEntity, string idShort = null)

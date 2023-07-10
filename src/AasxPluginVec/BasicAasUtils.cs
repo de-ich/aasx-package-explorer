@@ -12,15 +12,14 @@ namespace AasxPluginVec
     public class BasicAasUtils
     {
         private static Random MyRnd = new Random();
-        private static string lastGeneratedId = null;
 
         // The version of 'GenerateIdAccordingTemplate' from 'AdminShellUtil' does not ensure unique IDs when
         // being called multiple times in rapid succession (more than two times in one ten thousandths of a second).
-        // Hence, we dupliate and adapt this method to use random numbers instead of times as base for id generation.
+        // Hence, we dupliate and adapt this method to use a random time insstead of 'UTCNow' as base for id generation.
         public static string GenerateIdAccordingTemplate(string tpl)
         {
              // generate a deterministic decimal digit string
-             var decimals = String.Format("{0:fffffffyyMMddHHmmss}", DateTime.UtcNow);
+             var decimals = String.Format("{0:fffffffyyMMddHHmmss}", new DateTime(MyRnd.Next(Int32.MaxValue)));
              decimals = new string(decimals.Reverse().ToArray());
              // convert this to an int
              if (!Int64.TryParse(decimals, out Int64 decii))
@@ -71,17 +70,6 @@ namespace AasxPluginVec
                 else
                     id += tpli;
             }
-
-            // added code
-            if (id == lastGeneratedId)
-            {
-                var lastChar = id.ToArray().Last();
-                int last = 0;
-                Int32.TryParse(lastChar.ToString(), out last);
-                last = (last + 1) % 10; // change the existing id
-                id = id.Substring(0, id.Length - 1) + last;
-            }
-            lastGeneratedId = id;
 
             // ok
             return id;
