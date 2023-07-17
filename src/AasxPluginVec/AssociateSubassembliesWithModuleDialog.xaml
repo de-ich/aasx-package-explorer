@@ -1,0 +1,29 @@
+﻿<Window x:Class="AasxIntegrationBase.AssociateSubassembliesWithModuleDialog"
+             x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             MinWidth="300" SizeToContent="WidthAndHeight" Title="Select Module"
+             WindowStartupLocation="CenterOwner" d:DesignWidth="491.806">
+
+    <DockPanel Margin="5" LastChildFill="False">
+        <Grid DockPanel.Dock="Top" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="1" Grid.Column="0" x:Name="LabelModuleName"
+                   Content="Module to Associate with Selected Subassemblies:" Margin="0,0,0,0" VerticalAlignment="Center" Height="26" Grid.RowSpan="1"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ModulesToSelect}" Text="" SelectionChanged="ComboBox_SelectionChanged"/>
+        </Grid>
+        <WrapPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Cancel" HorizontalAlignment="Right" Padding="5,0" MinWidth="75" IsCancel="True" Margin="5"/>
+            <Button Content="OK" HorizontalAlignment="Right" MinWidth="75" IsDefault="True" Margin="5" Click="ButtonOk_Click"/>
+        </WrapPanel>
+    </DockPanel>
+</Window>
