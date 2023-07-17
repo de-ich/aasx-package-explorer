@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AdminShellNS;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using System.Xml.Linq;
 
 namespace AasxPluginVec
@@ -75,90 +76,43 @@ namespace AasxPluginVec
             return id;
         }
 
-        /**
-         * An adapted version of 'GetReference' from 'AdminShell.cs'. This version does not include
-         * the id of the containing AAS in the reference keys because this leads to errors with
-         * the 'jump' function in the package explorer
-         */
-        public static Reference GetReference(SubmodelElement element, bool includeParents = true)
+        public static AssetAdministrationShell CreateAAS(string aasIdShort, string aasIriTemplate, string assetIriTemplate, AasCore.Aas3_0.Environment env, AssetKind assetKind = AssetKind.Instance)
         {
-            Reference r = new Reference();
-            // this is the tail of our referencing chain ..
-            r.Keys.Add(Key.CreateNew(element.GetElementName(), true, "IdShort", element.idShort));
-            // try to climb up ..
-            var current = element.parent;
-            while (includeParents && current != null)
-            {
-                if (current is Identifiable cid)
-                {
-                    // add big information set
-                    r.Keys.Insert(0, Key.CreateNew(
-                        current.GetElementName(),
-                        true,
-                        cid.identification.idType,
-                        cid.identification.id));
-                    break; // changed from the official version
-                }
-                else
-                if (current is Referable crf)
-                {
-                    // reference via idShort
-                    r.Keys.Insert(0, Key.CreateNew(
-                        current.GetElementName(),
-                        true,
-                        "IdShort", crf.idShort));
-                }
+            var assetInformation = new AssetInformation(assetKind, GenerateIdAccordingTemplate(assetIriTemplate));
 
-                if (current is Referable crf2)
-                    current = crf2.parent;
-                else
-                    current = null;
-            }
-            return r;
-        }
-
-        public static AdministrationShell CreateAAS(string aasIdShort, string assetIdShort, string aasIriTemplate, string assetIriTemplate, AdministrationShellEnv env, string assetKind = "Instance")
-        {
-            var aas = new AdministrationShell();
-            aas.idShort = aasIdShort;
-            aas.identification = new Identification(new Key("AssetAdministrationShell", false, "IRI", GenerateIdAccordingTemplate(aasIriTemplate)));
-
-            var asset = new Asset();
-            asset.idShort = assetIdShort;
-            asset.identification = new Identification(new Key("Asset", false, "IRI", GenerateIdAccordingTemplate(assetIriTemplate)));
-            asset.kind = new AssetKind(assetKind);
-            aas.assetRef = asset.GetAssetReference();
-
-            env.AdministrationShells.Add(aas);
-            env.Assets.Add(asset);
+            var aas = new AssetAdministrationShell(
+                GenerateIdAccordingTemplate(aasIriTemplate),
+                assetInformation,
+                idShort: aasIdShort);
+            
+            env.AssetAdministrationShells.Add(aas);
 
             return aas;
         }
 
-        public static T FindReferencedElementInSubmodel<T>(Submodel submodel, Reference elementReference) where T : SubmodelElement
+        public static T FindReferencedElementInSubmodel<T>(ISubmodel submodel, IReference elementReference) where T : ISubmodelElement
         {
-            if (submodel == null || submodel.ToKey() == null || elementReference == null || elementReference.Keys == null || elementReference.Keys.IsEmpty)
+            if (submodel == null || submodel.ToKey() == null || elementReference == null || elementReference.Keys == null || elementReference.Keys.IsEmpty())
             {
-                return null;
+                return default(T);
             }
 
             if (!submodel.ToKey().Matches(elementReference.Keys.First())) {
-                return null;
+                return default(T);
             }
 
-            return submodel.FindDeep<T>(e => GetReference(e).Matches(elementReference)).FirstOrDefault();
+            return submodel.SubmodelElements.FindDeep<T>(e => e.GetReference().Matches(elementReference)).FirstOrDefault();
         }
 
-        public static Submodel CreateSubmodel(string idShort, string iriTemplate, string semanticId = null, AdministrationShell aas = null, AdministrationShellEnv env = null)
+        public static Submodel CreateSubmodel(string idShort, string iriTemplate, string semanticId = null, IAssetAdministrationShell aas = null, AasCore.Aas3_0.Environment env = null)
         {
             var iri = GenerateIdAccordingTemplate(iriTemplate);
 
-            var submodel = new Submodel();
-            submodel.SetIdentification(Identification.IRI, iri, idShort);
+            var submodel = new Submodel(iri, idShort: idShort);
 
             if (semanticId != null)
             {
-                submodel.semanticId = new SemanticId(new Key("Submodel", false, "IRI", semanticId));
+                submodel.SemanticId = CreateSemanticId(KeyTypes.Submodel, semanticId);
             }
 
             if (env != null)
@@ -168,25 +122,30 @@ namespace AasxPluginVec
 
             if (aas != null)
             {
-                aas.AddSubmodelRef(submodel.GetSubmodelRef());
+                aas.AddSubmodelReference(submodel.GetReference());
             }
 
             return submodel;
         }
 
-        public static IEnumerable<Submodel> FindAllSubmodels(AdministrationShell aas, AdministrationShellEnv env)
+        public static IReference CreateSemanticId(KeyTypes keyType, string value)
         {
-            var submodelRefs = aas?.submodelRefs ?? new List<SubmodelRef>();
+            return new Reference(ReferenceTypes.ExternalReference, new List<IKey> { new Key(keyType, value) });
+        }
+
+        public static IEnumerable<ISubmodel> FindAllSubmodels(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        {
+            var submodelRefs = aas?.Submodels ?? new List<IReference>();
             var submodels = submodelRefs.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
             return submodels;
         }
 
-        public static HashSet<Submodel> FindCommonSubmodelParents(IEnumerable<SubmodelElement> elements)
+        public static HashSet<Submodel> FindCommonSubmodelParents(IEnumerable<ISubmodelElement> elements)
         {
             return elements.Select(e => e.FindParentFirstIdentifiable() as Submodel).ToHashSet();
         }
 
-        public static Submodel FindCommonSubmodelParent(IEnumerable<SubmodelElement> elements)
+        public static Submodel FindCommonSubmodelParent(IEnumerable<ISubmodelElement> elements)
         {
             var submodel = elements.First().FindParentFirstIdentifiable() as Submodel;
             submodel.SetAllParents();

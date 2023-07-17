@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AdminShellNS;
-using static AdminShellNS.AdminShellV20;
 using static AasxPluginVec.BomSMUtils;
 using System.Xml.Linq;
+using AasCore.Aas3_0;
+using Extensions;
+using static AasxPluginVec.BasicAasUtils;
 
 namespace AasxPluginVec
 {
@@ -26,10 +28,7 @@ namespace AasxPluginVec
             packageEnv.AddSupplementaryFileToStore(pathToVecFile, localFilePath, false);
 
             // create the VEC file submodel element
-            var file = new File();
-            file.idShort = VEC_FILE_ID_SHORT;
-            file.mimeType = "text/xml";
-            file.value = localFilePath;
+            var file = new File("text/xml", idShort: VEC_FILE_ID_SHORT, value: localFilePath);
 
             // create the VEC submodel
             var vecSubmodel = CreateVecSubmodel(iri, file);
@@ -40,54 +39,55 @@ namespace AasxPluginVec
         public static Submodel CreateVecSubmodel(string iri, File vecFile)
         {
             // create the VEC submodel
-            var vecSubmodel = new Submodel();
-            vecSubmodel.SetIdentification(Identification.IRI, iri, VEC_SUBMODEL_ID_SHORT);
-            vecSubmodel.semanticId = new SemanticId(new Key("Submodel", true, "IRI", SEM_ID_VEC_SUBMODEL));
+            var vecSubmodel = new Submodel(iri, idShort: VEC_SUBMODEL_ID_SHORT)
+            {
+                SemanticId = CreateSemanticId(KeyTypes.Submodel, SEM_ID_VEC_SUBMODEL)
+            };
 
             // create the VEC file submodel element
-            var file = new File(vecFile);
-            file.semanticId = new SemanticId(new Key("Submodel", true, "IRI", SEM_ID_VEC_FILE_REFERENCE));
-            vecSubmodel.AddChild(new SubmodelElementWrapper(file));
+            var file = new File(vecFile.ContentType, value: vecFile.Value, idShort: vecFile.IdShort);
+            file.SemanticId = CreateSemanticId(KeyTypes.Submodel, SEM_ID_VEC_FILE_REFERENCE);
+            vecSubmodel.Add(file);
 
             return vecSubmodel;
         }
 
         public static File GetVecFileElement(Submodel submodel)
         {
-            return submodel?.FindSubmodelElementWrapper(VEC_FILE_ID_SHORT)?.submodelElement as File;
+            return submodel?.FindFirstIdShortAs<File>(VEC_FILE_ID_SHORT);
         }
 
         public static RelationshipElement CreateVecRelationship(Entity source, string xpathToVecElement, File vecFileSubmodelElement)
         {
 
             var idShort = VEC_REFERENCE_ID_SHORT;
-            var semanticId = new SemanticId(new Key("ConceptDescription", false, "IRI", SEM_ID_VEC_FRAGMENT_REFERENCE));
+            var semanticId = CreateSemanticId(KeyTypes.ConceptDescription, SEM_ID_VEC_FRAGMENT_REFERENCE);
 
             var second = vecFileSubmodelElement.GetReference();
-            second.Keys.Add(new Key("FragmentReference", true, "FragmentId", xpathToVecElement));
+            second.Keys.Add(new Key(KeyTypes.FragmentReference, xpathToVecElement));
 
             return CreateRelationship(source.GetReference(), second, source, idShort, semanticId);
         }
 
         public static RelationshipElement GetVecRelationship(Entity entity)
         {
-            var rel = entity?.FindSubmodelElementWrapper(VEC_REFERENCE_ID_SHORT)?.submodelElement as RelationshipElement;
+            var rel = entity?.FindFirstIdShortAs<RelationshipElement>(VEC_REFERENCE_ID_SHORT);
 
             return IsVecRelationship(rel) ? rel : null;
         }
 
         public static bool IsVecRelationship(RelationshipElement rel)
         {
-            return rel?.idShort == VEC_REFERENCE_ID_SHORT && rel?.semanticId?.Last?.value == SEM_ID_VEC_FRAGMENT_REFERENCE;
+            return rel?.IdShort == VEC_REFERENCE_ID_SHORT && rel?.SemanticId?.Last()?.Value == SEM_ID_VEC_FRAGMENT_REFERENCE;
         }
 
-        public static AdminShellV20.File FindReferencedVecFileSME(Entity entityWithVecRelationship, AdministrationShellEnv env)
+        public static File FindReferencedVecFileSME(Entity entityWithVecRelationship, AasCore.Aas3_0.Environment env)
         {
             var entryNodeVecRelationship = GetVecRelationship(entityWithVecRelationship);
-            var fragmentReferenceKeys = entryNodeVecRelationship?.second?.Keys;
+            var fragmentReferenceKeys = entryNodeVecRelationship?.Second?.Keys;
             var keysToVecFile = fragmentReferenceKeys?.Take(fragmentReferenceKeys.ToList().Count - 1);
-            var referenceToVecFile = Reference.CreateNew(keysToVecFile?.ToList() ?? new List<Key>());
-            return env.FindReferableByReference(referenceToVecFile) as AdminShellV20.File;
+            var referenceToVecFile = new Reference(ReferenceTypes.ModelReference, keysToVecFile?.ToList() ?? new List<IKey>());
+            return env.FindReferableByReference(referenceToVecFile) as File;
         }
     }
 }

@@ -14,7 +14,8 @@ using System.Linq;
 using System.Xml.Linq;
 using AasxIntegrationBase;
 using AdminShellNS;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.BasicAasUtils;
@@ -33,10 +34,10 @@ namespace AasxPluginVec
         //
 
         public static void ReuseSubassembly(
-            AdministrationShellEnv env,
-            AdministrationShell aas,
+            AasCore.Aas3_0.Environment env,
+            AssetAdministrationShell aas,
             IEnumerable<Entity> entities,
-            AdministrationShell aasToReuse,
+            IAssetAdministrationShell aasToReuse,
             string subassemblyEntityName,
             Dictionary<string, string> partNames,
             VecOptions options,
@@ -59,10 +60,10 @@ namespace AasxPluginVec
         //
 
         protected SubassemblyReuser(
-            AdministrationShellEnv env,
-            AdministrationShell aas,
+            AasCore.Aas3_0.Environment env,
+            AssetAdministrationShell aas,
             IEnumerable<Entity> entities,
-            AdministrationShell aasToReuse,
+            IAssetAdministrationShell aasToReuse,
             string subassemblyEntityName,
             Dictionary<string, string> partNames,
             VecOptions options,
@@ -85,17 +86,17 @@ namespace AasxPluginVec
             this.subassemblyAas = null;
         }
 
-        protected AdministrationShellEnv env;
-        protected AdministrationShell aas;
+        protected AasCore.Aas3_0.Environment env;
+        protected AssetAdministrationShell aas;
         protected IEnumerable<Entity> entitiesToBeMadeSubassembly;
-        protected AdministrationShell aasToReuse;
+        protected IAssetAdministrationShell aasToReuse;
         protected string subassemblyEntityName;
         protected Dictionary<string, string> partNames;
         protected Submodel newVecSubmodel;
-        protected AdminShellV20.File newVecFileSME;
+        protected AasCore.Aas3_0.File newVecFileSME;
         protected Submodel existingBomSubmodel;
         protected Submodel newBomSubmodel;
-        protected AdministrationShell subassemblyAas;
+        protected AssetAdministrationShell subassemblyAas;
         protected VecOptions options;
         protected LogInstance log;
 
@@ -132,17 +133,17 @@ namespace AasxPluginVec
             var buildingBlocksSubmodelEntryNode = FindEntryNode(existingBuildingBlocksBomSubmodel);
 
             // the entity representing the sub-assembly in the BOM SM of the original AAS (the harness AAS)
-            var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, buildingBlocksSubmodelEntryNode, aasToReuse.assetRef);
+            var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, buildingBlocksSubmodelEntryNode, aasToReuse.AssetInformation.GlobalAssetId);
             CreateHasPartRelationship(buildingBlocksSubmodelEntryNode, subassemblyEntityInOriginalAAS);
 
             foreach (var partEntityInOriginalAAS in entitiesToBeMadeSubassembly)
             {
                 CreateHasPartRelationship(subassemblyEntityInOriginalAAS, partEntityInOriginalAAS);
 
-                var idShort = this.partNames[partEntityInOriginalAAS.idShort];
-                var partEntityInNewAAS = atomicComponentEntitiesInSubAssemblyAAS.First(e => e.idShort == idShort);
+                var idShort = this.partNames[partEntityInOriginalAAS.IdShort];
+                var partEntityInNewAAS = atomicComponentEntitiesInSubAssemblyAAS.First(e => e.IdShort == idShort);
 
-                CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.idShort + "_SameAs_" + idShort);
+                CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.IdShort + "_SameAs_" + idShort);
             }
         }    
     }

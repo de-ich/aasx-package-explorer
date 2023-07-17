@@ -11,34 +11,31 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using AasxPluginVec;
-using AdminShellNS;
 using JetBrains.Annotations;
 using System.Linq;
 using System.Windows.Controls;
+using AasCore.Aas3_0;
+using AasxIntegrationBase;
+using Extensions;
+using AdminShellNS;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
     [UsedImplicitlyAttribute]
     // the class names has to be: AasxPlugin and subclassing IAasxPluginInterface
-    public class AasxPlugin : IAasxPluginInterface
+    public class AasxPlugin : AasxPluginBase
     {
-        public LogInstance Log = new LogInstance();
-        private PluginEventStack _eventStack = new PluginEventStack();
-        private VecOptions options = new VecOptions();
+        private VecOptions _options = new VecOptions();
         private VecTreeView treeView = new VecTreeView();
-
-        public string GetPluginName()
-        {
-            return "AasxPluginVec";
-        }
 
         public void InitPlugin(string[] args)
         {
             // start ..
-            Log.Info("InitPlugin() called with args = {0}", (args == null) ? "" : string.Join(", ", args));
+            PluginName = "AasxPluginVec";
+            _log.Info("InitPlugin() called with args = {0}", (args == null) ? "" : string.Join(", ", args));
 
             // .. with built-in options
-            options = VecOptions.CreateDefault();
+            _options = VecOptions.CreateDefault();
 
             // try load defaults options from assy directory
             try
@@ -47,22 +44,17 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     AasxPluginOptionsBase.LoadDefaultOptionsFromAssemblyDir<VecOptions>(
                         this.GetPluginName(), Assembly.GetExecutingAssembly());
                 if (newOpt != null)
-                    this.options = newOpt;
+                    this._options = newOpt;
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Exception when reading default options {1}");
+                _log.Error(ex, "Exception when reading default options {1}");
             }
-        }
-
-        public object CheckForLogMessage()
-        {
-            return Log.PopLastShortTermPrint();
         }
 
         public AasxPluginActionDescriptionBase[] ListActions()
         {
-            Log.Info("ListActions() called");
+            _log.Info("ListActions() called");
             var res = new List<AasxPluginActionDescriptionBase>();
             res.Add(
                 new AasxPluginActionDescriptionBase(
@@ -109,12 +101,12 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     return null;
 
                 // looking only for Submodels
-                var sm = args[0] as AdminShell.Submodel;
+                var sm = args[0] as Submodel;
                 if (sm == null)
                     return null;
 
                 // check for a record in options, that matches Submodel
-                var isVecSubmodel = sm.semanticId?.Matches("Submodel", true, "IRI", VecSMUtils.SEM_ID_VEC_SUBMODEL) ?? false;
+                var isVecSubmodel = sm.SemanticId?.Matches(KeyTypes.Submodel, VecSMUtils.SEM_ID_VEC_SUBMODEL) ?? false;
 
                 if (!isVecSubmodel)
                     return null;
@@ -132,13 +124,13 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 var newOpt = Newtonsoft.Json.JsonConvert.DeserializeObject<AasxPluginVec.VecOptions>(
                     (args[0] as string));
                 if (newOpt != null)
-                    this.options = newOpt;
+                    this._options = newOpt;
             }
 
             if (action == "get-json-options")
             {
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(
-                    this.options, Newtonsoft.Json.Formatting.Indented);
+                    this._options, Newtonsoft.Json.Formatting.Indented);
                 return new AasxPluginResultBaseObject("OK", json);
             }
 
@@ -168,8 +160,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 && args != null && args.Length >= 3
                 && args[0] is IFlyoutProvider 
                 && args[1] is AdminShellPackageEnv
-                && args[2] is AdminShell.AdministrationShellEnv
-                && args[3] is AdminShellV20.AdministrationShell)
+                && args[2] is AasCore.Aas3_0.Environment
+                && args[3] is AasCore.Aas3_0.AssetAdministrationShell)
             {
                 var fn = (args.Length >= 5) ? args[4] as string : null;
 
@@ -178,8 +170,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
                 // which Submodel
                 var packageEnv = args[1] as AdminShellPackageEnv;
-                var env = args[2] as AdminShell.AdministrationShellEnv;
-                var aas = args[3] as AdminShellV20.AdministrationShell;
+                var env = args[2] as AasCore.Aas3_0.Environment;
+                var aas = args[3] as AasCore.Aas3_0.AssetAdministrationShell;
                 if (packageEnv == null || env == null || aas == null)
                     return null;
 
@@ -206,8 +198,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 fn = dlg.FileName;
 
                 // use functionality
-                Log.Info($"Importing VEC container from file: {fn} ..");
-                VecImporter.ImportVecFromFile(packageEnv, env, aas, fn, options, Log);
+                _log.Info($"Importing VEC container from file: {fn} ..");
+                VecImporter.ImportVecFromFile(packageEnv, env, aas, fn, _options, _log);
             }
 
             if (action == "derive-subassembly" && args != null && args.Length >= 4)
@@ -215,9 +207,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 // flyout provider (will be required in the future)
                 var fop = args[0] as IFlyoutProvider;
 
-                var env = args[1] as AdminShellV20.AdministrationShellEnv;
-                var aas = args[2] as AdminShellV20.AdministrationShell;
-                var selectedEntities = (args[3] as IEnumerable<AdminShellV20.Entity>)?.ToList();
+                var env = args[1] as AasCore.Aas3_0.Environment;
+                var aas = args[2] as AasCore.Aas3_0.AssetAdministrationShell;
+                var selectedEntities = (args[3] as IEnumerable<AasCore.Aas3_0.Entity>)?.ToList();
 
                 if (fop == null || env == null || aas == null || selectedEntities == null)
                 {
@@ -237,9 +229,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 var subassemblyEntityName = dlg.SubassemblyEntityName;
                 var partNames = dlg.PartNames;
 
-                SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, subassemblyAASName, subassemblyEntityName, partNames, options, Log);
+                SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, subassemblyAASName, subassemblyEntityName, partNames, _options, _log);
 
-                Log.Info($"Deriving subassembly...");
+                _log.Info($"Deriving subassembly...");
             }
 
             if (action == "reuse-subassembly" && args != null && args.Length >= 4)
@@ -247,9 +239,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 // flyout provider (will be required in the future)
                 var fop = args[0] as IFlyoutProvider;
 
-                var env = args[1] as AdminShellV20.AdministrationShellEnv;
-                var aas = args[2] as AdminShellV20.AdministrationShell;
-                var selectedEntities = (args[3] as IEnumerable<AdminShellV20.Entity>)?.ToList();
+                var env = args[1] as AasCore.Aas3_0.Environment;
+                var aas = args[2] as AssetAdministrationShell;
+                var selectedEntities = (args[3] as IEnumerable<Entity>)?.ToList();
 
                 if (fop == null || env == null || aas == null || selectedEntities == null)
                 {
@@ -270,9 +262,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 var nameOfAasToReuse = dlg.AasToReuse;
                 var partNames = dlg.PartNames;
 
-                SubassemblyReuser.ReuseSubassembly(env, aas, selectedEntities, nameOfAasToReuse, subassemblyEntityName, partNames, options, Log);
+                SubassemblyReuser.ReuseSubassembly(env, aas, selectedEntities, nameOfAasToReuse, subassemblyEntityName, partNames, _options, _log);
 
-                Log.Info($"Reusing subassembly...");
+                _log.Info($"Reusing subassembly...");
             }
 
             if (action == "associate-subassemblies-with-module" && args != null && args.Length >= 4)
@@ -280,9 +272,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 // flyout provider (will be required in the future)
                 var fop = args[0] as IFlyoutProvider;
 
-                var env = args[1] as AdminShellV20.AdministrationShellEnv;
-                var aas = args[2] as AdminShellV20.AdministrationShell;
-                var selectedEntities = (args[3] as IEnumerable<AdminShellV20.Entity>)?.ToList();
+                var env = args[1] as AasCore.Aas3_0.Environment;
+                var aas = args[2] as AssetAdministrationShell;
+                var selectedEntities = (args[3] as IEnumerable<Entity>)?.ToList();
 
                 if (fop == null || env == null || aas == null || selectedEntities == null)
                 {
@@ -300,9 +292,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
                 var selectedModuleEntity = dlg.SelectedModule;
 
-                SubassemblyToModuleAssociator.AssociateSubassemblies(env, aas, selectedEntities, selectedModuleEntity, options, Log);
+                SubassemblyToModuleAssociator.AssociateSubassemblies(env, aas, selectedEntities, selectedModuleEntity, _options, _log);
 
-                Log.Info($"Associating module with subassembly...");
+                _log.Info($"Associating module with subassembly...");
             }
 
             if (action == "create-order" && args != null && args.Length >= 4)
@@ -310,9 +302,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 // flyout provider (will be required in the future)
                 var fop = args[0] as IFlyoutProvider;
 
-                var env = args[1] as AdminShellV20.AdministrationShellEnv;
-                var aas = args[2] as AdminShellV20.AdministrationShell;
-                var selectedModules = (args[3] as IEnumerable<AdminShellV20.Entity>)?.ToList();
+                var env = args[1] as AasCore.Aas3_0.Environment;
+                var aas = args[2] as AssetAdministrationShell;
+                var selectedModules = (args[3] as IEnumerable<Entity>)?.ToList();
 
                 if (fop == null || env == null || aas == null || selectedModules == null)
                 {
@@ -330,9 +322,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
                 var orderNumber = dlg.OrderNumber;
 
-                OrderCreator.CreateOrder(env, aas, selectedModules, orderNumber, options, Log);
+                OrderCreator.CreateOrder(env, aas, selectedModules, orderNumber, _options, _log);
 
-                Log.Info($"Creating order...");
+                _log.Info($"Creating order...");
             }
 
             if (action == "get-check-visual-extension")
@@ -350,7 +342,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     return null;
 
                 var env = args[0] as AdminShellPackageEnv;
-                var submodel = args[1] as AdminShellV20.Submodel;
+                var submodel = args[1] as Submodel;
                 var panel = args[2] as DockPanel;
 
                 object resobj = this.treeView.FillWithWpfControls(env, submodel, panel);

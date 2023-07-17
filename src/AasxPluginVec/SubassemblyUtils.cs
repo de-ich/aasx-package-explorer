@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AdminShellNS;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.BasicAasUtils;
@@ -21,9 +22,9 @@ namespace AasxPluginVec
         public const string ID_SHORT_BUILDING_BLOCKS_SM = "LS_Manufacturing_BOM";
         public const string ID_SHORT_ORDERED_MODULES_SM = "LS_OrderedModules_BOM";
 
-        public static Submodel CreateBuildingBlocksSubmodel(string iriTemplate, Submodel associatedBomSubmodel, AdministrationShell aas, AdministrationShellEnv env)
+        public static Submodel CreateBuildingBlocksSubmodel(string iriTemplate, ISubmodel associatedBomSubmodel, AssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
-            var vecReference = FindEntryNode(associatedBomSubmodel)?.FindSubmodelElementWrapper(VEC_REFERENCE_ID_SHORT)?.submodelElement as RelationshipElement;
+            var vecReference = FindEntryNode(associatedBomSubmodel)?.FindFirstIdShortAs< RelationshipElement>(VEC_REFERENCE_ID_SHORT);
             if (vecReference == null)
             {
                 throw new Exception("Unable to find VEC reference in existing components BOM submodel!");
@@ -31,39 +32,39 @@ namespace AasxPluginVec
             
             var idShort = ID_SHORT_BUILDING_BLOCKS_SM;
 
-            var counterMatches = Regex.Matches(associatedBomSubmodel.idShort, @"_(\d+)$");
+            var counterMatches = Regex.Matches(associatedBomSubmodel.IdShort, @"_(\d+)$");
             if (counterMatches.Count > 0)
             {
                 idShort = idShort + counterMatches[0].Value;
             }
             var buildingBlocksSubmodel = CreateBomSubmodel(idShort, iriTemplate, aas: aas, env: env);
             var entryNode = FindEntryNode(buildingBlocksSubmodel);
-            entryNode.AddChild(new SubmodelElementWrapper(vecReference));
+            entryNode.AddChild(vecReference);
 
             return buildingBlocksSubmodel;
         }
 
-        public static Submodel FindBuildingBlocksSubmodel(AdministrationShell aas, AdministrationShellEnv env)
+        public static ISubmodel FindBuildingBlocksSubmodel(AssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             return FindAllSubmodels(aas, env).FirstOrDefault(IsBuildingBlocksSubmodel);
         }
 
-        public static bool IsBuildingBlocksSubmodel(Submodel submodel)
+        public static bool IsBuildingBlocksSubmodel(ISubmodel submodel)
         {
             var entryNode = FindEntryNode(submodel);
-            var entities = entryNode?.EnumerateChildren().Select(c => c.submodelElement).Where(c => c is Entity).Select(c => c as Entity) ?? new List<Entity>();
+            var entities = entryNode?.EnumerateChildren().Where(c => c is Entity).Select(c => c as Entity) ?? new List<Entity>();
             return entities?.Any(RepresentsSubAssembly) ?? false;
         }
 
-        public static bool RepresentsSubAssembly(Entity entity)
+        public static bool RepresentsSubAssembly(IEntity entity)
         {
             var parentSubmodel = entity.FindParentFirstIdentifiable();
             var sameAsRelationships = GetSameAsRelationships(entity);
             var hasSameAsRelationshipToOtherEntityInDifferentBOM = sameAsRelationships.Any(r =>
             {
-                return r.first.Keys.Last().type == "Entity" && r.second.Keys.Last().type == "Entity" &&
-                    r.first.Keys.First().type == "Submodel" && r.second.Keys.First().type == "Submodel" &&
-                    !r.second.Keys.First().Matches(parentSubmodel.ToKey());
+                return r.First.Keys.Last().Type == KeyTypes.Entity && r.Second.Keys.Last().Type == KeyTypes.Entity &&
+                    r.First.Keys.First().Type == KeyTypes.Submodel && r.Second.Keys.First().Type == KeyTypes.Submodel &&
+                    !r.Second.Keys.First().Matches(parentSubmodel.ToKey());
             });
 
             if (!hasSameAsRelationshipToOtherEntityInDifferentBOM)
@@ -94,15 +95,15 @@ namespace AasxPluginVec
             return CreateHasPartRelationship(orderableModule, subassembly);
         }
 
-        public static bool HasAssociatedSubassemblies(Entity orderableModule)
+        public static bool HasAssociatedSubassemblies(IEntity orderableModule)
         {
             return GetHasPartRelationships(orderableModule).Count() > 0;
         }
 
-        public static List<Entity> FindAssociatedSubassemblies(Entity orderableModule, AdministrationShellEnv env)
+        public static List<Entity> FindAssociatedSubassemblies(IEntity orderableModule, AasCore.Aas3_0.Environment env)
         {
             var relationshipsToAssociatedSubassemblies = GetHasPartRelationships(orderableModule);
-            return relationshipsToAssociatedSubassemblies.Select(r => env.FindReferableByReference(r.second) as Entity).ToList();
+            return relationshipsToAssociatedSubassemblies.Select(r => env.FindReferableByReference(r.Second) as Entity).ToList();
         }
     }
 }

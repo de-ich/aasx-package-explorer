@@ -14,7 +14,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 
@@ -22,14 +23,14 @@ namespace AasxIntegrationBase
 {
     internal partial class AssociateSubassembliesWithModuleDialog : Window
     {
-        protected AdministrationShellEnv env;
-        protected AdministrationShell aas;
+        protected AasCore.Aas3_0.Environment env;
+        protected AssetAdministrationShell aas;
         protected IEnumerable<Entity> selectedEntities;
         public List<string> ModulesToSelect { get; } = new List<string>();
         protected Dictionary<string, Entity> modulesByName = new Dictionary<string, Entity>();
         public Entity SelectedModule { get; set; }
 
-        public AssociateSubassembliesWithModuleDialog(Window owner, IEnumerable<Entity> entities, AdministrationShell aas, AdministrationShellEnv env)
+        public AssociateSubassembliesWithModuleDialog(Window owner, IEnumerable<Entity> entities, AssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             this.env = env;
             this.aas = aas;
@@ -37,12 +38,12 @@ namespace AasxIntegrationBase
             this.Owner = owner;
             DataContext = this;
 
-            var moduleBomSubmodels = FindBomSubmodels(aas, env).Where(sm => FindEntryNode(sm)?.EnumerateChildren().Where(c => c.submodelElement is Entity).All(c => (c.submodelElement as Entity).entityType == Entity.EntityTypeNames[(int)Entity.EntityTypeEnum.CoManagedEntity]) ?? false);
-            var moduleEntitiesToSelect = moduleBomSubmodels.Select(sm => FindEntryNode(sm)).SelectMany(e => e.EnumerateChildren()).Where(c => c.submodelElement is Entity).Select(c => c.submodelElement as Entity);
+            var moduleBomSubmodels = FindBomSubmodels(aas, env).Where(sm => FindEntryNode(sm)?.EnumerateChildren().Where(c => c is Entity).All(c => (c as Entity).EntityType == EntityType.CoManagedEntity) ?? false);
+            var moduleEntitiesToSelect = moduleBomSubmodels.Select(sm => FindEntryNode(sm)).SelectMany(e => e.EnumerateChildren()).Where(c => c is Entity).Select(c => c as Entity);
             foreach(var moduleEntityToSelect in moduleEntitiesToSelect)
             {
-                modulesByName[moduleEntityToSelect.idShort] = moduleEntityToSelect;
-                ModulesToSelect.Add(moduleEntityToSelect.idShort);
+                modulesByName[moduleEntityToSelect.IdShort] = moduleEntityToSelect;
+                ModulesToSelect.Add(moduleEntityToSelect.IdShort);
             }
             InitializeComponent();
         }

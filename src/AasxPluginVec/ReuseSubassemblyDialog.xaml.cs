@@ -14,7 +14,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 
@@ -22,24 +23,23 @@ namespace AasxIntegrationBase
 {
     internal partial class ReuseSubassemblyNameDialog : Window
     {
-        protected AdministrationShellEnv env;
-        protected AdministrationShell aas;
+        protected AasCore.Aas3_0.Environment env;
         protected IEnumerable<Entity> selectedEntities;
-        protected IEnumerable<AdministrationShell> Shells;
+        protected IEnumerable<IAssetAdministrationShell> Shells;
         public string SubassemblyEntityName { get; set; } = string.Empty;
         public List<string> AdminShellsToSelect { get; } = new List<string>();
-        public AdministrationShell AasToReuse { get; set; }
+        public IAssetAdministrationShell AasToReuse { get; set; }
         public Dictionary<string, string> PartNames { get; } = new Dictionary<string, string>();
 
-        public ReuseSubassemblyNameDialog(Window owner, IEnumerable<Entity> entities, AdministrationShellEnv env)
+        public ReuseSubassemblyNameDialog(Window owner, IEnumerable<Entity> entities, AasCore.Aas3_0.Environment env)
         {
             this.env = env;
-            this.Shells = env.AdministrationShells;
+            this.Shells = env.AssetAdministrationShells;
             this.selectedEntities = entities;
             this.Owner = owner;
             DataContext = this;
-            SubassemblyEntityName = "Subassembly_" + string.Join("_", entities.Select(e => e.idShort));
-            AdminShellsToSelect.AddRange(this.Shells.Select(s => s.idShort));
+            SubassemblyEntityName = "Subassembly_" + string.Join("_", entities.Select(e => e.IdShort));
+            AdminShellsToSelect.AddRange(this.Shells.Select(s => s.IdShort));
             InitializeComponent();
 
             /*foreach(var entity in entities)
@@ -51,7 +51,7 @@ namespace AasxIntegrationBase
         protected void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs args)
         {
             var selectedAasName = (sender as ComboBox)?.SelectedItem.ToString();
-            this.AasToReuse = this.Shells.First(a => a.idShort == selectedAasName);
+            this.AasToReuse = this.Shells.First(a => a.IdShort == selectedAasName);
 
             SubAssemblyParts.RowDefinitions.Clear();
 
@@ -71,8 +71,8 @@ namespace AasxIntegrationBase
         private void AddComponentToMap(Entity entity)
         {
             AddRow();
-            CreateLabel(entity.idShort);
-            CreateComboBox(entity.idShort);
+            CreateLabel(entity.IdShort);
+            CreateComboBox(entity.IdShort);
         }
 
         private void AddRow() => SubAssemblyParts.RowDefinitions.Add(new RowDefinition());
@@ -85,7 +85,7 @@ namespace AasxIntegrationBase
 
         private ComboBox CreateComboBox(string text)
         {
-            var comboBox = new ComboBox { ItemsSource = this.selectedEntities.Select(e => e.idShort) };
+            var comboBox = new ComboBox { ItemsSource = this.selectedEntities.Select(e => e.IdShort) };
             comboBox.SelectionChanged += (sender, arguments) =>
             {
                 this.PartNames[(sender as ComboBox)?.SelectedItem.ToString()] = text;

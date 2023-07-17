@@ -14,7 +14,8 @@ using System.Linq;
 using System.Xml.Linq;
 using AasxIntegrationBase;
 using AdminShellNS;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.BasicAasUtils;
@@ -32,8 +33,8 @@ namespace AasxPluginVec
         //
 
         public static void CreateOrder(
-            AdministrationShellEnv env,
-            AdministrationShell aas,
+            AasCore.Aas3_0.Environment env,
+            AssetAdministrationShell aas,
             IEnumerable<Entity> selectedModules,
             string orderNumber,
             VecOptions options,
@@ -56,8 +57,8 @@ namespace AasxPluginVec
         //
 
         protected OrderCreator(
-            AdministrationShellEnv env,
-            AdministrationShell aas,
+            AasCore.Aas3_0.Environment env,
+            AssetAdministrationShell aas,
             IEnumerable<Entity> selectedModules,
             string orderNumber,
             VecOptions options,
@@ -76,11 +77,11 @@ namespace AasxPluginVec
             this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
-        protected AdministrationShellEnv env;
-        protected AdministrationShell aas;
+        protected AasCore.Aas3_0.Environment env;
+        protected AssetAdministrationShell aas;
         protected IEnumerable<Entity> selectedModules;
         protected string orderNumber;
-        protected AdministrationShell orderAas;
+        protected AssetAdministrationShell orderAas;
         protected Submodel orderedModulesSubmodel;
         protected Submodel orderBuildingBlocksSubmodel;
         protected VecOptions options;
@@ -114,9 +115,9 @@ namespace AasxPluginVec
                 return;
             }
 
-            var orderAasIdShort = aas.idShort + "_Order_" + orderNumber;
-            orderAas = CreateAAS(orderAasIdShort, orderAasIdShort + "_Asset", options.TemplateIdAas, options.TemplateIdAsset, env);
-            orderAas.derivedFrom = new AssetAdministrationShellRef(aas.GetReference());
+            var orderAasIdShort = aas.IdShort + "_Order_" + orderNumber;
+            orderAas = CreateAAS(orderAasIdShort, options.TemplateIdAas, options.TemplateIdAsset, env);
+            orderAas.DerivedFrom = aas.GetReference();
 
             orderedModulesSubmodel = CreateBomSubmodel(ID_SHORT_ORDERED_MODULES_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
             var orderedModuleEntryNode = FindEntryNode(orderedModulesSubmodel);
@@ -131,8 +132,8 @@ namespace AasxPluginVec
 
             foreach(var associatedSubassembly in associatedSubassemblies)
             {
-                var buildingBlockEntity = CreateEntity(associatedSubassembly.idShort, orderBuildingBlocksEntryNode, semanticId: associatedSubassembly.semanticId);
-                buildingBlockEntity.entityType = ASSET_TYPE_SELF_MANAGED_ENTITY; // set to 'self-managed' although we do not yet now the specific instance that will be used in production
+                var buildingBlockEntity = CreateEntity(associatedSubassembly.IdShort, orderBuildingBlocksEntryNode, semanticId: associatedSubassembly.SemanticId);
+                buildingBlockEntity.EntityType = EntityType.SelfManagedEntity; // set to 'self-managed' although we do not yet now the specific instance that will be used in production
 
                 CreateHasPartRelationship(orderBuildingBlocksEntryNode, buildingBlockEntity);
                 CreateSameAsRelationship(buildingBlockEntity, associatedSubassembly, buildingBlockEntity);

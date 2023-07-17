@@ -1,9 +1,10 @@
-﻿using System;
+﻿using AasCore.Aas3_0;
+using Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static AdminShellNS.AdminShellV20;
 using static AasxPluginVec.BasicAasUtils;
 
 namespace AasxPluginVec
@@ -16,73 +17,72 @@ namespace AasxPluginVec
         public const string SEM_ID_NODE = "https://admin-shell.io/idta/HierarchicalStructures/Node/1/0";
         public const string SEM_ID_HAS_PART = "https://admin-shell.io/idta/HierarchicalStructures/HasPart/1/0";
         public const string SEM_ID_SAME_AS = "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0";
-        public const string ASSET_TYPE_CO_MANAGED_ENTITY = "CoManagedEntity";
-        public const string ASSET_TYPE_SELF_MANAGED_ENTITY = "SelfManagedEntity";
         public const string ID_SHORT_ENTRY_NODE = "EntryNode";
         public const string ID_SHORT_ARCHE_TYPE = "ArcheType";
 
-        public static Submodel CreateBomSubmodel(string idShort, string iriTemplate, string archeType = "Full", AdministrationShell aas = null, AdministrationShellEnv env = null)
+        public static Submodel CreateBomSubmodel(string idShort, string iriTemplate, string archeType = "Full", IAssetAdministrationShell aas = null, AasCore.Aas3_0.Environment env = null)
         {
             var bomSubmodel = CreateSubmodel(idShort, iriTemplate, SEM_ID_BOM_SM, aas, env);
             
-            var archeTypeProperty = new Property();
-            archeTypeProperty.semanticId = new SemanticId(new Key("Property", false, "IRI", SEM_ID_ARCHE_TYPE));
-            archeTypeProperty.idShort = ID_SHORT_ARCHE_TYPE;
-            archeTypeProperty.value = archeType;
+            var archeTypeProperty = new Property(DataTypeDefXsd.String, idShort: ID_SHORT_ARCHE_TYPE);
+            archeTypeProperty.SemanticId = CreateSemanticId(KeyTypes.Property, SEM_ID_ARCHE_TYPE);
+            archeTypeProperty.Value = archeType;
             bomSubmodel.Add(archeTypeProperty);
 
-            CreateEntryNode(bomSubmodel, aas.assetRef);
+            CreateEntryNode(bomSubmodel, aas.AssetInformation.GlobalAssetId);
 
             return bomSubmodel;
         }
 
-        public static Submodel FindFirstBomSubmodel(AdministrationShell aas, AdministrationShellEnv env)
+        public static ISubmodel FindFirstBomSubmodel(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             var submodels = FindBomSubmodels(aas, env);
-            return submodels?.First(sm => sm.semanticId.Last.value == SEM_ID_BOM_SM);
+            return submodels?.First(sm => sm.SemanticId.Last().Value == SEM_ID_BOM_SM);
         }
 
-        public static IEnumerable<Submodel> FindBomSubmodels(AdministrationShell aas, AdministrationShellEnv env)
+        public static IEnumerable<ISubmodel> FindBomSubmodels(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             var submodels = FindAllSubmodels(aas, env);
-            return submodels.Where(sm => sm.semanticId?.Matches("Submodel", false, "IRI", SEM_ID_BOM_SM) ?? false);
+            return submodels.Where(sm => sm.SemanticId?.Matches(KeyTypes.Submodel, SEM_ID_BOM_SM) ?? false);
         }
 
-        public static Entity CreateEntryNode(Submodel parent, AssetRef referencedAsset)
+        public static Entity CreateEntryNode(ISubmodel parent, string referencedAsset)
         {
-            var semanticId = new SemanticId(new Key("Entity", false, "IRI", SEM_ID_ENTRY_NODE));
+            var semanticId = CreateSemanticId(KeyTypes.Entity, SEM_ID_ENTRY_NODE);
             return CreateEntity(ID_SHORT_ENTRY_NODE, parent, referencedAsset, semanticId);
         }
 
-        public static Entity FindEntryNode(Submodel bomSubmodel) {
-            return bomSubmodel?.FindSubmodelElementWrapper(ID_SHORT_ENTRY_NODE)?.submodelElement as Entity;
+        public static Entity FindEntryNode(ISubmodel bomSubmodel) {
+            return bomSubmodel?.FindSubmodelElementByIdShort(ID_SHORT_ENTRY_NODE) as Entity;
         }
 
-        public static Entity CreateNode(string idShort, IManageSubmodelElements parent, AssetRef referencedAsset = null)
+        public static Entity CreateNode(string idShort, IEntity parent, string referencedAsset = null)
         {
-            var semanticId = new SemanticId(new Key("Entity", false, "IRI", SEM_ID_NODE));
+            var semanticId = CreateSemanticId(KeyTypes.Entity, SEM_ID_NODE);
             return CreateEntity(idShort, parent, referencedAsset, semanticId);
         }
 
-        public static Entity CreateEntity(string idShort, IManageSubmodelElements parent, AssetRef referencedAsset = null, SemanticId semanticId = null)
+        public static Entity CreateEntity(string idShort, IEntity parent, string referencedAsset = null, IReference semanticId = null)
         {
-            var entity = new Entity();
-            if (semanticId != null)
-            {
-                entity.semanticId = semanticId;
-            }
-            entity.idShort = idShort;
+            var entity = new Entity(
+                referencedAsset == null ? EntityType.CoManagedEntity : EntityType.SelfManagedEntity,
+                semanticId: semanticId,
+                idShort: idShort,
+                globalAssetId: referencedAsset);
+            
             parent.Add(entity);
+            return entity;
+        }
 
-            if (referencedAsset == null)
-            {
-                entity.entityType = ASSET_TYPE_CO_MANAGED_ENTITY;
-            }
-            else
-            {
-                entity.entityType = ASSET_TYPE_SELF_MANAGED_ENTITY;
-                entity.assetRef = referencedAsset;
-            }
+        public static Entity CreateEntity(string idShort, ISubmodel parent, string referencedAsset = null, IReference semanticId = null)
+        {
+            var entity = new Entity(
+                referencedAsset == null ? EntityType.CoManagedEntity : EntityType.SelfManagedEntity,
+                semanticId: semanticId,
+                idShort: idShort,
+                globalAssetId: referencedAsset);
+
+            parent.Add(entity);
             return entity;
         }
 
@@ -92,84 +92,77 @@ namespace AasxPluginVec
                 first,
                 second,
                 first,
-                relName ?? "HasPart_" + second.idShort,
-                new SemanticId(new Key("ConceptDescription", false, "IRI", SEM_ID_HAS_PART))
+                relName ?? "HasPart_" + second.IdShort,
+                CreateSemanticId(KeyTypes.ConceptDescription, SEM_ID_HAS_PART)
             );
         }
 
         public static bool IsHasPartRelationship(RelationshipElement rel)
         {
-            return rel?.semanticId?.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_HAS_PART)) ?? false;
+            return rel?.SemanticId?.Matches(KeyTypes.ConceptDescription, SEM_ID_HAS_PART) ?? false;
         }
 
         public static RelationshipElement CreateSameAsRelationship(Entity first, Entity second, Entity parent, string relName = null)
         {
             return CreateSameAsRelationship(
-                GetReference(first),
-                GetReference(second),
+                first.GetReference(),
+                second.GetReference(),
                 parent,
-                relName ?? "SameAs_" + second.idShort
+                relName ?? "SameAs_" + second.IdShort
             );
         }
 
-        public static RelationshipElement CreateSameAsRelationship(Reference first, Reference second, Entity parent, string relName)
+        public static RelationshipElement CreateSameAsRelationship(IReference first, IReference second, Entity parent, string relName)
         {
             return CreateRelationship(
                 first,
                 second,
                 parent,
                 relName,
-                new SemanticId(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS))
+                CreateSemanticId(KeyTypes.ConceptDescription, SEM_ID_SAME_AS)
             );
         }
 
         public static bool IsSameAsRelationship(RelationshipElement rel)
         {
-            return rel?.semanticId?.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS)) ?? false;
+            return rel?.SemanticId?.Matches(KeyTypes.ConceptDescription, SEM_ID_SAME_AS) ?? false;
         }
 
-        public static RelationshipElement CreateRelationship(SubmodelElement first, SubmodelElement second, IManageSubmodelElements parent, string idShort, SemanticId semanticId = null)
+        public static RelationshipElement CreateRelationship(ISubmodelElement first, ISubmodelElement second, Entity parent, string idShort, IReference semanticId = null)
         {
-            return CreateRelationship(GetReference(first), GetReference(second), parent, idShort, semanticId);
+            return CreateRelationship(first.GetReference(), second.GetReference(), parent, idShort, semanticId);
         }
 
-        public static RelationshipElement CreateRelationship(Reference first, Reference second, IManageSubmodelElements parent, string idShort, SemanticId semanticId = null)
+        public static RelationshipElement CreateRelationship(IReference first, IReference second, Entity parent, string idShort, IReference semanticId = null)
         {
-            var rel = new RelationshipElement();
-            rel.idShort = idShort;
-            if (semanticId != null)
-            {
-                rel.semanticId = semanticId;
-            }
-            rel.first = first;
-            rel.second = second;
+            var rel = new RelationshipElement(first, second, idShort: idShort, semanticId: semanticId);
             parent.Add(rel);
 
             return rel;
         }
 
-        public static List<RelationshipElement> GetHasPartRelationships(Entity entity)
+        public static List<RelationshipElement> GetHasPartRelationships(IEntity entity)
         {
             return entity?.EnumerateChildren().
-               Where(c => c.submodelElement is RelationshipElement).
-               Select(c => c.submodelElement as RelationshipElement).
-               Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_HAS_PART))).ToList() ?? new List<RelationshipElement>();
+               Where(c => c is RelationshipElement).
+               Select(c => c as RelationshipElement).
+               Where(r => r.SemanticId.Matches(KeyTypes.ConceptDescription, SEM_ID_HAS_PART)).ToList() ?? new List<RelationshipElement>();
         }
 
-        public static List<RelationshipElement> GetSameAsRelationships(Entity entity)
+        public static List<RelationshipElement> GetSameAsRelationships(IEntity entity)
         {
             return entity?.EnumerateChildren().
-               Where(c => c.submodelElement is RelationshipElement).
-               Select(c => c.submodelElement as RelationshipElement).
-               Where(r => r.semanticId.Matches(new Key("ConceptDescription", false, "IRI", SEM_ID_SAME_AS))).ToList() ?? new List<RelationshipElement>();
+               Where(c => c is RelationshipElement).
+               Select(c => c as RelationshipElement).
+               Where(r => r.SemanticId.Matches(KeyTypes.ConceptDescription, SEM_ID_SAME_AS)).ToList() ?? new List<RelationshipElement>();
         }
 
-        public static List<Entity> GetLeafNodes(Submodel submodel) {
+        public static List<Entity> GetLeafNodes(ISubmodel submodel) {
             var entryNode = FindEntryNode(submodel);
-            return entryNode?.EnumerateChildren().Select(c => c.submodelElement as Entity).Where(IsLeafNode).ToList() ?? new List<Entity>();
+            return entryNode?.EnumerateChildren().Select(c => c as Entity).Where(IsLeafNode).ToList() ?? new List<Entity>();
         }
 
-        public static bool IsLeafNode(Entity node)
+        public static bool IsLeafNode(IEntity node)
         {
             if (node == null)
             {

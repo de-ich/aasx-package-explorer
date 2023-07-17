@@ -14,7 +14,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 
 namespace AasxIntegrationBase
 {
@@ -28,13 +29,13 @@ namespace AasxIntegrationBase
         {
             this.Owner = owner;
             DataContext = this;
-            SubassemblyAASName = string.Join("_", entities.Select(e => e.idShort));
-            SubassemblyEntityName = "Subassembly_" + string.Join("_", entities.Select(e => e.idShort));
+            SubassemblyAASName = string.Join("_", entities.Select(e => e.IdShort));
+            SubassemblyEntityName = "Subassembly_" + string.Join("_", entities.Select(e => e.IdShort));
             InitializeComponent();
 
             foreach(var entity in entities)
             {
-                AddString(entity.idShort, entity.idShort);
+                AddString(entity.IdShort, entity.IdShort);
             }
         }
 

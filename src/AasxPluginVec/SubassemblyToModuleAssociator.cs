@@ -14,7 +14,8 @@ using System.Linq;
 using System.Xml.Linq;
 using AasxIntegrationBase;
 using AdminShellNS;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.BasicAasUtils;
@@ -32,8 +33,8 @@ namespace AasxPluginVec
         //
 
         public static void AssociateSubassemblies(
-            AdministrationShellEnv env,
-            AdministrationShell aas,
+            AasCore.Aas3_0.Environment env,
+            AssetAdministrationShell aas,
             IEnumerable<Entity> subassembliesToAssociate,
             Entity orderableModule,
             VecOptions options,
@@ -56,8 +57,8 @@ namespace AasxPluginVec
         //
 
         protected SubassemblyToModuleAssociator(
-            AdministrationShellEnv env,
-            AdministrationShell aas,
+            AasCore.Aas3_0.Environment env,
+            AssetAdministrationShell aas,
             IEnumerable<Entity> subassembliesToAssociate,
             Entity orderableModule,
             VecOptions options,
@@ -73,8 +74,8 @@ namespace AasxPluginVec
             this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
-        protected AdministrationShellEnv env;
-        protected AdministrationShell aas;
+        protected AasCore.Aas3_0.Environment env;
+        protected AssetAdministrationShell aas;
         protected IEnumerable<Entity> subassembliesToAssociate;
         protected Entity orderableModule;
         protected VecOptions options;

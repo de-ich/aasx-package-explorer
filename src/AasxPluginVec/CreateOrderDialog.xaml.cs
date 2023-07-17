@@ -14,7 +14,6 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using static AdminShellNS.AdminShellV20;
 
 namespace AasxIntegrationBase
 {

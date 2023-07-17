@@ -14,7 +14,8 @@ using System.Linq;
 using System.Xml.Linq;
 using AasxIntegrationBase;
 using AdminShellNS;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.VecProvider;
@@ -35,8 +36,8 @@ namespace AasxPluginVec
 
         public static void ImportVecFromFile(
             AdminShellPackageEnv packageEnv,
-            AdministrationShellEnv env,
-            AdministrationShell aas,
+            AasCore.Aas3_0.Environment env,
+            IAssetAdministrationShell aas,
             string pathToVecFile,
             VecOptions options,
             LogInstance log = null)
@@ -66,8 +67,8 @@ namespace AasxPluginVec
 
         protected VecImporter(
             AdminShellPackageEnv packageEnv,
-            AdministrationShellEnv env,
-            AdministrationShell aas,
+            AasCore.Aas3_0.Environment env,
+            IAssetAdministrationShell aas,
             string pathToVecFile,
             VecOptions options,
             LogInstance log = null)
@@ -92,8 +93,8 @@ namespace AasxPluginVec
         }
 
         protected AdminShellPackageEnv packageEnv;
-        protected AdministrationShellEnv env;
-        protected AdministrationShell aas;
+        protected AasCore.Aas3_0.Environment env;
+        protected IAssetAdministrationShell aas;
         protected Submodel vecSubmodel;
         protected List<Submodel> bomComponentSubmodels;
         protected List<Submodel> bomModuleSubmodels;
@@ -101,7 +102,7 @@ namespace AasxPluginVec
         protected VecOptions options;
         protected LogInstance log;
         protected VecProvider vecProvider;
-        protected AdminShell.File vecFileSubmodelElement;
+        protected AasCore.Aas3_0.File vecFileSubmodelElement;
         protected Dictionary<String, Entity> ComponentEntitiesById;
 
 
@@ -129,9 +130,9 @@ namespace AasxPluginVec
             var vecSubmodel = VecSMUtils.CreateVecSubmodel(id, pathToVecFile, this.packageEnv);
 
             this.env.Submodels.Add(vecSubmodel);
-            this.aas.AddSubmodelRef(vecSubmodel.GetSubmodelRef());
+            this.aas.AddSubmodelReference(vecSubmodel.GetReference());
 
-            this.vecFileSubmodelElement = vecSubmodel.EnumerateChildren().First(w => w.submodelElement.idShort == VEC_FILE_ID_SHORT)?.submodelElement as AdminShellV20.File;
+            this.vecFileSubmodelElement = vecSubmodel.FindFirstIdShortAs<AasCore.Aas3_0.File>(VEC_FILE_ID_SHORT);
 
             if (this.vecFileSubmodelElement == null)
             {
@@ -188,8 +189,7 @@ namespace AasxPluginVec
             }
             
             // create the entity
-            var componentEntity = CreateNode(componentName, mainEntity, 
-                assetId != null ? new AssetRef(new Reference(new Key("AssetAdministrationShell", false, "IRI", assetId))) : null);
+            var componentEntity = CreateNode(componentName, mainEntity, assetId);
             this.ComponentEntitiesById[GetXmlId(component)] = componentEntity;
 
             // create the fragment relationship pointing to the Component element for the current component

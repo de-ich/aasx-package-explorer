@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Controls;
-using static AdminShellNS.AdminShellV20;
+using AasCore.Aas3_0;
+using Extensions;
 using static AasxPluginVec.VecSMUtils;
 using System.Xml;
 
@@ -15,13 +16,13 @@ namespace AasxPluginVec
     class VecTreeView
     {
         private AdminShellPackageEnv env;
-        private AdminShellV20.Submodel submodel;
+        private Submodel submodel;
         private DockPanel panel;
         private File vecFileElement;
         private XmlDocument vecXml;
 
         public object FillWithWpfControls(
-            AdminShellPackageEnv env, AdminShellV20.Submodel submodel, DockPanel panel)
+            AdminShellPackageEnv env, Submodel submodel, DockPanel panel)
         {
             if (env == null || submodel == null || panel == null)
             {
@@ -97,7 +98,7 @@ namespace AasxPluginVec
 
         private void LoadXmlFile()
         {
-            var vecFile = env.GetListOfSupplementaryFiles().Find(f => f.Uri.ToString() == vecFileElement.value);
+            var vecFile = env.GetListOfSupplementaryFiles().Find(f => f.Uri.ToString() == vecFileElement.Value);
             byte[] vecFileContents = env.GetByteArrayFromUriOrLocalPackage(vecFile.Uri.ToString());
 
             vecXml = new XmlDocument();
