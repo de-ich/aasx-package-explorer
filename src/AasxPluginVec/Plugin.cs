@@ -18,6 +18,9 @@ using AasCore.Aas3_0;
 using AasxIntegrationBase;
 using Extensions;
 using AdminShellNS;
+using System.Threading.Tasks;
+using AnyUi;
+using AasxPluginVec.AnyUi;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -72,7 +75,13 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             res.Add(
                 new AasxPluginActionDescriptionBase(
                     "get-events", "Pops and returns the earliest event from the event stack."));
-            res.Add(new AasxPluginActionDescriptionBase(
+            res.Add(
+                new AasxPluginActionDescriptionBase(
+                    "get-menu-items", "Provides a list of menu items of the plugin to the caller."));
+            res.Add(
+                new AasxPluginActionDescriptionBase(
+                    "call-menu-item", "Caller activates a named menu item.", useAsync: true));
+            /*res.Add(new AasxPluginActionDescriptionBase(
                 "import-vec", "Import VEC file and create BOM submodel."));
             res.Add(new AasxPluginActionDescriptionBase(
                 "derive-subassembly", "Derive new subassembly from selected entities."));
@@ -81,7 +90,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             res.Add(new AasxPluginActionDescriptionBase(
                 "associate-subassemblies-with-module", "Associate an orderable module with the subassemblies required for production."));
             res.Add(new AasxPluginActionDescriptionBase(
-                "create-order", "Create a new wire harness order for the selected modules."));
+                "create-order", "Create a new wire harness order for the selected modules."));*/
             res.Add(
                 new AasxPluginActionDescriptionBase(
                     "get-check-visual-extension", "Returns true, if plug-ins checks for visual extension."));
@@ -155,6 +164,67 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 // try access
                 return _eventStack.PopEvent();
             }
+
+            if (action == "get-menu-items")
+            {
+                // result list 
+                var res = new List<AasxPluginResultSingleMenuItem>();
+
+                // import vec
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Import",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "ImportVEC",
+                        Header = "Import a VEC file into an AAS",
+                        HelpText = "Import a VEC file into an AAS and create the related submodels.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                // return
+                return new AasxPluginResultProvideMenuItems()
+                {
+                    MenuItems = res
+                };
+            }
+
+            // default
+            return null;
+        }
+
+        /// <summary>
+        /// Async variant of <c>ActivateAction</c>.
+        /// Note: for some reason of type conversion, it has to return <c>Task<object></c>.
+        /// </summary>
+        public new async Task<object> ActivateActionAsync(string action, params object[] args)
+        {
+            if (action == "call-menu-item")
+            {
+                if (args != null && args.Length >= 3
+                    && args[0] is string cmd
+                    && args[1] is AasxMenuActionTicket ticket
+                    && args[2] is AnyUiContextPlusDialogs displayContext)
+                {
+                    try
+                    {
+                        if (cmd == "importvec")
+                        {
+                            await ImportVecDialog.ImportVECDialogBased(_options, _log, ticket, displayContext);
+                            return new AasxPluginResultBase();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log?.Error(ex, "when executing plugin menu item " + cmd);
+                    }
+                }
+            }
+
+
+            // default
+            return null;
 
             if (action == "import-vec"
                 && args != null && args.Length >= 3
