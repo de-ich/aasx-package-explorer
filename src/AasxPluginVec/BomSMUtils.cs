@@ -29,7 +29,7 @@ namespace AasxPluginVec
             archeTypeProperty.Value = archeType;
             bomSubmodel.Add(archeTypeProperty);
 
-            CreateEntryNode(bomSubmodel, aas.AssetInformation.GlobalAssetId);
+            CreateEntryNode(bomSubmodel, aas?.AssetInformation.GlobalAssetId);
 
             return bomSubmodel;
         }
@@ -86,7 +86,7 @@ namespace AasxPluginVec
             return entity;
         }
 
-        public static RelationshipElement CreateHasPartRelationship(Entity first, Entity second, string relName = null)
+        public static RelationshipElement CreateHasPartRelationship(IEntity first, IEntity second, string relName = null)
         {
             return CreateRelationship(
                 first,
@@ -102,7 +102,7 @@ namespace AasxPluginVec
             return rel?.SemanticId?.Matches(KeyTypes.ConceptDescription, SEM_ID_HAS_PART) ?? false;
         }
 
-        public static RelationshipElement CreateSameAsRelationship(Entity first, Entity second, Entity parent, string relName = null)
+        public static RelationshipElement CreateSameAsRelationship(IEntity first, IEntity second, IEntity parent, string relName = null)
         {
             return CreateSameAsRelationship(
                 first.GetReference(),
@@ -112,7 +112,7 @@ namespace AasxPluginVec
             );
         }
 
-        public static RelationshipElement CreateSameAsRelationship(IReference first, IReference second, Entity parent, string relName)
+        public static RelationshipElement CreateSameAsRelationship(IReference first, IReference second, IEntity parent, string relName)
         {
             return CreateRelationship(
                 first,
@@ -128,12 +128,12 @@ namespace AasxPluginVec
             return rel?.SemanticId?.Matches(KeyTypes.ConceptDescription, SEM_ID_SAME_AS) ?? false;
         }
 
-        public static RelationshipElement CreateRelationship(ISubmodelElement first, ISubmodelElement second, Entity parent, string idShort, IReference semanticId = null)
+        public static RelationshipElement CreateRelationship(ISubmodelElement first, ISubmodelElement second, IEntity parent, string idShort, IReference semanticId = null)
         {
             return CreateRelationship(first.GetReference(), second.GetReference(), parent, idShort, semanticId);
         }
 
-        public static RelationshipElement CreateRelationship(IReference first, IReference second, Entity parent, string idShort, IReference semanticId = null)
+        public static RelationshipElement CreateRelationship(IReference first, IReference second, IEntity parent, string idShort, IReference semanticId = null)
         {
             var rel = new RelationshipElement(first, second, idShort: idShort, semanticId: semanticId);
             parent.Add(rel);

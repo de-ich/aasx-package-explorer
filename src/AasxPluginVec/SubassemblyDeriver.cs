@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2023 Festo SE & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Matthias Freund
 
@@ -35,7 +35,7 @@ namespace AasxPluginVec
 
         public static void DeriveSubassembly(
             AasCore.Aas3_0.Environment env,
-            AssetAdministrationShell aas,
+            IAssetAdministrationShell aas,
             IEnumerable<Entity> entities,
             string subassemblyAASName,
             string subassemblyEntityName,
@@ -61,7 +61,7 @@ namespace AasxPluginVec
 
         protected SubassemblyDeriver(
             AasCore.Aas3_0.Environment env,
-            AssetAdministrationShell aas,
+            IAssetAdministrationShell aas,
             IEnumerable<Entity> entities,
             string subassemblyAASName,
             string subassemblyEntityName,
@@ -89,8 +89,8 @@ namespace AasxPluginVec
         }
 
         protected AasCore.Aas3_0.Environment env;
-        protected AssetAdministrationShell aas;
-        protected IEnumerable<Entity> entitiesToBeMadeSubassembly;
+        protected IAssetAdministrationShell aas;
+        protected IEnumerable<IEntity> entitiesToBeMadeSubassembly;
         protected string subassemblyAASName;
         protected string subassemblyEntityName;
         protected Dictionary<string, string> partNames;
@@ -221,7 +221,7 @@ namespace AasxPluginVec
             }
         }        
 
-        protected Entity CreateRelatedEntitiesInNewAdminShell(Entity partEntityInOriginalAAS)
+        protected Entity CreateRelatedEntitiesInNewAdminShell(IEntity partEntityInOriginalAAS)
         {
             var idShort = this.partNames[partEntityInOriginalAAS.IdShort];
             var entityInNewMBomSubmodel = CreatePartEntity(FindEntryNode(newMBomSubmodel), partEntityInOriginalAAS, idShort);
@@ -268,9 +268,9 @@ namespace AasxPluginVec
             return entityInNewMBomSubmodel;
         }
 
-        private void CopyVecRelationship(Entity partEntityInOriginalAAS, Entity partEntityInNewAAS)
+        private void CopyVecRelationship(IEntity partEntityInOriginalAAS, IEntity partEntityInNewAAS)
         {
-            var vecRelationship = GetVecRelationship(partEntityInOriginalAAS);
+            var vecRelationship = GetVecRelationship(partEntityInOriginalAAS as Entity);
             if (vecRelationship != null)
             {
                 var xpathToVecElement = vecRelationship.Second.Keys.Last().Value;
@@ -279,7 +279,7 @@ namespace AasxPluginVec
             }
         }
 
-        protected Entity CreatePartEntity(Entity mainEntity, Entity sourceEntity, string idShort = null)
+        protected Entity CreatePartEntity(IEntity mainEntity, IEntity sourceEntity, string idShort = null)
         {
             // create the entity
             var componentEntity = CreateNode(idShort ?? sourceEntity.IdShort, mainEntity, sourceEntity.GlobalAssetId);

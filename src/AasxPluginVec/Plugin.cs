@@ -183,6 +183,19 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 });
 
+                //
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "DeriveSubassembly",
+                        Header = "Derive new subassembly from selected entities",
+                        HelpText = "Derive new subassembly based on selected entities (components and/or subassemblies) and create the required admins shell.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
                 // return
                 return new AasxPluginResultProvideMenuItems()
                 {
@@ -214,6 +227,12 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                             await ImportVecDialog.ImportVECDialogBased(_options, _log, ticket, displayContext);
                             return new AasxPluginResultBase();
                         }
+
+                        if (cmd == "derivesubassembly")
+                        {
+                            await AasxPluginVec.AnyUi.DeriveSubassemblyDialog.DeriveSubassemblyDialogBased(_options, _log, ticket, displayContext);
+                            return new AasxPluginResultBase();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -225,84 +244,6 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             // default
             return null;
-
-            if (action == "import-vec"
-                && args != null && args.Length >= 3
-                && args[0] is IFlyoutProvider 
-                && args[1] is AdminShellPackageEnv
-                && args[2] is AasCore.Aas3_0.Environment
-                && args[3] is AasCore.Aas3_0.AssetAdministrationShell)
-            {
-                var fn = (args.Length >= 5) ? args[4] as string : null;
-
-                // flyout provider (will be required in the future)
-                var fop = args[0] as IFlyoutProvider;
-
-                // which Submodel
-                var packageEnv = args[1] as AdminShellPackageEnv;
-                var env = args[2] as AasCore.Aas3_0.Environment;
-                var aas = args[3] as AasCore.Aas3_0.AssetAdministrationShell;
-                if (packageEnv == null || env == null || aas == null)
-                    return null;
-
-                // ask for filename
-                var dlg = new Microsoft.Win32.OpenFileDialog();
-                try
-                {
-                    dlg.InitialDirectory = System.IO.Path.GetDirectoryName(
-                        System.AppDomain.CurrentDomain.BaseDirectory);
-                }
-                catch (Exception ex)
-                {
-                    AdminShellNS.LogInternally.That.SilentlyIgnoredError(ex);
-                }
-                dlg.Title = "Select VEC file to import ..";
-                dlg.DefaultExt = "*.vec";
-                dlg.Filter = "VEC container files (*.vec)|*.vec|Alle Dateien (*.*)|*.*";
-
-                fop?.StartFlyover(new EmptyFlyout());
-                var fnres = dlg.ShowDialog(fop?.GetWin32Window());
-                fop?.CloseFlyover();
-                if (fnres != true)
-                    return null;
-                fn = dlg.FileName;
-
-                // use functionality
-                _log.Info($"Importing VEC container from file: {fn} ..");
-                VecImporter.ImportVecFromFile(packageEnv, env, aas, fn, _options, _log);
-            }
-
-            if (action == "derive-subassembly" && args != null && args.Length >= 4)
-            {
-                // flyout provider (will be required in the future)
-                var fop = args[0] as IFlyoutProvider;
-
-                var env = args[1] as AasCore.Aas3_0.Environment;
-                var aas = args[2] as AasCore.Aas3_0.AssetAdministrationShell;
-                var selectedEntities = (args[3] as IEnumerable<AasCore.Aas3_0.Entity>)?.ToList();
-
-                if (fop == null || env == null || aas == null || selectedEntities == null)
-                {
-                    return null;
-                }
-
-                // ask for filename
-                var dlg = new DeriveSubassemblyDialog(fop?.GetWin32Window(), selectedEntities);
-
-                fop?.StartFlyover(new EmptyFlyout());
-                var fnres = dlg.ShowDialog();
-                fop?.CloseFlyover();
-                if (fnres != true)
-                    return null;
-
-                var subassemblyAASName = dlg.SubassemblyAASName;
-                var subassemblyEntityName = dlg.SubassemblyEntityName;
-                var partNames = dlg.PartNames;
-
-                SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, subassemblyAASName, subassemblyEntityName, partNames, _options, _log);
-
-                _log.Info($"Deriving subassembly...");
-            }
 
             if (action == "reuse-subassembly" && args != null && args.Length >= 4)
             {

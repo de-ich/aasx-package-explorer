@@ -57,7 +57,7 @@ namespace AasxPluginVec
             return submodel?.FindFirstIdShortAs<File>(VEC_FILE_ID_SHORT);
         }
 
-        public static RelationshipElement CreateVecRelationship(Entity source, string xpathToVecElement, File vecFileSubmodelElement)
+        public static RelationshipElement CreateVecRelationship(IEntity source, string xpathToVecElement, File vecFileSubmodelElement)
         {
 
             var idShort = VEC_REFERENCE_ID_SHORT;

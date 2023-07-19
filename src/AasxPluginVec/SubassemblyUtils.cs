@@ -22,7 +22,7 @@ namespace AasxPluginVec
         public const string ID_SHORT_BUILDING_BLOCKS_SM = "LS_Manufacturing_BOM";
         public const string ID_SHORT_ORDERED_MODULES_SM = "LS_OrderedModules_BOM";
 
-        public static Submodel CreateBuildingBlocksSubmodel(string iriTemplate, ISubmodel associatedBomSubmodel, AssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        public static Submodel CreateBuildingBlocksSubmodel(string iriTemplate, ISubmodel associatedBomSubmodel, IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             var vecReference = FindEntryNode(associatedBomSubmodel)?.FindFirstIdShortAs< RelationshipElement>(VEC_REFERENCE_ID_SHORT);
             if (vecReference == null)
@@ -44,7 +44,7 @@ namespace AasxPluginVec
             return buildingBlocksSubmodel;
         }
 
-        public static ISubmodel FindBuildingBlocksSubmodel(AssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        public static ISubmodel FindBuildingBlocksSubmodel(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             return FindAllSubmodels(aas, env).FirstOrDefault(IsBuildingBlocksSubmodel);
         }
