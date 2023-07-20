@@ -34,7 +34,7 @@ namespace AasxPluginVec
 
         public static void AssociateSubassemblies(
             AasCore.Aas3_0.Environment env,
-            AssetAdministrationShell aas,
+            IAssetAdministrationShell aas,
             IEnumerable<Entity> subassembliesToAssociate,
             Entity orderableModule,
             VecOptions options,
@@ -58,7 +58,7 @@ namespace AasxPluginVec
 
         protected SubassemblyToModuleAssociator(
             AasCore.Aas3_0.Environment env,
-            AssetAdministrationShell aas,
+            IAssetAdministrationShell aas,
             IEnumerable<Entity> subassembliesToAssociate,
             Entity orderableModule,
             VecOptions options,
@@ -75,7 +75,7 @@ namespace AasxPluginVec
         }
 
         protected AasCore.Aas3_0.Environment env;
-        protected AssetAdministrationShell aas;
+        protected IAssetAdministrationShell aas;
         protected IEnumerable<Entity> subassembliesToAssociate;
         protected Entity orderableModule;
         protected VecOptions options;

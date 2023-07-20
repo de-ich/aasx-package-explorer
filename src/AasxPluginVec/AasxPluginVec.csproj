@@ -27,10 +27,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="AssociateSubassembliesWithModuleDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="CreateOrderDialog.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

@@ -83,8 +83,6 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     "call-menu-item", "Caller activates a named menu item.", useAsync: true));
             /*
             res.Add(new AasxPluginActionDescriptionBase(
-                "associate-subassemblies-with-module", "Associate an orderable module with the subassemblies required for production."));
-            res.Add(new AasxPluginActionDescriptionBase(
                 "create-order", "Create a new wire harness order for the selected modules."));*/
             res.Add(
                 new AasxPluginActionDescriptionBase(
@@ -204,6 +202,19 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 });
 
+                // associated subassembly with module
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "AssociateSubassembliesWithModule",
+                        Header = "Associate orderable module with subassemblies",
+                        HelpText = "Associate an orderable module/a vairant with the selected entities (subassemblies) required for production.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
                 // return
                 return new AasxPluginResultProvideMenuItems()
                 {
@@ -247,6 +258,12 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                             await AasxPluginVec.AnyUi.ReuseSubassemblyDialog.ReuseSubassemblyDialogBased(_options, _log, ticket, displayContext);
                             return new AasxPluginResultBase();
                         }
+
+                        if (cmd == "associatesubassemblieswithmodule")
+                        {
+                            await AasxPluginVec.AnyUi.AssociateSubassembliesWithModuleDialog.AssociateSubassembliesWithModuleDialogBased(_options, _log, ticket, displayContext);
+                            return new AasxPluginResultBase();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -258,36 +275,6 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             // default
             return null;
-
-            if (action == "associate-subassemblies-with-module" && args != null && args.Length >= 4)
-            {
-                // flyout provider (will be required in the future)
-                var fop = args[0] as IFlyoutProvider;
-
-                var env = args[1] as AasCore.Aas3_0.Environment;
-                var aas = args[2] as AssetAdministrationShell;
-                var selectedEntities = (args[3] as IEnumerable<Entity>)?.ToList();
-
-                if (fop == null || env == null || aas == null || selectedEntities == null)
-                {
-                    return null;
-                }
-
-                //TODO ab hier implementieren
-                var dlg = new AssociateSubassembliesWithModuleDialog(fop?.GetWin32Window(), selectedEntities, aas, env);
-
-                fop?.StartFlyover(new EmptyFlyout());
-                var fnres = dlg.ShowDialog();
-                fop?.CloseFlyover();
-                if (fnres != true)
-                    return null;
-
-                var selectedModuleEntity = dlg.SelectedModule;
-
-                SubassemblyToModuleAssociator.AssociateSubassemblies(env, aas, selectedEntities, selectedModuleEntity, _options, _log);
-
-                _log.Info($"Associating module with subassembly...");
-            }
 
             if (action == "create-order" && args != null && args.Length >= 4)
             {
