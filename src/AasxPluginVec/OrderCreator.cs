@@ -34,7 +34,7 @@ namespace AasxPluginVec
 
         public static void CreateOrder(
             AasCore.Aas3_0.Environment env,
-            AssetAdministrationShell aas,
+            IAssetAdministrationShell aas,
             IEnumerable<Entity> selectedModules,
             string orderNumber,
             VecOptions options,
@@ -58,7 +58,7 @@ namespace AasxPluginVec
 
         protected OrderCreator(
             AasCore.Aas3_0.Environment env,
-            AssetAdministrationShell aas,
+            IAssetAdministrationShell aas,
             IEnumerable<Entity> selectedModules,
             string orderNumber,
             VecOptions options,
@@ -78,7 +78,7 @@ namespace AasxPluginVec
         }
 
         protected AasCore.Aas3_0.Environment env;
-        protected AssetAdministrationShell aas;
+        protected IAssetAdministrationShell aas;
         protected IEnumerable<Entity> selectedModules;
         protected string orderNumber;
         protected AssetAdministrationShell orderAas;

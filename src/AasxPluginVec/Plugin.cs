@@ -81,9 +81,6 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             res.Add(
                 new AasxPluginActionDescriptionBase(
                     "call-menu-item", "Caller activates a named menu item.", useAsync: true));
-            /*
-            res.Add(new AasxPluginActionDescriptionBase(
-                "create-order", "Create a new wire harness order for the selected modules."));*/
             res.Add(
                 new AasxPluginActionDescriptionBase(
                     "get-check-visual-extension", "Returns true, if plug-ins checks for visual extension."));
@@ -183,7 +180,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "DeriveSubassembly",
-                        Header = "Derive new subassembly from selected entities",
+                        Header = "Derive new subassembly from selected components",
                         HelpText = "Derive new subassembly based on selected entities (components and/or subassemblies) and create the required admin shell.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
@@ -196,7 +193,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "ReuseSubassembly",
-                        Header = "Reuse existing subassembly for selected entities",
+                        Header = "Reuse existing subassembly for selected components",
                         HelpText = "Reuse an existing subassembly for the selected entities (components).",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
@@ -209,8 +206,21 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "AssociateSubassembliesWithModule",
-                        Header = "Associate orderable module with subassemblies",
+                        Header = "Associate orderable module with selected subassemblies",
                         HelpText = "Associate an orderable module/a vairant with the selected entities (subassemblies) required for production.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                // create order
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "CreateOrder",
+                        Header = "Create wire harness order for selected modules",
+                        HelpText = "Create a new wire harness order for the selected entities (orderable modules).",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -220,6 +230,34 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 {
                     MenuItems = res
                 };
+            }
+
+            if (action == "get-check-visual-extension")
+            {
+                var cve = new AasxPluginResultBaseObject();
+                cve.strType = "True";
+                cve.obj = true;
+                return cve;
+            }
+
+            if (action == "fill-panel-visual-extension")
+            {
+                // arguments
+                if (args == null || args.Length < 3)
+                    return null;
+
+                var env = args[0] as AdminShellPackageEnv;
+                var submodel = args[1] as Submodel;
+                var panel = args[2] as DockPanel;
+
+                object resobj = this.treeView.FillWithWpfControls(env, submodel, panel);
+
+                // give object back
+                var res = new AasxPluginResultBaseObject();
+                res.obj = resobj;
+                return res;
+
+
             }
 
             // default
@@ -264,74 +302,18 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                             await AasxPluginVec.AnyUi.AssociateSubassembliesWithModuleDialog.AssociateSubassembliesWithModuleDialogBased(_options, _log, ticket, displayContext);
                             return new AasxPluginResultBase();
                         }
+
+                        if (cmd == "createorder")
+                        {
+                            await AasxPluginVec.AnyUi.CreateOrderDialog.CreateOrderDialogBased(_options, _log, ticket, displayContext);
+                            return new AasxPluginResultBase();
+                        }
                     }
                     catch (Exception ex)
                     {
                         _log?.Error(ex, "when executing plugin menu item " + cmd);
                     }
                 }
-            }
-
-
-            // default
-            return null;
-
-            if (action == "create-order" && args != null && args.Length >= 4)
-            {
-                // flyout provider (will be required in the future)
-                var fop = args[0] as IFlyoutProvider;
-
-                var env = args[1] as AasCore.Aas3_0.Environment;
-                var aas = args[2] as AssetAdministrationShell;
-                var selectedModules = (args[3] as IEnumerable<Entity>)?.ToList();
-
-                if (fop == null || env == null || aas == null || selectedModules == null)
-                {
-                    return null;
-                }
-
-                //TODO ab hier implementieren
-                var dlg = new CreateOrderDialog(fop?.GetWin32Window());
-
-                fop?.StartFlyover(new EmptyFlyout());
-                var fnres = dlg.ShowDialog();
-                fop?.CloseFlyover();
-                if (fnres != true)
-                    return null;
-
-                var orderNumber = dlg.OrderNumber;
-
-                OrderCreator.CreateOrder(env, aas, selectedModules, orderNumber, _options, _log);
-
-                _log.Info($"Creating order...");
-            }
-
-            if (action == "get-check-visual-extension")
-            {
-                var cve = new AasxPluginResultBaseObject();
-                cve.strType = "True";
-                cve.obj = true;
-                return cve;
-            }
-
-            if (action == "fill-panel-visual-extension")
-            {
-                // arguments
-                if (args == null || args.Length < 3)
-                    return null;
-
-                var env = args[0] as AdminShellPackageEnv;
-                var submodel = args[1] as Submodel;
-                var panel = args[2] as DockPanel;
-
-                object resobj = this.treeView.FillWithWpfControls(env, submodel, panel);
-
-                // give object back
-                var res = new AasxPluginResultBaseObject();
-                res.obj = resobj;
-                return res;
-
-
             }
 
             // default
