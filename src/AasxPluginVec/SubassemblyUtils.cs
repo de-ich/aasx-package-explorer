@@ -51,6 +51,7 @@ namespace AasxPluginVec
 
         public static bool IsBuildingBlocksSubmodel(ISubmodel submodel)
         {
+            submodel.SetAllParents();
             var entryNode = FindEntryNode(submodel);
             var entities = entryNode?.EnumerateChildren().Where(c => c is Entity).Select(c => c as Entity) ?? new List<Entity>();
             return entities?.Any(RepresentsSubAssembly) ?? false;

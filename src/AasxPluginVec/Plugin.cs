@@ -81,12 +81,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             res.Add(
                 new AasxPluginActionDescriptionBase(
                     "call-menu-item", "Caller activates a named menu item.", useAsync: true));
-            /*res.Add(new AasxPluginActionDescriptionBase(
-                "import-vec", "Import VEC file and create BOM submodel."));
-            res.Add(new AasxPluginActionDescriptionBase(
-                "derive-subassembly", "Derive new subassembly from selected entities."));
-            res.Add(new AasxPluginActionDescriptionBase(
-                "reuse-subassembly", "Reuse existing subassembly for selected entities."));
+            /*
             res.Add(new AasxPluginActionDescriptionBase(
                 "associate-subassemblies-with-module", "Associate an orderable module with the subassemblies required for production."));
             res.Add(new AasxPluginActionDescriptionBase(
@@ -183,7 +178,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 });
 
-                //
+                // derive subassembly
                 res.Add(new AasxPluginResultSingleMenuItem()
                 {
                     AttachPoint = "Plugins",
@@ -191,7 +186,20 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     {
                         Name = "DeriveSubassembly",
                         Header = "Derive new subassembly from selected entities",
-                        HelpText = "Derive new subassembly based on selected entities (components and/or subassemblies) and create the required admins shell.",
+                        HelpText = "Derive new subassembly based on selected entities (components and/or subassemblies) and create the required admin shell.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                // reuse subassembly
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "ReuseSubassembly",
+                        Header = "Reuse existing subassembly for selected entities",
+                        HelpText = "Reuse an existing subassembly for the selected entities (components).",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -233,6 +241,12 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                             await AasxPluginVec.AnyUi.DeriveSubassemblyDialog.DeriveSubassemblyDialogBased(_options, _log, ticket, displayContext);
                             return new AasxPluginResultBase();
                         }
+
+                        if (cmd == "reusesubassembly")
+                        {
+                            await AasxPluginVec.AnyUi.ReuseSubassemblyDialog.ReuseSubassemblyDialogBased(_options, _log, ticket, displayContext);
+                            return new AasxPluginResultBase();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -244,39 +258,6 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             // default
             return null;
-
-            if (action == "reuse-subassembly" && args != null && args.Length >= 4)
-            {
-                // flyout provider (will be required in the future)
-                var fop = args[0] as IFlyoutProvider;
-
-                var env = args[1] as AasCore.Aas3_0.Environment;
-                var aas = args[2] as AssetAdministrationShell;
-                var selectedEntities = (args[3] as IEnumerable<Entity>)?.ToList();
-
-                if (fop == null || env == null || aas == null || selectedEntities == null)
-                {
-                    return null;
-                }
-
-                // ask for filename
-                var dlg = new ReuseSubassemblyNameDialog(fop?.GetWin32Window(), selectedEntities, env);
-
-                fop?.StartFlyover(new EmptyFlyout());
-                var fnres = dlg.ShowDialog();
-                fop?.CloseFlyover();
-                if (fnres != true)
-                    return null;
-
-                //var subassemblyAASName = dlg.SubassemblyAASName;
-                var subassemblyEntityName = dlg.SubassemblyEntityName;
-                var nameOfAasToReuse = dlg.AasToReuse;
-                var partNames = dlg.PartNames;
-
-                SubassemblyReuser.ReuseSubassembly(env, aas, selectedEntities, nameOfAasToReuse, subassemblyEntityName, partNames, _options, _log);
-
-                _log.Info($"Reusing subassembly...");
-            }
 
             if (action == "associate-subassemblies-with-module" && args != null && args.Length >= 4)
             {

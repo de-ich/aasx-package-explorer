@@ -37,7 +37,7 @@ namespace AasxPluginVec
         public static ISubmodel FindFirstBomSubmodel(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             var submodels = FindBomSubmodels(aas, env);
-            return submodels?.First(sm => sm.SemanticId.Last().Value == SEM_ID_BOM_SM);
+            return submodels?.FirstOrDefault(sm => sm.SemanticId.Last().Value == SEM_ID_BOM_SM);
         }
 
         public static IEnumerable<ISubmodel> FindBomSubmodels(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)

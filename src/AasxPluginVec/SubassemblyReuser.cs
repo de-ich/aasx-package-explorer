@@ -35,7 +35,7 @@ namespace AasxPluginVec
 
         public static void ReuseSubassembly(
             AasCore.Aas3_0.Environment env,
-            AssetAdministrationShell aas,
+            IAssetAdministrationShell aas,
             IEnumerable<Entity> entities,
             IAssetAdministrationShell aasToReuse,
             string subassemblyEntityName,
@@ -61,7 +61,7 @@ namespace AasxPluginVec
 
         protected SubassemblyReuser(
             AasCore.Aas3_0.Environment env,
-            AssetAdministrationShell aas,
+            IAssetAdministrationShell aas,
             IEnumerable<Entity> entities,
             IAssetAdministrationShell aasToReuse,
             string subassemblyEntityName,
@@ -87,7 +87,7 @@ namespace AasxPluginVec
         }
 
         protected AasCore.Aas3_0.Environment env;
-        protected AssetAdministrationShell aas;
+        protected IAssetAdministrationShell aas;
         protected IEnumerable<Entity> entitiesToBeMadeSubassembly;
         protected IAssetAdministrationShell aasToReuse;
         protected string subassemblyEntityName;
