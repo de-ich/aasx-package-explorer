@@ -32,7 +32,7 @@ namespace AasxPluginVec
         // Public interface
         //
 
-        public static void CreateOrder(
+        public static IAssetAdministrationShell CreateOrder(
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
             IEnumerable<Entity> selectedModules,
@@ -44,11 +44,12 @@ namespace AasxPluginVec
             try
             {
                 var creator = new OrderCreator(env, aas, selectedModules, orderNumber, options, log);
-                creator.CreateOrder();
+                return creator.CreateOrder();
             }
             catch (Exception ex)
             {
                 log?.Error(ex, $"creating order");
+                return null;
             }
         }
 
@@ -87,7 +88,7 @@ namespace AasxPluginVec
         protected VecOptions options;
         protected LogInstance log;
 
-        protected void CreateOrder()
+        protected IAssetAdministrationShell CreateOrder()
         {
             var allBomSubmodels = FindBomSubmodels(aas, env);
             // make sure all parents are set for all potential submodels involved in this action
@@ -96,7 +97,7 @@ namespace AasxPluginVec
             if (!selectedModules.All(HasAssociatedSubassemblies))
             {
                 log?.Error("It seems that a module was selected that has no associated subassemblies required for production!");
-                return;
+                return null;
             }
 
             var submodelContainingSelectedModules = FindCommonSubmodelParent(selectedModules);
@@ -104,7 +105,7 @@ namespace AasxPluginVec
             if (submodelContainingSelectedModules == null)
             {
                 log?.Error("Unable to determine single common BOM submodel that contains the selected modules!");
-                return;
+                return null;
             }
 
             var associatedSubassemblies = selectedModules.SelectMany(m => FindAssociatedSubassemblies(m, env));
@@ -112,7 +113,7 @@ namespace AasxPluginVec
             if (associatedSubassemblies.Any(s => s == null))
             {
                 log?.Error("At least one subassembly associated with a selected module could not be determined!");
-                return;
+                return null;
             }
 
             var orderAasIdShort = aas.IdShort + "_Order_" + orderNumber;
@@ -138,6 +139,8 @@ namespace AasxPluginVec
                 CreateHasPartRelationship(orderBuildingBlocksEntryNode, buildingBlockEntity);
                 CreateSameAsRelationship(buildingBlockEntity, associatedSubassembly, buildingBlockEntity);
             }
+
+            return orderAas;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace AasxPluginVec
         // Public interface
         //
 
-        public static void ReuseSubassembly(
+        public static IEntity ReuseSubassembly(
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
             IEnumerable<Entity> entities,
@@ -47,11 +47,12 @@ namespace AasxPluginVec
             try
             {
                 var reuser = new SubassemblyReuser(env, aas, entities, aasToReuse, subassemblyEntityName, partNames, options, log);
-                reuser.ReuseSubassembly();
+                return reuser.ReuseSubassembly();
             }
             catch (Exception ex)
             {
                 log?.Error(ex, $"reusing subassembly");
+                return null;
             }
         }
 
@@ -100,13 +101,13 @@ namespace AasxPluginVec
         protected VecOptions options;
         protected LogInstance log;
 
-        protected void ReuseSubassembly()
+        protected IEntity ReuseSubassembly()
         {
             existingBomSubmodel = FindCommonSubmodelParent(entitiesToBeMadeSubassembly);
             if (existingBomSubmodel == null)
             {
                 log?.Error("Unable to determine the single common BOM submodel that contains the selected entities!");
-                return;
+                return null;
             }
 
             var bomSubmodelInSubAssemblyAAS = FindFirstBomSubmodel(aasToReuse, env);
@@ -126,7 +127,7 @@ namespace AasxPluginVec
                 catch (Exception e)
                 {
                     log?.Error(e.Message);
-                    return;
+                    return null;
                 }
             }
 
@@ -145,6 +146,8 @@ namespace AasxPluginVec
 
                 CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.IdShort + "_SameAs_" + idShort);
             }
+
+            return subassemblyEntityInOriginalAAS;
         }    
     }
 }

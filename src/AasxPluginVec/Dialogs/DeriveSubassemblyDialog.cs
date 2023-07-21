@@ -26,11 +26,7 @@ namespace AasxPluginVec.AnyUi
             AnyUiContextPlusDialogs displayContext,
             IEnumerable<Entity> entitiesToBeMadeSubassembly)
         {
-            var dialogResult = new DeriveSubassemblyDialogResult
-            {
-                SubassemblyAASName = string.Join("_", entitiesToBeMadeSubassembly.Select(e => e.IdShort)),
-                SubassemblyEntityName = "Subassembly_" + string.Join("_", entitiesToBeMadeSubassembly.Select(e => e.IdShort))
-            };
+            DeriveSubassemblyDialogResult dialogResult = InitializeDialogResult(entitiesToBeMadeSubassembly);
 
             var uc = new AnyUiDialogueDataModalPanel("Configure Subassembly");
             uc.ActivateRenderPanel(
@@ -41,6 +37,24 @@ namespace AasxPluginVec.AnyUi
             if (!(await displayContext.StartFlyoverModalAsync(uc)))
             {
                 return null;
+            }
+
+            return dialogResult;
+        }
+
+        private static DeriveSubassemblyDialogResult InitializeDialogResult(IEnumerable<Entity> entitiesToBeMadeSubassembly)
+        {
+            string joinedEntityIdShorts = string.Join("_", entitiesToBeMadeSubassembly.Select(e => e.IdShort));
+
+            var dialogResult = new DeriveSubassemblyDialogResult
+            {
+                SubassemblyAASName = "AAS_" + joinedEntityIdShorts,
+                SubassemblyEntityName = "Subassembly_" + joinedEntityIdShorts,
+            };
+
+            foreach (var entity in entitiesToBeMadeSubassembly)
+            {
+                dialogResult.PartNames[entity.IdShort] = entity.IdShort;
             }
 
             return dialogResult;

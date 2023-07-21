@@ -33,7 +33,7 @@ namespace AasxPluginVec
         // Public interface
         //
 
-        public static void DeriveSubassembly(
+        public static IEntity DeriveSubassembly(
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
             IEnumerable<Entity> entities,
@@ -47,11 +47,12 @@ namespace AasxPluginVec
             try
             {
                 var deriver = new SubassemblyDeriver(env, aas, entities, subassemblyAASName, subassemblyEntityName, partNames, options, log);
-                deriver.DeriveSubassembly();
+                return deriver.DeriveSubassembly();
             }
             catch (Exception ex)
             {
                 log?.Error(ex, $"deriving subassembly");
+                return null;
             }
         }
 
@@ -104,7 +105,7 @@ namespace AasxPluginVec
         protected VecOptions options;
         protected LogInstance log;
 
-        protected void DeriveSubassembly()
+        protected IEntity DeriveSubassembly()
         {
             var allBomSubmodels = FindBomSubmodels(aas, env);
             // make sure all parents are set for all potential submodels involved in this action
@@ -113,7 +114,7 @@ namespace AasxPluginVec
             if (entitiesToBeMadeSubassembly.All(RepresentsSubAssembly))
             {
                 log?.Error("It seems that only subassemblies where selected. This is currently not supported. At least one basic component needs to be selected!");
-                return;
+                return null;
             }
 
             var submodelsContainingSelectedEntities = FindCommonSubmodelParents(entitiesToBeMadeSubassembly);
@@ -121,13 +122,13 @@ namespace AasxPluginVec
             if (submodelsContainingSelectedEntities.Count == 0)
             {
                 log?.Error("Unable to determine BOM submodel(s) that contain(s) the selected entities!");
-                return;
+                return null;
             }
 
             if (submodelsContainingSelectedEntities.Count > 2)
             {
                 log?.Error("Entities from more than 2 BOM submodels selected. This is not supported!");
-                return;
+                return null;
             }
 
             var referencedVecFileSMEs = submodelsContainingSelectedEntities.Select(sm => sm.FindEntryNode()).Select(n => FindReferencedVecFileSME(n, env)).Where(v => v != null);
@@ -135,13 +136,13 @@ namespace AasxPluginVec
             if (referencedVecFileSMEs.Count() != submodelsContainingSelectedEntities.Count)
             {
                 log?.Error("Not every BOM submodel containing one of the selected entities references a VEC file!");
-                return;
+                return null;
             }
 
             if (referencedVecFileSMEs.ToHashSet().Count != 1)
             {
                 log?.Error("Unable to determine VEC file referenced by the BOM submodel(s)!");
-                return;
+                return null;
             }
 
             var existingVecFileSME = referencedVecFileSMEs.First();
@@ -152,7 +153,7 @@ namespace AasxPluginVec
                 if (submodelsContainingSelectedEntities.Count == 2)
                 {
                     log?.Error("Found entities from 2 selected BOM submodels but none of these is a building blocks submodel!");
-                    return;
+                    return null;
                 }
                 else
                 {
@@ -164,7 +165,7 @@ namespace AasxPluginVec
                     } catch (Exception e)
                     {
                         log?.Error(e.Message);
-                        return;
+                        return null;
                     }
                 }
             }
@@ -219,6 +220,8 @@ namespace AasxPluginVec
                     CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, sameAsRelName);
                 }
             }
+
+            return subassemblyEntityInOriginalAAS;
         }        
 
         protected Entity CreateRelatedEntitiesInNewAdminShell(IEntity partEntityInOriginalAAS)

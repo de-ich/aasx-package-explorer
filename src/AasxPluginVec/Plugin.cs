@@ -274,50 +274,49 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
         {
             if (action == "call-menu-item")
             {
-                if (args != null && args.Length >= 3
-                    && args[0] is string cmd
-                    && args[1] is AasxMenuActionTicket ticket
-                    && args[2] is AnyUiContextPlusDialogs displayContext)
+                try { 
+                    CheckArguments(args);
+
+                    var cmd = args[0] as string;
+                    var ticket = args[1] as AasxMenuActionTicket;
+                    var displayContext = args[2] as AnyUiContextPlusDialogs;
+
+                    // make sure all parents are set so that we do not need to deal with this later
+                    ticket.Env.Submodels.ForEach(s => s.SetAllParents());
+
+                    IEnumerable<AasxPluginResultEventBase> resultEvents = null;
+
+                    if (cmd == "importvec")
+                    {
+                        resultEvents = await ExecuteImportVEC(ticket, displayContext);
+                    }
+
+                    if (cmd == "derivesubassembly")
+                    {
+                        resultEvents = await ExecuteDeriveSubassembly(ticket, displayContext);
+                    }
+
+                    if (cmd == "reusesubassembly")
+                    {
+                        resultEvents = await ExecuteReuseSubassembly(ticket, displayContext);
+                    }
+
+                    if (cmd == "associatesubassemblieswithmodule")
+                    {
+                        resultEvents = await ExecuteAssociateSubassembliesWithModule(ticket, displayContext);
+                    }
+
+                    if (cmd == "createorder")
+                    {
+                        resultEvents = await ExecuteCreateOrder(ticket, displayContext);
+                    }
+
+                    resultEvents?.ToList().ForEach(r => _eventStack.PushEvent(r));
+
+                }
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        if (ticket.Package == null || ticket.Env == null)
-                        {
-                            throw new ArgumentException($"Internal error: Unable to determine open AASX package!");
-                        }
-
-                        // make sure all parents are set so that we do not need to deal with this later
-                        ticket.Env.Submodels.ForEach(s => s.SetAllParents());
-
-                        if (cmd == "importvec")
-                        {
-                            return await ExecuteImportVEC(ticket, displayContext);
-                        }
-
-                        if (cmd == "derivesubassembly")
-                        {
-                            return await ExecuteDeriveSubassembly(ticket, displayContext);
-                        }
-
-                        if (cmd == "reusesubassembly")
-                        {
-                            return await ExecuteReuseSubassembly(ticket, displayContext);
-                        }
-
-                        if (cmd == "associatesubassemblieswithmodule")
-                        {
-                            return await ExecuteAssociateSubassembliesWithModule(ticket, displayContext);
-                        }
-
-                        if (cmd == "createorder")
-                        {
-                            return await ExecuteCreateOrder(ticket, displayContext);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _log?.Error(ex, "when executing plugin menu item " + cmd);
-                    }
+                    _log?.Error(ex, "when executing plugin menu item " + args[0] as string);
                 }
             }
 
@@ -325,7 +324,23 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             return null;
         }
 
-        private async Task<AasxPluginResultBase> ExecuteImportVEC(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        private static void CheckArguments(object[] args)
+        {
+            if (args == null || args.Length < 3
+                    || args[0] is not string cmd
+                    || args[1] is not AasxMenuActionTicket ticket
+                    || args[2] is not AnyUiContextPlusDialogs)
+            {
+                throw new ArgumentException("Internal error: Expected the three arguments (cmd, ticket, displayContext)!");
+            }
+            
+            if (ticket.Package == null || ticket.Env == null)
+            {
+                throw new ArgumentException($"Internal error: Unable to determine open AASX package!");
+            }
+        }
+
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteImportVEC(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
         {
             if (ticket.AAS == null)
             {
@@ -337,13 +352,19 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             var aas = ticket.AAS;
             var fileName = await ImportVecDialog.DetermineVecFileToImport(_options, _log, displayContext);
 
+            if (fileName == null)
+            {
+                return null;
+            }
+
             _log.Info($"Importing VEC container from file: {fileName} ..");
             VecImporter.ImportVecFromFile(package, env, aas, fileName, _options, _log);
+            
+            return new List<AasxPluginResultEventBase>() { new AasxPluginResultEventRedrawAllElements() };
 
-            return new AasxPluginResultBase();
         }
 
-        private async Task<AasxPluginResultBase> ExecuteDeriveSubassembly(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteDeriveSubassembly(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
         {
             var env = ticket.Env;
             var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
@@ -356,16 +377,26 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             var result = await DeriveSubassemblyDialog.DetermineDeriveSubassemblyConfiguration(_options, _log, displayContext, selectedEntities);
 
-            if (result != null)
+            if (result == null)
             {
-                _log.Info($"Deriving subassembly...");
-                SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, result.SubassemblyAASName, result.SubassemblyEntityName, result.PartNames, _options, _log);
+                return null;
             }
-            
-            return new AasxPluginResultBase();
+
+            _log.Info($"Deriving subassembly...");
+            var subassemblyEntity = SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, result.SubassemblyAASName, result.SubassemblyEntityName, result.PartNames, _options, _log);
+
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = subassemblyEntity.GetReference()
+                }
+
+            };
         }
 
-        private async Task<AasxPluginResultBase> ExecuteReuseSubassembly(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteReuseSubassembly(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
         {
             var env = ticket.Env;
             var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
@@ -378,16 +409,25 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             var result = await ReuseSubassemblyDialog.DetermineReuseSubassemblyConfiguration(_options, _log, displayContext, selectedEntities, env);
 
-            if (result != null)
+            if (result == null)
             {
-                _log.Info($"Reusing subassembly...");
-                SubassemblyReuser.ReuseSubassembly(env, aas, selectedEntities, result.AasToReuse, result.SubassemblyEntityName, result.PartNames, _options, _log);
+                return null;
             }
+                
+            _log.Info($"Reusing subassembly...");
+            var subassemblyEntity = SubassemblyReuser.ReuseSubassembly(env, aas, selectedEntities, result.AasToReuse, result.SubassemblyEntityName, result.PartNames, _options, _log);
 
-            return new AasxPluginResultBase();
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = subassemblyEntity.GetReference()
+                }
+            };
         }
 
-        private async Task<AasxPluginResultBase> ExecuteAssociateSubassembliesWithModule(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteAssociateSubassembliesWithModule(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
         {
             var env = ticket.Env;
             var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
@@ -400,16 +440,25 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             var result = await AssociateSubassembliesWithModuleDialog.DetermineAssociateSubassembliesWithModuleConfiguration(_options, _log, displayContext, selectedEntities, aas, env);
 
-            if (result != null)
+            if (result == null)
             {
-                _log.Info($"Associating subassemblies with module...");
-                SubassemblyToModuleAssociator.AssociateSubassemblies(env, aas, selectedEntities, result.SelectedModule, _options, _log);
+                return null;
             }
 
-            return new AasxPluginResultBase();
+            _log.Info($"Associating subassemblies with module...");
+            SubassemblyToModuleAssociator.AssociateSubassemblies(env, aas, selectedEntities, result.SelectedModule, _options, _log);
+
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = result.SelectedModule.GetReference()
+                }
+            };
         }
 
-        private async Task<object> ExecuteCreateOrder(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteCreateOrder(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
         {
             var env = ticket.Env;
             var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
@@ -422,13 +471,21 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             var result = await CreateOrderDialog.DetermineCreateOrderConfiguration(_options, _log, displayContext);
 
-            if (result != null)
-            {
-                _log.Info($"Creating Order...");
-                OrderCreator.CreateOrder(env, aas, selectedEntities, result.OrderNumber, _options, _log);
+            if (result == null) {
+                return null;
             }
-
-            return new AasxPluginResultBase();
+             
+            _log.Info($"Creating Order...");
+            var orderAas = OrderCreator.CreateOrder(env, aas, selectedEntities, result.OrderNumber, _options, _log);
+            
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = orderAas.GetReference()
+                }
+            };
         }
 
         private static IEnumerable<Entity> GetSelectedEntitiesFromTicket(AasxMenuActionTicket ticket)

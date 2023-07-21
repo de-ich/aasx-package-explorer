@@ -29,11 +29,7 @@ namespace AasxPluginVec.AnyUi
             IEnumerable<Entity> entitiesToBeMadeSubassembly,
             AasCore.Aas3_0.Environment environment)
         {
-
-            var dialogResult = new ReuseSubassemblyDialogResult
-            {
-                SubassemblyEntityName = "Subassembly_" + string.Join("_", entitiesToBeMadeSubassembly.Select(e => e.IdShort))
-            };
+            var dialogResult = InitializeDialogResult(entitiesToBeMadeSubassembly);
 
             var potentialSubassemblyShellsToReuse = environment.AssetAdministrationShells;
 
@@ -44,13 +40,21 @@ namespace AasxPluginVec.AnyUi
                 (uci) => RenderMainDialogPanel(entitiesToBeMadeSubassembly, potentialSubassemblyShellsToReuse, environment, dialogResult, uc)
             );
 
-            if(!(await displayContext.StartFlyoverModalAsync(uc)))
+            if (!(await displayContext.StartFlyoverModalAsync(uc)))
             {
                 return null;
             }
 
             return dialogResult;
 
+        }
+
+        private static ReuseSubassemblyDialogResult InitializeDialogResult(IEnumerable<Entity> entitiesToBeMadeSubassembly)
+        {
+            return new ReuseSubassemblyDialogResult
+            {
+                SubassemblyEntityName = "Subassembly_" + string.Join("_", entitiesToBeMadeSubassembly.Select(e => e.IdShort))
+            };
         }
 
         private static AnyUiPanel RenderMainDialogPanel(IEnumerable<Entity> entitiesToBeMadeSubassembly, IEnumerable<IAssetAdministrationShell> potentialSubassemblyShellsToReuse, AasCore.Aas3_0.Environment environment, ReuseSubassemblyDialogResult dialogResult, AnyUiDialogueDataModalPanel parentPanel)
