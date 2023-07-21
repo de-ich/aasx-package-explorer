@@ -9,7 +9,7 @@ using static AasxPluginVec.BasicAasUtils;
 
 namespace AasxPluginVec
 {
-    public class BomSMUtils
+    public static class BomSMUtils
     {
         public const string SEM_ID_BOM_SM = "https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel";
         public const string SEM_ID_ARCHE_TYPE = "https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0";
@@ -46,13 +46,13 @@ namespace AasxPluginVec
             return submodels.Where(sm => sm.SemanticId?.Matches(KeyTypes.Submodel, SEM_ID_BOM_SM) ?? false);
         }
 
-        public static Entity CreateEntryNode(ISubmodel parent, string referencedAsset)
+        public static Entity CreateEntryNode(this ISubmodel parent, string referencedAsset)
         {
             var semanticId = CreateSemanticId(KeyTypes.Entity, SEM_ID_ENTRY_NODE);
             return CreateEntity(ID_SHORT_ENTRY_NODE, parent, referencedAsset, semanticId);
         }
 
-        public static Entity FindEntryNode(ISubmodel bomSubmodel) {
+        public static Entity FindEntryNode(this ISubmodel bomSubmodel) {
             return bomSubmodel?.FindSubmodelElementByIdShort(ID_SHORT_ENTRY_NODE) as Entity;
         }
 
@@ -97,7 +97,7 @@ namespace AasxPluginVec
             );
         }
 
-        public static bool IsHasPartRelationship(RelationshipElement rel)
+        public static bool IsHasPartRelationship(this RelationshipElement rel)
         {
             return rel?.SemanticId?.Matches(KeyTypes.ConceptDescription, SEM_ID_HAS_PART) ?? false;
         }
@@ -123,7 +123,7 @@ namespace AasxPluginVec
             );
         }
 
-        public static bool IsSameAsRelationship(RelationshipElement rel)
+        public static bool IsSameAsRelationship(this RelationshipElement rel)
         {
             return rel?.SemanticId?.Matches(KeyTypes.ConceptDescription, SEM_ID_SAME_AS) ?? false;
         }
@@ -141,34 +141,38 @@ namespace AasxPluginVec
             return rel;
         }
 
-        public static List<RelationshipElement> GetHasPartRelationships(IEntity entity)
+        public static IEnumerable<IRelationshipElement> GetHasPartRelationships(this IEntity entity)
         {
-            return entity?.EnumerateChildren().
-               Where(c => c is RelationshipElement).
-               Select(c => c as RelationshipElement).
-               Where(r => r.SemanticId.Matches(KeyTypes.ConceptDescription, SEM_ID_HAS_PART)).ToList() ?? new List<RelationshipElement>();
+            return entity.GetChildRelationships().Where(r => r.SemanticId.Matches(KeyTypes.ConceptDescription, SEM_ID_HAS_PART)).ToList();
         }
 
-        public static List<RelationshipElement> GetSameAsRelationships(IEntity entity)
+        public static IEnumerable<IRelationshipElement> GetSameAsRelationships(this IEntity entity)
         {
-            return entity?.EnumerateChildren().
-               Where(c => c is RelationshipElement).
-               Select(c => c as RelationshipElement).
-               Where(r => r.SemanticId.Matches(KeyTypes.ConceptDescription, SEM_ID_SAME_AS)).ToList() ?? new List<RelationshipElement>();
+            return entity.GetChildRelationships().Where(r => r.SemanticId.Matches(KeyTypes.ConceptDescription, SEM_ID_SAME_AS)).ToList();
         }
 
-        public static List<Entity> GetLeafNodes(ISubmodel submodel) {
-            var entryNode = FindEntryNode(submodel);
-            return entryNode?.EnumerateChildren().Select(c => c as Entity).Where(IsLeafNode).ToList() ?? new List<Entity>();
+        public static IEnumerable<IEntity> GetLeafNodes(this ISubmodel submodel) {
+            var entryNode = submodel.FindEntryNode();
+            return entryNode?.GetChildEntities().Where(IsLeafNode).ToList() ?? new List<IEntity>();
         }
 
-        public static bool IsLeafNode(IEntity node)
+        public static bool IsLeafNode(this IEntity node)
         {
             if (node == null)
             {
                 return false;
             }
             return GetHasPartRelationships(node).Count() == 0;
+        }
+
+        public static IEnumerable<IEntity> GetChildEntities(this IEntity entity)
+        {
+            return entity?.EnumerateChildren().Where(c => c is IEntity).Select(c => c as IEntity) ?? new List<IEntity>();
+        }
+
+        public static IEnumerable<IRelationshipElement> GetChildRelationships(this IEntity entity)
+        {
+            return entity?.EnumerateChildren().Where(c => c is IRelationshipElement).Select(c => c as IRelationshipElement) ?? new List<IRelationshipElement>();
         }
     }
 }

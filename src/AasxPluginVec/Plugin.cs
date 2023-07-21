@@ -21,6 +21,8 @@ using AdminShellNS;
 using System.Threading.Tasks;
 using AnyUi;
 using AasxPluginVec.AnyUi;
+using System.Windows.Forms;
+using static AasxPluginVec.BasicAasUtils;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -279,34 +281,37 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 {
                     try
                     {
+                        if (ticket.Package == null || ticket.Env == null)
+                        {
+                            throw new ArgumentException($"Internal error: Unable to determine open AASX package!");
+                        }
+
+                        // make sure all parents are set so that we do not need to deal with this later
+                        ticket.Env.Submodels.ForEach(s => s.SetAllParents());
+
                         if (cmd == "importvec")
                         {
-                            await ImportVecDialog.ImportVECDialogBased(_options, _log, ticket, displayContext);
-                            return new AasxPluginResultBase();
+                            return await ExecuteImportVEC(ticket, displayContext);
                         }
 
                         if (cmd == "derivesubassembly")
                         {
-                            await AasxPluginVec.AnyUi.DeriveSubassemblyDialog.DeriveSubassemblyDialogBased(_options, _log, ticket, displayContext);
-                            return new AasxPluginResultBase();
+                            return await ExecuteDeriveSubassembly(ticket, displayContext);
                         }
 
                         if (cmd == "reusesubassembly")
                         {
-                            await AasxPluginVec.AnyUi.ReuseSubassemblyDialog.ReuseSubassemblyDialogBased(_options, _log, ticket, displayContext);
-                            return new AasxPluginResultBase();
+                            return await ExecuteReuseSubassembly(ticket, displayContext);
                         }
 
                         if (cmd == "associatesubassemblieswithmodule")
                         {
-                            await AasxPluginVec.AnyUi.AssociateSubassembliesWithModuleDialog.AssociateSubassembliesWithModuleDialogBased(_options, _log, ticket, displayContext);
-                            return new AasxPluginResultBase();
+                            return await ExecuteAssociateSubassembliesWithModule(ticket, displayContext);
                         }
 
                         if (cmd == "createorder")
                         {
-                            await AasxPluginVec.AnyUi.CreateOrderDialog.CreateOrderDialogBased(_options, _log, ticket, displayContext);
-                            return new AasxPluginResultBase();
+                            return await ExecuteCreateOrder(ticket, displayContext);
                         }
                     }
                     catch (Exception ex)
@@ -318,6 +323,128 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             // default
             return null;
+        }
+
+        private async Task<AasxPluginResultBase> ExecuteImportVEC(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            if (ticket.AAS == null)
+            {
+                throw new ArgumentException($"Import VEC: An AAS has to be selected!");
+            }
+
+            var package = ticket.Package;
+            var env = ticket.Env;
+            var aas = ticket.AAS;
+            var fileName = await ImportVecDialog.DetermineVecFileToImport(_options, _log, displayContext);
+
+            _log.Info($"Importing VEC container from file: {fileName} ..");
+            VecImporter.ImportVecFromFile(package, env, aas, fileName, _options, _log);
+
+            return new AasxPluginResultBase();
+        }
+
+        private async Task<AasxPluginResultBase> ExecuteDeriveSubassembly(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+            var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
+            var aas = GetAasContainingElements(selectedEntities, env);
+
+            if (aas == null)
+            {
+                throw new ArgumentException($"Derive Subassembly: Unable to determine the (single) AAS containing the selected entities!");
+            }
+
+            var result = await DeriveSubassemblyDialog.DetermineDeriveSubassemblyConfiguration(_options, _log, displayContext, selectedEntities);
+
+            if (result != null)
+            {
+                _log.Info($"Deriving subassembly...");
+                SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, result.SubassemblyAASName, result.SubassemblyEntityName, result.PartNames, _options, _log);
+            }
+            
+            return new AasxPluginResultBase();
+        }
+
+        private async Task<AasxPluginResultBase> ExecuteReuseSubassembly(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+            var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
+            var aas = GetAasContainingElements(selectedEntities, env);
+
+            if (aas == null)
+            {
+                throw new ArgumentException($"Reuse Subassembly: Unable to determine the (single) AAS containing the selected entities!");
+            }
+
+            var result = await ReuseSubassemblyDialog.DetermineReuseSubassemblyConfiguration(_options, _log, displayContext, selectedEntities, env);
+
+            if (result != null)
+            {
+                _log.Info($"Reusing subassembly...");
+                SubassemblyReuser.ReuseSubassembly(env, aas, selectedEntities, result.AasToReuse, result.SubassemblyEntityName, result.PartNames, _options, _log);
+            }
+
+            return new AasxPluginResultBase();
+        }
+
+        private async Task<AasxPluginResultBase> ExecuteAssociateSubassembliesWithModule(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+            var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
+            var aas = GetAasContainingElements(selectedEntities, env);
+
+            if (aas == null)
+            {
+                throw new ArgumentException($"Reuse Subassembly: Unable to determine the (single) AAS containing the selected entities!");
+            }
+
+            var result = await AssociateSubassembliesWithModuleDialog.DetermineAssociateSubassembliesWithModuleConfiguration(_options, _log, displayContext, selectedEntities, aas, env);
+
+            if (result != null)
+            {
+                _log.Info($"Associating subassemblies with module...");
+                SubassemblyToModuleAssociator.AssociateSubassemblies(env, aas, selectedEntities, result.SelectedModule, _options, _log);
+            }
+
+            return new AasxPluginResultBase();
+        }
+
+        private async Task<object> ExecuteCreateOrder(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+            var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
+            var aas = GetAasContainingElements(selectedEntities, env);
+
+            if (aas == null)
+            {
+                throw new ArgumentException($"Reuse Subassembly: Unable to determine the (single) AAS containing the selected entities!");
+            }
+
+            var result = await CreateOrderDialog.DetermineCreateOrderConfiguration(_options, _log, displayContext);
+
+            if (result != null)
+            {
+                _log.Info($"Creating Order...");
+                OrderCreator.CreateOrder(env, aas, selectedEntities, result.OrderNumber, _options, _log);
+            }
+
+            return new AasxPluginResultBase();
+        }
+
+        private static IEnumerable<Entity> GetSelectedEntitiesFromTicket(AasxMenuActionTicket ticket)
+        {
+            var selectedObjects = ticket.SelectedDereferencedMainDataObjects;
+            if (selectedObjects == null || selectedObjects.Count() == 0)
+            {
+                throw new ArgumentException($"One or multiple Entities have to be selected!");
+            }
+
+            if (selectedObjects.Any(e => e is not Entity))
+            {
+                throw new ArgumentException($"Only Entities may be selected!");
+            }
+
+            return selectedObjects.Select(e => e as Entity);
         }
     }
 }

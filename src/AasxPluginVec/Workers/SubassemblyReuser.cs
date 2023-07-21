@@ -111,7 +111,7 @@ namespace AasxPluginVec
 
             var bomSubmodelInSubAssemblyAAS = FindFirstBomSubmodel(aasToReuse, env);
             bomSubmodelInSubAssemblyAAS.SetAllParents();
-            var atomicComponentEntitiesInSubAssemblyAAS = GetLeafNodes(bomSubmodelInSubAssemblyAAS);
+            var atomicComponentEntitiesInSubAssemblyAAS = bomSubmodelInSubAssemblyAAS.GetLeafNodes();
 
             // get or create the 'building blocks' submodel 
             var existingBuildingBlocksBomSubmodel = FindBuildingBlocksSubmodel(aas, env);
@@ -130,7 +130,7 @@ namespace AasxPluginVec
                 }
             }
 
-            var buildingBlocksSubmodelEntryNode = FindEntryNode(existingBuildingBlocksBomSubmodel);
+            var buildingBlocksSubmodelEntryNode = existingBuildingBlocksBomSubmodel.FindEntryNode();
 
             // the entity representing the sub-assembly in the BOM SM of the original AAS (the harness AAS)
             var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, buildingBlocksSubmodelEntryNode, aasToReuse.AssetInformation.GlobalAssetId);

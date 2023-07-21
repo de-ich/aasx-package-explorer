@@ -147,13 +147,13 @@ namespace AasxPluginVec
 
             var bomComponentsSubmodelIdShort = ID_SHORT_COMPONENTS_SM + "_" + index;
             var bomComponentsSubmodel = CreateBomSubmodel(bomComponentsSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
-            var bomComponentsEntryNode = FindEntryNode(bomComponentsSubmodel);
+            var bomComponentsEntryNode = bomComponentsSubmodel.FindEntryNode();
             CreateVecRelationship(bomComponentsEntryNode, harnessFragment, this.vecFileSubmodelElement);
             CreateComponentEntities(bomComponentsEntryNode, harnessDescription);
 
             var bomModulesSubmodelIdShort = ID_SHORT_ORDERABLE_MODULES_SM + "_" + index;
             var bomModulesSubmodel = CreateBomSubmodel(bomModulesSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
-            var bomModulesEntryNode = FindEntryNode(bomModulesSubmodel);
+            var bomModulesEntryNode = bomModulesSubmodel.FindEntryNode();
             CreateVecRelationship(bomModulesEntryNode, harnessFragment, this.vecFileSubmodelElement);
             CreateModuleEntities(bomModulesEntryNode, harnessDescription);
         }

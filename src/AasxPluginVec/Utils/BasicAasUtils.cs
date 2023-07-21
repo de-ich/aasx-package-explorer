@@ -157,5 +157,12 @@ namespace AasxPluginVec
 
             return submodel;
         }
+
+        public static IAssetAdministrationShell GetAasContainingElements(IEnumerable<ISubmodelElement> elements, AasCore.Aas3_0.Environment env)
+        {
+            var submodelReferences = new HashSet<Reference>(elements.Select(e => e.GetParentSubmodel().GetReference() as Reference));
+            var aas = env.AssetAdministrationShells.FirstOrDefault(aas => submodelReferences.All(r => aas.HasSubmodelReference(r)));
+            return aas;
+        }
     }
 }

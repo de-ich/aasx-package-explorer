@@ -69,9 +69,9 @@ namespace AasxPluginVec
             return CreateRelationship(source.GetReference(), second, source, idShort, semanticId);
         }
 
-        public static RelationshipElement GetVecRelationship(Entity entity)
+        public static RelationshipElement GetVecRelationship(IEntity entity)
         {
-            var rel = entity?.FindFirstIdShortAs<RelationshipElement>(VEC_REFERENCE_ID_SHORT);
+            var rel = (entity as Entity)?.FindFirstIdShortAs<RelationshipElement>(VEC_REFERENCE_ID_SHORT);
 
             return IsVecRelationship(rel) ? rel : null;
         }

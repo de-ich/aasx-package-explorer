@@ -120,7 +120,7 @@ namespace AasxPluginVec
             orderAas.DerivedFrom = aas.GetReference();
 
             orderedModulesSubmodel = CreateBomSubmodel(ID_SHORT_ORDERED_MODULES_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
-            var orderedModuleEntryNode = FindEntryNode(orderedModulesSubmodel);
+            var orderedModuleEntryNode = orderedModulesSubmodel.FindEntryNode();
 
             foreach(var module in selectedModules)
             {
@@ -128,7 +128,7 @@ namespace AasxPluginVec
             }
 
             orderBuildingBlocksSubmodel = CreateBomSubmodel(ID_SHORT_BUILDING_BLOCKS_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
-            var orderBuildingBlocksEntryNode = FindEntryNode(orderBuildingBlocksSubmodel);
+            var orderBuildingBlocksEntryNode = orderBuildingBlocksSubmodel.FindEntryNode();
 
             foreach(var associatedSubassembly in associatedSubassemblies)
             {

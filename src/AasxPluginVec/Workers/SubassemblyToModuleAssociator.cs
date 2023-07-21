@@ -36,7 +36,7 @@ namespace AasxPluginVec
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
             IEnumerable<Entity> subassembliesToAssociate,
-            Entity orderableModule,
+            IEntity orderableModule,
             VecOptions options,
             LogInstance log = null)
         {
@@ -60,7 +60,7 @@ namespace AasxPluginVec
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
             IEnumerable<Entity> subassembliesToAssociate,
-            Entity orderableModule,
+            IEntity orderableModule,
             VecOptions options,
             LogInstance log = null)
         {
@@ -77,7 +77,7 @@ namespace AasxPluginVec
         protected AasCore.Aas3_0.Environment env;
         protected IAssetAdministrationShell aas;
         protected IEnumerable<Entity> subassembliesToAssociate;
-        protected Entity orderableModule;
+        protected IEntity orderableModule;
         protected VecOptions options;
         protected LogInstance log;
 
