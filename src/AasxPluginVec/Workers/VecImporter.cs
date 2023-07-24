@@ -34,7 +34,7 @@ namespace AasxPluginVec
         // Public interface
         //
 
-        public static void ImportVecFromFile(
+        public static ISubmodel ImportVecFromFile(
             AdminShellPackageEnv packageEnv,
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
@@ -46,18 +46,19 @@ namespace AasxPluginVec
             if (!pathToVecFile.HasContent())
             {
                 log?.Error("Import VEC: no valid filename!");
-                return;
+                return null;
             }
 
             // safe
             try
             {
                 var importer = new VecImporter(packageEnv, env, aas, pathToVecFile, options, log);
-                importer.ImportVec();
+                return importer.ImportVec();
             }
             catch (Exception ex)
             {
                 log?.Error(ex, $"importing VEC file {pathToVecFile}");
+                return null;
             }
         }
 
@@ -85,90 +86,118 @@ namespace AasxPluginVec
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.vecSubmodel = null;
-            this.bomComponentSubmodels = new List<Submodel>();
-            this.bomModuleSubmodels = new List<Submodel>();
             this.vecProvider = new VecProvider(pathToVecFile);
             this.vecFileSubmodelElement = null;
-            this.ComponentEntitiesById = new Dictionary<string, Entity>();
         }
 
         protected AdminShellPackageEnv packageEnv;
         protected AasCore.Aas3_0.Environment env;
         protected IAssetAdministrationShell aas;
-        protected Submodel vecSubmodel;
-        protected List<Submodel> bomComponentSubmodels;
-        protected List<Submodel> bomModuleSubmodels;
+        protected ISubmodel vecSubmodel;
         protected string pathToVecFile;
         protected VecOptions options;
         protected LogInstance log;
         protected VecProvider vecProvider;
         protected AasCore.Aas3_0.File vecFileSubmodelElement;
-        protected Dictionary<String, Entity> ComponentEntitiesById;
 
 
-        protected void ImportVec()
+        protected ISubmodel ImportVec()
         {
-            CreateVecSubmodel();
+            vecSubmodel = CreateVecSubmodel();
+            vecFileSubmodelElement = vecSubmodel.FindFirstIdShortAs<AasCore.Aas3_0.File>(VEC_FILE_ID_SHORT);
+
+            if (vecFileSubmodelElement == null)
+            {
+                log?.Error("Unable to find VEC file element in created VEC submodel...");
+                return null;
+            }
 
             if (vecProvider.HarnessDescriptions.Count == 0)
             {
                 log?.Error("Unable to find HarnessDescription in VEC file...");
-                return;
+                return null;
             }
 
-            foreach (var harness in vecProvider.HarnessDescriptions)
+            ImportHarnessDescriptions();
+
+            return vecSubmodel;
+        }
+
+        private void ImportHarnessDescriptions()
+        {
+            for (int i = 0; i < vecProvider.HarnessDescriptions.Count; i++)
             {
-                CreateBomSubmodels(harness);
+                var indexSuffix = vecProvider.HarnessDescriptions.Count > 0 ? "_" + (i + 1).ToString().PadLeft(2, '0') : "";
+                var harnessDescription = vecProvider.HarnessDescriptions[i];
+                ImportHarnessDescription(indexSuffix, harnessDescription);
             }
         }
 
-        protected void CreateVecSubmodel()
+        private void ImportHarnessDescription(string indexSuffix, XElement harnessDescription)
         {
-            var id = AdminShellUtil.GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
+            var componentsSubmodel = CreateComponentsSubmodel(indexSuffix);
+            var bomComponentsEntryNode = componentsSubmodel.FindEntryNode();
 
+            var modulesSubmodel = CreateModulesSubmodel(indexSuffix);
+            var bomModulesEntryNode = modulesSubmodel.FindEntryNode();
+
+            var entitesByXmlElement = new List<(XElement xmlElement, IEntity entity)>()
+                {
+                    (harnessDescription, bomComponentsEntryNode),
+                    (harnessDescription, bomModulesEntryNode)
+                };
+
+            entitesByXmlElement.AddRange(CreateComponentEntities(bomComponentsEntryNode, harnessDescription));
+            entitesByXmlElement.AddRange(CreateModuleEntities(bomModulesEntryNode, harnessDescription));
+
+            foreach (var (xmlElement, entity) in entitesByXmlElement)
+            {
+                // create the fragment relationship pointing to the Component element for the current component
+                CreateVecRelationship(entity, GetElementFragment(xmlElement), this.vecFileSubmodelElement, this.vecSubmodel);
+            }
+        }
+
+        protected ISubmodel CreateVecSubmodel()
+        {
             // create the VEC submodel
-            var vecSubmodel = VecSMUtils.CreateVecSubmodel(id, pathToVecFile, this.packageEnv);
-
-            this.env.Submodels.Add(vecSubmodel);
-            this.aas.AddSubmodelReference(vecSubmodel.GetReference());
-
-            this.vecFileSubmodelElement = vecSubmodel.FindFirstIdShortAs<AasCore.Aas3_0.File>(VEC_FILE_ID_SHORT);
-
-            if (this.vecFileSubmodelElement == null)
-            {
-                log?.Error("Unable to find VEC file element in created VEC submodel...");
-            }
+            return VecSMUtils.CreateVecSubmodel(pathToVecFile, options.TemplateIdSubmodel, aas, env, packageEnv);
         }
 
-        protected void CreateBomSubmodels(XElement harnessDescription)
+        protected ISubmodel CreateComponentsSubmodel(string indexSuffix = "")
         {
-            var index = (bomComponentSubmodels.Count() + 1).ToString().PadLeft(2, '0');
-            var harnessFragment = GetElementFragment(harnessDescription);
-
-            var bomComponentsSubmodelIdShort = ID_SHORT_COMPONENTS_SM + "_" + index;
+            var bomComponentsSubmodelIdShort = ID_SHORT_COMPONENTS_SM + indexSuffix;
             var bomComponentsSubmodel = CreateBomSubmodel(bomComponentsSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
-            var bomComponentsEntryNode = bomComponentsSubmodel.FindEntryNode();
-            CreateVecRelationship(bomComponentsEntryNode, harnessFragment, this.vecFileSubmodelElement);
-            CreateComponentEntities(bomComponentsEntryNode, harnessDescription);
 
-            var bomModulesSubmodelIdShort = ID_SHORT_ORDERABLE_MODULES_SM + "_" + index;
-            var bomModulesSubmodel = CreateBomSubmodel(bomModulesSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
-            var bomModulesEntryNode = bomModulesSubmodel.FindEntryNode();
-            CreateVecRelationship(bomModulesEntryNode, harnessFragment, this.vecFileSubmodelElement);
-            CreateModuleEntities(bomModulesEntryNode, harnessDescription);
+            return bomComponentsSubmodel;
         }
 
-        private void CreateComponentEntities(Entity mainEntity, XElement harnessDescription)
+        protected ISubmodel CreateModulesSubmodel(string indexSuffix = "")
         {
+            var bomModulesSubmodelIdShort = ID_SHORT_ORDERABLE_MODULES_SM + indexSuffix;
+            var bomModulesSubmodel = CreateBomSubmodel(bomModulesSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
+
+            return bomModulesSubmodel;
+        }
+
+        private IEnumerable<(XElement xmlElement, IEntity entity)> CreateComponentEntities(IEntity mainEntity, XElement harnessDescription)
+        {
+            var createdEntities = new List<(XElement xmlElement, IEntity entity)>();
+
             var compositionSpecifications = FindCompositionSpecifications(harnessDescription);
 
             foreach (var component in compositionSpecifications.SelectMany(spec => FindComponentsInComposition(spec)))
             {
-                CreateComponentEntity(mainEntity, component);
+                var entity = CreateComponentEntity(mainEntity, component);
+                if (entity != null)
+                {
+                    createdEntities.Add((component, entity));
+                }
             }
+
+            return createdEntities;
         }
 
-        private Entity CreateComponentEntity(Entity mainEntity, XElement component)
+        private Entity CreateComponentEntity(IEntity mainEntity, XElement component)
         {
             string componentName = GetIdentification(component);
 
@@ -190,10 +219,6 @@ namespace AasxPluginVec
             
             // create the entity
             var componentEntity = CreateNode(componentName, mainEntity, assetId);
-            this.ComponentEntitiesById[GetXmlId(component)] = componentEntity;
-
-            // create the fragment relationship pointing to the Component element for the current component
-            CreateVecRelationship(componentEntity, GetElementFragment(component), this.vecFileSubmodelElement);
 
             // create the relationship between the main and the component entity
             CreateHasPartRelationship(mainEntity, componentEntity);
@@ -201,20 +226,22 @@ namespace AasxPluginVec
             return componentEntity;
         }
 
-        private void CreateModuleEntities(Entity mainEntity, XElement harnessDescription)
+        private IEnumerable<(XElement xmlElement, IEntity entity)> CreateModuleEntities(Entity mainEntity, XElement harnessDescription)
         {
+            var createdEntities = new List<(XElement xmlElement, IEntity entity)>();
+
             var partStructureSpecifications = FindPartStructureSpecifications(harnessDescription);
 
             foreach (var spec in partStructureSpecifications)
             {
                 var moduleEntity = CreateModuleEntity(mainEntity, spec);
-                
-                /*foreach (var id in FindIdsOfContainedParts(spec))
+                if (moduleEntity!= null)
                 {
-                    var componentEntity = this.ComponentEntitiesById[id];
-                    CreateHasPartRelationship(moduleEntity, componentEntity);
-                }*/
+                    createdEntities.Add((spec, moduleEntity));
+                }
             }
+
+            return createdEntities;
         }
 
         private Entity CreateModuleEntity(Entity mainEntity, XElement component)
@@ -229,9 +256,6 @@ namespace AasxPluginVec
 
             // create the entity
             var componentEntity = CreateNode(componentName, mainEntity);
-
-            // create the fragment relationship pointing to the Component element for the current component
-            CreateVecRelationship(componentEntity, GetElementFragment(component), this.vecFileSubmodelElement);
 
             // create the relationship between the main and the component entity
             CreateHasPartRelationship(mainEntity, componentEntity);

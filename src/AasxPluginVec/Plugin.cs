@@ -358,9 +358,15 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             }
 
             _log.Info($"Importing VEC container from file: {fileName} ..");
-            VecImporter.ImportVecFromFile(package, env, aas, fileName, _options, _log);
+            var vecSubmodel = VecImporter.ImportVecFromFile(package, env, aas, fileName, _options, _log);
             
-            return new List<AasxPluginResultEventBase>() { new AasxPluginResultEventRedrawAllElements() };
+            return new List<AasxPluginResultEventBase>() { 
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = vecSubmodel.GetReference()
+                }
+            };
 
         }
 

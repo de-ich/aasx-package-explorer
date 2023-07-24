@@ -128,12 +128,12 @@ namespace AasxPluginVec
             return rel?.SemanticId?.Matches(KeyTypes.ConceptDescription, SEM_ID_SAME_AS) ?? false;
         }
 
-        public static RelationshipElement CreateRelationship(ISubmodelElement first, ISubmodelElement second, IEntity parent, string idShort, IReference semanticId = null)
+        public static RelationshipElement CreateRelationship(ISubmodelElement first, ISubmodelElement second, IReferable parent, string idShort, IReference semanticId = null)
         {
             return CreateRelationship(first.GetReference(), second.GetReference(), parent, idShort, semanticId);
         }
 
-        public static RelationshipElement CreateRelationship(IReference first, IReference second, IEntity parent, string idShort, IReference semanticId = null)
+        public static RelationshipElement CreateRelationship(IReference first, IReference second, IReferable parent, string idShort, IReference semanticId = null)
         {
             var rel = new RelationshipElement(first, second, idShort: idShort, semanticId: semanticId);
             parent.Add(rel);

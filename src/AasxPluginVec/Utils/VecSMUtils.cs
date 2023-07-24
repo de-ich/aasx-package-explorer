@@ -15,38 +15,37 @@ namespace AasxPluginVec
     public class VecSMUtils
     {
         public const string VEC_SUBMODEL_ID_SHORT = "VEC";
-        public const string VEC_FILE_ID_SHORT = "VEC";
-        public const string VEC_REFERENCE_ID_SHORT = "VEC_Reference";
+        public const string VEC_FILE_ID_SHORT = "VecFile";
+        public const string VEC_REFERENCE_ID_SHORT = "SameAs";
         public const string SEM_ID_VEC_SUBMODEL = "http://arena2036.de/vws4ls/vec/VecSubmodel/1/0";
         public const string SEM_ID_VEC_FILE_REFERENCE = "http://arena2036.de/vws4ls/vec/VecFileReference/1/0";
         public const string SEM_ID_VEC_FRAGMENT_REFERENCE = "https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0";
 
-        public static Submodel CreateVecSubmodel(string iri, string pathToVecFile, AdminShellPackageEnv packageEnv)
+        public static Submodel CreateVecSubmodel(string pathToVecFile, string iriTemplate, IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env, AdminShellPackageEnv packageEnv = null)
         {
             // add the file to the package
             var localFilePath = "/aasx/files/" + System.IO.Path.GetFileName(pathToVecFile);
-            packageEnv.AddSupplementaryFileToStore(pathToVecFile, localFilePath, false);
+            packageEnv?.AddSupplementaryFileToStore(pathToVecFile, localFilePath, false);
 
             // create the VEC file submodel element
             var file = new File("text/xml", idShort: VEC_FILE_ID_SHORT, value: localFilePath);
 
             // create the VEC submodel
-            var vecSubmodel = CreateVecSubmodel(iri, file);
+            var vecSubmodel = CreateVecSubmodel(file, iriTemplate, aas, env);
 
             return vecSubmodel;
         }
 
-        public static Submodel CreateVecSubmodel(string iri, File vecFile)
+        public static Submodel CreateVecSubmodel(File vecFile, string iriTemplate, IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             // create the VEC submodel
-            var vecSubmodel = new Submodel(iri, idShort: VEC_SUBMODEL_ID_SHORT)
-            {
-                SemanticId = CreateSemanticId(KeyTypes.Submodel, SEM_ID_VEC_SUBMODEL)
-            };
+            var vecSubmodel = CreateSubmodel(VEC_SUBMODEL_ID_SHORT, iriTemplate, SEM_ID_VEC_SUBMODEL, aas, env);
 
             // create the VEC file submodel element
-            var file = new File(vecFile.ContentType, value: vecFile.Value, idShort: vecFile.IdShort);
-            file.SemanticId = CreateSemanticId(KeyTypes.Submodel, SEM_ID_VEC_FILE_REFERENCE);
+            var file = new File(vecFile.ContentType, value: vecFile.Value, idShort: vecFile.IdShort)
+            {
+                SemanticId = CreateSemanticId(KeyTypes.Submodel, SEM_ID_VEC_FILE_REFERENCE)
+            };
             vecSubmodel.Add(file);
 
             return vecSubmodel;
@@ -57,16 +56,16 @@ namespace AasxPluginVec
             return submodel?.FindFirstIdShortAs<File>(VEC_FILE_ID_SHORT);
         }
 
-        public static RelationshipElement CreateVecRelationship(IEntity source, string xpathToVecElement, File vecFileSubmodelElement)
+        public static RelationshipElement CreateVecRelationship(IEntity source, string xpathToVecElement, File vecFileSubmodelElement, IReferable parent = null)
         {
 
-            var idShort = VEC_REFERENCE_ID_SHORT;
+            var idShort = VEC_REFERENCE_ID_SHORT + "_" + source.GetParentSubmodel().IdShort + "_" + source.IdShort;
             var semanticId = CreateSemanticId(KeyTypes.ConceptDescription, SEM_ID_VEC_FRAGMENT_REFERENCE);
 
-            var second = vecFileSubmodelElement.GetReference();
-            second.Keys.Add(new Key(KeyTypes.FragmentReference, xpathToVecElement));
+            var first = vecFileSubmodelElement.GetReference();
+            first.Keys.Add(new Key(KeyTypes.FragmentReference, xpathToVecElement));
 
-            return CreateRelationship(source.GetReference(), second, source, idShort, semanticId);
+            return CreateRelationship(first, source.GetReference(), parent ?? source, idShort, semanticId);
         }
 
         public static RelationshipElement GetVecRelationship(IEntity entity)

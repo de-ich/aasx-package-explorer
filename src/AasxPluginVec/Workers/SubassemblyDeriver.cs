@@ -295,14 +295,8 @@ namespace AasxPluginVec
 
         protected Submodel InitializeVecSubmodel(AssetAdministrationShell aas, AasCore.Aas3_0.Environment env, AasCore.Aas3_0.File existingVecFileSME)
         {
-            var id = GenerateIdAccordingTemplate(options.TemplateIdSubmodel);
             // create the VEC submodel
-            var vecSubmodel = CreateVecSubmodel(id, existingVecFileSME);
-            
-            env.Submodels.Add(vecSubmodel);
-            aas.AddSubmodelReference(vecSubmodel.GetReference());
-
-            return vecSubmodel;
+            return CreateVecSubmodel(existingVecFileSME, options.TemplateIdSubmodel, aas, env);
         }
     }
 }
