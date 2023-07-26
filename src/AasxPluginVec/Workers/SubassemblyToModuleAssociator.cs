@@ -83,7 +83,7 @@ namespace AasxPluginVec
 
         protected void AssociateSubassemblies()
         {
-            var allBomSubmodels = FindBomSubmodels(aas, env);
+            var allBomSubmodels = FindBomSubmodels(env, aas);
             // make sure all parents are set for all potential submodels involved in this action
             allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
 
@@ -95,7 +95,7 @@ namespace AasxPluginVec
 
             foreach (var subassembly in subassembliesToAssociate)
             {
-                AssociateSubassemblyWithModule(subassembly, this.orderableModule);
+                AssociateSubassemblyWithConfiguration(subassembly, this.orderableModule);
             }
         }        
     }

@@ -28,7 +28,7 @@ namespace AasxPluginVec.AnyUi
             IAssetAdministrationShell aas,
             AasCore.Aas3_0.Environment env)
         {
-            var moduleBomSubmodels = FindBomSubmodels(aas, env).Where(IsOrderableModulesSubmodel);
+            var moduleBomSubmodels = FindBomSubmodels(env, aas).Where(sm => sm.IsConfigurationBom());
             var moduleEntitiesToSelect = moduleBomSubmodels.SelectMany(sm => sm.FindEntryNode().GetChildEntities());
 
             var dialogData = new AssociateSubassembliesWithModuleDialogResult();

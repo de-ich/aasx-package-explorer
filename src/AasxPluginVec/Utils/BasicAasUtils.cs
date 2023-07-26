@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace AasxPluginVec
 {
-    public class BasicAasUtils
+    public static class BasicAasUtils
     {
         private static Random MyRnd = new Random();
 
@@ -104,7 +104,7 @@ namespace AasxPluginVec
             return submodel.SubmodelElements.FindDeep<T>(e => e.GetReference().Matches(elementReference)).FirstOrDefault();
         }
 
-        public static Submodel CreateSubmodel(string idShort, string iriTemplate, string semanticId = null, IAssetAdministrationShell aas = null, AasCore.Aas3_0.Environment env = null)
+        public static Submodel CreateSubmodel(string idShort, string iriTemplate, string semanticId = null, IAssetAdministrationShell aas = null, AasCore.Aas3_0.Environment env = null, string supplementarySemanticId = null)
         {
             var iri = GenerateIdAccordingTemplate(iriTemplate);
 
@@ -113,6 +113,13 @@ namespace AasxPluginVec
             if (semanticId != null)
             {
                 submodel.SemanticId = CreateSemanticId(KeyTypes.Submodel, semanticId);
+            }
+
+            if (supplementarySemanticId != null)
+            {
+                submodel.SupplementalSemanticIds = new List<IReference>() {
+                    CreateSemanticId(KeyTypes.Submodel, supplementarySemanticId)
+                };
             }
 
             if (env != null)
@@ -133,11 +140,31 @@ namespace AasxPluginVec
             return new Reference(ReferenceTypes.ExternalReference, new List<IKey> { new Key(keyType, value) });
         }
 
-        public static IEnumerable<ISubmodel> FindAllSubmodels(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        public static bool HasSemanticId(this IHasSemantics element, KeyTypes keyType, string value)
         {
-            var submodelRefs = aas?.Submodels ?? new List<IReference>();
-            var submodels = submodelRefs.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
-            return submodels;
+            var requestedSemanticId = CreateSemanticId(keyType, value);
+
+            // check the main semantic id
+            if (requestedSemanticId.Matches(element.SemanticId))
+            {
+                return true;
+            }
+
+            // check the supplementary semanticids
+            return element.OverSupplementalSemanticIdsOrEmpty().Any(semId => requestedSemanticId.Matches(semId));
+        }
+
+        public static IEnumerable<ISubmodel> FindAllSubmodels(AasCore.Aas3_0.Environment env, IAssetAdministrationShell aas = null)
+        {
+            if (aas == null)
+            {
+                return env.Submodels;
+            } else
+            {
+                var submodelRefs = aas?.Submodels ?? new List<IReference>();
+                var submodels = submodelRefs.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
+                return submodels;
+            }
         }
 
         public static HashSet<Submodel> FindCommonSubmodelParents(IEnumerable<ISubmodelElement> elements)

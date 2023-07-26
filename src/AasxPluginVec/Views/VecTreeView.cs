@@ -33,7 +33,7 @@ namespace AasxPluginVec
             this.submodel = submodel;
             this.panel = panel;
 
-            this.vecFileElement = GetVecFileElement(submodel);
+            this.vecFileElement = submodel.GetVecFileElement();
 
             if (this.vecFileElement == null)
             {

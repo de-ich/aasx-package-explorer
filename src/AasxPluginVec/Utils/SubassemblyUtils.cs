@@ -15,121 +15,113 @@ using System.Text.RegularExpressions;
 namespace AasxPluginVec
 {
 
-    public class SubassemblyUtils
+    public static class SubassemblyUtils
     {
-        public const string ID_SHORT_COMPONENTS_SM = "LS_Product_BOM";
-        public const string ID_SHORT_ORDERABLE_MODULES_SM = "LS_OrderableModules_BOM";
-        public const string ID_SHORT_BUILDING_BLOCKS_SM = "LS_Manufacturing_BOM";
-        public const string ID_SHORT_ORDERED_MODULES_SM = "LS_OrderedModules_BOM";
+        public const string ID_SHORT_PRODUCT_BOM_SM = "LS_Product_BOM";
+        public const string SEM_ID_PRODUCT_BOM_SM = "https://arena2036.de/vws4ls/submodels/product-bom/1/0";
+        public const string ID_SHORT_CONFIGURATION_BOM_SM = "LS_Configuration_BOM";
+        public const string SEM_ID_CONFIGURATION_BOM_SM = "https://arena2036.de/vws4ls/submodels/configuration-bom/1/0";
+        public const string ID_SHORT_MANUFACTURING_BOM_SM = "LS_Manufacturing_BOM";
+        public const string SEM_ID_MANUFACTURING_BOM_SM = "https://arena2036.de/vws4ls/submodels/manufacturing-bom/1/0";
 
-        public static Submodel CreateBuildingBlocksSubmodel(string iriTemplate, ISubmodel associatedBomSubmodel, IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        public static Submodel CreateManufacturingBom(string iriTemplate, ISubmodel associatedProductBom, IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
-            var vecReference = associatedBomSubmodel.FindEntryNode()?.FindFirstIdShortAs<RelationshipElement>(VEC_REFERENCE_ID_SHORT);
+            var entryNodeInAssociatedProductBom = associatedProductBom.FindEntryNode();
+            var vecReference = entryNodeInAssociatedProductBom?.GetVecRelationship(env, aas);
+
             if (vecReference == null)
             {
-                throw new Exception("Unable to find VEC reference in existing components BOM submodel!");
+                throw new Exception("Unable to find VEC reference in existing product BOM!");
             }
             
-            var idShort = ID_SHORT_BUILDING_BLOCKS_SM;
+            var idShort = ID_SHORT_MANUFACTURING_BOM_SM;
 
-            var counterMatches = Regex.Matches(associatedBomSubmodel.IdShort, @"_(\d+)$");
+            // as there may be multiple product boms, we check if the idshort of the associated product bom has an extension that we reuse
+            var counterMatches = Regex.Matches(associatedProductBom.IdShort, @"_(\d+)$");
             if (counterMatches.Count > 0)
             {
-                idShort = idShort + counterMatches[0].Value;
+                idShort += counterMatches[0].Value;
             }
-            var buildingBlocksSubmodel = CreateBomSubmodel(idShort, iriTemplate, aas: aas, env: env);
-            var entryNode = buildingBlocksSubmodel.FindEntryNode();
-            entryNode.AddChild(vecReference);
 
-            return buildingBlocksSubmodel;
+            var manufacturingBom = CreateBomSubmodel(idShort, iriTemplate, aas: aas, env: env, supplementarySemanticId: SEM_ID_MANUFACTURING_BOM_SM);
+            var entryNodeInManufacturingBom = manufacturingBom.FindEntryNode();
+
+            CreateVecRelationship(entryNodeInManufacturingBom, vecReference, env, vecReference.GetParentSubmodel());
+
+            return manufacturingBom;
         }
 
-        public static ISubmodel FindBuildingBlocksSubmodel(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        public static ISubmodel FindManufacturingBom(ISubmodel associatedProductBom, IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
-            return FindAllSubmodels(aas, env).FirstOrDefault(IsBuildingBlocksSubmodel);
+            var manufacturingBoms = FindAllSubmodels(env, aas).Where(IsManufacturingBom);
+
+            return manufacturingBoms.FirstOrDefault(sm => sm.IsAssociatedWithProductBom(associatedProductBom, env));
         }
 
-        public static bool IsBuildingBlocksSubmodel(ISubmodel submodel)
+        public static bool IsAssociatedWithProductBom(this ISubmodel manufacturingBom, ISubmodel associatedProductBom, AasCore.Aas3_0.Environment env)
         {
-            submodel.SetAllParents();
-            var entryNode = submodel.FindEntryNode();
-            var entities = entryNode?.GetChildEntities();
-            return entities?.Any(RepresentsSubAssembly) ?? false;
+            var subassemblies = manufacturingBom.FindEntryNode()?.GetChildEntities() ?? new List<IEntity>();
+
+            return subassemblies.Any(sa => sa.GetChildEntities().Any(c => c.GetSameAsEntity(env, associatedProductBom) != null));
         }
 
-        public static bool IsOrderableModulesSubmodel(ISubmodel submodel)
+        public static ISubmodel FindProductBom(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
-            submodel.SetAllParents();
-            var entryNode = submodel.FindEntryNode();
-            var entities = entryNode?.GetChildEntities();
-            return entities?.Any(RepresentsOrderableModule) ?? false;
+            return FindAllSubmodels(env, aas).FirstOrDefault(IsProductBom);
+        }
+
+        public static bool IsProductBom(this ISubmodel submodel)
+        {
+            return submodel.HasSemanticId(KeyTypes.Submodel, SEM_ID_PRODUCT_BOM_SM);
+        }
+
+        public static ISubmodel FindManufacturingBom(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        {
+            return FindAllSubmodels(env, aas).FirstOrDefault(IsManufacturingBom);
+        }
+
+        public static bool IsManufacturingBom(this ISubmodel submodel)
+        {
+            return submodel?.HasSemanticId(KeyTypes.Submodel, SEM_ID_MANUFACTURING_BOM_SM) ?? false;
+        }
+
+        public static bool IsConfigurationBom(this ISubmodel submodel)
+        {
+            return submodel?.HasSemanticId(KeyTypes.Submodel, SEM_ID_CONFIGURATION_BOM_SM) ?? false;
         }
 
         public static bool RepresentsSubAssembly(IEntity entity)
         {
-            var parentSubmodel = entity.FindParentFirstIdentifiable();
-            var sameAsRelationships = entity.GetSameAsRelationships();
-            var hasSameAsRelationshipToOtherEntityInDifferentBOM = sameAsRelationships.Any(r =>
-            {
-                return r.First.Keys.Last().Type == KeyTypes.Entity && r.Second.Keys.Last().Type == KeyTypes.Entity &&
-                    r.First.Keys.First().Type == KeyTypes.Submodel && r.Second.Keys.First().Type == KeyTypes.Submodel &&
-                    !r.Second.Keys.First().Matches(parentSubmodel.ToKey());
-            });
-
-            if (!hasSameAsRelationshipToOtherEntityInDifferentBOM)
-            {
-                return false;
-            }
-
-            var hasPartRelationships = entity.GetHasPartRelationships();
-            return hasPartRelationships.Count() > 0;
+            var parentSubmodel = entity?.FindParentFirstIdentifiable() as ISubmodel;
+            return IsManufacturingBom(parentSubmodel);
         }
 
         public static bool RepresentsBasicComponent(IEntity entity)
         {
-            if (entity.EntityType == EntityType.CoManagedEntity)
-            {
-                return false;
-            }
-
-            if (GetVecRelationship(entity) == null)
-            {
-                return false;
-            }
-
-            var hasPartRelationships = entity.GetHasPartRelationships();
-            return hasPartRelationships.Count() == 0;
+            var parentSubmodel = entity?.FindParentFirstIdentifiable() as ISubmodel;
+            return IsProductBom(parentSubmodel);
         }
 
-        public static bool RepresentsOrderableModule(IEntity entity)
+        public static bool RepresentsConfiguration(IEntity entity)
         {
-            if (entity.EntityType == EntityType.SelfManagedEntity)
-            {
-                return false;
-            }
-
-            if (GetVecRelationship(entity) == null)
-            {
-                return false;
-            }
-
-            return true;
+            var parentSubmodel = entity?.FindParentFirstIdentifiable() as ISubmodel;
+            return IsConfigurationBom(parentSubmodel);
         }
 
-        public static RelationshipElement AssociateSubassemblyWithModule(IEntity subassembly, IEntity orderableModule)
+        public static RelationshipElement AssociateSubassemblyWithConfiguration(IEntity subassembly, IEntity configuration)
         {
-            return CreateHasPartRelationship(orderableModule, subassembly);
+            return CreateHasPartRelationship(configuration, subassembly);
         }
 
-        public static bool HasAssociatedSubassemblies(IEntity orderableModule)
+        public static bool HasAssociatedSubassemblies(IEntity configuration)
         {
-            return orderableModule.GetHasPartRelationships().Count() > 0;
+            return configuration.GetHasPartRelationships().Count() > 0;
         }
 
-        public static List<Entity> FindAssociatedSubassemblies(IEntity orderableModule, AasCore.Aas3_0.Environment env)
+        public static IEnumerable<IEntity> FindAssociatedSubassemblies(IEntity configuration, AasCore.Aas3_0.Environment env)
         {
-            var relationshipsToAssociatedSubassemblies = orderableModule.GetHasPartRelationships();
-            return relationshipsToAssociatedSubassemblies.Select(r => env.FindReferableByReference(r.Second) as Entity).ToList();
+            var relationshipsToAssociatedSubassemblies = configuration?.GetHasPartRelationships();
+            return relationshipsToAssociatedSubassemblies?.Select(r => env.FindReferableByReference(r.Second) as IEntity).ToList() ?? new List<IEntity>();
         }
     }
 }

@@ -98,7 +98,7 @@ namespace AasxPluginVec.AnyUi
 
             mapPartsPanel.Add(mapPartsGrid);
 
-            var bomSubmodel = FindFirstBomSubmodel(dialogResult.AasToReuse, environment);
+            var bomSubmodel = FindFirstBomSubmodel(environment, dialogResult.AasToReuse);
             var atomicComponentEntities = bomSubmodel.GetLeafNodes();
 
             foreach (var entity in atomicComponentEntities)

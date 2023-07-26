@@ -90,7 +90,7 @@ namespace AasxPluginVec
 
         protected IAssetAdministrationShell CreateOrder()
         {
-            var allBomSubmodels = FindBomSubmodels(aas, env);
+            var allBomSubmodels = FindBomSubmodels(env, aas);
             // make sure all parents are set for all potential submodels involved in this action
             allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
 
@@ -120,7 +120,7 @@ namespace AasxPluginVec
             orderAas = CreateAAS(orderAasIdShort, options.TemplateIdAas, options.TemplateIdAsset, env);
             orderAas.DerivedFrom = aas.GetReference();
 
-            orderedModulesSubmodel = CreateBomSubmodel(ID_SHORT_ORDERED_MODULES_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
+            orderedModulesSubmodel = CreateBomSubmodel(ID_SHORT_CONFIGURATION_BOM_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
             var orderedModuleEntryNode = orderedModulesSubmodel.FindEntryNode();
 
             foreach(var module in selectedModules)
@@ -128,7 +128,7 @@ namespace AasxPluginVec
                 CreateHasPartRelationship(orderedModuleEntryNode, module);
             }
 
-            orderBuildingBlocksSubmodel = CreateBomSubmodel(ID_SHORT_BUILDING_BLOCKS_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
+            orderBuildingBlocksSubmodel = CreateBomSubmodel(ID_SHORT_MANUFACTURING_BOM_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
             var orderBuildingBlocksEntryNode = orderBuildingBlocksSubmodel.FindEntryNode();
 
             foreach(var associatedSubassembly in associatedSubassemblies)

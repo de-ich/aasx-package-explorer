@@ -20,9 +20,9 @@ namespace AasxPluginVec
         public const string ID_SHORT_ENTRY_NODE = "EntryNode";
         public const string ID_SHORT_ARCHE_TYPE = "ArcheType";
 
-        public static Submodel CreateBomSubmodel(string idShort, string iriTemplate, string archeType = "Full", IAssetAdministrationShell aas = null, AasCore.Aas3_0.Environment env = null)
+        public static Submodel CreateBomSubmodel(string idShort, string iriTemplate, string archeType = "Full", IAssetAdministrationShell aas = null, AasCore.Aas3_0.Environment env = null, string supplementarySemanticId = null)
         {
-            var bomSubmodel = CreateSubmodel(idShort, iriTemplate, SEM_ID_BOM_SM, aas, env);
+            var bomSubmodel = CreateSubmodel(idShort, iriTemplate, SEM_ID_BOM_SM, aas, env, supplementarySemanticId);
             
             var archeTypeProperty = new Property(DataTypeDefXsd.String, idShort: ID_SHORT_ARCHE_TYPE);
             archeTypeProperty.SemanticId = CreateSemanticId(KeyTypes.Property, SEM_ID_ARCHE_TYPE);
@@ -34,15 +34,15 @@ namespace AasxPluginVec
             return bomSubmodel;
         }
 
-        public static ISubmodel FindFirstBomSubmodel(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        public static ISubmodel FindFirstBomSubmodel(AasCore.Aas3_0.Environment env, IAssetAdministrationShell aas = null)
         {
-            var submodels = FindBomSubmodels(aas, env);
+            var submodels = FindBomSubmodels(env, aas);
             return submodels?.FirstOrDefault(sm => sm.SemanticId.Last().Value == SEM_ID_BOM_SM);
         }
 
-        public static IEnumerable<ISubmodel> FindBomSubmodels(IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        public static IEnumerable<ISubmodel> FindBomSubmodels(AasCore.Aas3_0.Environment env, IAssetAdministrationShell aas = null)
         {
-            var submodels = FindAllSubmodels(aas, env);
+            var submodels = FindAllSubmodels(env, aas);
             return submodels.Where(sm => sm.SemanticId?.Matches(KeyTypes.Submodel, SEM_ID_BOM_SM) ?? false);
         }
 
@@ -56,10 +56,27 @@ namespace AasxPluginVec
             return bomSubmodel?.FindSubmodelElementByIdShort(ID_SHORT_ENTRY_NODE) as Entity;
         }
 
-        public static Entity CreateNode(string idShort, IEntity parent, string referencedAsset = null)
+        public static Entity CreateNode(IEntity sourceNode, IEntity parent, string idShort = null)
+        {
+            return CreateNode(idShort ?? sourceNode.IdShort, parent, sourceNode.GlobalAssetId, true);
+        }
+
+        public static Entity CreateNode(string idShort, IEntity parent, IAssetAdministrationShell referencedAas, bool createHasPartRel = true)
+        {
+            return CreateNode(idShort, parent, referencedAas?.AssetInformation.GlobalAssetId, createHasPartRel);
+        }
+
+        public static Entity CreateNode(string idShort, IEntity parent, string referencedAsset = null, bool createHasPartRel = true)
         {
             var semanticId = CreateSemanticId(KeyTypes.Entity, SEM_ID_NODE);
-            return CreateEntity(idShort, parent, referencedAsset, semanticId);
+            var node = CreateEntity(idShort, parent, referencedAsset, semanticId);
+
+            if (createHasPartRel)
+            {
+                CreateHasPartRelationship(parent, node);
+            }
+
+            return node;
         }
 
         public static Entity CreateEntity(string idShort, IEntity parent, string referencedAsset = null, IReference semanticId = null)
@@ -97,17 +114,17 @@ namespace AasxPluginVec
             );
         }
 
-        public static bool IsHasPartRelationship(this RelationshipElement rel)
+        public static bool IsHasPartRelationship(this IRelationshipElement rel)
         {
             return rel?.SemanticId?.Matches(KeyTypes.ConceptDescription, SEM_ID_HAS_PART) ?? false;
         }
 
-        public static RelationshipElement CreateSameAsRelationship(IEntity first, IEntity second, IEntity parent, string relName = null)
+        public static RelationshipElement CreateSameAsRelationship(IEntity first, IEntity second, IEntity parent = null, string relName = null)
         {
             return CreateSameAsRelationship(
                 first.GetReference(),
                 second.GetReference(),
-                parent,
+                parent ?? first,
                 relName ?? "SameAs_" + second.IdShort
             );
         }
@@ -143,7 +160,23 @@ namespace AasxPluginVec
 
         public static IEnumerable<IRelationshipElement> GetHasPartRelationships(this IEntity entity)
         {
-            return entity.GetChildRelationships().Where(r => r.SemanticId.Matches(KeyTypes.ConceptDescription, SEM_ID_HAS_PART)).ToList();
+            return entity.GetChildRelationships().Where(IsHasPartRelationship).ToList();
+        }
+
+        public static IRelationshipElement GetHasPartRelationshipFromParent(this IEntity entity)
+        {
+            var entityRef = entity.GetReference();
+            IEnumerable<IRelationshipElement> parentHasPartRelationships = new List<IRelationshipElement>();
+
+            if (entity.Parent is IEntity parentEntity)
+            {
+                parentHasPartRelationships = parentEntity.GetHasPartRelationships();
+            } else if (entity.Parent is ISubmodel parentSubmodel)
+            {
+                parentHasPartRelationships =  parentSubmodel.EnumerateChildren().Select(c => c as IRelationshipElement).Where(r => r != null && r.IsHasPartRelationship());
+            }
+
+            return parentHasPartRelationships.FirstOrDefault(r => r.Second.Matches(entityRef));
         }
 
         public static IEnumerable<IRelationshipElement> GetSameAsRelationships(this IEntity entity)
@@ -173,6 +206,38 @@ namespace AasxPluginVec
         public static IEnumerable<IRelationshipElement> GetChildRelationships(this IEntity entity)
         {
             return entity?.EnumerateChildren().Where(c => c is IRelationshipElement).Select(c => c as IRelationshipElement) ?? new List<IRelationshipElement>();
+        }
+
+        public static IEntity GetSameAsEntity(this IEntity entity, AasCore.Aas3_0.Environment env, ISubmodel targetSubmodel)
+        {
+            return entity.GetSameAsEntities(env, targetSubmodel).FirstOrDefault();
+        }
+
+        public static IEnumerable<IEntity> GetSameAsEntities(this IEntity entity, AasCore.Aas3_0.Environment env, ISubmodel targetSubmodel = null)
+        {
+            var sameAsRels = entity.GetSameAsRelationships();
+            var sameAsEntities = sameAsRels.Select(r => entity.GetSameAsEntity(r, env)).Where(e => e != null);
+
+            if (targetSubmodel == null)
+            {
+                return sameAsEntities;
+            } else
+            {
+                return sameAsEntities.Where(e => targetSubmodel == e.GetParentSubmodel());
+            }
+        }
+
+        public static IEntity GetSameAsEntity(this IEntity entity, IRelationshipElement sameAsRel, AasCore.Aas3_0.Environment env)
+        {
+            if (sameAsRel.First.Matches(entity.GetReference()))
+            {
+                return env.FindReferableByReference(sameAsRel.Second) as IEntity;
+            } else if (sameAsRel.Second.Matches(entity.GetReference()))
+            {
+                return env.FindReferableByReference(sameAsRel.First) as IEntity;
+            }
+
+            return null;
         }
     }
 }

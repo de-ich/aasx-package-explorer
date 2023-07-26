@@ -24,8 +24,15 @@ using static AasxPluginVec.SubassemblyUtils;
 namespace AasxPluginVec
 {
     /// <summary>
-    /// This class allows to derive a subassembly based on a set of selected entities
-    /// in a BOM submodel.
+    /// This class allows to derive a subassembly based on a set of selected entities.
+    /// The entities need to be part of either a product BOM or a manufacturing BOM submodel - a mix of both is allowed as well.
+    /// 
+    /// Naming conventions:
+    /// - The AAS/submodels containing the selected entities are prefixed 'original' (e.g. 'originalManufacturingBom')
+    /// - The AAS/submodels containing the new subassembly to be created are prefixed 'new' (e.g. 'newManufacturingBom')
+    /// - If a selected entity already represents a subassembly (that is to be incorporated in the 'new' subassembly), this AAS
+    ///   and the respective submodels/elements are called 'source' (e.g. 'sourceManufacturingBom').
+    /// - The building blocks of a subassembly (either an existing one or the new one to be created) are called 'part'.
     /// </summary>
     public class SubassemblyDeriver
     {
@@ -36,17 +43,18 @@ namespace AasxPluginVec
         public static IEntity DeriveSubassembly(
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
-            IEnumerable<Entity> entities,
-            string subassemblyAASName,
-            string subassemblyEntityName,
-            Dictionary<string, string> partNames,
+            IEnumerable<Entity> entitiesToBeMadeSubassembly,
+            string newSubassemblyAasName,
+            string nameOfSubassemblyEntityInOriginalMbom,
+            Dictionary<string, string> newPartNamesByOriginalPartNames,
             VecOptions options,
             LogInstance log = null)
         {
             // safe
             try
             {
-                var deriver = new SubassemblyDeriver(env, aas, entities, subassemblyAASName, subassemblyEntityName, partNames, options, log);
+                var deriver = new SubassemblyDeriver(env, aas, entitiesToBeMadeSubassembly, newSubassemblyAasName, 
+                    nameOfSubassemblyEntityInOriginalMbom, newPartNamesByOriginalPartNames, options, log);
                 return deriver.DeriveSubassembly();
             }
             catch (Exception ex)
@@ -63,240 +71,262 @@ namespace AasxPluginVec
         protected SubassemblyDeriver(
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
-            IEnumerable<Entity> entities,
-            string subassemblyAASName,
-            string subassemblyEntityName,
-            Dictionary<string, string> partNames,
+            IEnumerable<Entity> entitiesToBeMadeSubassembly,
+            string newSubassemblyAasName,
+            string nameOfSubassemblyEntityInOriginalMbom,
+            Dictionary<string, string> newPartNamesByOriginalPartNames,
             VecOptions options,
             LogInstance log = null)
         {
-            
+
 
             this.env = env ?? throw new ArgumentNullException(nameof(env));
             this.aas = aas ?? throw new ArgumentNullException(nameof(aas));
-            this.entitiesToBeMadeSubassembly = entities ?? throw new ArgumentNullException(nameof(entities));
-            this.subassemblyAASName = subassemblyAASName ?? throw new ArgumentNullException(nameof(subassemblyAASName));
-            this.subassemblyEntityName = subassemblyEntityName ?? throw new ArgumentNullException(nameof(subassemblyEntityName));
-            this.partNames = partNames ?? throw new ArgumentNullException(nameof(partNames));
+            this.entitiesToBeMadeSubassembly = entitiesToBeMadeSubassembly ?? throw new ArgumentNullException(nameof(entitiesToBeMadeSubassembly));
+            this.newSubassemblyAasName = newSubassemblyAasName ?? throw new ArgumentNullException(nameof(newSubassemblyAasName));
+            this.nameOfSubassemblyEntityInOriginalMbom = nameOfSubassemblyEntityInOriginalMbom ?? throw new ArgumentNullException(nameof(nameOfSubassemblyEntityInOriginalMbom));
+            this.newPartNamesByOriginalPartNames = newPartNamesByOriginalPartNames ?? throw new ArgumentNullException(nameof(newPartNamesByOriginalPartNames));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
-            this.existingComponentBomSubmodel = null;
-            this.existingBuildingBlocksBomSubmodel = null;
-            this.newBomSubmodel = null;
-            this.newMBomSubmodel = null;
-            this.newVecSubmodel = null;
-            this.newVecFileSME = null;
-            this.subassemblyAas = null;
         }
 
         protected AasCore.Aas3_0.Environment env;
         protected IAssetAdministrationShell aas;
         protected IEnumerable<IEntity> entitiesToBeMadeSubassembly;
-        protected string subassemblyAASName;
-        protected string subassemblyEntityName;
-        protected Dictionary<string, string> partNames;
-        protected Submodel newVecSubmodel;
-        protected AasCore.Aas3_0.File newVecFileSME;
-        protected ISubmodel existingComponentBomSubmodel;
-        protected ISubmodel existingBuildingBlocksBomSubmodel;
-        protected ISubmodel newBomSubmodel;
-        protected ISubmodel newMBomSubmodel;
-        protected AssetAdministrationShell subassemblyAas;
+        protected string newSubassemblyAasName;
+        protected string nameOfSubassemblyEntityInOriginalMbom;
+        protected Dictionary<string, string> newPartNamesByOriginalPartNames;
         protected VecOptions options;
         protected LogInstance log;
 
+        // the bom models and elements in the existing AAS
+        protected ISubmodel existingProductBom;
+        protected ISubmodel existingManufacturingBom;
+        protected IEntity subassemblyInOriginalManufacturingBom;
+
+        // the new AAS to be created (representing the subassembly)
+        protected AssetAdministrationShell newSubassemblyAas;
+
+        // the models in the new AAS to be created (representing the subassembly)
+        protected Submodel newVecSubmodel;
+        protected ISubmodel newProductBom;
+        protected ISubmodel newManufacturingBom;
+
+
         protected IEntity DeriveSubassembly()
         {
-            var allBomSubmodels = FindBomSubmodels(aas, env);
-            // make sure all parents are set for all potential submodels involved in this action
-            allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
-
-            if (entitiesToBeMadeSubassembly.All(RepresentsSubAssembly))
+            if (!DetermineExistingSubmodels())
             {
-                log?.Error("It seems that only subassemblies where selected. This is currently not supported. At least one basic component needs to be selected!");
                 return null;
             }
+
+            if(!InitializeNewAasAndSubmodels())
+            {
+                return null;
+            }
+
+            // create the entity representing the subassembly in the original mbom
+            subassemblyInOriginalManufacturingBom = CreateNode(nameOfSubassemblyEntityInOriginalMbom, existingManufacturingBom.FindEntryNode(), newSubassemblyAas, true);
+
+            // for each entity to be incorporated into the subassembly create the required elements and relationships
+            foreach (var entity in entitiesToBeMadeSubassembly)
+            {
+                if (IsPartOfWireHarnessBom(entity))
+                {
+                    // a single part from the product bom
+                    AddSimpleComponentToSubassembly(entity);
+
+                }
+                else if (IsPartOfWireHarnessMBom(entity))
+                {
+                    // a subassembly entity (from the manufacturing bom) that consists of one or multiple parts
+                    AddSubassemblyComponentToSubassembly(entity);
+                }
+            }
+            
+            return subassemblyInOriginalManufacturingBom;
+        }
+
+        private bool DetermineExistingSubmodels()
+        {
+            var allBomSubmodels = FindBomSubmodels(env, aas);
+            // make sure all parents are set for all potential submodels involved in this action
+            allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
 
             var submodelsContainingSelectedEntities = FindCommonSubmodelParents(entitiesToBeMadeSubassembly);
 
             if (submodelsContainingSelectedEntities.Count == 0)
             {
                 log?.Error("Unable to determine BOM submodel(s) that contain(s) the selected entities!");
-                return null;
+                return false;
             }
 
             if (submodelsContainingSelectedEntities.Count > 2)
             {
                 log?.Error("Entities from more than 2 BOM submodels selected. This is not supported!");
-                return null;
+                return false;
             }
 
-            var referencedVecFileSMEs = submodelsContainingSelectedEntities.Select(sm => sm.FindEntryNode()).Select(n => FindReferencedVecFileSME(n, env)).Where(v => v != null);
-
-            if (referencedVecFileSMEs.Count() != submodelsContainingSelectedEntities.Count)
+            if (submodelsContainingSelectedEntities.Count == 1)
             {
-                log?.Error("Not every BOM submodel containing one of the selected entities references a VEC file!");
-                return null;
+                if (!submodelsContainingSelectedEntities.First().IsProductBom())
+                {
+                    log?.Error("The selected entities do not seem to be part of a product BOM submodel!");
+                    return false;
+                }
+
+                existingProductBom = submodelsContainingSelectedEntities.First();
             }
+
+            if (submodelsContainingSelectedEntities.Count == 2)
+            {
+                existingProductBom = submodelsContainingSelectedEntities.FirstOrDefault(sm => sm.IsProductBom());
+                existingManufacturingBom = submodelsContainingSelectedEntities.FirstOrDefault(sm => sm.IsManufacturingBom());
+
+                if (existingProductBom == null || existingManufacturingBom == null)
+                {
+                    log?.Error("Selected entities may only be part of the product or manufacturing BOM submodels of an AAS!");
+                    return false;
+                }
+            }
+
+            // no mbom submodel was selected so we look for an existing one in the aas that is associated with the selected bom submodel
+            existingManufacturingBom ??= FindManufacturingBom(existingProductBom, aas, env);
+
+            // no mbom submodel was found in the aas so we create a new one
+            existingManufacturingBom ??= CreateManufacturingBom(options.TemplateIdSubmodel, existingProductBom, aas, env);
+
+            return true;
+        }
+
+        public bool InitializeNewAasAndSubmodels()
+        {
+            var referencedVecFileSMEs = entitiesToBeMadeSubassembly.Select(e => e.FindReferencedVecFileSME(env, aas)).Where(v => v != null);
 
             if (referencedVecFileSMEs.ToHashSet().Count != 1)
             {
                 log?.Error("Unable to determine VEC file referenced by the BOM submodel(s)!");
-                return null;
+                return false;
             }
 
             var existingVecFileSME = referencedVecFileSMEs.First();
 
-            existingBuildingBlocksBomSubmodel = FindBuildingBlocksSubmodel(aas, env);
-            if (existingBuildingBlocksBomSubmodel == null)
-            {
-                if (submodelsContainingSelectedEntities.Count == 2)
-                {
-                    log?.Error("Found entities from 2 selected BOM submodels but none of these is a building blocks submodel!");
-                    return null;
-                }
-                else
-                {
-                    // no building blocks submodel seems to exist -> create a new one
-                    var bomSubmodel = submodelsContainingSelectedEntities.First();
-                    try
-                    {
-                        existingBuildingBlocksBomSubmodel = CreateBuildingBlocksSubmodel(options.TemplateIdSubmodel, bomSubmodel, aas, env);
-                    } catch (Exception e)
-                    {
-                        log?.Error(e.Message);
-                        return null;
-                    }
-                }
-            }
-
-            var buildingBlocksSubmodelEntryNode = existingBuildingBlocksBomSubmodel.FindEntryNode();
-            existingComponentBomSubmodel = submodelsContainingSelectedEntities.First(sm => sm != existingBuildingBlocksBomSubmodel);
-
             // the AAS for the new sub-assembly
-            this.subassemblyAas = CreateAAS(this.subassemblyAASName, options.TemplateIdAas, options.TemplateIdAsset, env, AssetKind.Type);
+            this.newSubassemblyAas = CreateAAS(this.newSubassemblyAasName, options.TemplateIdAas, options.TemplateIdAsset, env, AssetKind.Type);
 
             // FIXME probably, we should not just copy the whole existing VEC file but extract the relevant parts only into a new file
-            newVecSubmodel = InitializeVecSubmodel(subassemblyAas, env, existingVecFileSME);
-            newVecFileSME = newVecSubmodel.FindFirstIdShortAs<AasCore.Aas3_0.File>(VEC_FILE_ID_SHORT);
+            newVecSubmodel = InitializeVecSubmodel(newSubassemblyAas, env, existingVecFileSME);
 
-            newBomSubmodel = CreateBomSubmodel(ID_SHORT_COMPONENTS_SM, options.TemplateIdSubmodel, aas: subassemblyAas, env: env);
-            newMBomSubmodel = CreateBomSubmodel(ID_SHORT_BUILDING_BLOCKS_SM, options.TemplateIdSubmodel, aas: subassemblyAas, env: env);
+            newProductBom = CreateBomSubmodel(ID_SHORT_PRODUCT_BOM_SM, options.TemplateIdSubmodel, aas: newSubassemblyAas, env: env, supplementarySemanticId: SEM_ID_PRODUCT_BOM_SM);
+            CopyVecRelationship(existingManufacturingBom.FindEntryNode(), newProductBom.FindEntryNode());
 
-            // the entity representing the sub-assembly in the building blocks SM of the original AAS (the harness AAS)
-            var subassemblyEntityInOriginalAAS = CreateNode(subassemblyEntityName, buildingBlocksSubmodelEntryNode, subassemblyAas.AssetInformation.GlobalAssetId);
-            CreateHasPartRelationship(buildingBlocksSubmodelEntryNode, subassemblyEntityInOriginalAAS);
+            newManufacturingBom = CreateManufacturingBom(options.TemplateIdSubmodel, newProductBom, aas: newSubassemblyAas, env: env);
 
-            foreach (var partEntityInOriginalAAS in entitiesToBeMadeSubassembly)
-            {
-                var partEntityInNewAAS = CreateRelatedEntitiesInNewAdminShell(partEntityInOriginalAAS);
-
-                if (RepresentsSubAssembly(partEntityInOriginalAAS))
-                {
-                    // move each child of the "old" subassembly to the new one because we only keep the uppermost layer of subassemblies in the building blocks submodel
-                    foreach(var child in partEntityInOriginalAAS.EnumerateChildren()) {
-                        var rel = child as RelationshipElement;
-                        if (rel.IsSameAsRelationship())
-                        {
-                            // redirect the "same as" relationship pointing to the inner part entity from the old subassembly AAS to the new subassembly AAS
-                            rel.Second.Keys.First().Value = newBomSubmodel.Id;
-                        } else if(rel.IsHasPartRelationship())
-                        {
-                            // change the "has part" relationship so that the parent is the new subassembly entity
-                            rel.First.Keys.Last().Value = subassemblyEntityInOriginalAAS.IdShort;
-                        }
-                        subassemblyEntityInOriginalAAS.AddChild(child);
-                    }
-
-                    // delete the "old" subassembly because we only keep the uppermost layer of subassemblies in the building blocks submodel
-                    var parent = partEntityInOriginalAAS.Parent as Entity;
-                    var isPartOfRel = parent.FindFirstIdShortAs<RelationshipElement>("HasPart_" + partEntityInOriginalAAS.IdShort);
-                    parent.Remove(partEntityInOriginalAAS);
-                    parent.Remove(isPartOfRel);
-                } else
-                { 
-                    CreateHasPartRelationship(subassemblyEntityInOriginalAAS, partEntityInOriginalAAS);
-                    var sameAsRelName = partEntityInOriginalAAS.IdShort + "_SameAs_" + this.partNames[partEntityInOriginalAAS.IdShort];
-                    CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, sameAsRelName);
-                }
-            }
-
-            return subassemblyEntityInOriginalAAS;
-        }        
-
-        protected Entity CreateRelatedEntitiesInNewAdminShell(IEntity partEntityInOriginalAAS)
-        {
-            var idShort = this.partNames[partEntityInOriginalAAS.IdShort];
-            var entityInNewMBomSubmodel = CreatePartEntity(newMBomSubmodel.FindEntryNode(), partEntityInOriginalAAS, idShort);
-
-            if (RepresentsSubAssembly(partEntityInOriginalAAS))
-            {
-                var sameAsRelationships = partEntityInOriginalAAS.GetSameAsRelationships();
-                var hasPartRelationships = partEntityInOriginalAAS.GetHasPartRelationships();
-
-                foreach (var rel in hasPartRelationships)
-                {
-                    var partElementRef = rel.Second;
-                    Entity subPartEntityInOriginalAAS = null;
-                    if (partElementRef.Keys.First().Matches(existingComponentBomSubmodel?.ToKey()))
-                    {
-                        subPartEntityInOriginalAAS = FindReferencedElementInSubmodel<Entity>(existingComponentBomSubmodel, partElementRef);
-                    }
-                    else if (partElementRef.Keys.First().Matches(existingBuildingBlocksBomSubmodel?.ToKey()))
-                    {
-                        subPartEntityInOriginalAAS = FindReferencedElementInSubmodel<Entity>(existingBuildingBlocksBomSubmodel, partElementRef);
-                    }
-
-                    if (subPartEntityInOriginalAAS == null)
-                    {
-                        this.log?.Error("Unable to find targetEntity for hasPart relationship " + rel.IdShort);
-                        continue;
-                    }
-
-                    var sameAsRelationship = sameAsRelationships.ToList().Find(sameAsRel => sameAsRel.First.Matches(rel.Second));
-                    var subPartIdShort = sameAsRelationship.Second.Keys.Last().Value;
-                    var subPartEntityInNewSubmodel = CreatePartEntity(newBomSubmodel.FindEntryNode(), subPartEntityInOriginalAAS, subPartIdShort);
-                    CopyVecRelationship(subPartEntityInOriginalAAS, subPartEntityInNewSubmodel);
-
-                    CreateHasPartRelationship(entityInNewMBomSubmodel, subPartEntityInNewSubmodel);
-                    CreateSameAsRelationship(subPartEntityInNewSubmodel.GetReference(), new Reference(ReferenceTypes.ModelReference, sameAsRelationship.Second.Keys), entityInNewMBomSubmodel, subPartEntityInNewSubmodel.IdShort + "_SameAs_" + sameAsRelationship.Second.Keys.Last().Value);
-                }
-            } else
-            {
-                var entityInNewBomSubmodel = CreatePartEntity(newBomSubmodel.FindEntryNode(), partEntityInOriginalAAS, idShort);
-                CopyVecRelationship(partEntityInOriginalAAS, entityInNewBomSubmodel);
-                CreateHasPartRelationship(entityInNewMBomSubmodel, entityInNewBomSubmodel);
-            }
-
-            return entityInNewMBomSubmodel;
+            return true;
         }
 
+        private void AddSimpleComponentToSubassembly(IEntity simpleComponentToAdd)
+        {
+            var partIdShortInNewAas = this.newPartNamesByOriginalPartNames[simpleComponentToAdd.IdShort];
+
+            // create the part of the subassembly in the original mbom
+            var partInOriginalMBom = CreateNode(simpleComponentToAdd, subassemblyInOriginalManufacturingBom);
+
+            // link the entity in the original mbom to the part in the original product bom
+            CreateSameAsRelationship(partInOriginalMBom, simpleComponentToAdd);
+
+            // create the entity in the new product bom
+            var partInNewBom = CreateNode(simpleComponentToAdd, newProductBom.FindEntryNode(), partIdShortInNewAas);
+            CopyVecRelationship(simpleComponentToAdd, partInNewBom);
+
+            // create the entity in the new mbom
+            var subassemblyInNewMBom = CreateNode(simpleComponentToAdd, newManufacturingBom.FindEntryNode(), partIdShortInNewAas);
+
+            // link the entity in the new mbom to the part in the new product bom
+            CreateSameAsRelationship(subassemblyInNewMBom, partInNewBom);
+
+            // link the part in the original mbom to the part in the new mbom
+            CreateSameAsRelationship(partInOriginalMBom, partInNewBom);
+        }
+
+        private void AddSubassemblyComponentToSubassembly(IEntity subassemblyComponentToAdd)
+        {
+            var subassemblyIdShortInNewAas = this.newPartNamesByOriginalPartNames[subassemblyComponentToAdd.IdShort];
+
+            var existingSubassemblyAas = env.AssetAdministrationShells.FirstOrDefault(aas => aas.AssetInformation.GlobalAssetId == subassemblyComponentToAdd.GlobalAssetId);
+
+            if (existingSubassemblyAas == null)
+            {
+                log?.Error("Unable to determine referenced AAS for selected entity!");
+                return;
+            }
+
+            var mbomSubmodelInExistingSubassemblyAas = FindManufacturingBom(existingSubassemblyAas, env);
+            var bomSubmodelInExistingSubassemblyAas = FindProductBom(existingSubassemblyAas, env);
+
+            // create the entity for the subassembly in the new mbom
+            var subassemblyInNewMBom = CreateNode(subassemblyComponentToAdd, newManufacturingBom.FindEntryNode(), subassemblyIdShortInNewAas);
+
+            var partsOfSelectedSubassembly = subassemblyComponentToAdd.GetChildEntities();
+            foreach (var part in partsOfSelectedSubassembly)
+            {
+                var partInOriginalBom = part.GetSameAsEntity(env, existingProductBom);
+                var partInBomOfExistingSubassembly = part.GetSameAsEntity(env, bomSubmodelInExistingSubassemblyAas);
+
+                // create the entity in the original mbom
+                var partInOriginalMBom = CreateNode(partInOriginalBom, subassemblyInOriginalManufacturingBom);
+
+                // link the entity in the original mbom to the part in the original bom
+                CreateSameAsRelationship(partInOriginalMBom, partInOriginalBom);
+
+                // create the entity in the new bom
+                var partInNewBom = CreateNode(partInBomOfExistingSubassembly, newProductBom.FindEntryNode());
+                CopyVecRelationship(partInOriginalBom, partInNewBom);
+
+                // create the entity in the new mbom
+                var partInNewMBom = CreateNode(partInNewBom, subassemblyInNewMBom);
+
+                // link the part in the original mbom to the part in the new bom
+                CreateSameAsRelationship(partInOriginalMBom, partInNewBom);
+
+                // link the part in the new mbom to the part in the new bom
+                CreateSameAsRelationship(partInNewMBom, partInNewBom);
+
+                // link the part in the new mbom to the part in the source bom
+                CreateSameAsRelationship(partInNewMBom, partInBomOfExistingSubassembly);
+            }
+
+            // delete the old subassembly that is now incorporated in the new subassembly
+            var hasPartRelationshipToSelectedEntity = subassemblyComponentToAdd.GetHasPartRelationshipFromParent();
+            existingManufacturingBom.FindEntryNode().Remove(subassemblyComponentToAdd);
+            existingManufacturingBom.FindEntryNode().Remove(hasPartRelationshipToSelectedEntity);
+        }
+        
         private void CopyVecRelationship(IEntity partEntityInOriginalAAS, IEntity partEntityInNewAAS)
         {
-            var vecRelationship = GetVecRelationship(partEntityInOriginalAAS as Entity);
+            var vecRelationship = partEntityInOriginalAAS.GetVecRelationship(env, aas);
             if (vecRelationship != null)
             {
-                var xpathToVecElement = vecRelationship.Second.Keys.Last().Value;
-                var vecFileElement = GetVecFileElement(newVecSubmodel);
+                var xpathToVecElement = vecRelationship.First.Keys.Last().Value;
+                var vecFileElement = newVecSubmodel.GetVecFileElement();
                 CreateVecRelationship(partEntityInNewAAS, xpathToVecElement, vecFileElement);
             }
-        }
-
-        protected Entity CreatePartEntity(IEntity mainEntity, IEntity sourceEntity, string idShort = null)
-        {
-            // create the entity
-            var componentEntity = CreateNode(idShort ?? sourceEntity.IdShort, mainEntity, sourceEntity.GlobalAssetId);
-
-            // create the relationship between the main and the component entity
-            CreateHasPartRelationship(mainEntity, componentEntity);
-
-            return componentEntity;
         }
 
         protected Submodel InitializeVecSubmodel(AssetAdministrationShell aas, AasCore.Aas3_0.Environment env, AasCore.Aas3_0.File existingVecFileSME)
         {
             // create the VEC submodel
             return CreateVecSubmodel(existingVecFileSME, options.TemplateIdSubmodel, aas, env);
+        }
+
+        protected bool IsPartOfWireHarnessBom(IEntity entity)
+        {
+            return entity.GetParentSubmodel() == this.existingProductBom;
+        }
+
+        protected bool IsPartOfWireHarnessMBom(IEntity entity)
+        {
+            return entity.GetParentSubmodel() == this.existingManufacturingBom;
         }
     }
 }

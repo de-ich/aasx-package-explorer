@@ -104,7 +104,7 @@ namespace AasxPluginVec
         protected ISubmodel ImportVec()
         {
             vecSubmodel = CreateVecSubmodel();
-            vecFileSubmodelElement = vecSubmodel.FindFirstIdShortAs<AasCore.Aas3_0.File>(VEC_FILE_ID_SHORT);
+            vecFileSubmodelElement = vecSubmodel.GetVecFileElement();
 
             if (vecFileSubmodelElement == null)
             {
@@ -153,7 +153,7 @@ namespace AasxPluginVec
             foreach (var (xmlElement, entity) in entitesByXmlElement)
             {
                 // create the fragment relationship pointing to the Component element for the current component
-                CreateVecRelationship(entity, GetElementFragment(xmlElement), this.vecFileSubmodelElement, this.vecSubmodel);
+                CreateVecRelationship(entity, GetElementFragment(xmlElement), this.vecFileSubmodelElement);
             }
         }
 
@@ -165,16 +165,16 @@ namespace AasxPluginVec
 
         protected ISubmodel CreateComponentsSubmodel(string indexSuffix = "")
         {
-            var bomComponentsSubmodelIdShort = ID_SHORT_COMPONENTS_SM + indexSuffix;
-            var bomComponentsSubmodel = CreateBomSubmodel(bomComponentsSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
+            var bomComponentsSubmodelIdShort = ID_SHORT_PRODUCT_BOM_SM + indexSuffix;
+            var bomComponentsSubmodel = CreateBomSubmodel(bomComponentsSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env, supplementarySemanticId: SEM_ID_PRODUCT_BOM_SM);
 
             return bomComponentsSubmodel;
         }
 
         protected ISubmodel CreateModulesSubmodel(string indexSuffix = "")
         {
-            var bomModulesSubmodelIdShort = ID_SHORT_ORDERABLE_MODULES_SM + indexSuffix;
-            var bomModulesSubmodel = CreateBomSubmodel(bomModulesSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env);
+            var bomModulesSubmodelIdShort = ID_SHORT_CONFIGURATION_BOM_SM + indexSuffix;
+            var bomModulesSubmodel = CreateBomSubmodel(bomModulesSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env, supplementarySemanticId: SEM_ID_CONFIGURATION_BOM_SM);
 
             return bomModulesSubmodel;
         }
@@ -218,10 +218,7 @@ namespace AasxPluginVec
             }
             
             // create the entity
-            var componentEntity = CreateNode(componentName, mainEntity, assetId);
-
-            // create the relationship between the main and the component entity
-            CreateHasPartRelationship(mainEntity, componentEntity);
+            var componentEntity = CreateNode(componentName, mainEntity, assetId, true);
 
             return componentEntity;
         }
@@ -254,13 +251,7 @@ namespace AasxPluginVec
                 return null;
             }
 
-            // create the entity
-            var componentEntity = CreateNode(componentName, mainEntity);
-
-            // create the relationship between the main and the component entity
-            CreateHasPartRelationship(mainEntity, componentEntity);
-
-            return componentEntity;
+            return CreateNode(componentName, mainEntity, createHasPartRel: true);
         }
     }
 }
