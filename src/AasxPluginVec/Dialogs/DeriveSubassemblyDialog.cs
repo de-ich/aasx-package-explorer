@@ -21,8 +21,6 @@ namespace AasxPluginVec.AnyUi
         }
 
         public static async Task<DeriveSubassemblyDialogResult> DetermineDeriveSubassemblyConfiguration(
-            VecOptions options,
-            LogInstance log,
             AnyUiContextPlusDialogs displayContext,
             IEnumerable<Entity> entitiesToBeMadeSubassembly)
         {
@@ -65,22 +63,24 @@ namespace AasxPluginVec.AnyUi
             var panel = new AnyUiStackPanel();
             var helper = new AnyUiSmallWidgetToolkit();
 
-            var grid = helper.AddSmallGrid(2, 2, new[] { "200", "*" }, padding: new AnyUiThickness(0, 5, 0, 5));
+            var grid = helper.AddSmallGrid(3, 2, new[] { "200", "*" }, padding: new AnyUiThickness(0, 5, 0, 5));
             panel.Add(grid);
 
             // specify subassembly entity name
-            helper.AddSmallLabelTo(grid, 0, 0, content: "Name of Subassembly Entity in existing AAS:");
+            helper.AddSmallLabelTo(grid, 0, 0, content: "Name of subassembly instance in the manufacturing BOM of existing AAS:");
             AnyUiUIElement.SetStringFromControl(
                 helper.AddSmallTextBoxTo(grid, 0, 1, text: dialogResult.SubassemblyEntityName),
                 (text) => { dialogResult.SubassemblyEntityName = text; }
             );
 
             // specify subassembly aas name
-            helper.AddSmallLabelTo(grid, 1, 0, content: "Name of new Subassembly AAS:");
+            helper.AddSmallLabelTo(grid, 1, 0, content: "Name of subassembly AAS to be created:");
             AnyUiUIElement.SetStringFromControl(
                 helper.AddSmallTextBoxTo(grid, 1, 1, text: dialogResult.SubassemblyAASName),
                 (text) => { dialogResult.SubassemblyAASName = text; }
             );
+
+            helper.AddSmallLabelTo(grid, 2, 0, content: "How should the parts of the subassembly be named in the subassembly AAS?");
 
             // specify name of subassembly parts
             foreach (var entity in entitiesToBeMadeSubassembly)

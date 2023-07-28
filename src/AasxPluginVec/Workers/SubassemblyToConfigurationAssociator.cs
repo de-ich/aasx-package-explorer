@@ -28,71 +28,57 @@ namespace AasxPluginVec
     /// </summary>
     public class SubassemblyToConfigurationAssociator
     {
-        //
-        // Public interface
-        //
-
-        public static void AssociateSubassemblies(
+        public SubassemblyToConfigurationAssociator(
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
-            IEnumerable<Entity> subassembliesToAssociate,
-            IEntity orderableModule,
-            VecOptions options,
-            LogInstance log = null)
+            VecOptions options)
         {
-            // safe
-            try
-            {
-                var associator = new SubassemblyToConfigurationAssociator(env, aas, subassembliesToAssociate, orderableModule, options, log);
-                associator.AssociateSubassemblies();
-            }
-            catch (Exception ex)
-            {
-                log?.Error(ex, $"deriving subassembly");
-            }
-        }
-
-        //
-        // Internal
-        //
-
-        protected SubassemblyToConfigurationAssociator(
-            AasCore.Aas3_0.Environment env,
-            IAssetAdministrationShell aas,
-            IEnumerable<Entity> subassembliesToAssociate,
-            IEntity configuration,
-            VecOptions options,
-            LogInstance log = null)
-        {
-            
-
             this.env = env ?? throw new ArgumentNullException(nameof(env));
             this.aas = aas ?? throw new ArgumentNullException(nameof(aas));
-            this.subassembliesToAssociate = subassembliesToAssociate ?? throw new ArgumentNullException(nameof(subassembliesToAssociate));
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
-            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         protected AasCore.Aas3_0.Environment env;
         protected IAssetAdministrationShell aas;
+        protected VecOptions options;
+
+        // things specified in 'AssociateSubassemblies(...)
         protected IEnumerable<Entity> subassembliesToAssociate;
         protected IEntity configuration;
-        protected VecOptions options;
-        protected LogInstance log;
 
-        protected void AssociateSubassemblies()
+        public void ValidateSelection(IEnumerable<object> selectedElements)
         {
+            if (selectedElements.Any(e => e is not IEntity))
+            {
+                throw new ArgumentException("Only entities may be selected!");
+            }
+
+            var selectedEntities = selectedElements.Select(e => e as IEntity);
+
             var allBomSubmodels = FindBomSubmodels(env, aas);
             // make sure all parents are set for all potential submodels involved in this action
             allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
 
-            if (!subassembliesToAssociate.All(RepresentsSubAssembly))
+            if (selectedEntities.Any(e => !e.RepresentsSubAssembly()))
             {
-                log?.Error("Entities were selected that are not part of the manufacturing BOM. This is not supported!");
-                return;
+                throw new ArgumentException("Only entities from a manufacturing BOM may be selected!");
             }
+        }
 
+        public void AssociateSubassemblies(
+            IEnumerable<Entity> subassembliesToAssociate,
+            IEntity configuration)
+        {
+            this.subassembliesToAssociate = subassembliesToAssociate ?? throw new ArgumentNullException(nameof(subassembliesToAssociate));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+            ValidateSelection(subassembliesToAssociate);
+
+            DoAssociatedSubassemblies(subassembliesToAssociate, configuration);
+        }
+
+        private static void DoAssociatedSubassemblies(IEnumerable<Entity> subassembliesToAssociate, IEntity configuration)
+        {
             foreach (var subassembly in subassembliesToAssociate)
             {
                 // create the node for the subassembly in the configuration bom
@@ -101,6 +87,6 @@ namespace AasxPluginVec
                 // linke the node for the subassembly in the configuration bom with the subassembly in the manufacturing bom
                 CreateSameAsRelationship(subassemblyInConfigurationBom, subassembly);
             }
-        }        
+        }
     }
 }

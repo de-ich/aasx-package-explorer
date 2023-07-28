@@ -51,6 +51,12 @@ namespace AasxPluginVec
             return manufacturingBom;
         }
 
+        public static ISubmodel FindProductBom(ISubmodel associatedManufacturingBom, IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
+        {
+            var firstSubassembly = associatedManufacturingBom.FindEntryNode()?.GetChildEntities().FirstOrDefault();
+            return firstSubassembly?.GetSameAsEntities(env).Where(e => RepresentsBasicComponent(e)).Select(e => e.GetParentSubmodel()).Where(sm => aas.HasSubmodelReference(sm.GetReference() as Reference)).FirstOrDefault();            
+        }
+
         public static ISubmodel FindManufacturingBom(ISubmodel associatedProductBom, IAssetAdministrationShell aas, AasCore.Aas3_0.Environment env)
         {
             var manufacturingBoms = FindAllSubmodels(env, aas).Where(IsManufacturingBom);
@@ -90,19 +96,19 @@ namespace AasxPluginVec
             return submodel?.HasSemanticId(KeyTypes.Submodel, SEM_ID_CONFIGURATION_BOM_SM) ?? false;
         }
 
-        public static bool RepresentsSubAssembly(IEntity entity)
+        public static bool RepresentsSubAssembly(this IEntity entity)
         {
             var parentSubmodel = entity?.FindParentFirstIdentifiable() as ISubmodel;
             return IsManufacturingBom(parentSubmodel);
         }
 
-        public static bool RepresentsBasicComponent(IEntity entity)
+        public static bool RepresentsBasicComponent(this IEntity entity)
         {
             var parentSubmodel = entity?.FindParentFirstIdentifiable() as ISubmodel;
             return IsProductBom(parentSubmodel);
         }
 
-        public static bool RepresentsConfiguration(IEntity entity)
+        public static bool RepresentsConfiguration(this IEntity entity)
         {
             var parentSubmodel = entity?.FindParentFirstIdentifiable() as ISubmodel;
             return IsConfigurationBom(parentSubmodel);

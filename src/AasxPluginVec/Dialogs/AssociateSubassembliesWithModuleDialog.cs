@@ -21,8 +21,6 @@ namespace AasxPluginVec.AnyUi
         }
 
         public static async Task<AssociateSubassembliesWithConfigurationDialogResult> DetermineAssociateSubassembliesWithModuleConfiguration(
-            VecOptions options,
-            LogInstance log,
             AnyUiContextPlusDialogs displayContext,
             IEnumerable<Entity> entitiesToBeMadeSubassembly,
             IAssetAdministrationShell aas,
@@ -46,8 +44,6 @@ namespace AasxPluginVec.AnyUi
 
             return dialogData;
 
-            
-
         }
 
         private static AnyUiPanel RenderMainDialogPanel(IEnumerable<IEntity> configurationEntitiesToSelect, AssociateSubassembliesWithConfigurationDialogResult dialogData)
@@ -61,7 +57,7 @@ namespace AasxPluginVec.AnyUi
             var configurationNames = configurationEntitiesToSelect.Select(e => e.IdShort).ToArray();
 
             // specify module
-            helper.AddSmallLabelTo(grid, 0, 0, content: "Configuration to Associate with Selected Subassemblies:");
+            helper.AddSmallLabelTo(grid, 0, 0, content: "Configuration to associate with selected subassemblies:");
             AnyUiUIElement.RegisterControl(
                 helper.AddSmallComboBoxTo(grid, 0, 1, items: configurationNames),
                 (text) =>

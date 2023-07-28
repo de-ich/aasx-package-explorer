@@ -28,59 +28,23 @@ namespace AasxPluginVec
     /// </summary>
     public class OrderCreator
     {
-        //
-        // Public interface
-        //
-
-        public static IAssetAdministrationShell CreateOrder(
+        public OrderCreator(
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
-            IEnumerable<Entity> selectedConfigurations,
-            string orderNumber,
-            VecOptions options,
-            LogInstance log = null)
+            VecOptions options)
         {
-            // safe
-            try
-            {
-                var creator = new OrderCreator(env, aas, selectedConfigurations, orderNumber, options, log);
-                return creator.CreateOrder();
-            }
-            catch (Exception ex)
-            {
-                log?.Error(ex, $"creating order");
-                return null;
-            }
-        }
-
-        //
-        // Internal
-        //
-
-        protected OrderCreator(
-            AasCore.Aas3_0.Environment env,
-            IAssetAdministrationShell aas,
-            IEnumerable<Entity> selectedConfigurations,
-            string orderNumber,
-            VecOptions options,
-            LogInstance log = null)
-        {
-            
-
             this.env = env ?? throw new ArgumentNullException(nameof(env));
-            this.aas = aas ?? throw new ArgumentNullException(nameof(aas));
-            this.selectedConfigurations = selectedConfigurations ?? throw new ArgumentNullException(nameof(selectedConfigurations));
-            this.orderNumber = orderNumber ?? throw new ArgumentNullException(nameof(orderNumber));
+            this.aas = aas ?? throw new ArgumentNullException(nameof(aas));   
             this.options = options ?? throw new ArgumentNullException(nameof(options));
-            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         protected AasCore.Aas3_0.Environment env;
         protected IAssetAdministrationShell aas;
+        protected VecOptions options;
+
+        // things specified in 'CreateOrder(...)
         protected IEnumerable<Entity> selectedConfigurations;
         protected string orderNumber;
-        protected VecOptions options;
-        protected LogInstance log;
 
         // the bom models and elements in the existing AAS
         protected ISubmodel existingConfigurationBom;
@@ -93,14 +57,54 @@ namespace AasxPluginVec
         protected Submodel orderConfigurationBom;
         protected Submodel orderManufacturingBom;
 
-        
-
-        protected IAssetAdministrationShell CreateOrder()
+        public void ValidateSelection(IEnumerable<IEntity> selectedElements)
         {
-            if(!DetermineExistingSubmodels())
+            if (selectedElements.Any(e => e is not IEntity))
             {
-                return null;
+                throw new ArgumentException("Only entities may be selected!");
             }
+
+            var selectedEntities = selectedElements.Select(e => e as IEntity);
+
+            var allBomSubmodels = FindBomSubmodels(env, aas);
+            // make sure all parents are set for all potential submodels involved in this action
+            allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
+
+            if (selectedEntities.Any(e => !e.RepresentsConfiguration()))
+            {
+                throw new ArgumentException("Only entities from a configuration BOM may be selected!");
+            }
+
+            var submodelsContainingSelectedEntities = FindCommonSubmodelParents(selectedEntities);
+
+            if (submodelsContainingSelectedEntities.Count == 0)
+            {
+                throw new ArgumentException("Unable to determine configuration BOM(s) that contain(s) the selected entities!");
+            }
+
+            if (submodelsContainingSelectedEntities.Count > 1)
+            {
+                throw new ArgumentException("Entities from more than one configuration BOMs selected. This is not supported!");
+            }
+        }
+
+        public IAssetAdministrationShell CreateOrder(
+            IEnumerable<Entity> selectedConfigurations,
+            string orderNumber)
+        {
+            this.selectedConfigurations = selectedConfigurations ?? throw new ArgumentNullException(nameof(selectedConfigurations));
+            this.orderNumber = orderNumber ?? throw new ArgumentNullException(nameof(orderNumber));
+
+            ValidateSelection(selectedConfigurations);
+
+            DoCreateOrder(selectedConfigurations, orderNumber);
+
+            return orderAas;
+        }
+
+        private void DoCreateOrder(IEnumerable<Entity> selectedConfigurations, string orderNumber)
+        {
+            DetermineExistingSubmodels();
 
             // create the new aas representing the order
             var orderAasIdShort = aas.IdShort + "_Order_" + orderNumber;
@@ -110,7 +114,7 @@ namespace AasxPluginVec
             // create the configuration bom in the new aas
             orderConfigurationBom = CreateBomSubmodel(ID_SHORT_CONFIGURATION_BOM_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
 
-            foreach(var configuration in selectedConfigurations)
+            foreach (var configuration in selectedConfigurations)
             {
                 // create the configuration in the order configuration bom
                 var configurationInOrderConfigurationBom = CreateNode(configuration, orderConfigurationBom.FindEntryNode());
@@ -121,9 +125,8 @@ namespace AasxPluginVec
 
             // create the manufacturing bom in the new aas
             orderManufacturingBom = CreateBomSubmodel(ID_SHORT_MANUFACTURING_BOM_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
-            var orderBuildingBlocksEntryNode = orderManufacturingBom.FindEntryNode();
 
-            foreach(var associatedSubassembly in subassembliesAssociatedWithSelectedConfigurations)
+            foreach (var associatedSubassembly in subassembliesAssociatedWithSelectedConfigurations)
             {
                 // create the entity in the new manufacturing bom
                 var subassemblyInOrderManufacturingBom = CreateNode(associatedSubassembly, orderManufacturingBom.FindEntryNode());
@@ -133,39 +136,23 @@ namespace AasxPluginVec
                 // link the entity in the new manufacturing bom to the subassembly in the original manufacturing bom
                 CreateSameAsRelationship(subassemblyInOrderManufacturingBom, associatedSubassembly);
             }
-
-            return orderAas;
         }
 
-        private bool DetermineExistingSubmodels()
+        private void DetermineExistingSubmodels()
         {
-            var allBomSubmodels = FindBomSubmodels(env, aas);
-            // make sure all parents are set for all potential submodels involved in this action
-            allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
-
-            if (!selectedConfigurations.All(HasAssociatedSubassemblies))
-            {
-                log?.Error("It seems that a module was selected that has no associated subassemblies required for production!");
-                return false;
-            }
-
-            existingConfigurationBom = FindCommonSubmodelParent(selectedConfigurations);
+            existingConfigurationBom = selectedConfigurations.FirstOrDefault(e => e.RepresentsConfiguration()).GetParentSubmodel();
 
             if (existingConfigurationBom == null)
             {
-                log?.Error("Unable to determine single common configuration BOM that contains the selected configurations!");
-                return false;
+                throw new Exception("Internal Error: Unable to determine configuration BOM that contains the selected configurations!");
             }
 
             subassembliesAssociatedWithSelectedConfigurations = selectedConfigurations.SelectMany(m => FindAssociatedSubassemblies(m, env)).ToHashSet();
 
             if (subassembliesAssociatedWithSelectedConfigurations.Any(s => s == null))
             {
-                log?.Error("At least one subassembly associated with a selected module could not be determined!");
-                return false;
+                throw new Exception("Internal Error: At least one subassembly associated with a selected module could not be determined!");
             }
-
-            return true;
         }
     }
 }

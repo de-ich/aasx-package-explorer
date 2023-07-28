@@ -19,8 +19,6 @@ namespace AasxPluginVec.AnyUi
         }
 
         public static async Task<CreateOrderDialogResult> DetermineCreateOrderConfiguration(
-            VecOptions options,
-            LogInstance log,
             AnyUiContextPlusDialogs displayContext)
         {
             

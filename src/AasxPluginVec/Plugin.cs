@@ -23,6 +23,7 @@ using AnyUi;
 using AasxPluginVec.AnyUi;
 using System.Windows.Forms;
 using static AasxPluginVec.BasicAasUtils;
+using static AasxPluginVec.SubassemblyUtils;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -169,7 +170,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "ImportVEC",
-                        Header = "Import a VEC file into an AAS",
+                        Header = "VWS4LS: Import a VEC file into an AAS",
                         HelpText = "Import a VEC file into an AAS and create the related submodels.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
@@ -182,7 +183,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "DeriveSubassembly",
-                        Header = "Derive new subassembly from selected components",
+                        Header = "VWS4LS: Derive new subassembly from selected components",
                         HelpText = "Derive new subassembly based on selected entities (components in a product bom and/or subassemblies in a manufacturing bom) and create the required admin shell.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
@@ -195,7 +196,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "ReuseSubassembly",
-                        Header = "Reuse existing subassembly for selected components",
+                        Header = "VWS4LS: Reuse existing subassembly for selected components",
                         HelpText = "Reuse an existing subassembly for the selected entities (components from a product bom).",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
@@ -208,7 +209,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "AssociateSubassembliesWithConfiguration",
-                        Header = "Associate selected subassemblies with a configuration",
+                        Header = "VWS4LS: Associate selected subassemblies with a configuration",
                         HelpText = "Associate the selected entities (subassemblies from a manufacturing bom) with a configuration in a configuration bom.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
@@ -221,7 +222,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "CreateOrder",
-                        Header = "Create wire harness order for selected configurations",
+                        Header = "VWS4LS: Create wire harness order for selected configurations",
                         HelpText = "Create a new wire harness order for the selected entities (configurations from a configuration bom).",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
@@ -381,7 +382,10 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 throw new ArgumentException($"Derive Subassembly: Unable to determine the (single) AAS containing the selected entities!");
             }
 
-            var result = await DeriveSubassemblyDialog.DetermineDeriveSubassemblyConfiguration(_options, _log, displayContext, selectedEntities);
+            var worker = new SubassemblyDeriver(env, aas, _options);
+            worker.ValidateSelection(selectedEntities);
+
+            var result = await DeriveSubassemblyDialog.DetermineDeriveSubassemblyConfiguration(displayContext, selectedEntities);
 
             if (result == null)
             {
@@ -389,7 +393,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             }
 
             _log.Info($"Deriving subassembly...");
-            var subassemblyEntity = SubassemblyDeriver.DeriveSubassembly(env, aas, selectedEntities, result.SubassemblyAASName, result.SubassemblyEntityName, result.PartNames, _options, _log);
+            var subassemblyEntity = worker.DeriveSubassembly(selectedEntities, result.SubassemblyAASName, result.SubassemblyEntityName, result.PartNames);
 
             return new List<AasxPluginResultEventBase>()
             {
@@ -413,7 +417,10 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 throw new ArgumentException($"Reuse Subassembly: Unable to determine the (single) AAS containing the selected entities!");
             }
 
-            var result = await ReuseSubassemblyDialog.DetermineReuseSubassemblyConfiguration(_options, _log, displayContext, selectedEntities, env);
+            var worker = new SubassemblyReuser(env, aas, _options);
+            worker.ValidateSelection(selectedEntities);
+
+            var result = await ReuseSubassemblyDialog.DetermineReuseSubassemblyConfiguration(displayContext, selectedEntities, env);
 
             if (result == null)
             {
@@ -421,7 +428,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             }
                 
             _log.Info($"Reusing subassembly...");
-            var subassemblyEntity = SubassemblyReuser.ReuseSubassembly(env, aas, selectedEntities, result.AasToReuse, result.SubassemblyEntityName, result.PartNames, _options, _log);
+            var subassemblyEntity = worker.ReuseSubassembly(selectedEntities, result.AasToReuse, result.SubassemblyEntityName, result.PartNames);
 
             return new List<AasxPluginResultEventBase>()
             {
@@ -444,7 +451,10 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 throw new ArgumentException($"Reuse Subassembly: Unable to determine the (single) AAS containing the selected entities!");
             }
 
-            var result = await AssociateSubassembliesWithModuleDialog.DetermineAssociateSubassembliesWithModuleConfiguration(_options, _log, displayContext, selectedEntities, aas, env);
+            var worker = new SubassemblyToConfigurationAssociator(env, aas, _options);
+            worker.ValidateSelection(selectedEntities);
+
+            var result = await AssociateSubassembliesWithModuleDialog.DetermineAssociateSubassembliesWithModuleConfiguration(displayContext, selectedEntities, aas, env);
 
             if (result == null)
             {
@@ -452,7 +462,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             }
 
             _log.Info($"Associating subassemblies with configuration...");
-            SubassemblyToConfigurationAssociator.AssociateSubassemblies(env, aas, selectedEntities, result.SelectedConfiguration, _options, _log);
+            worker.AssociateSubassemblies(selectedEntities, result.SelectedConfiguration);
 
             return new List<AasxPluginResultEventBase>()
             {
@@ -475,14 +485,17 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 throw new ArgumentException($"Reuse Subassembly: Unable to determine the (single) AAS containing the selected entities!");
             }
 
-            var result = await CreateOrderDialog.DetermineCreateOrderConfiguration(_options, _log, displayContext);
+            var worker = new OrderCreator(env, aas, _options);
+            worker.ValidateSelection(selectedEntities);
+
+            var result = await CreateOrderDialog.DetermineCreateOrderConfiguration(displayContext);
 
             if (result == null) {
                 return null;
             }
              
             _log.Info($"Creating Order...");
-            var orderAas = OrderCreator.CreateOrder(env, aas, selectedEntities, result.OrderNumber, _options, _log);
+            var orderAas = worker.CreateOrder(selectedEntities, result.OrderNumber);
             
             return new List<AasxPluginResultEventBase>()
             {

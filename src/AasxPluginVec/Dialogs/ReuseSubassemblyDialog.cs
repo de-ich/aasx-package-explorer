@@ -23,8 +23,6 @@ namespace AasxPluginVec.AnyUi
         }
 
         public static async Task<ReuseSubassemblyDialogResult> DetermineReuseSubassemblyConfiguration(
-            VecOptions options,
-            LogInstance log,
             AnyUiContextPlusDialogs displayContext,
             IEnumerable<Entity> entitiesToBeMadeSubassembly,
             AasCore.Aas3_0.Environment environment)
@@ -71,7 +69,7 @@ namespace AasxPluginVec.AnyUi
             var mapPartsGrid = helper.AddSmallGrid(2, 2, new[] { "200", "*" }, padding: new AnyUiThickness(0, 5, 0, 5));
 
             // specify subassembly entity name
-            helper.AddSmallLabelTo(grid, 0, 0, content: "Name of Subassembly Entity in existing AAS:");
+            helper.AddSmallLabelTo(grid, 0, 0, content: "Name of subassembly instance in the manufacturing BOM of existing AAS:");
             AnyUiUIElement.SetStringFromControl(
                 helper.AddSmallTextBoxTo(grid, 0, 1, text: dialogResult.SubassemblyEntityName),
                 (text) => { dialogResult.SubassemblyEntityName = text; }
@@ -79,8 +77,9 @@ namespace AasxPluginVec.AnyUi
 
             // specify subassembly to reuse
             helper.AddSmallLabelTo(grid, 1, 0, content: "Subassembly AAS to Reuse:");
+            int? selectedIndex = dialogResult.AasToReuse == null ? null : shellNames.ToList().IndexOf(dialogResult.AasToReuse?.IdShort);
             AnyUiUIElement.RegisterControl(
-                helper.AddSmallComboBoxTo(grid, 1, 1, items: shellNames, selectedIndex: shellNames.ToList().IndexOf(dialogResult.AasToReuse?.IdShort)),
+                helper.AddSmallComboBoxTo(grid, 1, 1, items: shellNames, selectedIndex: selectedIndex),
                 (text) =>
                 {
                     dialogResult.AasToReuse = potentialSubassemblyShellsToReuse.First(s => s.IdShort == text);
@@ -88,18 +87,22 @@ namespace AasxPluginVec.AnyUi
                 }
             );
 
-            // specify name of subassembly parts
+            if (dialogResult.AasToReuse == null)
+            {
+                return panel;
+            }
 
+            // specify name of subassembly parts
             var lab = new AnyUiSelectableTextBlock();
-            lab.Text = "Map Subassembly Parts:";
+            lab.Text = "How should the parts of the subassembly be mapped to the selected components?";
             panel.Add(lab);
             var mapPartsPanel = new AnyUiStackPanel();
             panel.Add(mapPartsPanel);
 
             mapPartsPanel.Add(mapPartsGrid);
 
-            var bomSubmodel = FindFirstBomSubmodel(environment, dialogResult.AasToReuse);
-            var atomicComponentEntities = bomSubmodel.GetLeafNodes();
+            var productBom = FindBomSubmodels(environment, dialogResult.AasToReuse).FirstOrDefault(sm => sm.IsProductBom());
+            var atomicComponentEntities = productBom?.FindEntryNode()?.GetChildEntities() ?? new List<IEntity>();
 
             foreach (var entity in atomicComponentEntities)
             {
