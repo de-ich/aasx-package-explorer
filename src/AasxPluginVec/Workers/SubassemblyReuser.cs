@@ -96,9 +96,10 @@ namespace AasxPluginVec
         protected VecOptions options;
         protected LogInstance log;
 
-        // the bom models in the existing AAS
+        // the bom models and elements in the existing AAS
         protected ISubmodel existingProductBom;
         protected ISubmodel existingManufacturingBom;
+        protected IEntity subassemblyInOriginalManufacturingBom;
 
         // the models in the AAS to be reused (representing the subassembly)
         protected ISubmodel reusedProductBom;
@@ -110,47 +111,35 @@ namespace AasxPluginVec
                 return null;
             }
 
-            reusedProductBom = FindFirstBomSubmodel(env, subassemblyAasToReuse);
-            reusedProductBom.SetAllParents();
-            var atomicComponentEntitiesInSubAssemblyAAS = reusedProductBom.GetLeafNodes();
+            // create the entity representing the subassembly in the orginal mbom
+            subassemblyInOriginalManufacturingBom = CreateNode(nameOfSubassemblyEntityInOriginalMbom, existingManufacturingBom.FindEntryNode(), subassemblyAasToReuse, true);
 
-            // get or create the 'building blocks' submodel 
-            var existingManufacturingBom = FindManufacturingBom(aas, env);
-            if (existingManufacturingBom == null)
+            var partsInReusedProductBom = reusedProductBom.FindEntryNode()?.GetChildEntities();
+            foreach (var entity in entitiesToBeMadeSubassembly)
             {
-               
-                // no building blocks submodel seems to exist -> create a new one
-                try
-                {
-                    existingManufacturingBom = CreateManufacturingBom(options.TemplateIdSubmodel, existingManufacturingBom, aas, env);
-                }
-                catch (Exception e)
-                {
-                    log?.Error(e.Message);
-                    return null;
-                }
+                // create the part of the subassembly in the original mbom
+                var partInOriginalMBom = CreateNode(entity, subassemblyInOriginalManufacturingBom);
+
+                // link the entity in the original mbom to the part in the original product bom
+                CreateSameAsRelationship(partInOriginalMBom, entity);
+
+                // determine the entity in the reused product bom that represents the selected entity in the original product bom
+                var idShort = this.reusedPartNamesByOriginalPartNames[entity.IdShort];
+                var partInReusedProductBom = partsInReusedProductBom?.First(e => e.IdShort == idShort);
+
+                // link the entity in the original mbom to eh part in the reused product bom
+                CreateSameAsRelationship(partInOriginalMBom, partInReusedProductBom);
             }
 
-            var buildingBlocksSubmodelEntryNode = existingManufacturingBom.FindEntryNode();
-
-            // the entity representing the sub-assembly in the BOM SM of the original AAS (the harness AAS)
-            var subassemblyEntityInOriginalAAS = CreateNode(nameOfSubassemblyEntityInOriginalMbom, buildingBlocksSubmodelEntryNode, subassemblyAasToReuse.AssetInformation.GlobalAssetId, true);
-
-            foreach (var partEntityInOriginalAAS in entitiesToBeMadeSubassembly)
-            {
-                CreateHasPartRelationship(subassemblyEntityInOriginalAAS, partEntityInOriginalAAS);
-
-                var idShort = this.reusedPartNamesByOriginalPartNames[partEntityInOriginalAAS.IdShort];
-                var partEntityInNewAAS = atomicComponentEntitiesInSubAssemblyAAS.First(e => e.IdShort == idShort);
-
-                CreateSameAsRelationship(partEntityInOriginalAAS, partEntityInNewAAS, subassemblyEntityInOriginalAAS, partEntityInOriginalAAS.IdShort + "_SameAs_" + idShort);
-            }
-
-            return subassemblyEntityInOriginalAAS;
+            return subassemblyInOriginalManufacturingBom;
         }
 
         private bool DetermineExistingSubmodels()
         {
+            var allBomSubmodels = FindBomSubmodels(env, aas);
+            // make sure all parents are set for all potential submodels involved in this action
+            allBomSubmodels.ToList().ForEach(sm => sm.SetAllParents());
+
             existingProductBom = FindCommonSubmodelParent(entitiesToBeMadeSubassembly);
             if (existingProductBom == null)
             {
@@ -163,6 +152,15 @@ namespace AasxPluginVec
                 log?.Error("Only entities from a product BOM may be selected!");
                 return false;
             }
+
+            reusedProductBom = FindFirstBomSubmodel(env, subassemblyAasToReuse);
+            reusedProductBom.SetAllParents();
+
+            // look for an existing mbom submodel in the existing aas
+            existingManufacturingBom = FindManufacturingBom(aas, env);
+
+            // no mbom submodel was found in the aas so we create a new one
+            existingManufacturingBom ??= CreateManufacturingBom(options.TemplateIdSubmodel, existingProductBom, aas, env);
 
             return true;
         }
