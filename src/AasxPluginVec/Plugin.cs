@@ -221,7 +221,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "CreateOrder",
-                        Header = "Create wire harness order for selected cnfigurations",
+                        Header = "Create wire harness order for selected configurations",
                         HelpText = "Create a new wire harness order for the selected entities (configurations from a configuration bom).",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }

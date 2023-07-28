@@ -116,7 +116,8 @@ namespace AasxPluginVec
         public static IEnumerable<IEntity> FindAssociatedSubassemblies(IEntity configuration, AasCore.Aas3_0.Environment env)
         {
             var relationshipsToAssociatedSubassemblies = configuration?.GetHasPartRelationships();
-            return relationshipsToAssociatedSubassemblies?.Select(r => env.FindReferableByReference(r.Second) as IEntity).ToList() ?? new List<IEntity>();
+            var associatedSubassemblies = relationshipsToAssociatedSubassemblies?.Select(r => env.FindReferableByReference(r.Second) as IEntity).ToList() ?? new List<IEntity>();
+            return associatedSubassemblies.Select(sa => sa.GetSameAsEntities(env).Where(RepresentsSubAssembly).FirstOrDefault()).Where(sa => sa != null);
         }
     }
 }
