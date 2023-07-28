@@ -183,7 +183,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     {
                         Name = "DeriveSubassembly",
                         Header = "Derive new subassembly from selected components",
-                        HelpText = "Derive new subassembly based on selected entities (components and/or subassemblies) and create the required admin shell.",
+                        HelpText = "Derive new subassembly based on selected entities (components in a product bom and/or subassemblies in a manufacturing bom) and create the required admin shell.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -196,20 +196,20 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     {
                         Name = "ReuseSubassembly",
                         Header = "Reuse existing subassembly for selected components",
-                        HelpText = "Reuse an existing subassembly for the selected entities (components).",
+                        HelpText = "Reuse an existing subassembly for the selected entities (components from a product bom).",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
 
-                // associated subassembly with module
+                // associated subassembly with configuration
                 res.Add(new AasxPluginResultSingleMenuItem()
                 {
                     AttachPoint = "Plugins",
                     MenuItem = new AasxMenuItem()
                     {
-                        Name = "AssociateSubassembliesWithModule",
-                        Header = "Associate orderable module with selected subassemblies",
-                        HelpText = "Associate an orderable module/a vairant with the selected entities (subassemblies) required for production.",
+                        Name = "AssociateSubassembliesWithConfiguration",
+                        Header = "Associate selected subassemblies with a configuration",
+                        HelpText = "Associate the selected entities (subassemblies from a manufacturing bom) with a configuration in a configuration bom.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -221,8 +221,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "CreateOrder",
-                        Header = "Create wire harness order for selected modules",
-                        HelpText = "Create a new wire harness order for the selected entities (orderable modules).",
+                        Header = "Create wire harness order for selected cnfigurations",
+                        HelpText = "Create a new wire harness order for the selected entities (configurations from a configuration bom).",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -301,9 +301,9 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                         resultEvents = await ExecuteReuseSubassembly(ticket, displayContext);
                     }
 
-                    if (cmd == "associatesubassemblieswithmodule")
+                    if (cmd == "associatesubassemblieswithconfiguration")
                     {
-                        resultEvents = await ExecuteAssociateSubassembliesWithModule(ticket, displayContext);
+                        resultEvents = await ExecuteAssociateSubassembliesWithConfiguration(ticket, displayContext);
                     }
 
                     if (cmd == "createorder")
@@ -433,7 +433,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             };
         }
 
-        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteAssociateSubassembliesWithModule(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteAssociateSubassembliesWithConfiguration(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
         {
             var env = ticket.Env;
             var selectedEntities = GetSelectedEntitiesFromTicket(ticket);
@@ -451,15 +451,15 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 return null;
             }
 
-            _log.Info($"Associating subassemblies with module...");
-            SubassemblyToModuleAssociator.AssociateSubassemblies(env, aas, selectedEntities, result.SelectedModule, _options, _log);
+            _log.Info($"Associating subassemblies with configuration...");
+            SubassemblyToConfigurationAssociator.AssociateSubassemblies(env, aas, selectedEntities, result.SelectedConfiguration, _options, _log);
 
             return new List<AasxPluginResultEventBase>()
             {
                 new AasxPluginResultEventRedrawAllElements(),
                 new AasxPluginResultEventNavigateToReference()
                 {
-                    targetReference = result.SelectedModule.GetReference()
+                    targetReference = result.SelectedConfiguration.GetReference()
                 }
             };
         }

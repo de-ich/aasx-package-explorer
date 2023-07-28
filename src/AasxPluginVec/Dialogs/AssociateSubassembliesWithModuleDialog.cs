@@ -15,12 +15,12 @@ namespace AasxPluginVec.AnyUi
 {
     public static class AssociateSubassembliesWithModuleDialog
     {
-        public class AssociateSubassembliesWithModuleDialogResult
+        public class AssociateSubassembliesWithConfigurationDialogResult
         {
-            public IEntity SelectedModule { get; set; }
+            public IEntity SelectedConfiguration { get; set; }
         }
 
-        public static async Task<AssociateSubassembliesWithModuleDialogResult> DetermineAssociateSubassembliesWithModuleConfiguration(
+        public static async Task<AssociateSubassembliesWithConfigurationDialogResult> DetermineAssociateSubassembliesWithModuleConfiguration(
             VecOptions options,
             LogInstance log,
             AnyUiContextPlusDialogs displayContext,
@@ -28,15 +28,15 @@ namespace AasxPluginVec.AnyUi
             IAssetAdministrationShell aas,
             AasCore.Aas3_0.Environment env)
         {
-            var moduleBomSubmodels = FindBomSubmodels(env, aas).Where(sm => sm.IsConfigurationBom());
-            var moduleEntitiesToSelect = moduleBomSubmodels.SelectMany(sm => sm.FindEntryNode().GetChildEntities());
+            var configurationBoms = FindBomSubmodels(env, aas).Where(sm => sm.IsConfigurationBom());
+            var configurationsToSelect = configurationBoms.SelectMany(sm => sm.FindEntryNode().GetChildEntities());
 
-            var dialogData = new AssociateSubassembliesWithModuleDialogResult();
+            var dialogData = new AssociateSubassembliesWithConfigurationDialogResult();
             
-            var uc = new AnyUiDialogueDataModalPanel("Select Module");
+            var uc = new AnyUiDialogueDataModalPanel("Select Configuration");
             uc.ActivateRenderPanel(
                 dialogData,
-                (uci) => RenderMainDialogPanel(moduleEntitiesToSelect, dialogData)
+                (uci) => RenderMainDialogPanel(configurationsToSelect, dialogData)
             );
 
             if(!(await displayContext.StartFlyoverModalAsync(uc)))
@@ -50,7 +50,7 @@ namespace AasxPluginVec.AnyUi
 
         }
 
-        private static AnyUiPanel RenderMainDialogPanel(IEnumerable<IEntity> moduleEntitiesToSelect, AssociateSubassembliesWithModuleDialogResult dialogData)
+        private static AnyUiPanel RenderMainDialogPanel(IEnumerable<IEntity> configurationEntitiesToSelect, AssociateSubassembliesWithConfigurationDialogResult dialogData)
         {
             var panel = new AnyUiStackPanel();
             var helper = new AnyUiSmallWidgetToolkit();
@@ -58,15 +58,15 @@ namespace AasxPluginVec.AnyUi
             var grid = helper.AddSmallGrid(2, 2, new[] { "200", "*" }, padding: new AnyUiThickness(0, 5, 0, 5));
             panel.Add(grid);
 
-            var moduleNames = moduleEntitiesToSelect.Select(e => e.IdShort).ToArray();
+            var configurationNames = configurationEntitiesToSelect.Select(e => e.IdShort).ToArray();
 
             // specify module
-            helper.AddSmallLabelTo(grid, 0, 0, content: "Module to Associate with Selected Subassemblies:");
+            helper.AddSmallLabelTo(grid, 0, 0, content: "Configuration to Associate with Selected Subassemblies:");
             AnyUiUIElement.RegisterControl(
-                helper.AddSmallComboBoxTo(grid, 0, 1, items: moduleNames),
+                helper.AddSmallComboBoxTo(grid, 0, 1, items: configurationNames),
                 (text) =>
                 {
-                    dialogData.SelectedModule = moduleEntitiesToSelect.First(s => s.IdShort == text);
+                    dialogData.SelectedConfiguration = configurationEntitiesToSelect.First(s => s.IdShort == text);
                     return new AnyUiLambdaActionNone();
                 }
             );

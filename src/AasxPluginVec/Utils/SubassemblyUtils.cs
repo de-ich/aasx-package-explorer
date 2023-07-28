@@ -108,11 +108,6 @@ namespace AasxPluginVec
             return IsConfigurationBom(parentSubmodel);
         }
 
-        public static RelationshipElement AssociateSubassemblyWithConfiguration(IEntity subassembly, IEntity configuration)
-        {
-            return CreateHasPartRelationship(configuration, subassembly);
-        }
-
         public static bool HasAssociatedSubassemblies(IEntity configuration)
         {
             return configuration.GetHasPartRelationships().Count() > 0;

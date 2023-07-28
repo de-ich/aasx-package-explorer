@@ -24,9 +24,9 @@ using static AasxPluginVec.SubassemblyUtils;
 namespace AasxPluginVec
 {
     /// <summary>
-    /// This class allows to associate a set of subassemblies to a module that can be ordered by an OEM.
+    /// This class allows to associate a set of subassemblies to a configuration (that can e.g. be ordered by an OEM).
     /// </summary>
-    public class SubassemblyToModuleAssociator
+    public class SubassemblyToConfigurationAssociator
     {
         //
         // Public interface
@@ -43,7 +43,7 @@ namespace AasxPluginVec
             // safe
             try
             {
-                var associator = new SubassemblyToModuleAssociator(env, aas, subassembliesToAssociate, orderableModule, options, log);
+                var associator = new SubassemblyToConfigurationAssociator(env, aas, subassembliesToAssociate, orderableModule, options, log);
                 associator.AssociateSubassemblies();
             }
             catch (Exception ex)
@@ -56,11 +56,11 @@ namespace AasxPluginVec
         // Internal
         //
 
-        protected SubassemblyToModuleAssociator(
+        protected SubassemblyToConfigurationAssociator(
             AasCore.Aas3_0.Environment env,
             IAssetAdministrationShell aas,
             IEnumerable<Entity> subassembliesToAssociate,
-            IEntity orderableModule,
+            IEntity configuration,
             VecOptions options,
             LogInstance log = null)
         {
@@ -69,7 +69,7 @@ namespace AasxPluginVec
             this.env = env ?? throw new ArgumentNullException(nameof(env));
             this.aas = aas ?? throw new ArgumentNullException(nameof(aas));
             this.subassembliesToAssociate = subassembliesToAssociate ?? throw new ArgumentNullException(nameof(subassembliesToAssociate));
-            this.orderableModule = orderableModule ?? throw new ArgumentNullException(nameof(orderableModule));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
@@ -77,7 +77,7 @@ namespace AasxPluginVec
         protected AasCore.Aas3_0.Environment env;
         protected IAssetAdministrationShell aas;
         protected IEnumerable<Entity> subassembliesToAssociate;
-        protected IEntity orderableModule;
+        protected IEntity configuration;
         protected VecOptions options;
         protected LogInstance log;
 
@@ -89,13 +89,17 @@ namespace AasxPluginVec
 
             if (!subassembliesToAssociate.All(RepresentsSubAssembly))
             {
-                log?.Error("It seems that entities were selected that do not represent a subassembly. This is not supported!");
+                log?.Error("Entities were selected that are not part of the manufacturing BOM. This is not supported!");
                 return;
             }
 
             foreach (var subassembly in subassembliesToAssociate)
             {
-                AssociateSubassemblyWithConfiguration(subassembly, this.orderableModule);
+                // create the node for the subassembly in the configuration bom
+                var subassemblyInConfigurationBom = CreateNode(subassembly, configuration);
+
+                // linke the node for the subassembly in the configuration bom with the subassembly in the manufacturing bom
+                CreateSameAsRelationship(subassemblyInConfigurationBom, subassembly);
             }
         }        
     }
