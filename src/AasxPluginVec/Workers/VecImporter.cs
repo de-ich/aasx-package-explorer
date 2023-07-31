@@ -141,16 +141,16 @@ namespace AasxPluginVec
             var modulesSubmodel = CreateModulesSubmodel(indexSuffix);
             var bomModulesEntryNode = modulesSubmodel.FindEntryNode();
 
-            var entitesByXmlElement = new List<(XElement xmlElement, IEntity entity)>()
+            var entitiesByXmlElement = new List<(XElement xmlElement, IEntity entity)>()
                 {
                     (harnessDescription, bomComponentsEntryNode),
                     (harnessDescription, bomModulesEntryNode)
                 };
 
-            entitesByXmlElement.AddRange(CreateComponentEntities(bomComponentsEntryNode, harnessDescription));
-            entitesByXmlElement.AddRange(CreateModuleEntities(bomModulesEntryNode, harnessDescription));
+            entitiesByXmlElement.AddRange(CreateComponentEntities(bomComponentsEntryNode, harnessDescription));
+            entitiesByXmlElement.AddRange(CreateModuleEntities(bomModulesEntryNode, harnessDescription));
 
-            foreach (var (xmlElement, entity) in entitesByXmlElement)
+            foreach (var (xmlElement, entity) in entitiesByXmlElement)
             {
                 // create the fragment relationship pointing to the Component element for the current component
                 CreateVecRelationship(entity, GetElementFragment(xmlElement), this.vecFileSubmodelElement);
@@ -209,18 +209,47 @@ namespace AasxPluginVec
 
             var partId = GetPartId(component);
 
-            // if an asset ID is defined for the referenced part (in the plugin options), use this as asset reference
+            // try to determine an assetId for the given part number
             var partNumber = this.vecProvider.GetPartNumber(partId);
             string assetId = null;
             if (partNumber != null)
             {
-                this.options.AssetIdByPartNumberDict.TryGetValue(partNumber, out assetId);
+                // first option: check if a component AAS with a matching specific asset ID is defined in the current environment
+                assetId = this.env.AssetAdministrationShells.FirstOrDefault(aas => AasHasSpecificAssetIdForPartNumber(aas, partNumber))?.AssetInformation.GlobalAssetId;
+
+                // second option: use an asset ID that is defined in the plugin options
+                if (assetId == null)
+                {
+                    this.options.AssetIdByPartNumberDict.TryGetValue(partNumber, out assetId);
+                }
             }
             
             // create the entity
             var componentEntity = CreateNode(componentName, mainEntity, assetId, true);
 
             return componentEntity;
+        }
+
+        private bool AasHasSpecificAssetIdForPartNumber(IAssetAdministrationShell aas, string partNumber)
+        {
+            var globalAssetIdOfWireHarness = aas.AssetInformation.GlobalAssetId;
+
+            if (globalAssetIdOfWireHarness == null)
+            {
+                // a global asset ID needs to be present because we need to compare this to the 'externalSubjectID' of the specific asset IDs
+                return false;
+            }
+
+            return aas.AssetInformation.OverSpecificAssetIdsOrEmpty().Any(id =>
+            {
+                var externalSubjectIdValue = id.ExternalSubjectId?.Keys.First()?.Value;
+                var semanticIdValue = id.SemanticId?.Keys.First()?.Value;
+
+                return externalSubjectIdValue != null && 
+                    (globalAssetIdOfWireHarness?.Contains(externalSubjectIdValue) ?? false) &&
+                    semanticIdValue == "0173-1#02-AAO676#003" &&
+                    id.Value == partNumber;
+            });
         }
 
         private IEnumerable<(XElement xmlElement, IEntity entity)> CreateModuleEntities(Entity mainEntity, XElement harnessDescription)
