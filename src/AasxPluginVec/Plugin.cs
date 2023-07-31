@@ -182,6 +182,19 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     AttachPoint = "Plugins",
                     MenuItem = new AasxMenuItem()
                     {
+                        Name = "DeriveAasForEquivalentAsset",
+                        Header = "VWS4LS: Create a new AAS that references this one via the specific asset ID",
+                        HelpText = "Create a new AAS, copy all submodel references and reference the selected AAS (resp. the asset) via the specific asset ID.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                // derive subassembly
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
                         Name = "DeriveSubassembly",
                         Header = "VWS4LS: Derive new subassembly from selected components",
                         HelpText = "Derive new subassembly based on selected entities (components in a product bom and/or subassemblies in a manufacturing bom) and create the required admin shell.",
@@ -292,6 +305,11 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                         resultEvents = await ExecuteImportVEC(ticket, displayContext);
                     }
 
+                    if (cmd == "deriveaasforequivalentasset")
+                    {
+                        resultEvents = await ExecuteDeriveAas(ticket, displayContext);
+                    }
+
                     if (cmd == "derivesubassembly")
                     {
                         resultEvents = await ExecuteDeriveSubassembly(ticket, displayContext);
@@ -369,6 +387,39 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 }
             };
 
+        }
+
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteDeriveAas(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            if (ticket.AAS == null)
+            {
+                throw new ArgumentException($"Derive AAS: An AAS has to be selected!");
+            }
+
+            var package = ticket.Package;
+            var env = ticket.Env;
+            var aas = ticket.AAS;
+
+            var result = await DeriveAasDialog.DetermineDeriveAasConfiguration(displayContext, aas);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            _log.Info($"Deriving subassembly...");
+            var worker = new AasDeriver(env, aas, _options);
+            var derivedAas = worker.DeriveAas(result.NameOfDerivedAas);
+
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = derivedAas.GetReference()
+                }
+
+            };
         }
 
         private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteDeriveSubassembly(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
