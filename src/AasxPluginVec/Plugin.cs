@@ -409,7 +409,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             _log.Info($"Deriving subassembly...");
             var worker = new AasDeriver(env, aas, _options);
-            var derivedAas = worker.DeriveAas(result.NameOfDerivedAas);
+            var derivedAas = worker.DeriveAas(result.NameOfDerivedAas, result.PartNumber, result.SubjectID);
 
             return new List<AasxPluginResultEventBase>()
             {

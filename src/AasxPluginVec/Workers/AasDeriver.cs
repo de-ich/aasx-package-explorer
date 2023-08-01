@@ -41,14 +41,20 @@ namespace AasxPluginVec
 
         // things specified in 'CreateOrder(...)
         protected string nameOfDerivedAas;
+        protected string partNumber;
+        protected string subjectId;
 
         // the aas to be created/derived
         protected AssetAdministrationShell derivedAas;
 
         public IAssetAdministrationShell DeriveAas(
-            string nameOfDerivedAas)
+            string nameOfDerivedAas,
+            string partNumber = null,
+            string subjectId = null)
         {
             this.nameOfDerivedAas = nameOfDerivedAas ?? throw new ArgumentNullException(nameof(nameOfDerivedAas));
+            this.partNumber = partNumber;
+            this.subjectId = subjectId;
 
             DoDeriveAas();
 
@@ -59,9 +65,29 @@ namespace AasxPluginVec
         {
             // create the new (derived) aas
             derivedAas = CreateAAS(nameOfDerivedAas, options.TemplateIdAas, options.TemplateIdAsset, env);
+            derivedAas.AssetInformation.AssetKind = aas.AssetInformation.AssetKind;
+
+            var specificAssetIds = new List<ISpecificAssetId>();
+
+            // add a specific asset id for the own part number
+            if(partNumber != null && subjectId != null)
+            {
+                var partNumberSpecificAssetId = new SpecificAssetId(
+                    "partNumber",
+                    partNumber,
+                    CreateSemanticId(KeyTypes.GlobalReference, "0173-1#02-AAO676#003"),
+                    externalSubjectId: new Reference(ReferenceTypes.ExternalReference, new List<IKey>() { new Key(KeyTypes.GlobalReference, subjectId) })
+                );
+                specificAssetIds.Add(partNumberSpecificAssetId);
+            }
 
             // copy the specific asset ID(s) of the orignal AAS to establish a link to this AAS
-            derivedAas.AssetInformation.SpecificAssetIds = aas.AssetInformation.SpecificAssetIds?.Copy();
+            specificAssetIds.AddRange(aas.AssetInformation.SpecificAssetIds?.Copy());
+
+            if(specificAssetIds.Any())
+            {
+                derivedAas.AssetInformation.SpecificAssetIds = specificAssetIds;
+            }
 
             // copy (references to) all submodels in the original AAS
             derivedAas.Submodels = aas.Submodels?.Copy();

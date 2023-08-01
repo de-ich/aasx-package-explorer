@@ -191,5 +191,33 @@ namespace AasxPluginVec
             var aas = env.AssetAdministrationShells.FirstOrDefault(aas => submodelReferences.All(r => aas.HasSubmodelReference(r)));
             return aas;
         }
+
+        public static bool AasHasSpecificAssetIdForOwnPartNumber(this IAssetAdministrationShell aas, string partNumber)
+        {
+            var specificAssetId = aas.GetSpecificAssetIdForOwnPartNumber();
+            return specificAssetId != null && specificAssetId.Value == partNumber;
+        }
+
+        public static ISpecificAssetId GetSpecificAssetIdForOwnPartNumber(this IAssetAdministrationShell aas)
+        {
+            var globalAssetIdOfWireHarness = aas.AssetInformation.GlobalAssetId;
+
+            if (globalAssetIdOfWireHarness == null)
+            {
+                // a global asset ID needs to be present because we need to compare this to the 'externalSubjectID' of the specific asset IDs
+                // in order to finde the 'own' partNumber
+                return null;
+            }
+
+            return aas.AssetInformation.OverSpecificAssetIdsOrEmpty().FirstOrDefault(id =>
+            {
+                var externalSubjectIdValue = id.ExternalSubjectId?.Keys.First()?.Value;
+                var semanticIdValue = id.SemanticId?.Keys.First()?.Value;
+
+                return externalSubjectIdValue != null &&
+                    (globalAssetIdOfWireHarness?.Contains(externalSubjectIdValue) ?? false) &&
+                    semanticIdValue == "0173-1#02-AAO676#003";
+            });
+        }
     }
 }

@@ -20,6 +20,7 @@ using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.VecProvider;
 using static AasxPluginVec.SubassemblyUtils;
+using static AasxPluginVec.BasicAasUtils;
 
 namespace AasxPluginVec
 {
@@ -215,7 +216,7 @@ namespace AasxPluginVec
             if (partNumber != null)
             {
                 // first option: check if a component AAS with a matching specific asset ID is defined in the current environment
-                assetId = this.env.AssetAdministrationShells.FirstOrDefault(aas => AasHasSpecificAssetIdForPartNumber(aas, partNumber))?.AssetInformation.GlobalAssetId;
+                assetId = this.env.AssetAdministrationShells.FirstOrDefault(aas => aas.AasHasSpecificAssetIdForOwnPartNumber(partNumber))?.AssetInformation.GlobalAssetId;
 
                 // second option: use an asset ID that is defined in the plugin options
                 if (assetId == null)
@@ -228,28 +229,6 @@ namespace AasxPluginVec
             var componentEntity = CreateNode(componentName, mainEntity, assetId, true);
 
             return componentEntity;
-        }
-
-        private bool AasHasSpecificAssetIdForPartNumber(IAssetAdministrationShell aas, string partNumber)
-        {
-            var globalAssetIdOfWireHarness = aas.AssetInformation.GlobalAssetId;
-
-            if (globalAssetIdOfWireHarness == null)
-            {
-                // a global asset ID needs to be present because we need to compare this to the 'externalSubjectID' of the specific asset IDs
-                return false;
-            }
-
-            return aas.AssetInformation.OverSpecificAssetIdsOrEmpty().Any(id =>
-            {
-                var externalSubjectIdValue = id.ExternalSubjectId?.Keys.First()?.Value;
-                var semanticIdValue = id.SemanticId?.Keys.First()?.Value;
-
-                return externalSubjectIdValue != null && 
-                    (globalAssetIdOfWireHarness?.Contains(externalSubjectIdValue) ?? false) &&
-                    semanticIdValue == "0173-1#02-AAO676#003" &&
-                    id.Value == partNumber;
-            });
         }
 
         private IEnumerable<(XElement xmlElement, IEntity entity)> CreateModuleEntities(Entity mainEntity, XElement harnessDescription)
