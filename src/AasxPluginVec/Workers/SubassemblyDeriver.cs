@@ -170,7 +170,7 @@ namespace AasxPluginVec
             originalManufacturingBom ??= FindManufacturingBom(originalProductBom, aas, env);
 
             // no mbom submodel was found in the aas so we create a new one
-            originalManufacturingBom ??= CreateManufacturingBom(options.TemplateIdSubmodel, originalProductBom, aas, env);
+            originalManufacturingBom ??= CreateManufacturingBom(options.GetTemplateIdSubmodel(aas.GetSubjectId()), originalProductBom, aas, env);
         }
 
         public void CreateNewAasAndInitializeSubmodels()
@@ -185,15 +185,15 @@ namespace AasxPluginVec
             var existingVecFileSME = referencedVecFileSMEs.First();
 
             // the AAS for the new sub-assembly
-            this.newSubassemblyAas = CreateAAS(this.newSubassemblyAasName, options.TemplateIdAas, options.TemplateIdAsset, env, AssetKind.Type);
+            this.newSubassemblyAas = CreateAAS(this.newSubassemblyAasName, options.GetTemplateIdAas(aas.GetSubjectId()), options.GetTemplateIdAsset(aas.GetSubjectId()), env, AssetKind.Type);
 
             // FIXME probably, we should not just copy the whole existing VEC file but extract the relevant parts only into a new file
             newVecSubmodel = InitializeVecSubmodel(newSubassemblyAas, env, existingVecFileSME);
 
-            newProductBom = CreateBomSubmodel(ID_SHORT_PRODUCT_BOM_SM, options.TemplateIdSubmodel, aas: newSubassemblyAas, env: env, supplementarySemanticId: SEM_ID_PRODUCT_BOM_SM);
+            newProductBom = CreateBomSubmodel(ID_SHORT_PRODUCT_BOM_SM, options.GetTemplateIdSubmodel(aas.GetSubjectId()), aas: newSubassemblyAas, env: env, supplementarySemanticId: SEM_ID_PRODUCT_BOM_SM);
             CopyVecRelationship(originalManufacturingBom.FindEntryNode(), newProductBom.FindEntryNode());
 
-            newManufacturingBom = CreateManufacturingBom(options.TemplateIdSubmodel, newProductBom, aas: newSubassemblyAas, env: env);
+            newManufacturingBom = CreateManufacturingBom(options.GetTemplateIdSubmodel(aas.GetSubjectId()), newProductBom, aas: newSubassemblyAas, env: env);
         }
 
         private void AddSimpleComponentToSubassembly(IEntity simpleComponentToAdd)
@@ -286,7 +286,7 @@ namespace AasxPluginVec
         protected Submodel InitializeVecSubmodel(AssetAdministrationShell aas, AasCore.Aas3_0.Environment env, AasCore.Aas3_0.File existingVecFileSME)
         {
             // create the VEC submodel
-            return CreateVecSubmodel(existingVecFileSME, options.TemplateIdSubmodel, aas, env);
+            return CreateVecSubmodel(existingVecFileSME, options.GetTemplateIdSubmodel(aas.GetSubjectId()), aas, env);
         }
 
         protected bool IsPartOfWireHarnessBom(IEntity entity)

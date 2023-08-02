@@ -108,11 +108,11 @@ namespace AasxPluginVec
 
             // create the new aas representing the order
             var orderAasIdShort = aas.IdShort + "_Order_" + orderNumber;
-            orderAas = CreateAAS(orderAasIdShort, options.TemplateIdAas, options.TemplateIdAsset, env);
+            orderAas = CreateAAS(orderAasIdShort, options.GetTemplateIdAas(aas.GetSubjectId()), options.GetTemplateIdAsset(aas.GetSubjectId()), env);
             orderAas.DerivedFrom = aas.GetReference();
 
             // create the configuration bom in the new aas
-            orderConfigurationBom = CreateBomSubmodel(ID_SHORT_CONFIGURATION_BOM_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
+            orderConfigurationBom = CreateBomSubmodel(ID_SHORT_CONFIGURATION_BOM_SM, options.GetTemplateIdSubmodel(orderAas.GetSubjectId()), aas: orderAas, env: env);
 
             foreach (var configuration in selectedConfigurations)
             {
@@ -124,7 +124,7 @@ namespace AasxPluginVec
             }
 
             // create the manufacturing bom in the new aas
-            orderManufacturingBom = CreateBomSubmodel(ID_SHORT_MANUFACTURING_BOM_SM, options.TemplateIdSubmodel, aas: orderAas, env: env);
+            orderManufacturingBom = CreateBomSubmodel(ID_SHORT_MANUFACTURING_BOM_SM, options.GetTemplateIdSubmodel(orderAas.GetSubjectId()), aas: orderAas, env: env);
 
             foreach (var associatedSubassembly in subassembliesAssociatedWithSelectedConfigurations)
             {

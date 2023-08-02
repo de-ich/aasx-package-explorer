@@ -161,13 +161,13 @@ namespace AasxPluginVec
         protected ISubmodel CreateVecSubmodel()
         {
             // create the VEC submodel
-            return VecSMUtils.CreateVecSubmodel(pathToVecFile, options.TemplateIdSubmodel, aas, env, packageEnv);
+            return VecSMUtils.CreateVecSubmodel(pathToVecFile, options.GetTemplateIdSubmodel(aas.GetSubjectId()), aas, env, packageEnv);
         }
 
         protected ISubmodel CreateComponentsSubmodel(string indexSuffix = "")
         {
             var bomComponentsSubmodelIdShort = ID_SHORT_PRODUCT_BOM_SM + indexSuffix;
-            var bomComponentsSubmodel = CreateBomSubmodel(bomComponentsSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env, supplementarySemanticId: SEM_ID_PRODUCT_BOM_SM);
+            var bomComponentsSubmodel = CreateBomSubmodel(bomComponentsSubmodelIdShort, options.GetTemplateIdSubmodel(aas.GetSubjectId()), aas: aas, env: env, supplementarySemanticId: SEM_ID_PRODUCT_BOM_SM);
 
             return bomComponentsSubmodel;
         }
@@ -175,7 +175,7 @@ namespace AasxPluginVec
         protected ISubmodel CreateModulesSubmodel(string indexSuffix = "")
         {
             var bomModulesSubmodelIdShort = ID_SHORT_CONFIGURATION_BOM_SM + indexSuffix;
-            var bomModulesSubmodel = CreateBomSubmodel(bomModulesSubmodelIdShort, options.TemplateIdSubmodel, aas: aas, env: env, supplementarySemanticId: SEM_ID_CONFIGURATION_BOM_SM);
+            var bomModulesSubmodel = CreateBomSubmodel(bomModulesSubmodelIdShort, options.GetTemplateIdSubmodel(aas.GetSubjectId()), aas: aas, env: env, supplementarySemanticId: SEM_ID_CONFIGURATION_BOM_SM);
 
             return bomModulesSubmodel;
         }
@@ -216,7 +216,7 @@ namespace AasxPluginVec
             if (partNumber != null)
             {
                 // first option: check if a component AAS with a matching specific asset ID is defined in the current environment
-                assetId = this.env.AssetAdministrationShells.FirstOrDefault(aas => aas.AasHasSpecificAssetIdForOwnPartNumber(partNumber))?.AssetInformation.GlobalAssetId;
+                assetId = this.env.AssetAdministrationShells.FirstOrDefault(aas => aas.HasPartNumberSpecificAssetId(partNumber))?.AssetInformation.GlobalAssetId;
 
                 // second option: use an asset ID that is defined in the plugin options
                 if (assetId == null)

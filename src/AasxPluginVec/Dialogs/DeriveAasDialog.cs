@@ -25,8 +25,8 @@ namespace AasxPluginVec.AnyUi
             IAssetAdministrationShell aasToDeriveFrom)
         {
             var idShortOfAasToDeriveFrom = aasToDeriveFrom.IdShort;
-            var specficAssetIdForOwnPartNumber = aasToDeriveFrom.GetSpecificAssetIdForOwnPartNumber();
-            var partNumberOfAasToDeriveFrom = specficAssetIdForOwnPartNumber.Value;
+            var specficAssetIdForOwnPartNumber = aasToDeriveFrom.GetPartNumberSpecificAssetId();
+            var partNumberOfAasToDeriveFrom = specficAssetIdForOwnPartNumber?.Value ?? "";
 
             var dialogResult = new DeriveAasDialogResult();
             
@@ -54,14 +54,14 @@ namespace AasxPluginVec.AnyUi
             panel.Add(grid);
 
             // specify name of the derived AAS
-            helper.AddSmallLabelTo(grid, 0, 0, content: "Name of Derived AAS:");
+            helper.AddSmallLabelTo(grid, 0, 0, content: "Name of the Derived AAS:");
             AnyUiUIElement.SetStringFromControl(
                 helper.AddSmallTextBoxTo(grid, 0, 1, text: nameOfAasToDeriveFrom),
                 (text) => { dialogResult.NameOfDerivedAas = text; }
             );
 
             // specify part number of the derived AAS
-            helper.AddSmallLabelTo(grid, 1, 0, content: "Part Number for the Derived AAS:");
+            helper.AddSmallLabelTo(grid, 1, 0, content: "Part Number for the Derived Asset:");
             AnyUiUIElement.SetStringFromControl(
                 helper.AddSmallTextBoxTo(grid, 1, 1, text: partNumberOfAasToDeriveFrom),
                 (text) => { dialogResult.PartNumber = text; }

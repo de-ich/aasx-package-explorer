@@ -162,9 +162,14 @@ namespace AasxPluginVec
             } else
             {
                 var submodelRefs = aas?.Submodels ?? new List<IReference>();
-                var submodels = submodelRefs.ToList().Select(smRef => env?.Submodels.Find(sm => sm.GetReference().Matches(smRef)));
+                var submodels = submodelRefs.ToList().Select(smRef => GetSubmodel(smRef, env));
                 return submodels;
             }
+        }
+
+        public static ISubmodel GetSubmodel(IReference submodelRef, AasCore.Aas3_0.Environment env)
+        {
+            return env?.Submodels?.Find(sm => sm.GetReference().Matches(submodelRef));
         }
 
         public static HashSet<Submodel> FindCommonSubmodelParents(IEnumerable<ISubmodelElement> elements)
@@ -192,22 +197,52 @@ namespace AasxPluginVec
             return aas;
         }
 
-        public static bool AasHasSpecificAssetIdForOwnPartNumber(this IAssetAdministrationShell aas, string partNumber)
+        public static ISubmodel DeepCloneSubmodel(ISubmodel submodelToCopy, string iriTemplate)
         {
-            var specificAssetId = aas.GetSpecificAssetIdForOwnPartNumber();
+            var copy = new Submodel(
+                GenerateIdAccordingTemplate(iriTemplate),
+                submodelToCopy.Extensions?.Copy(),
+                submodelToCopy.Category,
+                submodelToCopy.IdShort,
+                submodelToCopy.DisplayName?.Copy(),
+                submodelToCopy.Description?.Copy(),
+                submodelToCopy.Administration?.Copy(),
+                submodelToCopy.Kind?.Copy(),
+                submodelToCopy.SemanticId?.Copy(),
+                submodelToCopy.SupplementalSemanticIds?.Copy(),
+                submodelToCopy.Qualifiers?.Copy(),
+                submodelToCopy.EmbeddedDataSpecifications?.Copy(),
+                submodelToCopy.SubmodelElements?.Copy());
+            return copy;
+        }
+
+        public static string GetSubjectId(string iri)
+        {
+            // we assume that the subject ID is simply the 'host' part of the IRI
+            return new UriBuilder(iri).Uri.Host;
+        }
+
+        public static string GetSubjectId(this IAssetAdministrationShell aas)
+        {
+            // we assume that the subject ID is simply the 'host' part of the IRI used for asset identification
+            return GetSubjectId(aas.AssetInformation.GlobalAssetId);
+        }
+
+        public static string GetSubjectId(this ISubmodel sm)
+        {
+            // we assume that the subject ID is simply the 'host' part of the IRI used for submodel identification
+            return GetSubjectId(sm.Id);
+        }
+
+        public static bool HasPartNumberSpecificAssetId(this IAssetAdministrationShell aas, string partNumber, string subjectID = null)
+        {
+            var specificAssetId = aas.GetPartNumberSpecificAssetId(subjectID);
             return specificAssetId != null && specificAssetId.Value == partNumber;
         }
 
-        public static ISpecificAssetId GetSpecificAssetIdForOwnPartNumber(this IAssetAdministrationShell aas)
+        public static ISpecificAssetId GetPartNumberSpecificAssetId(this IAssetAdministrationShell aas, string subjectID = null)
         {
-            var globalAssetIdOfWireHarness = aas.AssetInformation.GlobalAssetId;
-
-            if (globalAssetIdOfWireHarness == null)
-            {
-                // a global asset ID needs to be present because we need to compare this to the 'externalSubjectID' of the specific asset IDs
-                // in order to finde the 'own' partNumber
-                return null;
-            }
+            subjectID ??= aas.GetSubjectId();
 
             return aas.AssetInformation.OverSpecificAssetIdsOrEmpty().FirstOrDefault(id =>
             {
@@ -215,8 +250,25 @@ namespace AasxPluginVec
                 var semanticIdValue = id.SemanticId?.Keys.First()?.Value;
 
                 return externalSubjectIdValue != null &&
-                    (globalAssetIdOfWireHarness?.Contains(externalSubjectIdValue) ?? false) &&
+                    subjectID == externalSubjectIdValue &&
                     semanticIdValue == "0173-1#02-AAO676#003";
+            });
+        }
+
+        public static IAssetAdministrationShell FindAasForPartNumber(this AasCore.Aas3_0.Environment env, string partNumber, string subjectIdForPartNumber, string subjectIdOfAasToFind = null)
+        {
+            if (partNumber == null)
+            {
+                return null;
+            }
+
+            var adminShels = env.AssetAdministrationShells.Where(aas => subjectIdOfAasToFind == null || aas.GetSubjectId() == subjectIdOfAasToFind);
+
+            return adminShels.FirstOrDefault(aas =>
+            {
+                var partNumberAssetId = aas.GetPartNumberSpecificAssetId(subjectIdForPartNumber);
+
+                return partNumberAssetId?.Value == partNumber;
             });
         }
     }

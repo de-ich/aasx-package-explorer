@@ -17,6 +17,8 @@ using AdminShellNS;
 using AasCore.Aas3_0;
 using Extensions;
 using static AasxPluginVec.BasicAasUtils;
+using static AasxPluginVec.SubassemblyUtils;
+using static AasxPluginVec.BomSMUtils;
 
 namespace AasxPluginVec
 {
@@ -39,7 +41,7 @@ namespace AasxPluginVec
         protected IAssetAdministrationShell aas;
         protected VecOptions options;
 
-        // things specified in 'CreateOrder(...)
+        // things specified in 'DeriveAas(...)
         protected string nameOfDerivedAas;
         protected string partNumber;
         protected string subjectId;
@@ -54,7 +56,7 @@ namespace AasxPluginVec
         {
             this.nameOfDerivedAas = nameOfDerivedAas ?? throw new ArgumentNullException(nameof(nameOfDerivedAas));
             this.partNumber = partNumber;
-            this.subjectId = subjectId;
+            this.subjectId = subjectId ?? aas.GetSubjectId();
 
             DoDeriveAas();
 
@@ -64,8 +66,9 @@ namespace AasxPluginVec
         private void DoDeriveAas()
         {
             // create the new (derived) aas
-            derivedAas = CreateAAS(nameOfDerivedAas, options.TemplateIdAas, options.TemplateIdAsset, env);
+            derivedAas = CreateAAS(nameOfDerivedAas, options.GetTemplateIdAas(subjectId), options.GetTemplateIdAsset(subjectId), env);
             derivedAas.AssetInformation.AssetKind = aas.AssetInformation.AssetKind;
+            derivedAas.Submodels = new List<IReference>();
 
             var specificAssetIds = new List<ISpecificAssetId>();
 
@@ -82,15 +85,188 @@ namespace AasxPluginVec
             }
 
             // copy the specific asset ID(s) of the orignal AAS to establish a link to this AAS
-            specificAssetIds.AddRange(aas.AssetInformation.SpecificAssetIds?.Copy());
+            if (aas.AssetInformation.SpecificAssetIds != null)
+            {
+                specificAssetIds.AddRange(aas.AssetInformation.SpecificAssetIds.Copy());
+            }
 
             if(specificAssetIds.Any())
             {
                 derivedAas.AssetInformation.SpecificAssetIds = specificAssetIds;
             }
 
-            // copy (references to) all submodels in the original AAS
-            derivedAas.Submodels = aas.Submodels?.Copy();
+            // clone all submodels existing in the original AAS
+            var existingSubmodels = aas.Submodels?.Select(smRef => GetSubmodel(smRef, env));
+            var clonedSubmodelsByExisting = new Dictionary<ISubmodel, ISubmodel>();
+            foreach (var submodel in existingSubmodels)
+            {
+                var clonedSubmodel = CloneSubmodel(submodel, subjectId);
+
+                // add the cloned submodel to the aas and environment
+                System.Diagnostics.Debug.WriteLine("Vorher: " + env.Submodels.Count);
+                env.Submodels.Add(clonedSubmodel);
+                derivedAas.Submodels.Add(clonedSubmodel.GetReference());
+                System.Diagnostics.Debug.WriteLine("Nachher: " + env.Submodels.Count);
+
+                clonedSubmodelsByExisting[submodel] = clonedSubmodel;
+            }
+
+            // update all references to point to the 'new' subject
+            // NOTE: we need to do this after cloning all submodels so that inter-submodel references can be updated
+            foreach (var ( originalSubmodel, clonedSubmodel ) in clonedSubmodelsByExisting)
+            {
+                UpdateReferences(originalSubmodel, clonedSubmodel);
+            }
+        }
+
+        private ISubmodel CloneSubmodel(ISubmodel submodelToCopy, string subjectId)
+        {
+            // copy the submodel
+            submodelToCopy.SetAllParents();
+            ISubmodel copy = DeepCloneSubmodel(submodelToCopy, options.GetTemplateIdSubmodel(subjectId));
+            copy.SetAllParents();
+
+            return copy;
+        }
+
+        private void UpdateReferences(ISubmodel originalSubmodel, ISubmodel copy)
+        {
+            // update all references to point to entities/submodels/... owned by the 'new' subject
+            UpdateEntityAssetReferences(copy, originalSubmodel);
+            UpdateRelationships(copy, originalSubmodel);
+            LinkEntitiesWithOriginalSubmodel(copy, originalSubmodel);
+        }
+
+        
+
+        private void UpdateEntityAssetReferences(ISubmodel newSubmodel, ISubmodel originalSubmodel)
+        {
+            var selfManagedEntities = newSubmodel.FindDeep<IEntity>().Where(e => e.EntityType == EntityType.SelfManagedEntity);
+
+            var assetIdOfOriginalAas = aas.AssetInformation.GlobalAssetId;
+            var assetIdOfDerivedAas = derivedAas.AssetInformation.GlobalAssetId;
+
+            foreach (var entity in selfManagedEntities)
+            {
+                UpdateEntityAssetReference(entity, assetIdOfOriginalAas, assetIdOfDerivedAas);
+            }
+        }
+
+        private void UpdateRelationships(ISubmodel newSubmodel, ISubmodel originalSubmodel)
+        {
+            var relationships = newSubmodel.FindDeep<IRelationshipElement>();
+
+            var newSubjectId = GetSubjectId(newSubmodel.Id);
+            var originalSubjectId = GetSubjectId(originalSubmodel.Id);
+ 
+            foreach(var rel in relationships)
+            {
+                UpdateReference(rel.First, originalSubjectId, newSubjectId);
+                UpdateReference(rel.Second, originalSubjectId, newSubjectId);
+            }
+        }
+
+        private void UpdateReference(IReference reference, string originalSubjectId, string newSubjectId)
+        {
+            var referencedSubmodelId = reference?.Keys.FirstOrDefault().Value;
+            var referencedSubject = GetSubjectId(referencedSubmodelId);
+
+            if (referencedSubject != originalSubjectId)
+            {
+                // only update references that point to submodels 'owned' by the original subject
+                return;
+            }
+
+            var referencedSubmodel = env.FindSubmodelById(referencedSubmodelId);
+
+            if (referencedSubmodel == null)
+            {
+                // unable to find the referenced submodel so we are not able to update the reference
+                return;
+            }
+
+            // try to find an equivalent submodel that 'belongs' to the new subject
+            var equivalentSubmodelForNewSubject = env.Submodels.FirstOrDefault(sm => sm.IdShort == referencedSubmodel.IdShort && sm.GetSubjectId() == newSubjectId);
+
+            if (equivalentSubmodelForNewSubject == null)
+            {
+                return;
+            }
+
+            var equivalentReference = new Reference(reference.Type, reference.Keys, reference.ReferredSemanticId);
+            equivalentReference.Keys.First().Value = equivalentSubmodelForNewSubject.Id;
+
+            // check if the reference can be resolved in the equivalent submodel;
+            // we only check this if the original reference could also be resolved because resolving fails e.g. for fragment references
+            //
+            if (env.FindReferableByReference(reference) != null && env.FindReferableByReference(equivalentReference) == null) {
+                return;
+            }
+
+            reference.Keys.First().Value = equivalentSubmodelForNewSubject.Id;
+            
+        }
+
+        private void UpdateEntityAssetReference(IEntity entity, string assetIdOfOriginalAas, string assetIdOfDerivedAas)
+        {
+            if(entity.EntityType != EntityType.SelfManagedEntity)
+            {
+                // nothing to do for co-managed entites
+                return;
+            }
+
+            if (entity.GlobalAssetId == assetIdOfOriginalAas)
+            {
+                // simply update the asset id to point to the derived asset
+                entity.GlobalAssetId = assetIdOfDerivedAas;
+            }
+            else
+            {
+                // try to determine an equivalent asset in the domain of the 'new' subject id/host
+                var originalEntityAssetId = entity.GlobalAssetId;
+                var entityReferencesAssetOfOriginalSubject = GetSubjectId(originalEntityAssetId) == GetSubjectId(assetIdOfOriginalAas);
+
+                if (!entityReferencesAssetOfOriginalSubject)
+                {
+                    return;
+                }
+                // replace with reference to asset in the domain of the 'new' subject
+                var originalReferencedAas = env.FindAasWithAssetInformation(originalEntityAssetId);
+                var originalPartNumber = originalReferencedAas.GetPartNumberSpecificAssetId()?.Value;
+                    
+                if (originalPartNumber == null)
+                {
+                    return;
+                }
+
+                var originalSubjectId = originalReferencedAas.GetSubjectId();
+                var newSubjectId = GetSubjectId(derivedAas.AssetInformation.GlobalAssetId);
+
+                var aasWithNewPartNumber = env.FindAasForPartNumber(originalPartNumber, originalSubjectId, newSubjectId);
+
+                if (aasWithNewPartNumber == null)
+                {
+                    return;
+                }
+
+                entity.GlobalAssetId = aasWithNewPartNumber.AssetInformation.GlobalAssetId;
+            }
+        }
+
+        private void LinkEntitiesWithOriginalSubmodel(ISubmodel newSubmodel, ISubmodel originalSubmodel)
+        {
+            var entities = newSubmodel.FindDeep<IEntity>();
+
+            foreach (var entity in entities)
+            {
+                var idShortPath = entity.CollectIdShortByParent();
+                var originalEntity = originalSubmodel.FindDeep<IEntity>().FirstOrDefault(e => e.CollectIdShortByParent() == idShortPath);
+
+                if (originalEntity != null)
+                {
+                    CreateSameAsRelationship(entity, originalEntity);
+                }
+            }
         }
     }
 }

@@ -18,9 +18,9 @@ namespace AasxPluginVec
 {
     public class VecOptions : AasxIntegrationBase.AasxPluginOptionsBase
     {
-        public string TemplateIdAsset = "www.example.com/ids/asset/DDDD_DDDD_DDDD_DDDD";
-        public string TemplateIdAas = "www.example.com/ids/aas/DDDD_DDDD_DDDD_DDDD";
-        public string TemplateIdSubmodel = "www.example.com/ids/submodel/DDDD_DDDD_DDDD_DDDD";
+        private string TemplateIdAsset = "/ids/asset/DDDD_DDDD_DDDD_DDDD";
+        private string TemplateIdAas = "/ids/aas/DDDD_DDDD_DDDD_DDDD";
+        private string TemplateIdSubmodel = "/ids/submodel/DDDD_DDDD_DDDD_DDDD";
         public Dictionary<string, string> AssetIdByPartNumberDict = new Dictionary<string, string>();
 
         /// <summary>
@@ -30,6 +30,26 @@ namespace AasxPluginVec
         {
             var opt = new VecOptions();
             return opt;
+        }
+
+        public string GetTemplateIdAsset(string hostName)
+        {
+            return GetNormalizedHostName(hostName) + TemplateIdAsset;
+        }
+
+        public string GetTemplateIdAas(string hostName)
+        {
+            return GetNormalizedHostName(hostName) + TemplateIdAas;
+        }
+
+        public string GetTemplateIdSubmodel(string hostName)
+        {
+            return GetNormalizedHostName(hostName) + TemplateIdSubmodel;
+        }
+
+        private string GetNormalizedHostName(string hostName)
+        {
+            return (hostName ?? "www.example.com").TrimEnd('/');
         }
     }
 }

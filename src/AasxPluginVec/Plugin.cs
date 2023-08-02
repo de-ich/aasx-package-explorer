@@ -183,7 +183,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "DeriveAasForEquivalentAsset",
-                        Header = "VWS4LS: Create a new AAS that references this one via the specific asset ID",
+                        Header = "VWS4LS: Derive a new AAS for a different tier",
                         HelpText = "Create a new AAS, copy all submodel references and reference the selected AAS (resp. the asset) via the specific asset ID.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }

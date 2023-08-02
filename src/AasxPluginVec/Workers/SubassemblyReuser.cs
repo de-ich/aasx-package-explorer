@@ -153,7 +153,7 @@ namespace AasxPluginVec
             existingManufacturingBom = FindManufacturingBom(aas, env);
 
             // no mbom submodel was found in the aas so we create a new one
-            existingManufacturingBom ??= CreateManufacturingBom(options.TemplateIdSubmodel, existingProductBom, aas, env);
+            existingManufacturingBom ??= CreateManufacturingBom(options.GetTemplateIdSubmodel(aas.GetSubjectId()), existingProductBom, aas, env);
 
             return true;
         }

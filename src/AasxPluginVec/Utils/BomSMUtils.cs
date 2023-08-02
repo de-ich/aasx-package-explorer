@@ -36,14 +36,19 @@ namespace AasxPluginVec
 
         public static ISubmodel FindFirstBomSubmodel(AasCore.Aas3_0.Environment env, IAssetAdministrationShell aas = null)
         {
-            var submodels = FindBomSubmodels(env, aas);
-            return submodels?.FirstOrDefault(sm => sm.SemanticId.Last().Value == SEM_ID_BOM_SM);
+            return FindBomSubmodels(env, aas).FirstOrDefault();
         }
 
         public static IEnumerable<ISubmodel> FindBomSubmodels(AasCore.Aas3_0.Environment env, IAssetAdministrationShell aas = null)
         {
             var submodels = FindAllSubmodels(env, aas);
-            return submodels.Where(sm => sm.SemanticId?.Matches(KeyTypes.Submodel, SEM_ID_BOM_SM) ?? false);
+            return submodels.Where(IsBomSubmodel);
+        }
+
+        public static bool IsBomSubmodel(this ISubmodel submodel)
+        {
+            return (submodel.SemanticId?.Matches(KeyTypes.Submodel, SEM_ID_BOM_SM) ?? false) || 
+                (submodel.SupplementalSemanticIds?.Any(semId => semId.Matches(KeyTypes.Submodel, SEM_ID_BOM_SM)) ?? false);
         }
 
         public static Entity CreateEntryNode(this ISubmodel parent, string referencedAsset)
