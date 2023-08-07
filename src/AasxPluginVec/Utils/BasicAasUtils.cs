@@ -199,6 +199,8 @@ namespace AasxPluginVec
 
         public static ISubmodel DeepCloneSubmodel(ISubmodel submodelToCopy, string iriTemplate)
         {
+            submodelToCopy.SetAllParents();
+
             var copy = new Submodel(
                 GenerateIdAccordingTemplate(iriTemplate),
                 submodelToCopy.Extensions?.Copy(),
@@ -213,7 +215,31 @@ namespace AasxPluginVec
                 submodelToCopy.Qualifiers?.Copy(),
                 submodelToCopy.EmbeddedDataSpecifications?.Copy(),
                 submodelToCopy.SubmodelElements?.Copy());
+
+            copy.SetAllParents();
+
             return copy;
+        }
+
+        /**
+         * Create a clone of the existing AAS.
+         * Note: This will not clone all submodels referenced by the original AAS but only clone references to the same submodels!
+         */
+        public static IAssetAdministrationShell CloneAas(IAssetAdministrationShell aasToClone, string iriTemplate)
+        {
+            var clone = new AssetAdministrationShell(
+               GenerateIdAccordingTemplate(iriTemplate),
+               aasToClone.AssetInformation.Copy(),
+               aasToClone.Extensions.Copy(),
+               aasToClone.Category,
+               aasToClone.IdShort,
+               aasToClone.DisplayName.Copy(),
+               aasToClone.Description.Copy(),
+               aasToClone.Administration.Copy(),
+               aasToClone.EmbeddedDataSpecifications.Copy(),
+               aasToClone.GetReference(),
+               aasToClone.Submodels.Copy());
+            return clone;
         }
 
         public static string GetSubjectId(string iri)
@@ -270,6 +296,69 @@ namespace AasxPluginVec
 
                 return partNumberAssetId?.Value == partNumber;
             });
+        }
+
+        /*
+         * Find all 'RelationshipElement' instances within a given 'original' submodel. For each of these relationships, check if it
+         * is a local reference to the 'original' submodel and update the reference to point to an equivalent 'new' submodel (a clone of the original one).
+         */
+        public static void UpdateRelationships(ISubmodel newSubmodel, ISubmodel originalSubmodel, AasCore.Aas3_0.Environment env)
+        {
+            var relationships = newSubmodel.FindDeep<IRelationshipElement>();
+
+            var newSubjectId = GetSubjectId(newSubmodel.Id);
+            var originalSubjectId = GetSubjectId(originalSubmodel.Id);
+
+            foreach (var rel in relationships)
+            {
+                UpdateReferenceToNewSubject(rel.First, originalSubjectId, newSubjectId, env);
+                UpdateReferenceToNewSubject(rel.Second, originalSubjectId, newSubjectId, env);
+            }
+        }
+
+        /*
+         * Update a reference that points to (an element within) a submodel to point to an equivalent submodel that belongs to a different subject (i.e. a clone of the original submodel with a different id).
+         */
+        public static void UpdateReferenceToNewSubject(IReference reference, string originalSubjectId, string newSubjectId, AasCore.Aas3_0.Environment env)
+        {
+            var referencedSubmodelId = reference?.Keys.FirstOrDefault().Value;
+            var referencedSubject = GetSubjectId(referencedSubmodelId);
+
+            if (referencedSubject != originalSubjectId)
+            {
+                // only update references that point to submodels 'owned' by the original subject
+                return;
+            }
+
+            var referencedSubmodel = env.FindSubmodelById(referencedSubmodelId);
+
+            if (referencedSubmodel == null)
+            {
+                // unable to find the referenced submodel so we are not able to update the reference
+                return;
+            }
+
+            // try to find an equivalent submodel that 'belongs' to the new subject
+            var equivalentSubmodelForNewSubject = env.Submodels.FirstOrDefault(sm => sm.IdShort == referencedSubmodel.IdShort && sm.GetSubjectId() == newSubjectId);
+
+            if (equivalentSubmodelForNewSubject == null)
+            {
+                return;
+            }
+
+            var equivalentReference = new Reference(reference.Type, reference.Keys, reference.ReferredSemanticId);
+            equivalentReference.Keys.First().Value = equivalentSubmodelForNewSubject.Id;
+
+            // check if the reference can be resolved in the equivalent submodel;
+            // we only check this if the original reference could also be resolved because resolving fails e.g. for fragment references
+            //
+            if (env.FindReferableByReference(reference) != null && env.FindReferableByReference(equivalentReference) == null)
+            {
+                return;
+            }
+
+            reference.Keys.First().Value = equivalentSubmodelForNewSubject.Id;
+
         }
     }
 }

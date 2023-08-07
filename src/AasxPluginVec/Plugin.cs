@@ -241,6 +241,19 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 });
 
+                // create order
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "CreateNewVersion",
+                        Header = "VWS4LS: Create a new version of the selected AAS/submodel",
+                        HelpText = "Create a new version of the selected AAS/submodel by cloning the selected element and updating the version number.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
                 // return
                 return new AasxPluginResultProvideMenuItems()
                 {
@@ -328,6 +341,11 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     if (cmd == "createorder")
                     {
                         resultEvents = await ExecuteCreateOrder(ticket, displayContext);
+                    }
+
+                    if (cmd == "createnewversion")
+                    {
+                        resultEvents = await ExecuteCreateNewVersion(ticket, displayContext);
                     }
 
                     resultEvents?.ToList().ForEach(r => _eventStack.PushEvent(r));
@@ -533,7 +551,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             if (aas == null)
             {
-                throw new ArgumentException($"Reuse Subassembly: Unable to determine the (single) AAS containing the selected entities!");
+                throw new ArgumentException($"Create Order: Unable to determine the (single) AAS containing the selected entities!");
             }
 
             var worker = new OrderCreator(env, aas, _options);
@@ -554,6 +572,35 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 new AasxPluginResultEventNavigateToReference()
                 {
                     targetReference = orderAas.GetReference()
+                }
+            };
+        }
+
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteCreateNewVersion(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+
+            var worker = new NewVersionCreator(env, _options);
+            worker.ValidateSelection(ticket.SelectedDereferencedMainDataObjects);
+
+            var oldVersion = (ticket.DereferencedMainDataObject as IIdentifiable)?.Administration?.Version ?? "";
+
+            var result = await CreateNewVersionDialog.DetermineCreateNewVersionConfiguration(displayContext, oldVersion, ticket.DereferencedMainDataObject is ISubmodel);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            _log.Info($"Creating NewVersion...");
+            var newVersionObject = worker.CreateNewVersion(ticket.MainDataObject, result.Version, result.DeleteOldVersion);
+            
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = newVersionObject.GetReference()
                 }
             };
         }
