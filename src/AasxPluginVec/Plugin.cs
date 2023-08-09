@@ -33,7 +33,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
         private VecOptions _options = new VecOptions();
         private VecTreeView treeView = new VecTreeView();
 
-        public void InitPlugin(string[] args)
+        public new void InitPlugin(string[] args)
         {
             // start ..
             PluginName = "AasxPluginVec";
@@ -57,7 +57,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             }
         }
 
-        public AasxPluginActionDescriptionBase[] ListActions()
+        public new AasxPluginActionDescriptionBase[] ListActions()
         {
             _log.Info("ListActions() called");
             var res = new List<AasxPluginActionDescriptionBase>();
@@ -93,7 +93,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             return res.ToArray();
         }
 
-        public AasxPluginResultBase ActivateAction(string action, params object[] args)
+        public new AasxPluginResultBase ActivateAction(string action, params object[] args)
         {
             if (action == "call-check-visual-extension")
             {
