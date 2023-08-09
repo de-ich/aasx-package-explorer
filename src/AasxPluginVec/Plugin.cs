@@ -23,7 +23,6 @@ using AnyUi;
 using AasxPluginVec.AnyUi;
 using System.Windows.Forms;
 using static AasxPluginVec.BasicAasUtils;
-using static AasxPluginVec.SubassemblyUtils;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -394,8 +393,10 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 return null;
             }
 
+            var additionalEnvs = GetAasEnvsFromRepositories(displayContext);
+
             _log.Info($"Importing VEC container from file: {fileName} ..");
-            var vecSubmodel = VecImporter.ImportVecFromFile(package, env, aas, fileName, _options, _log);
+            var vecSubmodel = VecImporter.ImportVecFromFile(package, env, aas, fileName, _options, _log, additionalEnvs);
             
             return new List<AasxPluginResultEventBase>() { 
                 new AasxPluginResultEventRedrawAllElements(),
@@ -619,6 +620,22 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             }
 
             return selectedObjects.Select(e => e as Entity);
+        }
+
+        private static IEnumerable<AasCore.Aas3_0.Environment> GetAasEnvsFromRepositories(AnyUiContextPlusDialogs displayContext)
+        {
+            var aasxFilesInRepository = (displayContext as AnyUiDisplayContextWpf)?.Packages?.Repositories?.FirstOrDefault()?.FileMap.Select(f => f.Location) ?? new List<string>();
+
+            foreach (var file in aasxFilesInRepository)
+            {
+                // we need to copy the file to access it as it is locked by the PackageExplorer and we would otherwise get an exception trying to open it
+                var tempFile = System.IO.Path.GetTempFileName().Replace(".tmp", ".aasx");
+                System.IO.File.Copy(file, tempFile);
+
+                var packageEnv = new AdminShellPackageEnv(tempFile, indirectLoadSave: true);
+                
+                yield return packageEnv?.AasEnv;
+            }
         }
     }
 }

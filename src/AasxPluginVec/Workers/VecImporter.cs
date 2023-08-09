@@ -41,7 +41,8 @@ namespace AasxPluginVec
             IAssetAdministrationShell aas,
             string pathToVecFile,
             VecOptions options,
-            LogInstance log = null)
+            LogInstance log = null,
+            IEnumerable<AasCore.Aas3_0.Environment> additionalEnvs = null)
         {
             // access
             if (!pathToVecFile.HasContent())
@@ -53,7 +54,7 @@ namespace AasxPluginVec
             // safe
             try
             {
-                var importer = new VecImporter(packageEnv, env, aas, pathToVecFile, options, log);
+                var importer = new VecImporter(packageEnv, env, aas, pathToVecFile, options, log, additionalEnvs);
                 return importer.ImportVec();
             }
             catch (Exception ex)
@@ -73,7 +74,8 @@ namespace AasxPluginVec
             IAssetAdministrationShell aas,
             string pathToVecFile,
             VecOptions options,
-            LogInstance log = null)
+            LogInstance log = null,
+            IEnumerable<AasCore.Aas3_0.Environment> additionalEnvs = null)
         {
             if (string.IsNullOrEmpty(pathToVecFile))
             {
@@ -86,6 +88,7 @@ namespace AasxPluginVec
             this.pathToVecFile = pathToVecFile;
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
+            this.additionalEnvs = additionalEnvs;
             this.vecSubmodel = null;
             this.vecProvider = new VecProvider(pathToVecFile);
             this.vecFileSubmodelElement = null;
@@ -98,6 +101,8 @@ namespace AasxPluginVec
         protected string pathToVecFile;
         protected VecOptions options;
         protected LogInstance log;
+        protected IEnumerable<AasCore.Aas3_0.Environment> additionalEnvs;
+
         protected VecProvider vecProvider;
         protected AasCore.Aas3_0.File vecFileSubmodelElement;
 
@@ -217,6 +222,19 @@ namespace AasxPluginVec
             {
                 // first option: check if a component AAS with a matching specific asset ID is defined in the current environment
                 assetId = this.env.AssetAdministrationShells.FirstOrDefault(aas => aas.HasPartNumberSpecificAssetId(partNumber))?.AssetInformation.GlobalAssetId;
+
+                // second option: check if there is an AAS in a different environment
+                if (assetId== null && this.additionalEnvs != null)
+                {
+                    foreach (var env in this.additionalEnvs)
+                    {
+                        assetId = env.AssetAdministrationShells.FirstOrDefault(aas => aas.HasPartNumberSpecificAssetId(partNumber))?.AssetInformation.GlobalAssetId;
+                        if (assetId != null)
+                        {
+                            break;
+                        }
+                    }
+                }
 
                 // second option: use an asset ID that is defined in the plugin options
                 if (assetId == null)
