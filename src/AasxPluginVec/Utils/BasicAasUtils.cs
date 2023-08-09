@@ -12,6 +12,8 @@ namespace AasxPluginVec
 {
     public static class BasicAasUtils
     {
+        public const string SEM_ID_PART_NUMBER = "0173-1#02-AAO676#003";
+
         private static Random MyRnd = new Random();
 
         // The version of 'GenerateIdAccordingTemplate' from 'AdminShellUtil' does not ensure unique IDs when
@@ -244,6 +246,11 @@ namespace AasxPluginVec
 
         public static string GetSubjectId(string iri)
         {
+            if (iri == null)
+            {
+                return null;
+            }
+
             // we assume that the subject ID is simply the 'host' part of the IRI
             return new UriBuilder(iri).Uri.Host;
         }
@@ -258,6 +265,21 @@ namespace AasxPluginVec
         {
             // we assume that the subject ID is simply the 'host' part of the IRI used for submodel identification
             return GetSubjectId(sm.Id);
+        }
+
+        public static ISpecificAssetId CreatePartNumberSpecificAssetId(string partNumber, string subjectId)
+        {
+            var externalSubjectId = new Reference(
+                ReferenceTypes.ExternalReference, 
+                new List<IKey>() { new Key(KeyTypes.GlobalReference, subjectId) }
+            );
+
+            return new SpecificAssetId(
+                    "partNumber",
+                    partNumber,
+                    CreateSemanticId(KeyTypes.GlobalReference, SEM_ID_PART_NUMBER),
+                    externalSubjectId: externalSubjectId
+                );
         }
 
         public static bool HasPartNumberSpecificAssetId(this IAssetAdministrationShell aas, string partNumber, string subjectID = null)
@@ -277,7 +299,7 @@ namespace AasxPluginVec
 
                 return externalSubjectIdValue != null &&
                     subjectID == externalSubjectIdValue &&
-                    semanticIdValue == "0173-1#02-AAO676#003";
+                    semanticIdValue == SEM_ID_PART_NUMBER;
             });
         }
 

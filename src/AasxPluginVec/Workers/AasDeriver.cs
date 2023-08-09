@@ -75,12 +75,7 @@ namespace AasxPluginVec
             // add a specific asset id for the own part number
             if (partNumber != null && subjectId != null)
             {
-                var partNumberSpecificAssetId = new SpecificAssetId(
-                    "partNumber",
-                    partNumber,
-                    CreateSemanticId(KeyTypes.GlobalReference, "0173-1#02-AAO676#003"),
-                    externalSubjectId: new Reference(ReferenceTypes.ExternalReference, new List<IKey>() { new Key(KeyTypes.GlobalReference, subjectId) })
-                );
+                var partNumberSpecificAssetId = CreatePartNumberSpecificAssetId(partNumber, subjectId);
                 specificAssetIds.Add(partNumberSpecificAssetId);
             }
 

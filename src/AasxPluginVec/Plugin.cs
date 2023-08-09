@@ -240,7 +240,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 });
 
-                // create order
+                // create new version
                 res.Add(new AasxPluginResultSingleMenuItem()
                 {
                     AttachPoint = "Plugins",
@@ -249,6 +249,19 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                         Name = "CreateNewVersion",
                         Header = "VWS4LS: Create a new version of the selected AAS/submodel",
                         HelpText = "Create a new version of the selected AAS/submodel by cloning the selected element and updating the version number.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                // create part number specific asset id
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "CreatePartNumberSpecificAssetId",
+                        Header = "VWS4LS: Create a new specific asset ID representing a part number",
+                        HelpText = "Create a new specific asset ID for the selected selected AAS that represents a part number.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -345,6 +358,11 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     if (cmd == "createnewversion")
                     {
                         resultEvents = await ExecuteCreateNewVersion(ticket, displayContext);
+                    }
+
+                    if (cmd == "createpartnumberspecificassetid")
+                    {
+                        resultEvents = await ExecuteCreatePartNumberSpecificAssetId(ticket, displayContext);
                     }
 
                     resultEvents?.ToList().ForEach(r => _eventStack.PushEvent(r));
@@ -602,6 +620,36 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 new AasxPluginResultEventNavigateToReference()
                 {
                     targetReference = newVersionObject.GetReference()
+                }
+            };
+        }
+
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteCreatePartNumberSpecificAssetId(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+            var aas = ticket.AAS;
+
+            var worker = new PartNumberSpecificAssetIdCreator(env, _options);
+            worker.ValidateSelection(ticket.SelectedDereferencedMainDataObjects);
+
+            var subjectId = aas.GetSubjectId();
+
+            var result = await CreatePartNumberSpecificAssetIdDialog.DetermineCreatePartNumberSpecificAssetIdConfiguration(displayContext, subjectId);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            _log.Info($"Creating Specifi Asset ID...");
+            worker.CreateSpecificAssetIdPartNumber(aas, result.PartNumber, result.SubjectId);
+
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = aas.GetReference()
                 }
             };
         }
