@@ -19,6 +19,7 @@ using Extensions;
 using static AasxPluginVec.BasicAasUtils;
 using static AasxPluginVec.CapabilitySMUtils;
 using Namotion.Reflection;
+using AasxPackageLogic;
 
 namespace AasxPluginVec
 {
@@ -90,10 +91,11 @@ namespace AasxPluginVec
                     offeredCapabilityResult.PropertyMatchResults[requiredProperty] = propertyResult;
                 }
 
+                var dependencyTree = FindRequiredRessourcesRecursively(aas);
+                offeredCapabilityResult.DependencyTree = dependencyTree;
+
                 result.OfferedCapabilityResults.Add(offeredCapabilityResult);
             }
-
-            // TODO check required ressource slots recursively
 
             return result;
         }
@@ -181,7 +183,7 @@ namespace AasxPluginVec
             }
         }
 
-        protected bool CheckConstraint(ISubmodelElement constraint, IProperty property)
+        protected static bool CheckConstraint(ISubmodelElement constraint, IProperty property)
         {
             var propertyValue = property.Value;
 
@@ -200,6 +202,51 @@ namespace AasxPluginVec
             // hacky solution as xs:doubles should (!) always be represented with a '.' separator
             return Double.Parse(value.Replace(".", ","));
         }
+
+        protected RessourceDependencyTree FindRequiredRessourcesRecursively(IAssetAdministrationShell ressourceAas)
+        {
+            var dependencyTree = new RessourceDependencyTree(ressourceAas);
+        
+            var requiredSlotSpecificAssetId = GetRequiredSlotAssetId(ressourceAas);
+
+            if (requiredSlotSpecificAssetId == null)
+            {
+                return dependencyTree;
+            }
+
+            var slotName = requiredSlotSpecificAssetId.Value;
+            var slotSubject = requiredSlotSpecificAssetId.ExternalSubjectId;
+
+            dependencyTree.SlotDependencies[slotName] = new DependencyOptions();
+
+            foreach (var aas in env.AssetAdministrationShells)
+            {
+                var offeredSlotSpecificAssetId = GetOfferedSlotAssetId(aas);
+
+                if (offeredSlotSpecificAssetId == null || 
+                    offeredSlotSpecificAssetId.Value != slotName || 
+                    !offeredSlotSpecificAssetId.ExternalSubjectId.Matches(slotSubject))
+                {
+                    // aas/ressource does not provide a suitable slot
+                    continue;
+                }
+
+                dependencyTree.SlotDependencies[slotName].Options.Add(FindRequiredRessourcesRecursively(aas));
+            }
+
+            return dependencyTree;
+
+        }
+
+        protected ISpecificAssetId? GetRequiredSlotAssetId(IAssetAdministrationShell aas)
+        {
+            return aas.AssetInformation.OverSpecificAssetIdsOrEmpty().FirstOrDefault(id => id.HasSemanticId(KeyTypes.GlobalReference, "requiredSlot"));
+        }
+
+        protected ISpecificAssetId? GetOfferedSlotAssetId(IAssetAdministrationShell aas)
+        {
+            return aas.AssetInformation.OverSpecificAssetIdsOrEmpty().FirstOrDefault(id => id.HasSemanticId(KeyTypes.GlobalReference, "offeredSlot"));
+        }
     }
 
     public class CapabiltyCheckResult
@@ -213,11 +260,12 @@ namespace AasxPluginVec
 
     public class OfferedCapabilityResult
     {
-        public bool Success => PropertyMatchResults.All(r => r.Value.Success);
+        public bool Success => PropertyMatchResults.All(r => r.Value.Success) && (DependencyTree?.CanBeFulfilled ?? false);
         public IAssetAdministrationShell RessourceAas { get; internal set; }
         public string RessourceAssetId => RessourceAas.AssetInformation?.GlobalAssetId;
         public ISubmodelElementCollection OfferedCapabilityContainer { get; internal set; }
         public IDictionary<IProperty, PropertyMatchResult> PropertyMatchResults { get; } = new Dictionary<IProperty, PropertyMatchResult>();
+        public RessourceDependencyTree DependencyTree { get; internal set; }
     }
 
     public class PropertyMatchResult
@@ -229,5 +277,23 @@ namespace AasxPluginVec
     public enum PropertyMatchResultType
     {
         FoundAndNotConstrained, FoundAndSatisfied, FoundButNotSatisfied, NotFound
+    }
+
+    public class RessourceDependencyTree
+    {
+        public IAssetAdministrationShell Ressource { get; set; }
+        public Dictionary<string, DependencyOptions> SlotDependencies { get; } = new Dictionary<string, DependencyOptions>();
+        public bool CanBeFulfilled => SlotDependencies.Values.All(o => o.CanBeFulfilled);
+
+        public RessourceDependencyTree(IAssetAdministrationShell ressource)
+        {
+            Ressource = ressource;
+        }
+    }
+
+    public class DependencyOptions
+    {
+        public List<RessourceDependencyTree> Options { get; } = new List<RessourceDependencyTree>();
+        public bool CanBeFulfilled => Options.Any() && Options.Any(rdt => rdt.CanBeFulfilled);
     }
 }

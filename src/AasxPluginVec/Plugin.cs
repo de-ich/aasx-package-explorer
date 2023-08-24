@@ -694,13 +694,29 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             _log.Info($"\tThe following assets also fulfill all property constraints:");
             foreach (var offeredCapabiltyResult in result.OfferedCapabilitySuccessResults)
             {
-                _log.Info($"\t\t{offeredCapabiltyResult.RessourceAssetId}");
+                PrintDependencyTree(offeredCapabiltyResult.DependencyTree, 0);
             }
 
             return new List<AasxPluginResultEventBase>()
             {
                 new AasxPluginResultEventRedrawAllElements()
             };
+        }
+
+        private void PrintDependencyTree(RessourceDependencyTree tree, int indentLevel)
+        {
+            string indent = new string('\t', indentLevel);
+            _log.Info($"{indent}- {tree.Ressource.IdShort}");
+
+            foreach (var slotDependency in tree.SlotDependencies)
+            {
+                _log.Info($"{indent}\t{slotDependency.Key}: {slotDependency.Value.Options.Count} Option(s)");
+
+                foreach (var option in slotDependency.Value.Options)
+                {
+                    PrintDependencyTree(option, indentLevel + 2);
+                }
+            }
         }
 
         private static IEnumerable<Entity> GetSelectedEntitiesFromTicket(AasxMenuActionTicket ticket)
