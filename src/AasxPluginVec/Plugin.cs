@@ -266,6 +266,19 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 });
 
+                // capability matching - find ressources for a selected required capability
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "CapabilityMatching",
+                        Header = "VWS4LS: Capability Matching - Find ressources for the selected required capabilty",
+                        HelpText = "Find all ressources that fulfill the selected required capability.",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
                 // return
                 return new AasxPluginResultProvideMenuItems()
                 {
@@ -363,6 +376,11 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     if (cmd == "createpartnumberspecificassetid")
                     {
                         resultEvents = await ExecuteCreatePartNumberSpecificAssetId(ticket, displayContext);
+                    }
+
+                    if (cmd == "capabilitymatching")
+                    {
+                        resultEvents = await ExecuteCapabilityMatching(ticket, displayContext);
                     }
 
                     resultEvents?.ToList().ForEach(r => _eventStack.PushEvent(r));
@@ -651,6 +669,37 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 {
                     targetReference = aas.GetReference()
                 }
+            };
+        }
+
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteCapabilityMatching(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+            var aas = ticket.AAS;
+
+            var worker = new CapabilityMatcher(env, _options);
+            worker.ValidateSelection(ticket.SelectedDereferencedMainDataObjects);
+
+            _log.Info($"Executing Capability Matching...");
+            var result = worker.FindRessourceForRequiredCapability(ticket.DereferencedMainDataObject as ISubmodelElementCollection);
+
+            _log.Info($"\tSuccess?: {result.Success}");
+            _log.Info($"\tRequired Capability: {result.RequiredCapabilitySemId}");
+            _log.Info("Detailed result of the Capability Matching:");
+            _log.Info($"\tAssets that offer a capability with the correct semantic ID:");
+            foreach (var offeredCapabiltyResult in result.OfferedCapabilityResults)
+            {
+                _log.Info($"\t\t{offeredCapabiltyResult.RessourceAssetId}");
+            }
+            _log.Info($"\tThe following assets also fulfill all property constraints:");
+            foreach (var offeredCapabiltyResult in result.OfferedCapabilitySuccessResults)
+            {
+                _log.Info($"\t\t{offeredCapabiltyResult.RessourceAssetId}");
+            }
+
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements()
             };
         }
 
