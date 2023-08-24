@@ -98,10 +98,8 @@ namespace AasxPluginVec
                 var clonedSubmodel = DeepCloneSubmodel(submodel, options.GetTemplateIdSubmodel(subjectId));
 
                 // add the cloned submodel to the aas and environment
-                System.Diagnostics.Debug.WriteLine("Vorher: " + env.Submodels.Count);
                 env.Submodels.Add(clonedSubmodel);
                 derivedAas.Submodels.Add(clonedSubmodel.GetReference());
-                System.Diagnostics.Debug.WriteLine("Nachher: " + env.Submodels.Count);
 
                 clonedSubmodelsByExisting[submodel] = clonedSubmodel;
             }

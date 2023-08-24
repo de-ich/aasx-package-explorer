@@ -641,7 +641,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 return null;
             }
 
-            _log.Info($"Creating Specifi Asset ID...");
+            _log.Info($"Creating Specific Asset ID...");
             worker.CreateSpecificAssetIdPartNumber(aas, result.PartNumber, result.SubjectId);
 
             return new List<AasxPluginResultEventBase>()
