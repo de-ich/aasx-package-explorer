@@ -26,8 +26,7 @@ using System.Windows.Forms;
 using AasxPluginAml.Views;
 using Aml.Engine.CAEX;
 using AasxPluginAml.Utils;
-using Aml.Engine.CAEX.Extensions;
-using System.Windows;
+using AasxPackageLogic;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -185,8 +184,20 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "PublishAMLElement",
-                        Header = "AutomationML: Publish AML element as AAS Reference",
+                        Header = "AutomationML: Publish AML element as AAS reference",
                         HelpText = "Publish an AML element (SUC/IE) as an AAS reference that is linked to the element",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "PublishAMLStructure",
+                        Header = "AutomationML: Publish AML element as AAS relationship to a BOM entity",
+                        HelpText = "Publish an AML element (SUC/IE) as an AAS relationship that is linked to an entity within a BOM submodel",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -257,19 +268,21 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             IEnumerable<AasxPluginResultEventBase> resultEvents = null;
 
             var cmd = args[0] as string;
+            var ticket = args[1] as AasxMenuActionTicket;
+            var displayContext = args[2] as AnyUiContextPlusDialogs;
 
-            var selectedObject = GetSelectedObject(args);
+            var selectedAmlObject = GetSelectedAmlObject(args);
             var associatedSubmodel = GetAssociatedSubmodel(args);
 
             if (cmd == "publishamlattribute")
             {
 
-                if (selectedObject == null || associatedSubmodel == null || selectedObject is not AttributeType)
+                if (selectedAmlObject == null || associatedSubmodel == null || selectedAmlObject is not AttributeType)
                 {
                     return;
                 }
 
-                var propertySmc = PublishAmlAttribute(selectedObject as AttributeType, associatedSubmodel);
+                var propertySmc = PublishAmlAttribute(selectedAmlObject as AttributeType, associatedSubmodel);
 
                 resultEvents = new List<AasxPluginResultEventBase>() {
                     new AasxPluginResultEventRedrawAllElements(),
@@ -280,12 +293,37 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 };
             } else if (cmd == "publishamlelement")
             {
-                if (selectedObject == null || associatedSubmodel == null || selectedObject is not SystemUnitClassType)
+                if (selectedAmlObject == null || associatedSubmodel == null || selectedAmlObject is not SystemUnitClassType)
                 {
                     return;
                 }
 
-                var elementReference = PublishAmlElement(selectedObject as SystemUnitClassType, associatedSubmodel);
+                var elementReference = PublishAmlElement(selectedAmlObject as SystemUnitClassType, associatedSubmodel);
+
+                resultEvents = new List<AasxPluginResultEventBase>() {
+                    new AasxPluginResultEventRedrawAllElements(),
+                    new AasxPluginResultEventNavigateToReference()
+                    {
+                        targetReference = elementReference.GetReference()
+                    }
+                };
+            }
+            else if (cmd == "publishamlstructure")
+            {
+                if (selectedAmlObject == null || associatedSubmodel == null || selectedAmlObject is not SystemUnitClassType)
+                {
+                    return;
+                }
+
+                var selectEntityDialogData = new AnyUiDialogueDataSelectAasEntity();
+                displayContext.StartFlyoverModal(selectEntityDialogData);
+
+                if (!selectEntityDialogData.Result || selectEntityDialogData.ResultKeys.LastOrDefault()?.Type != KeyTypes.Entity)
+                {
+                    return;
+                }
+
+                var elementReference = PublishAmlStructure(selectedAmlObject as SystemUnitClassType, associatedSubmodel, selectEntityDialogData.ResultKeys);
 
                 resultEvents = new List<AasxPluginResultEventBase>() {
                     new AasxPluginResultEventRedrawAllElements(),
@@ -299,7 +337,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             resultEvents?.ToList().ForEach(r => _eventStack.PushEvent(r));
         }
 
-        private CAEXObject? GetSelectedObject(params object[] args)
+        private CAEXObject? GetSelectedAmlObject(params object[] args)
         {
             var amlViewerPanel = FindAmlViewerPanel(args[3] as DockPanel);
 
