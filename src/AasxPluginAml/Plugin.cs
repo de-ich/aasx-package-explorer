@@ -167,7 +167,6 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 // result list 
                 var res = new List<AasxPluginResultSingleMenuItem>();
 
-                // import vec
                 res.Add(new AasxPluginResultSingleMenuItem()
                 {
                     AttachPoint = "Plugins",
@@ -176,6 +175,18 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                         Name = "PublishAMLAttribute",
                         Header = "AutomationML: Publish AML attribute as AAS property",
                         HelpText = "Publish an AML attribute as an AAS property that is linked to the attribute",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "PublishAMLElement",
+                        Header = "AutomationML: Publish AML element as AAS Reference",
+                        HelpText = "Publish an AML element (SUC/IE) as an AAS reference that is linked to the element",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -265,6 +276,22 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     new AasxPluginResultEventNavigateToReference()
                     {
                         targetReference = propertySmc.GetReference()
+                    }
+                };
+            } else if (cmd == "publishamlelement")
+            {
+                if (selectedObject == null || associatedSubmodel == null || selectedObject is not SystemUnitClassType)
+                {
+                    return;
+                }
+
+                var elementReference = PublishAmlElement(selectedObject as SystemUnitClassType, associatedSubmodel);
+
+                resultEvents = new List<AasxPluginResultEventBase>() {
+                    new AasxPluginResultEventRedrawAllElements(),
+                    new AasxPluginResultEventNavigateToReference()
+                    {
+                        targetReference = elementReference.GetReference()
                     }
                 };
             }

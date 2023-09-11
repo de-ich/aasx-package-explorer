@@ -1,6 +1,7 @@
 ﻿using AasCore.Aas3_0;
 using Aml.Engine.CAEX;
 using Aml.Engine.CAEX.Extensions;
+using AngleSharp.Dom;
 using Extensions;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public static class AmlSMUtils
     public const string AML_FRAGMENT_REF_PREFIX = "AML/";
 
     public const string IDSHORT_AMLATTRIBUTES = "AmlAttributes";
+    public const string IDSHORT_AMLELEMENTS = "AmlElements";
 
     public static File? GetAmlFile(this ISubmodel amlSubmodel)
     {
@@ -70,6 +72,31 @@ public static class AmlSMUtils
     }
 
     /// <summary>
+    /// Finds the existing SML holding all 'published' elements (see 'PublishAmlElement'). If no such SML exists,
+    /// this will create a new (empty) one.
+    /// </summary>
+    /// <param name="submodel"></param>
+    /// <returns></returns>
+    public static SubmodelElementList GetOrCreateAmlElementsSml(this ISubmodel submodel)
+    {
+        var amlAttributesSml = submodel.OverSubmodelElementsOrEmpty().FirstOrDefault(c => c.IdShort == IDSHORT_AMLELEMENTS) as SubmodelElementList;
+
+        if (amlAttributesSml != null)
+        {
+            return amlAttributesSml;
+        }
+
+        amlAttributesSml = new SubmodelElementList(AasSubmodelElements.ReferenceElement)
+        {
+            IdShort = IDSHORT_AMLELEMENTS
+        };
+
+        submodel.AddChild(amlAttributesSml);
+
+        return amlAttributesSml;
+    }
+
+    /// <summary>
     /// This 'publishes' an attribute from an AML file as AAS property.
     /// 
     /// Therefore, this creates a new entry in the SML identified by 'GetOrCreateAmlAttributesSml(...)'. Th entry will contain 
@@ -83,7 +110,6 @@ public static class AmlSMUtils
     {
         string attributeName = attributeToPublish.Name;
         string attributeValue = attributeToPublish.Value;
-        string parentName = attributeToPublish.CAEXParent.Name();
 
         // the list containting all published properties
         var amlAttributesSml = targetSubmodel.GetOrCreateAmlAttributesSml();
@@ -91,7 +117,7 @@ public static class AmlSMUtils
         // the SMC for the property to publish
         var attributeSmc = new SubmodelElementCollection()
         {
-            IdShort = $"{parentName}.{attributeName}"
+            IdShort = attributeToPublish.GetFullNodePath()
         };
         amlAttributesSml.AddChild(attributeSmc);
 
@@ -107,5 +133,34 @@ public static class AmlSMUtils
         attributeSmc.AddChild(relationship);
 
         return attributeSmc;
+    }
+
+    /// <summary>
+    /// This 'publishes' an element from an AML file as AAS reference.
+    /// 
+    /// Therefore, this creates a new entry in the SML identified by 'GetOrCreateAmlElementsSml(...)'.
+    /// </summary>
+    /// <param name="elementToPublish"></param>
+    /// <param name="targetSubmodel"></param>
+    /// <returns></returns>
+    public static ReferenceElement PublishAmlElement(SystemUnitClassType elementToPublish, Submodel targetSubmodel)
+    {
+        string elementName = elementToPublish.GetFullNodePath();
+
+        // the list containting all published elements
+        var amlElementsSml = targetSubmodel.GetOrCreateAmlElementsSml();
+
+        var reference = targetSubmodel.GetAmlFile().GetReference();
+        reference.Keys.Add(new Key(KeyTypes.FragmentReference, elementToPublish.CreateAmlFragmentString()));
+
+        // the reference for the element to publish
+        var elementReference = new ReferenceElement()
+        {
+            IdShort = elementName,
+            Value = reference
+        };
+        amlElementsSml.AddChild(elementReference);
+
+        return elementReference;
     }
 }
