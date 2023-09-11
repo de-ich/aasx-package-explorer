@@ -23,6 +23,11 @@ using AnyUi;
 using AasxPluginAml;
 using static AasxPluginAml.Utils.AmlSMUtils;
 using System.Windows.Forms;
+using AasxPluginAml.Views;
+using Aml.Engine.CAEX;
+using AasxPluginAml.Utils;
+using Aml.Engine.CAEX.Extensions;
+using System.Windows;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -162,6 +167,19 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 // result list 
                 var res = new List<AasxPluginResultSingleMenuItem>();
 
+                // import vec
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "PublishAMLAttribute",
+                        Header = "AutomationML: Publish AML attribute as AAS property",
+                        HelpText = "Publish an AML attribute as an AAS property that is linked to the attribute",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
                 // return
                 return new AasxPluginResultProvideMenuItems()
                 {
@@ -209,12 +227,81 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
         {
             if (action == "call-menu-item")
             {
-                //
+                try
+                {
+                    HandleMenuItemCalled(args);
+                }
+                catch (Exception ex)
+                {
+                    _log?.Error(ex, "when executing plugin menu item " + args[0] as string);
+                }
             }
 
             // default
             return null;
         }
 
+        private void HandleMenuItemCalled(object[] args)
+        {
+            IEnumerable<AasxPluginResultEventBase> resultEvents = null;
+
+            var cmd = args[0] as string;
+
+            var selectedObject = GetSelectedObject(args);
+            var associatedSubmodel = GetAssociatedSubmodel(args);
+
+            if (cmd == "publishamlattribute")
+            {
+
+                if (selectedObject == null || associatedSubmodel == null || selectedObject is not AttributeType)
+                {
+                    return;
+                }
+
+                var propertySmc = PublishAmlAttribute(selectedObject as AttributeType, associatedSubmodel);
+
+                resultEvents = new List<AasxPluginResultEventBase>() {
+                    new AasxPluginResultEventRedrawAllElements(),
+                    new AasxPluginResultEventNavigateToReference()
+                    {
+                        targetReference = propertySmc.GetReference()
+                    }
+                };
+            }
+
+            resultEvents?.ToList().ForEach(r => _eventStack.PushEvent(r));
+        }
+
+        private CAEXObject? GetSelectedObject(params object[] args)
+        {
+            var amlViewerPanel = FindAmlViewerPanel(args[3] as DockPanel);
+
+            return amlViewerPanel?.SelectedObject;
+        }
+
+        private Submodel? GetAssociatedSubmodel(params object[] args)
+        {
+            var amlViewerPanel = FindAmlViewerPanel(args[3] as DockPanel);
+
+            return amlViewerPanel.AssociatedSubmodel;
+        }
+
+        private AmlViewerPanel FindAmlViewerPanel(DockPanel parent)
+        {
+            if (parent == null)
+            {
+                return null;
+            }
+
+            foreach(var child in parent.Children)
+            {
+                if (child is AmlViewerPanel)
+                {
+                    return child as AmlViewerPanel;
+                }
+            }
+
+            return null;
+        }
     }
 }
