@@ -27,6 +27,7 @@ using AasxPluginAml.Views;
 using Aml.Engine.CAEX;
 using AasxPluginAml.Utils;
 using AasxPackageLogic;
+using NPOI.HPSF;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -171,6 +172,18 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     AttachPoint = "Plugins",
                     MenuItem = new AasxMenuItem()
                     {
+                        Name = "ImportAMLFile",
+                        Header = "AutomationML: Import an AML file",
+                        HelpText = "Import an AML file and create the relevant AAS elements",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
                         Name = "PublishAMLAttribute",
                         Header = "AutomationML: Publish AML attribute as AAS property",
                         HelpText = "Publish an AML attribute as an AAS property that is linked to the attribute",
@@ -251,7 +264,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             {
                 try
                 {
-                    HandleMenuItemCalled(args);
+                    await HandleMenuItemCalled(args);
                 }
                 catch (Exception ex)
                 {
@@ -263,7 +276,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             return null;
         }
 
-        private void HandleMenuItemCalled(object[] args)
+        private async Task HandleMenuItemCalled(object[] args)
         {
             IEnumerable<AasxPluginResultEventBase> resultEvents = null;
 
@@ -274,9 +287,39 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             var selectedAmlObject = GetSelectedAmlObject(args);
             var associatedSubmodel = GetAssociatedSubmodel(args);
 
-            if (cmd == "publishamlattribute")
+            if (cmd == "importamlfile")
             {
+                if (ticket.Package == null || ticket.DereferencedMainDataObject is not ISubmodel)
+                {
+                    return;
+                }
 
+                var result = await displayContext.MenuSelectOpenFilenameAsync(
+                    null,
+                    null,
+                    "Select AML(X) file to import ..",
+                    "*.aml", "AML files (*.aml)|AMLX packages (*.amlx)|Alle Dateien (*.*)|*.*",
+                    "AML Import");
+
+                var fileName = result.OriginalFileName;
+
+                if (fileName == null)
+                {
+                    return;
+                }
+
+                var amlFile = ImportAmlFile(ticket.DereferencedMainDataObject as ISubmodel, fileName, ticket.Package);
+
+                resultEvents = new List<AasxPluginResultEventBase>() {
+                    new AasxPluginResultEventRedrawAllElements(),
+                    new AasxPluginResultEventNavigateToReference()
+                    {
+                        targetReference = amlFile.GetReference()
+                    }
+                };
+
+            } else if (cmd == "publishamlattribute")
+            {
                 if (selectedAmlObject == null || associatedSubmodel == null || selectedAmlObject is not AttributeType)
                 {
                     return;
@@ -348,7 +391,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
         {
             var amlViewerPanel = FindAmlViewerPanel(args[3] as DockPanel);
 
-            return amlViewerPanel.AssociatedSubmodel;
+            return amlViewerPanel?.AssociatedSubmodel;
         }
 
         private AmlViewerPanel FindAmlViewerPanel(DockPanel parent)

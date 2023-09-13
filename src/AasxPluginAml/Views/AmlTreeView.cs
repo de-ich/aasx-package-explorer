@@ -20,7 +20,7 @@ namespace AasxPluginAml
         private AdminShellPackageEnv env;
         private Submodel submodel;
         private DockPanel panel;
-        private File amlFileElement;
+        private IFile amlFileElement;
         private CAEXDocument amlDocument;
 
         public object FillWithWpfControls(
@@ -60,7 +60,7 @@ namespace AasxPluginAml
             var amlFile = env.GetListOfSupplementaryFiles().Find(f => f.Uri.ToString() == amlFileElement.Value);
             using var amlDocumentStream = env.GetLocalStreamFromPackage(amlFile.Uri.ToString());
 
-            amlDocument = CAEXDocument.LoadFromStream(amlDocumentStream);
+            amlDocument = BasicAmlUtils.LoadAmlFile(amlDocumentStream);
         }
     }
 }

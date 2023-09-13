@@ -1,13 +1,17 @@
 ﻿using AasCore.Aas3_0;
 using Aml.Engine.CAEX;
 using Aml.Engine.CAEX.Extensions;
-using AngleSharp.Dom;
+using Aml.Engine.AmlObjects;
+using Aml.Engine.AmlObjects.Extensions;
 using Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static AasxPluginAml.Utils.BasicAmlUtils;
+using AdminShellNS;
+using System.IO;
 
 namespace AasxPluginAml.Utils;
 
@@ -16,13 +20,68 @@ public static class AmlSMUtils
     public const string SEM_ID_AML_SM = "https://automationml.org/aas/1/0/AmlFile";
     public const string AML_FRAGMENT_REF_PREFIX = "AML/";
 
+    public const string IDSHORT_AMLFILE = "AutomationMLFile";
+    public const string IDSHORT_AMLVERSION = "AutomationMLVersion";
     public const string IDSHORT_AMLATTRIBUTES = "AutomationMLAttributes";
     public const string IDSHORT_AMLELEMENTS = "AutomationMLElements";
     public const string IDSHORT_AMLSTRUCTURE = "AutomationMLStructure";
 
-    public static File? GetAmlFile(this ISubmodel amlSubmodel)
+    /// <summary>
+    /// Import the AML file/AMLX package with the given 'amlFilePath'. This will lead to,
+    /// (1) importing the file into the AASX package,
+    /// (2) create a 'File' element pointing to the imported file and
+    /// (3) creating a property 'AutomationMLVersion' that specifies the AML version used in the given AML file.
+    /// </summary>
+    /// <param name="submodel"></param>
+    /// <param name="amlFilePath"></param>
+    /// <param name="packageEnv"></param>
+    /// <returns></returns>
+    public static IFile? ImportAmlFile(ISubmodel submodel, string amlFilePath, AdminShellPackageEnv packageEnv)
     {
-        return amlSubmodel.OverSubmodelElementsOrEmpty().FirstOrDefault(f => IsAmlFile(f as File)) as File;
+        CAEXDocument amlDocument = LoadAmlFile(amlFilePath);
+
+        if (amlDocument == null)
+        {
+            return null;
+        }
+
+        var amlFileName = MakeValidFileName(Path.GetFileName(amlFilePath));
+        var internalAmlFilePath = packageEnv.AddSupplementaryFileToStore(amlFilePath, "/aasx/files", amlFileName, false);
+
+        var amlVersion = amlDocument.AutomationMLVersion();
+
+        var amlFile = new AasCore.Aas3_0.File("text/xml", idShort: IDSHORT_AMLFILE, value: internalAmlFilePath);
+        amlFile.SemanticId = new Reference(ReferenceTypes.ExternalReference, new List<IKey>() { new Key(KeyTypes.GlobalReference, SEM_ID_AML_SM) });
+        submodel.AddChild(amlFile);
+
+        var amlVersionProperty = new Property(DataTypeDefXsd.String, idShort: IDSHORT_AMLVERSION, value: amlVersion);
+        submodel.AddChild(amlVersionProperty);
+
+        return amlFile;
+
+    }
+
+    // We need to sanitize the file name. Especially file names with spaces will lead to the package explorer not
+    // being able to save the AASX package after adding the file.
+    // see https://stackoverflow.com/a/847251
+    private static string MakeValidFileName(string name)
+    {
+        string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()) + " ");
+        string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+        return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
+    }
+
+
+    /// <summary>
+    /// Find the 'IFile' element that represents/points to an AutomationML file.
+    /// Currently, this is determined based on the files (primary/supplementary) semanticID.
+    /// </summary>
+    /// <param name="amlSubmodel"></param>
+    /// <returns></returns>
+    public static IFile? GetAmlFile(this ISubmodel amlSubmodel)
+    {
+        return amlSubmodel.OverSubmodelElementsOrEmpty().FirstOrDefault(f => IsAmlFile(f as AasCore.Aas3_0.File)) as AasCore.Aas3_0.File;
     }
 
     /// <summary>
