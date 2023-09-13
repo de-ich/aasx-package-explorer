@@ -208,9 +208,21 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     AttachPoint = "Plugins",
                     MenuItem = new AasxMenuItem()
                     {
-                        Name = "PublishAMLStructure",
-                        Header = "AutomationML: Publish AML element as AAS relationship to a BOM entity",
-                        HelpText = "Publish an AML element (SUC/IE) as an AAS relationship that is linked to an entity within a BOM submodel",
+                        Name = "PublishAMLStructureExisting",
+                        Header = "AutomationML: Publish AML element as AAS relationship to an existing BOM entity",
+                        HelpText = "Publish an AML element (SUC/IE) as an AAS relationship that is linked to an existing entity within a BOM submodel",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "PublishAMLStructureNew",
+                        Header = "AutomationML: Publish AML element as AAS relationship to a new BOM entity",
+                        HelpText = "Publish an AML element (SUC/IE) as an AAS relationship that is linked to a new entity within a BOM submodel",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -351,7 +363,7 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 };
             }
-            else if (cmd == "publishamlstructure")
+            else if (cmd == "publishamlstructureexisting")
             {
                 if (selectedAmlObject == null || associatedSubmodel == null || selectedAmlObject is not SystemUnitClassType)
                 {
@@ -366,7 +378,60 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     return;
                 }
 
-                var elementReference = PublishAmlStructure(selectedAmlObject as SystemUnitClassType, associatedSubmodel, selectEntityDialogData.ResultKeys);
+                var elementReference = PublishAmlStructureExisting(selectedAmlObject as SystemUnitClassType, associatedSubmodel, selectEntityDialogData.ResultKeys);
+
+                resultEvents = new List<AasxPluginResultEventBase>() {
+                    new AasxPluginResultEventRedrawAllElements(),
+                    new AasxPluginResultEventNavigateToReference()
+                    {
+                        targetReference = elementReference.GetReference()
+                    }
+                };
+            }
+            else if (cmd == "publishamlstructurenew")
+            {
+                if (selectedAmlObject == null || associatedSubmodel == null || selectedAmlObject is not SystemUnitClassType)
+                {
+                    return;
+                }
+
+                var selectEntityDialogData = new AnyUiDialogueDataSelectAasEntity();
+                displayContext.StartFlyoverModal(selectEntityDialogData);
+
+                if (!selectEntityDialogData.Result)
+                {
+                    return;
+                }
+
+                var parentType = selectEntityDialogData.ResultKeys.LastOrDefault()?.Type;
+                AasCore.Aas3_0.Environment env;
+
+                if (parentType == KeyTypes.Entity)
+                {
+                    // we cannot simply use 'ticket.Env' as this is 'null' when the context is not a submodel(element) but our AML tree view
+                    env = (selectEntityDialogData.ResultVisualElement as VisualElementSubmodelElement)?.theEnv;
+                } else if (parentType == KeyTypes.Submodel)
+                {
+                    // we cannot simply use 'ticket.Env' as this is 'null' when the context is not a submodel(element) but our AML tree view
+                    env = (selectEntityDialogData.ResultVisualElement as VisualElementSubmodelRef)?.theEnv;
+                } else
+                {
+                    return;
+                }
+
+                if (env == null)
+                {
+                    return;
+                }
+
+                var parent = env.FindReferableByReference(new Reference(ReferenceTypes.ModelReference, selectEntityDialogData.ResultKeys)) as IReferable;
+
+                if (parent == null)
+                {
+                    return;
+                }
+
+                var elementReference = PublishAmlStructureNew(selectedAmlObject as SystemUnitClassType, associatedSubmodel, parent);
 
                 resultEvents = new List<AasxPluginResultEventBase>() {
                     new AasxPluginResultEventRedrawAllElements(),

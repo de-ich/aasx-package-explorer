@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static AasxPluginAml.Utils.BasicAmlUtils;
+using static AasxPluginAml.Utils.BomSMUtils;
 using AdminShellNS;
 using System.IO;
 
@@ -257,7 +258,7 @@ public static class AmlSMUtils
     /// <param name="elementToPublish"></param>
     /// <param name="targetSubmodel"></param>
     /// <returns></returns>
-    public static RelationshipElement PublishAmlStructure(SystemUnitClassType elementToPublish, Submodel targetSubmodel, IEnumerable<IKey> entityReferenceKeys)
+    public static RelationshipElement PublishAmlStructureExisting(SystemUnitClassType elementToPublish, Submodel targetSubmodel, IEnumerable<IKey> entityReferenceKeys)
     {
         string elementName = elementToPublish.GetFullNodePath();
 
@@ -276,5 +277,39 @@ public static class AmlSMUtils
         amlElementsSml.AddChild(relationship);
 
         return relationship;
+    }
+
+    /// <summary>
+    /// This 'publishes' an element from an AML file by linking it to a new AAS entity to be created.
+    /// 
+    /// Therefore, this creates a new entry in the SML identified by 'GetOrCreateAmlStructureSml(...)'.
+    /// </summary>
+    /// <param name="elementToPublish"></param>
+    /// <param name="targetSubmodel"></param>
+    /// <returns></returns>
+    public static RelationshipElement PublishAmlStructureNew(SystemUnitClassType elementToPublish, Submodel targetSubmodel, IReferable parent)
+    {
+        if (parent is not Entity && parent is not Submodel)
+        {
+            return null;
+        }
+
+        IEntity childEntity;
+        
+        if (parent is Entity parentEntity)
+        {
+            childEntity = CreateNode(elementToPublish.Name, parentEntity, null as string, true);
+            childEntity.Parent = parentEntity;
+
+        } else if (parent is Submodel parentSubmodel)
+        {
+            childEntity = parentSubmodel.CreateEntryNode(null);
+            parentSubmodel.SetAllParents();
+        } else
+        {
+            return null;
+        }
+
+        return PublishAmlStructureExisting(elementToPublish, targetSubmodel, childEntity.GetReference().Keys);
     }
 }
