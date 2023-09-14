@@ -36,6 +36,9 @@ namespace AasxPluginVec
             this.options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
+        private const string SEM_ID_REQUIREDSLOT = "http://arena2036.de/requiredSlot/1/0";
+        private const string SEM_ID_OFFEREDSLOT = "http://arena2036.de/offeredSlot/1/0";
+
         protected AasCore.Aas3_0.Environment env;
         protected VecOptions options;
 
@@ -207,25 +210,23 @@ namespace AasxPluginVec
         {
             var dependencyTree = new RessourceDependencyTree(ressourceAas);
         
-            var requiredSlotSpecificAssetId = GetRequiredSlotAssetId(ressourceAas);
+            var requiredSlotExtension = GetRequiredSlotExtension(ressourceAas);
 
-            if (requiredSlotSpecificAssetId == null)
+            if (requiredSlotExtension == null)
             {
                 return dependencyTree;
             }
 
-            var slotName = requiredSlotSpecificAssetId.Value;
-            var slotSubject = requiredSlotSpecificAssetId.ExternalSubjectId;
+            var slotName = requiredSlotExtension.Value;
 
             dependencyTree.SlotDependencies[slotName] = new DependencyOptions();
 
             foreach (var aas in env.AssetAdministrationShells)
             {
-                var offeredSlotSpecificAssetId = GetOfferedSlotAssetId(aas);
+                var offeredSlotExtension = GetOfferedSlotExtension(aas);
 
-                if (offeredSlotSpecificAssetId == null || 
-                    offeredSlotSpecificAssetId.Value != slotName || 
-                    !offeredSlotSpecificAssetId.ExternalSubjectId.Matches(slotSubject))
+                if (offeredSlotExtension == null || 
+                    offeredSlotExtension.Value != slotName)
                 {
                     // aas/ressource does not provide a suitable slot
                     continue;
@@ -238,14 +239,14 @@ namespace AasxPluginVec
 
         }
 
-        protected ISpecificAssetId? GetRequiredSlotAssetId(IAssetAdministrationShell aas)
+        protected IExtension? GetRequiredSlotExtension(IAssetAdministrationShell aas)
         {
-            return aas.AssetInformation.OverSpecificAssetIdsOrEmpty().FirstOrDefault(id => id.HasSemanticId(KeyTypes.GlobalReference, "requiredSlot"));
+            return aas?.Extensions?.FirstOrDefault(e => e.HasSemanticId(KeyTypes.GlobalReference, SEM_ID_REQUIREDSLOT));
         }
 
-        protected ISpecificAssetId? GetOfferedSlotAssetId(IAssetAdministrationShell aas)
+        protected IExtension? GetOfferedSlotExtension(IAssetAdministrationShell aas)
         {
-            return aas.AssetInformation.OverSpecificAssetIdsOrEmpty().FirstOrDefault(id => id.HasSemanticId(KeyTypes.GlobalReference, "offeredSlot"));
+            return aas?.Extensions?.FirstOrDefault(e => e.HasSemanticId(KeyTypes.GlobalReference, SEM_ID_OFFEREDSLOT));
         }
     }
 
