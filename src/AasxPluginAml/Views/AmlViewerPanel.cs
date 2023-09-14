@@ -36,6 +36,11 @@ public class AmlViewerPanel: StackPanel
 
     private void FillTreeviewRecursively(object parent, CAEXObject caexObject)
     {
+        if (caexObject == null)
+        {
+            return;
+        }
+
         var elementName = GetElementName(caexObject);
 
         var childItem = new TreeViewItem() { Header = elementName };
