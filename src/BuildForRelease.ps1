@@ -41,18 +41,20 @@ function Main
         "AasxPluginAdvancedTextEditor",
         "AasxPluginBomStructure",
         "AasxPluginDocumentShelf",
+        "AasxPluginContactInformation",
         "AasxPluginExportTable",
         "AasxPluginGenericForms",
         "AasxPluginImageMap",
+        "AasxPluginKnownSubmodels",
+        "AasxPluginDigitalNameplate",
         "AasxPluginMtpViewer",
         "AasxPluginPlotting",
-        #"AasxPluginSmdExporter",
+        "AasxPluginSmdExporter",
         "AasxPluginTechnicalData",
-        #"AasxPluginUaNetClient",
-        #"AasxPluginUaNetServer",
+        "AasxPluginUaNetClient",
+        "AasxPluginUaNetServer",
         "AasxPluginWebBrowser",
         "BlazorExplorer"
-        #"BlazorUI"
         )
 
         foreach ($project in $projects)

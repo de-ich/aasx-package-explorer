@@ -6,15 +6,11 @@ This source code is licensed under the Apache License 2.0 (see LICENSE.txt).
 This source code may use other Open Source software components (see LICENSE.txt).
 */
 
-#if TODO
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AasxOpenIdClient;
 using AdminShellNS;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AasxPackageLogic.PackageCentral.AasxFileServerInterface
 {
@@ -23,21 +19,32 @@ namespace AasxPackageLogic.PackageCentral.AasxFileServerInterface
         public Uri Endpoint { get; private set; }
 
         private AasxFileServerInterfaceService _aasxFileService;
-        public PackageContainerAasxFileRepository(string inputText)
+        public readonly PackCntRuntimeOptions CentralRuntimeOptions;
+        /// <summary>
+        /// OpenIdClient to be used by the repository/ registry. To be set, when
+        /// first time used.
+        /// </summary>
+        public OpenIdClientInstance OpenIdClient = null;
+
+
+        public PackageContainerAasxFileRepository(string inputText, PackCntRuntimeOptions centralRuntimeOptions)
         {
-            if (inputText.Contains('?'))
-            {
-                var splitTokens = inputText.Split(new[] { '?' }, 2);
-                if (splitTokens[1].Equals("asp.net", StringComparison.OrdinalIgnoreCase))
-                {
-                    IsAspNetConnection = true;
-                }
-                inputText = splitTokens[0];
-            }
+            //if (inputText.Contains('?'))
+            //{
+            //    var splitTokens = inputText.Split(new[] { '?' }, 2);
+            //    if (splitTokens[1].Equals("asp.net", StringComparison.OrdinalIgnoreCase))
+            //    {
+            //        IsAspNetConnection = true;
+            //    }
+            //    inputText = splitTokens[0];
+            //}
+            this.Header = "AASX File Server Repository";
+            IsAspNetConnection = true;
             // always have a location
             Endpoint = new Uri(inputText);
 
             _aasxFileService = new AasxFileServerInterfaceService(inputText);
+            CentralRuntimeOptions = centralRuntimeOptions;
         }
 
         public bool IsAspNetConnection { get; private set; }
@@ -58,7 +65,7 @@ namespace AasxPackageLogic.PackageCentral.AasxFileServerInterface
 
         public async Task<AasxFilePackageContainerBase> LoadAasxFileFromServer(string packageId, PackCntRuntimeOptions runtimeOptions)
         {
-            string fileName = await _aasxFileService.LoadAasxPackageAsync(packageId, runtimeOptions);
+            string fileName = await _aasxFileService.LoadAasxPackageAsync(packageId, runtimeOptions, this);
 
             if (!String.IsNullOrEmpty(fileName))
             {
@@ -76,14 +83,14 @@ namespace AasxPackageLogic.PackageCentral.AasxFileServerInterface
             return null;
         }
 
-        internal async Task UpdateFileOnServerAsync(string copyFileName, string packageId, PackCntRuntimeOptions runtimeOptions)
+        internal async Task UpdateFileOnServerAsync(string fileName, byte[] fileContent, string packageId, PackCntRuntimeOptions runtimeOptions)
         {
-            await _aasxFileService.PutAasxFileOnServerAsync(copyFileName, packageId);
+            await _aasxFileService.PutAasxFileOnServerAsync(fileName, fileContent, packageId);
         }
 
         public override void DeletePackageFromServer(PackageContainerRepoItem fi)
         {
-            _aasxFileService.DeleteAasxFileFromServer(fi.PackageId);
+            _aasxFileService.DeleteAasxFileFromServer(fi.PackageId, this);
             base.DeletePackageFromServer(fi);
         }
 
@@ -94,18 +101,18 @@ namespace AasxPackageLogic.PackageCentral.AasxFileServerInterface
             try
             {
                 copyFileName = Path.GetTempFileName().Replace(".tmp", ".aasx");
-                File.Copy(fileName, copyFileName, true);
+                System.IO.File.Copy(fileName, copyFileName, true);
             }
             catch (Exception e)
             {
                 Log.Singleton.Error($"Error while creating temporary file of {fileName} : {e.Message}");
             }
 
-            var fileContent = File.ReadAllBytes(copyFileName);
-            int packageId = _aasxFileService.PostAasxFileOnServer(Path.GetFileName(fileName), fileContent);
+            var fileContent = System.IO.File.ReadAllBytes(copyFileName);
+            int packageId = _aasxFileService.PostAasxFileOnServer(Path.GetFileName(fileName), fileContent, this);
 
             //delete temp file
-            File.Delete(copyFileName);
+            System.IO.File.Delete(copyFileName);
 
 
             return packageId;
@@ -141,4 +148,3 @@ namespace AasxPackageLogic.PackageCentral.AasxFileServerInterface
         }
     }
 }
-#endif

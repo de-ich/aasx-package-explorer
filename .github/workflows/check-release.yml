@@ -8,9 +8,6 @@ on:
     types: [opened, synchronize, reopened, edited]
 
   push:
-    branches:
-      - master
-      - MIHO/*V3*
 
 jobs:
   Check-release:
@@ -55,6 +52,13 @@ jobs:
         with:
           name: aasx-package-explorer-small.LATEST.alpha.${{ steps.setTimestamp.outputs.timestamp }}
           path: artefacts/release/LATEST.alpha/aasx-package-explorer-small.zip
+
+      - name: Upload latest BlazorExplorer small
+        continue-on-error: true
+        uses: actions/upload-artifact@v2
+        with:
+          name: aasx-package-explorer-blazorexplorer-small.LATEST.alpha.${{ steps.setTimestamp.outputs.timestamp }}
+          path: artefacts/release/LATEST.alpha/aasx-package-explorer-blazorexplorer-small.zip
 
       - name: Upload latest BlazorUI
         continue-on-error: true

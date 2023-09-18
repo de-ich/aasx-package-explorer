@@ -19,14 +19,12 @@ using AasxSignature;
 using AdminShellNS;
 using AnyUi;
 using Extensions;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using Aas = AasCore.Aas3_0;
 
 // ReSharper disable MethodHasAsyncOverload
@@ -71,9 +69,9 @@ namespace AasxPackageLogic
             }
 
             // more (only if requested)
-            ticket.SelectedMainDataObjects = 
+            ticket.SelectedMainDataObjects =
                 selectedItems?.Select((ve) => ve.GetMainDataObject());
-            ticket.SelectedDereferencedMainDataObjects = 
+            ticket.SelectedDereferencedMainDataObjects =
                 selectedItems?.Select((ve) => ve.GetDereferencedMainDataObject());
 
             // selectedItem is null, if multiple selected items
@@ -1136,11 +1134,11 @@ namespace AasxPackageLogic
                             && !cdsMissing.Contains(sme.SemanticId.Keys[0].Value))
                             cdsMissing.Add(sme.SemanticId.Keys[0].Value);
 
-				if (cdsMissing.Count < 1)
-				{
-					LogErrorToTicket(ticket, "No missing CDs could be found for selected element. Aborting!");
-					return;
-				}
+                if (cdsMissing.Count < 1)
+                {
+                    LogErrorToTicket(ticket, "No missing CDs could be found for selected element. Aborting!");
+                    return;
+                }
 
                 //
                 // Step 3: check, which CDs could be provided by pool
@@ -1168,11 +1166,11 @@ namespace AasxPackageLogic
                         }
                 }
 
-				if (cdsAvail.Count < 1)
-				{
-					LogErrorToTicket(ticket, "No missing CDs could be found in pool of known. Aborting!");
-					return;
-				}
+                if (cdsAvail.Count < 1)
+                {
+                    LogErrorToTicket(ticket, "No missing CDs could be found in pool of known. Aborting!");
+                    return;
+                }
 
                 //
                 // Step 4: Ask
@@ -1197,7 +1195,7 @@ namespace AasxPackageLogic
                     Log.Singleton.Error("Duplicated CDs found while adding missing CDs from pool of known. " +
                         "See log.");
                 ticket.Success = true;
-			}
+            }
 
             if (cmd == "convertelement")
             {
