@@ -195,6 +195,11 @@ namespace AasxPluginVec
                 var propertyValueAsDouble = ParseDouble(propertyValue);
                 return (rangeConstraint.Min == null || ParseDouble(rangeConstraint.Min) <= propertyValueAsDouble) && 
                     (rangeConstraint.Max == null || ParseDouble(rangeConstraint.Max) >= propertyValueAsDouble);
+
+            } else if (constraint is ISubmodelElementList listConstraint)
+            {
+                var allowedPropertyValues = listConstraint.Value.Select(v => (v as IProperty)?.Value);
+                return allowedPropertyValues.Contains(propertyValue);
             }
 
             throw new ApplicationException($"Unsupported type of submodel element encountered as constraint: {constraint.GetType().Name}");
