@@ -71,6 +71,7 @@ namespace AasxPluginVec
                 RequiredCapabilityContainer = requiredCapabilityContainer                
             };
 
+            // Step 1: Search all known AASes for "Offered Capability Containers" with the correct semantic ID for the required capability
             var offeredCapabilityContainers = FindOfferedCapabilitiesWithSemanticId(result.RequiredCapabilitySemId);
 
             if(!offeredCapabilityContainers.Any())
@@ -88,12 +89,15 @@ namespace AasxPluginVec
                     OfferedCapabilityContainer = offeredCapabilityContainer
                 };
 
+                // Step 2: For each "Offered Capability Container", check if each property constraint fulfills the values from the required capability
                 foreach(var requiredProperty in requiredProperties)
                 {
                     var propertyResult = CheckProperty(requiredProperty, offeredCapabilityContainer);
                     offeredCapabilityResult.PropertyMatchResults[requiredProperty] = propertyResult;
                 }
 
+                // Step 3: For each "Offered Capability Container", check if the corresponding asset defines any preconditions, i.e. that it needs to
+                // be mounted into any container ressource
                 var dependencyTree = FindRequiredRessourcesRecursively(aas);
                 offeredCapabilityResult.DependencyTree = dependencyTree;
 
