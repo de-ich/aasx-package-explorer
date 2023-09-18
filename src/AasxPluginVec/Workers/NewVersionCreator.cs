@@ -20,6 +20,7 @@ using static AasxPluginVec.BomSMUtils;
 using static AasxPluginVec.VecSMUtils;
 using static AasxPluginVec.BasicAasUtils;
 using static AasxPluginVec.SubassemblyUtils;
+using static AasxPluginVec.VersionUtils;
 
 namespace AasxPluginVec
 {
@@ -107,6 +108,7 @@ namespace AasxPluginVec
             var clone = DeepCloneSubmodel(submodel, options.GetTemplateIdSubmodel(hostName));
 
             SetVersion(clone, newVersion);
+            SetReferenceToPreviousVersion(submodel, clone);
 
             return clone;
         }
@@ -117,6 +119,7 @@ namespace AasxPluginVec
             var clone = CloneAas(aas, options.GetTemplateIdAas(hostName));
 
             SetVersion(clone, newVersion);
+            SetReferenceToPreviousVersion(aas, clone);
 
             return clone;
         }
@@ -128,6 +131,17 @@ namespace AasxPluginVec
             administration.Revision = null;
 
             identifiable.Administration = administration;
+        }
+
+        private static void SetReferenceToPreviousVersion(IIdentifiable previousVersion, IIdentifiable currentVersion)
+        {
+            var existingPreviousVersionExtension = GetPreviousVersionExtension(currentVersion);
+            if (existingPreviousVersionExtension != null)
+            {
+                currentVersion.Extensions.Remove(existingPreviousVersionExtension);
+            }
+
+            AddReferenceToPreviousVersion(currentVersion, previousVersion);
         }
     }
 }

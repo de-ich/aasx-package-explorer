@@ -239,7 +239,7 @@ namespace AasxPluginVec
                aasToClone.Description.Copy(),
                aasToClone.Administration.Copy(),
                aasToClone.EmbeddedDataSpecifications.Copy(),
-               aasToClone.GetReference(),
+               aasToClone.DerivedFrom.Copy(),
                aasToClone.Submodels.Copy());
             return clone;
         }
