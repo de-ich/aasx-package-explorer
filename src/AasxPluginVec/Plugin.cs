@@ -683,18 +683,18 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             _log.Info($"Executing Capability Matching...");
             var result = worker.FindRessourceForRequiredCapability(ticket.DereferencedMainDataObject as ISubmodelElementCollection);
 
-            _log.Info($"\tSuccess?: {result.Success}");
             _log.Info($"\tRequired Capability: {result.RequiredCapabilitySemId}");
-            _log.Info("Detailed result of the Capability Matching:");
-            _log.Info($"\tAssets that offer a capability with the correct semantic ID:");
+            _log.Info($"\tSuccess?: {result.Success}");
+            _log.Info("\tDetailed result of the Capability Matching:");
+            _log.Info($"\t\tAssets that offer a capability with the correct semantic ID:");
             foreach (var offeredCapabiltyResult in result.OfferedCapabilityResults)
             {
-                _log.Info($"\t\t{offeredCapabiltyResult.RessourceAssetId}");
+                _log.Info($"\t\t\t- {offeredCapabiltyResult.RessourceAas.IdShort} ({offeredCapabiltyResult.RessourceAssetId})");
             }
-            _log.Info($"\tThe following assets also fulfill all property constraints:");
+            _log.Info($"\t\tThe following assets also fulfill all property constraints:");
             foreach (var offeredCapabiltyResult in result.OfferedCapabilitySuccessResults)
             {
-                PrintDependencyTree(offeredCapabiltyResult.DependencyTree, 0);
+                PrintDependencyTree(offeredCapabiltyResult.DependencyTree, 3);
             }
 
             return new List<AasxPluginResultEventBase>()
@@ -706,11 +706,11 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
         private void PrintDependencyTree(RessourceDependencyTree tree, int indentLevel)
         {
             string indent = new string('\t', indentLevel);
-            _log.Info($"{indent}- {tree.Ressource.IdShort}");
+            _log.Info($"{indent}- {tree.Ressource.IdShort} ({tree.Ressource.AssetInformation.GlobalAssetId})");
 
             foreach (var slotDependency in tree.SlotDependencies)
             {
-                _log.Info($"{indent}\t{slotDependency.Key}: {slotDependency.Value.Options.Count} Option(s)");
+                _log.Info($"{indent}\tRequires ressource with slot '{slotDependency.Key}': {slotDependency.Value.Options.Count} Option(s)");
 
                 foreach (var option in slotDependency.Value.Options)
                 {
