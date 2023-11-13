@@ -7,6 +7,7 @@ This source code is licensed under the Apache License 2.0 (see LICENSE.txt).
 This source code may use other Open Source software components (see LICENSE.txt).
 */
 using AdminShellNS;
+using AdminShellNS.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace Extensions
         }
 
         public static object AddChild(
-            this ISubmodel submodel, ISubmodelElement childSubmodelElement, 
+            this ISubmodel submodel, ISubmodelElement childSubmodelElement,
             EnumerationPlacmentBase placement = null)
         {
             if (childSubmodelElement == null)
@@ -141,7 +142,7 @@ namespace Extensions
                 submodel.Administration = new AdministrativeInformation(version: sourceSubmodel.administration.version, revision: sourceSubmodel.administration.revision);
             }
 
-            if (sourceSubmodel.semanticId != null)
+            if (sourceSubmodel.semanticId != null && !sourceSubmodel.semanticId.IsEmpty)
             {
                 var keyList = new List<IKey>();
                 foreach (var refKey in sourceSubmodel.semanticId.Keys)
@@ -171,7 +172,7 @@ namespace Extensions
                 }
             }
 
-            if (sourceSubmodel.qualifiers != null && sourceSubmodel.qualifiers.Count != 0)
+            if (!sourceSubmodel.qualifiers.IsNullOrEmpty())
             {
                 if (submodel.Qualifiers == null && submodel.Qualifiers.Count != 0)
                 {
@@ -186,12 +187,9 @@ namespace Extensions
                 }
             }
 
-            if (!shallowCopy && sourceSubmodel.submodelElements != null)
+            if (!shallowCopy && !sourceSubmodel.submodelElements.IsNullOrEmpty())
             {
-                if (submodel.SubmodelElements == null)
-                {
-                    submodel.SubmodelElements = new List<ISubmodelElement>();
-                }
+                submodel.SubmodelElements ??= new List<ISubmodelElement>();
 
                 foreach (var submodelElementWrapper in sourceSubmodel.submodelElements)
                 {
@@ -230,7 +228,7 @@ namespace Extensions
                 sm.Administration = new AdministrativeInformation(
                     version: srcSM.administration.version, revision: srcSM.administration.revision);
 
-            if (srcSM.semanticId != null)
+            if (srcSM.semanticId != null && !srcSM.semanticId.IsEmpty)
             {
                 var keyList = new List<IKey>();
                 foreach (var refKey in srcSM.semanticId.Keys)
@@ -260,12 +258,9 @@ namespace Extensions
                 }
             }
 
-            if (srcSM.qualifiers != null && srcSM.qualifiers.Count != 0)
+            if (!srcSM.qualifiers.IsNullOrEmpty())
             {
-                if (sm.Qualifiers == null)
-                {
-                    sm.Qualifiers = new List<IQualifier>();
-                }
+                sm.Qualifiers ??= new List<IQualifier>();
 
                 foreach (var sourceQualifier in srcSM.qualifiers)
                 {
@@ -275,12 +270,9 @@ namespace Extensions
                 }
             }
 
-            if (!shallowCopy && srcSM.submodelElements != null)
+            if (!shallowCopy && !srcSM.submodelElements.IsNullOrEmpty())
             {
-                if (sm.SubmodelElements == null)
-                {
-                    sm.SubmodelElements = new List<ISubmodelElement>();
-                }
+                sm.SubmodelElements ??= new List<ISubmodelElement>();
 
                 foreach (var submodelElementWrapper in srcSM.submodelElements)
                 {
@@ -346,20 +338,20 @@ namespace Extensions
                 return new Key(KeyTypes.Submodel, submodel.Id);
         }
 
-		/// <summary>
-		///  If instance, return semanticId as one key.
-		///  If template, return identification as key.
-		/// </summary>
-		public static IReference GetSemanticRef(this Submodel submodel)
-		{
-			if (submodel.Kind == ModellingKind.Instance)
-				return submodel.SemanticId;
-			else
-				return new Reference(ReferenceTypes.ModelReference, new[] {
+        /// <summary>
+        ///  If instance, return semanticId as one key.
+        ///  If template, return identification as key.
+        /// </summary>
+        public static IReference GetSemanticRef(this Submodel submodel)
+        {
+            if (submodel.Kind == ModellingKind.Instance)
+                return submodel.SemanticId;
+            else
+                return new Reference(ReferenceTypes.ModelReference, new[] {
                     new Key(KeyTypes.Submodel, submodel.Id) }.Cast<IKey>().ToList());
-		}
+        }
 
-		public static List<ISubmodelElement> SmeForWrite(this Submodel submodel)
+        public static List<ISubmodelElement> SmeForWrite(this Submodel submodel)
         {
             if (submodel.SubmodelElements == null)
                 submodel.SubmodelElements = new();
