@@ -221,6 +221,8 @@ namespace AasxPluginVec
             }
 
             var partId = GetPartId(component);
+            var partVersion = this.vecProvider.PartVersionsById[partId];
+            var description = GetDescription(partVersion) ?? new Dictionary<string, string>();
 
             // try to determine an assetId for the given part number
             var partNumber = this.vecProvider.GetPartNumber(partId);
@@ -231,7 +233,7 @@ namespace AasxPluginVec
                 assetId = this.env.AssetAdministrationShells.FirstOrDefault(aas => aas.HasPartNumberSpecificAssetId(partNumber))?.AssetInformation.GlobalAssetId;
 
                 // second option: check if there is an AAS in a different environment
-                if (assetId== null && this.additionalEnvs != null)
+                if (assetId == null && this.additionalEnvs != null)
                 {
                     foreach (var env in this.additionalEnvs)
                     {
@@ -243,15 +245,41 @@ namespace AasxPluginVec
                     }
                 }
 
-                // second option: use an asset ID that is defined in the plugin options
+                // third option: use an asset ID that is defined in the plugin options
                 if (assetId == null)
                 {
                     this.options.AssetIdByPartNumberDict.TryGetValue(partNumber, out assetId);
+                }
+
+                // last option: create a new asset/aas and use its id
+                if (assetId == null && partVersion != null)
+                {
+                    string subjectId = aas.GetSubjectId();
+
+                    var componentAas = CreateAAS(partNumber, options.GetTemplateIdAas(subjectId), options.GetTemplateIdAsset(subjectId), env, AssetKind.Type);
+                    
+                    var specificAssetId = CreatePartNumberSpecificAssetId(partNumber, subjectId);
+                    componentAas.AssetInformation.SpecificAssetIds ??= new List<ISpecificAssetId>();
+                    componentAas.AssetInformation.SpecificAssetIds.Add(specificAssetId);
+
+                    foreach(var d in description)
+                    {
+                        componentAas.AddDescription(d.Key, d.Value);
+                    }
+
+
+                    assetId = componentAas.AssetInformation.GlobalAssetId;
                 }
             }
             
             // create the entity
             var componentEntity = CreateNode(componentName, mainEntity, assetId, true);
+
+            // set a description for the entitiy based on its part version
+            foreach (var d in description)
+            {
+                componentEntity.AddDescription(d.Key, d.Value);
+            }
 
             return componentEntity;
         }

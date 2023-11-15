@@ -101,6 +101,30 @@ namespace AasxPluginVec
             return this.VecContent.Elements(XName.Get("PartVersion")).ToList();
         }
 
+        public static Dictionary<string, string> GetDescription(XElement partVersion)
+        {
+            var descriptions = new Dictionary<string, string>();
+
+            foreach (var description in partVersion?.Elements(XName.Get("Description")))
+            {
+                var language = description.Element(XName.Get("LanguageCode"))?.Value;
+                var value = description.Element(XName.Get("Value"))?.Value;
+                
+                if (language != null && value != null)
+                {
+                    descriptions[language] = value;
+                }
+
+            }
+
+            return descriptions;
+        }
+
+        public static string GetPartNumber(XElement partVersion)
+        {
+            return partVersion?.Element(XName.Get("PartNumber"))?.Value;
+        }
+
         public static string GetIdentification(XElement element)
         {
             return element.Element(XName.Get("Identification"))?.Value ?? null;
