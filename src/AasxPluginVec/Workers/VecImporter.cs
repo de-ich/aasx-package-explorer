@@ -193,6 +193,13 @@ namespace AasxPluginVec
 
             foreach (var component in compositionSpecifications.SelectMany(spec => FindComponentsInComposition(spec)))
             {
+                if (IsPartWithSubComponents(component))
+                {
+                    // only add low-level components and no modules etc.
+                    continue;
+                }
+
+
                 var entity = CreateComponentEntity(mainEntity, component);
                 if (entity != null)
                 {

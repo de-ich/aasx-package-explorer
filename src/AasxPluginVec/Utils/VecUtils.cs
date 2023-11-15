@@ -71,6 +71,13 @@ namespace AasxPluginVec
             return compositionSpecification.Elements(XName.Get("Component")).ToList();
         }
 
+        public static bool IsPartWithSubComponents(XElement component)
+        {
+            var roles = component.Elements(XName.Get("Role")).ToList();
+
+            return roles.FirstOrDefault(r => r.Attribute(XName.Get("type", "http://www.w3.org/2001/XMLSchema-instance"))?.Value == "vec:PartWithSubComponentsRole") != null;
+        }
+
         public static List<XElement> FindPartStructureSpecifications(XElement harnessDescription)
         {
             return harnessDescription.Elements(XName.Get("Specification")).
