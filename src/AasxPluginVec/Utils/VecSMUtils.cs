@@ -14,7 +14,7 @@ namespace AasxPluginVec
 {
     public static class VecSMUtils
     {
-        public const string VEC_SUBMODEL_ID_SHORT = "VEC";
+        public const string VEC_SUBMODEL_ID_SHORT = "ProductSpecification";
         public const string VEC_FILE_ID_SHORT = "VecFile";
         public const string VEC_REFERENCE_ID_SHORT = "SameAs";
         public const string SEM_ID_VEC_SUBMODEL = "https://arena2036.de/vws4ls/submodels/vec/1/0";
