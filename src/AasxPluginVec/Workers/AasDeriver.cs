@@ -91,7 +91,7 @@ namespace AasxPluginVec
             }
 
             // clone all submodels existing in the original AAS
-            var existingSubmodels = aas.Submodels?.Select(smRef => GetSubmodel(smRef, env));
+            var existingSubmodels = aas.Submodels?.Select(smRef => GetSubmodel(smRef, env)) ?? new List<ISubmodel>();
             var clonedSubmodelsByExisting = new Dictionary<ISubmodel, ISubmodel>();
             foreach (var submodel in existingSubmodels)
             {
