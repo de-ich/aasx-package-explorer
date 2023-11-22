@@ -273,8 +273,8 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     MenuItem = new AasxMenuItem()
                     {
                         Name = "CapabilityMatching",
-                        Header = "VWS4LS: Capability Matching - Find ressources for the selected required capabilty",
-                        HelpText = "Find all ressources that fulfill the selected required capability.",
+                        Header = "VWS4LS: Capability Matching - Check if a machine can provide a required capabilty",
+                        HelpText = "Check if a machine can provide the selected required capability.",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -680,21 +680,25 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             var worker = new CapabilityMatcher(env, _options);
             worker.ValidateSelection(ticket.SelectedDereferencedMainDataObjects);
 
+            var configuration = await SelectMachineAasDialog.DetermineCapabilityMatcherConfiguration(displayContext, env);
+
+            if (configuration == null)
+            {
+                return null;
+            }
+
             _log.Info($"Executing Capability Matching...");
-            var result = worker.FindRessourceForRequiredCapability(ticket.DereferencedMainDataObject as ISubmodelElementCollection);
+            var result = worker.ExecuteCapabiltyCheck(ticket.DereferencedMainDataObject as ISubmodelElementCollection, configuration.MachineAas);
 
             _log.Info($"\tRequired Capability: {result.RequiredCapabilitySemId}");
             _log.Info($"\tSuccess?: {result.Success}");
-            _log.Info("\tDetailed result of the Capability Matching:");
-            _log.Info($"\t\tAssets that offer a capability with the correct semantic ID:");
-            foreach (var offeredCapabiltyResult in result.OfferedCapabilityResults)
+            _log.Info($"\tRequires Tool?: {result.ToolOptions.Any()}");
+            _log.Info("\tPotential tools and mounting options:");
+            foreach (var toolOption in result.ToolOptions)
             {
-                _log.Info($"\t\t\t- {offeredCapabiltyResult.RessourceAas.IdShort} ({offeredCapabiltyResult.RessourceAssetId})");
-            }
-            _log.Info($"\t\tThe following assets also fulfill all property constraints:");
-            foreach (var offeredCapabiltyResult in result.OfferedCapabilitySuccessResults)
-            {
-                PrintDependencyTree(offeredCapabiltyResult.DependencyTree, 3);
+                var aases = toolOption.Select(entry => entry.Item2);
+                var logEntry = String.Join(" -> ", aases.Select(aas => $"{aas.IdShort} ({aas.AssetInformation.GlobalAssetId}"));
+                _log.Info($"\t\t\t- {logEntry})");
             }
 
             return new List<AasxPluginResultEventBase>()

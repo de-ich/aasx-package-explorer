@@ -64,44 +64,85 @@ namespace AasxPluginVec
             }
         }
 
-        public CapabiltyCheckResult FindRessourceForRequiredCapability(ISubmodelElementCollection requiredCapabilityContainer)
+        protected OfferedCapabilityResult? CheckRessourceFulfillsRequiredCapability(ISubmodelElementCollection requiredCapabilityContainer, IAssetAdministrationShell aas)
+        {
+            var requiredProperties = requiredCapabilityContainer.FindPropertySet()?.FindProperties();
+
+            var requiredCapabilitySemId = requiredCapabilityContainer.GetCapabilitySemanticId();
+
+            // Step 1: Check if the selected AAS provides an "Offered Capability Container" with the correct semantic ID for the required capability
+            var offeredCapabilityContainers = FindOfferedCapabilitiesWithSemanticId(requiredCapabilitySemId, aas);
+
+            if (!offeredCapabilityContainers.Any())
+            {
+                return null;
+            }
+
+            var offeredCapabilityContainer = offeredCapabilityContainers.First().Item2;
+
+            var offeredCapabilityResult = new OfferedCapabilityResult()
+            {
+                RessourceAas = aas,
+                OfferedCapabilityContainer = offeredCapabilityContainer
+            };
+
+            // Step 2: For the "Offered Capability Container", check if each property constraint fulfills the values from the required capability
+            foreach (var requiredProperty in requiredProperties)
+            {
+                var propertyResult = CheckProperty(requiredProperty, offeredCapabilityContainer);
+                offeredCapabilityResult.PropertyMatchResults[requiredProperty] = propertyResult;
+            }
+
+            return offeredCapabilityResult;
+        }
+
+        public CapabiltyCheckResult ExecuteCapabiltyCheck(ISubmodelElementCollection requiredCapabilityContainer, IAssetAdministrationShell machineAas)
         {
             var result = new CapabiltyCheckResult()
             {
-                RequiredCapabilityContainer = requiredCapabilityContainer                
+                RequiredCapabilityContainer = requiredCapabilityContainer
             };
 
-            // Step 1: Search all known AASes for "Offered Capability Containers" with the correct semantic ID for the required capability
-            var offeredCapabilityContainers = FindOfferedCapabilitiesWithSemanticId(result.RequiredCapabilitySemId);
+            // Step 1: Check if the selected machine AAS can fulfill the required capability
+            var machineResult = CheckRessourceFulfillsRequiredCapability(requiredCapabilityContainer, machineAas);
 
-            if(!offeredCapabilityContainers.Any())
+            if (!machineResult?.Success ?? false)
             {
                 return result;
             }
 
-            var requiredProperties = requiredCapabilityContainer.FindPropertySet()?.FindProperties();
+            // Step 2: Check if the machine requires a tool to execute the capability
+            var requiresTool = ((machineResult.OfferedCapabilityContainer
+                .OverValueOrEmpty().FirstOrDefault(sme => sme is ISubmodelElementCollection && sme.IdShort == "CapabilityRelationships") as ISubmodelElementCollection)?
+                .OverValueOrEmpty().FirstOrDefault(sme => sme is ISubmodelElementCollection && sme.HasSemanticId(KeyTypes.GlobalReference, "ConditionContainer")) as ISubmodelElementCollection)?
+                .OverValueOrEmpty().Any(sme => sme is IProperty && sme.IdShort == "RequiresToolCondition") ?? false;
 
-            foreach(var (aas, offeredCapabilityContainer) in offeredCapabilityContainers)
+            if (!requiresTool)
             {
-                var offeredCapabilityResult = new OfferedCapabilityResult()
-                {
-                    RessourceAas = aas,
-                    OfferedCapabilityContainer = offeredCapabilityContainer
-                };
+                result.Success = true;
+                return result;
+            }
+            
+            // Step 3: Find the tools that fulfill the required capability
+            var toolAASes = env.AssetAdministrationShells.Where(aas => aas.OverExtensionsOrEmpty().Any(e => e.HasSemanticId(KeyTypes.GlobalReference, "http://arena2036.de/isTool/1/0")));
 
-                // Step 2: For each "Offered Capability Container", check if each property constraint fulfills the values from the required capability
-                foreach(var requiredProperty in requiredProperties)
+            var aasesOfSuitableTools = toolAASes.Where(toolAas => CheckRessourceFulfillsRequiredCapability(requiredCapabilityContainer, toolAas)?.Success ?? false);
+
+            // Step 4: Find the tools that can be mounted in the machine
+            foreach(var toolAas in aasesOfSuitableTools)
+            {
+                var mountingPaths = DetermineMountingPaths(toolAas);
+                var mountingPathsLeadingToMachine = mountingPaths.Where(path => path.Last().Item2 == machineAas);
+
+                foreach( var mountingPath in mountingPathsLeadingToMachine)
                 {
-                    var propertyResult = CheckProperty(requiredProperty, offeredCapabilityContainer);
-                    offeredCapabilityResult.PropertyMatchResults[requiredProperty] = propertyResult;
+                    result.ToolOptions.Add(mountingPath);   
                 }
+            }
 
-                // Step 3: For each "Offered Capability Container", check if the corresponding asset defines any preconditions, i.e. that it needs to
-                // be mounted into any container ressource
-                var dependencyTree = FindRequiredRessourcesRecursively(aas);
-                offeredCapabilityResult.DependencyTree = dependencyTree;
-
-                result.OfferedCapabilityResults.Add(offeredCapabilityResult);
+            if (result.ToolOptions.Any())
+            {
+                result.Success = true;
             }
 
             return result;
@@ -215,6 +256,43 @@ namespace AasxPluginVec
             return Double.Parse(value.Replace(".", ","));
         }
 
+        protected List<List<Tuple<string, IAssetAdministrationShell>>> DetermineMountingPaths(IAssetAdministrationShell ressourceAas)
+        {
+            var mountingPaths = new List<List<Tuple<string, IAssetAdministrationShell>>>();
+
+            var requiredSlotExtension = GetRequiredSlotExtension(ressourceAas);
+
+            if (requiredSlotExtension == null)
+            {
+                mountingPaths.Add(new List<Tuple<string, IAssetAdministrationShell>>());
+                return mountingPaths;
+            }
+
+            var slotName = requiredSlotExtension.Value;
+
+            foreach (var aas in env.AssetAdministrationShells)
+            {
+                var offeredSlotExtension = GetOfferedSlotExtension(aas);
+
+                if (offeredSlotExtension == null ||
+                    offeredSlotExtension.Value != slotName)
+                {
+                    // aas/ressource does not provide a suitable slot
+                    continue;
+                }
+
+                var subPaths = DetermineMountingPaths(aas);
+                foreach( var subPath in subPaths)
+                {
+                    subPath.Insert(0, new Tuple<string, IAssetAdministrationShell>(slotName, aas));
+                    mountingPaths.Add(subPath);
+                }
+                
+            }
+
+            return mountingPaths;
+        }
+        
         protected RessourceDependencyTree FindRequiredRessourcesRecursively(IAssetAdministrationShell ressourceAas)
         {
             var dependencyTree = new RessourceDependencyTree(ressourceAas);
@@ -263,19 +341,17 @@ namespace AasxPluginVec
     {
         public ISubmodelElementCollection RequiredCapabilityContainer { get; internal set; }
         public string RequiredCapabilitySemId => RequiredCapabilityContainer.GetCapabilitySemanticId();
-        public bool Success => OfferedCapabilitySuccessResults.Any();
-        public List<OfferedCapabilityResult> OfferedCapabilityResults { get; } = new List<OfferedCapabilityResult>();
-        public IEnumerable<OfferedCapabilityResult> OfferedCapabilitySuccessResults => OfferedCapabilityResults.Where(r => r.Success);
+        public bool Success = false;
+        public List<IEnumerable<Tuple<string, IAssetAdministrationShell>>> ToolOptions = new List<IEnumerable<Tuple<string, IAssetAdministrationShell>>>();
     }
 
     public class OfferedCapabilityResult
     {
-        public bool Success => PropertyMatchResults.All(r => r.Value.Success) && (DependencyTree?.CanBeFulfilled ?? false);
+        public bool Success => PropertyMatchResults.All(r => r.Value.Success);
         public IAssetAdministrationShell RessourceAas { get; internal set; }
         public string RessourceAssetId => RessourceAas.AssetInformation?.GlobalAssetId;
         public ISubmodelElementCollection OfferedCapabilityContainer { get; internal set; }
         public IDictionary<IProperty, PropertyMatchResult> PropertyMatchResults { get; } = new Dictionary<IProperty, PropertyMatchResult>();
-        public RessourceDependencyTree DependencyTree { get; internal set; }
     }
 
     public class PropertyMatchResult
