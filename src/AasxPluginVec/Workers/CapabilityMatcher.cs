@@ -18,6 +18,7 @@ using AasCore.Aas3_0;
 using Extensions;
 using static AasxPluginVec.BasicAasUtils;
 using static AasxPluginVec.CapabilitySMUtils;
+using static AasxPluginVec.BomSMUtils;
 using Namotion.Reflection;
 using AasxPackageLogic;
 
@@ -100,33 +101,52 @@ namespace AasxPluginVec
         {
             var result = new CapabiltyCheckResult()
             {
-                RequiredCapabilityContainer = requiredCapabilityContainer
+                RequiredCapabilityContainer = requiredCapabilityContainer,
             };
 
             // Step 1: Check if the selected machine AAS can fulfill the required capability
             var machineResult = CheckRessourceFulfillsRequiredCapability(requiredCapabilityContainer, machineAas);
+            result.OfferedCapabilityResult = machineResult;
 
             if (!machineResult?.Success ?? false)
             {
                 return result;
             }
 
-            // Step 2: Check if the machine requires a tool to execute the capability
-            var requiresTool = ((machineResult.OfferedCapabilityContainer
+            // Step 2: Check if the machine requires a tool to execute the capability and which tool type is required
+            var requiredToolType = ((machineResult.OfferedCapabilityContainer
                 .OverValueOrEmpty().FirstOrDefault(sme => sme is ISubmodelElementCollection && sme.IdShort == "CapabilityRelationships") as ISubmodelElementCollection)?
                 .OverValueOrEmpty().FirstOrDefault(sme => sme is ISubmodelElementCollection && sme.HasSemanticId(KeyTypes.GlobalReference, "ConditionContainer")) as ISubmodelElementCollection)?
-                .OverValueOrEmpty().Any(sme => sme is IProperty && sme.IdShort == "RequiresToolCondition") ?? false;
+                .OverValueOrEmpty().FirstOrDefault(sme => sme is IProperty && sme.IdShort == "RequiresToolCondition")?.ValueAsText();
 
-            if (!requiresTool)
+            if (requiredToolType == null)
             {
                 result.Success = true;
                 return result;
             }
             
-            // Step 3: Find the tools that fulfill the required capability
-            var toolAASes = env.AssetAdministrationShells.Where(aas => aas.OverExtensionsOrEmpty().Any(e => e.HasSemanticId(KeyTypes.GlobalReference, "http://arena2036.de/isTool/1/0")));
+            // Step 3a: Find the tools that fulfill the required capability
+            var isInstance = machineAas.AssetInformation.AssetKind == AssetKind.Instance;
 
-            var aasesOfSuitableTools = toolAASes.Where(toolAas => CheckRessourceFulfillsRequiredCapability(requiredCapabilityContainer, toolAas)?.Success ?? false);
+            var toolAASes = env.AssetAdministrationShells
+                .Where(aas => aas.AssetInformation.AssetKind == machineAas.AssetInformation.AssetKind)
+                .Where(aas => aas.OverExtensionsOrEmpty().Any(e => e.HasSemanticId(KeyTypes.GlobalReference, "http://arena2036.de/toolType/1/0") && e.Value == requiredToolType));
+
+            // Step 3b: Depending on if we look at a type or at an instance, select either all tools or only the currently mounted ones
+            var toolAASesToBeConsidered = new List<IAssetAdministrationShell>();
+            if (isInstance)
+            {
+                var bomSubmodel = FindFirstBomSubmodel(env, machineAas);
+                var leafNodes = bomSubmodel?.GetLeafNodes();
+
+                var mountedToolAASes = toolAASes.Where(aas => leafNodes?.Any(node => node.GlobalAssetId == aas.AssetInformation.GlobalAssetId) ?? false);
+                toolAASesToBeConsidered.AddRange(mountedToolAASes);
+            } else
+            {
+                toolAASesToBeConsidered.AddRange(toolAASes);
+            }
+
+            var aasesOfSuitableTools = toolAASesToBeConsidered.Where(toolAas => CheckRessourceFulfillsRequiredCapability(requiredCapabilityContainer, toolAas)?.Success ?? false);
 
             // Step 4: Find the tools that can be mounted in the machine
             foreach(var toolAas in aasesOfSuitableTools)
@@ -136,11 +156,12 @@ namespace AasxPluginVec
 
                 foreach( var mountingPath in mountingPathsLeadingToMachine)
                 {
+                    mountingPath.Insert(0, new Tuple<string, IAssetAdministrationShell>("", toolAas));
                     result.ToolOptions.Add(mountingPath);   
                 }
             }
 
-            if (result.ToolOptions.Any())
+            if (result.ToolOptions.Any() || (isInstance && aasesOfSuitableTools.Any()))
             {
                 result.Success = true;
             }
@@ -343,6 +364,7 @@ namespace AasxPluginVec
         public string RequiredCapabilitySemId => RequiredCapabilityContainer.GetCapabilitySemanticId();
         public bool Success = false;
         public List<IEnumerable<Tuple<string, IAssetAdministrationShell>>> ToolOptions = new List<IEnumerable<Tuple<string, IAssetAdministrationShell>>>();
+        public OfferedCapabilityResult OfferedCapabilityResult { get; internal set; }
     }
 
     public class OfferedCapabilityResult

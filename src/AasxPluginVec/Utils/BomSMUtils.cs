@@ -191,7 +191,27 @@ namespace AasxPluginVec
 
         public static IEnumerable<IEntity> GetLeafNodes(this ISubmodel submodel) {
             var entryNode = submodel.FindEntryNode();
-            return entryNode?.GetChildEntities().Where(IsLeafNode).ToList() ?? new List<IEntity>();
+
+            return entryNode.GetLeafNodes();
+        }
+
+        public static IEnumerable<IEntity> GetLeafNodes(this IEntity entity)
+        {
+
+            var leafNodes = new List<IEntity>();
+
+            foreach (var child in entity?.GetChildEntities() ?? new List<IEntity>())
+            {
+                if (child.IsLeafNode())
+                {
+                    leafNodes.Add(child);
+                }
+                else
+                {
+                    leafNodes.AddRange(child.GetLeafNodes());
+                }
+            }
+            return leafNodes;
         }
 
         public static bool IsLeafNode(this IEntity node)

@@ -692,13 +692,13 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 
             _log.Info($"\tRequired Capability: {result.RequiredCapabilitySemId}");
             _log.Info($"\tSuccess?: {result.Success}");
-            _log.Info($"\tRequires Tool?: {result.ToolOptions.Any()}");
+            _log.Info($"\tRequires Mounting of a Tool?: {result.ToolOptions.Any()}");
             _log.Info("\tPotential tools and mounting options:");
             foreach (var toolOption in result.ToolOptions)
             {
                 var aases = toolOption.Select(entry => entry.Item2);
                 var logEntry = String.Join(" -> ", aases.Select(aas => $"{aas.IdShort} ({aas.AssetInformation.GlobalAssetId}"));
-                _log.Info($"\t\t\t- {logEntry})");
+                _log.Info($"\t- {logEntry})");
             }
 
             return new List<AasxPluginResultEventBase>()
