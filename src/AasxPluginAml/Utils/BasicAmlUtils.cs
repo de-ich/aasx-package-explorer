@@ -1,5 +1,6 @@
 ﻿using Aml.Engine.AmlObjects;
 using Aml.Engine.CAEX;
+using Aml.Engine.CAEX.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,5 +62,14 @@ public static class BasicAmlUtils
             // the amlFilePath probably does not represent an aml file or does not exist
             return null;
         }
+    }
+
+    public static T FindByPath<T>(this CAEXDocument amlDocument, string path) where T : CAEXObject
+    {
+        var element = amlDocument.FindByPath(path) ?? throw new Exception($"Unable to find element by path {path} in the given AML document!");
+
+        var castElement = element as T ?? throw new Exception($"Element at path {path} in the given AML document is of an unexpected type (expected: {typeof(T).Name}, got: {element.GetType().Name}!");
+
+        return castElement;
     }
 }

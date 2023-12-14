@@ -18,6 +18,11 @@ namespace AasxPluginAml;
 
 public class AmlOptions : AasxIntegrationBase.AasxPluginOptionsBase
 {
+    private string TemplateIdAsset = "/ids/asset/DDDD_DDDD_DDDD_DDDD";
+    private string TemplateIdAas = "/ids/aas/DDDD_DDDD_DDDD_DDDD";
+    private string TemplateIdSubmodel = "/ids/submodel/DDDD_DDDD_DDDD_DDDD";
+    public Dictionary<string, string> AssetIdByPartNumberDict = new Dictionary<string, string>();
+
     /// <summary>
     /// Create a set of minimal options
     /// </summary>
@@ -25,5 +30,25 @@ public class AmlOptions : AasxIntegrationBase.AasxPluginOptionsBase
     {
         var opt = new AmlOptions();
         return opt;
+    }
+
+    public string GetTemplateIdAsset(string hostName)
+    {
+        return GetNormalizedHostName(hostName) + TemplateIdAsset;
+    }
+
+    public string GetTemplateIdAas(string hostName)
+    {
+        return GetNormalizedHostName(hostName) + TemplateIdAas;
+    }
+
+    public string GetTemplateIdSubmodel(string hostName)
+    {
+        return GetNormalizedHostName(hostName) + TemplateIdSubmodel;
+    }
+
+    private string GetNormalizedHostName(string hostName)
+    {
+        return (hostName ?? "www.example.com").TrimEnd('/');
     }
 }

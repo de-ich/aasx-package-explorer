@@ -23,6 +23,9 @@
     <ProjectReference Include="..\AasxWpfControlLibrary\AasxWpfControlLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\template-caex-30.aml" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="AasxPluginAml.options.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

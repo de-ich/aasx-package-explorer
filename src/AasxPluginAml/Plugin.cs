@@ -22,12 +22,19 @@ using System.Threading.Tasks;
 using AnyUi;
 using AasxPluginAml;
 using static AasxPluginAml.Utils.AmlSMUtils;
+using static AasxPluginAml.Utils.BasicAasUtils;
+using static AasxPluginAml.Utils.BasicAmlUtils;
 using System.Windows.Forms;
 using AasxPluginAml.Views;
 using Aml.Engine.CAEX;
 using AasxPluginAml.Utils;
 using AasxPackageLogic;
+using Aml.Engine.Adapter;
 using NPOI.HPSF;
+using System.IO;
+using NPOI.SS.Formula.Functions;
+using Aml.Engine.CAEX.Extensions;
+using AasxPluginAml.AnyUi;
 
 namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
 {
@@ -223,6 +230,18 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                         Name = "PublishAMLStructureNew",
                         Header = "AutomationML: Publish AML element as AAS relationship to a new BOM entity",
                         HelpText = "Publish an AML element (SUC/IE) as an AAS relationship that is linked to a new entity within a BOM submodel",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "GenerateAndIncludeAMLFile",
+                        Header = "AutomationML: Generate and Include an AML file for the selected AAS",
+                        HelpText = "Generate an AML files based on the interface connectors submodel and include it in the AAS",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
                 });
@@ -441,8 +460,134 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 };
             }
+            else if (cmd == "generateandincludeamlfile")
+            {
+                if (ticket.Package == null || ticket.DereferencedMainDataObject is not IAssetAdministrationShell)
+                {
+                    _log.Error($"No AAS was selcted...");
+                    return;
+                }
+
+                var aas = ticket.DereferencedMainDataObject as IAssetAdministrationShell;
+
+                // Find the 'Interface_Connectors' submodel that is the base for the generated AML
+                var ifConSubmodel = FindAllSubmodels(ticket.Env, aas).FirstOrDefault(sm => sm.IdShort == "Interface_Connectors");
+
+                if (ifConSubmodel == null)
+                {
+                    _log.Error($"Unable to find 'Interface_Connectors' submodel...");
+                    return;
+                }
+
+                var connectorsSMC = ifConSubmodel?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme is ISubmodelElementCollection && sme.IdShort == "Connectors") as ISubmodelElementCollection;
+
+                if (connectorsSMC == null || !connectorsSMC.Value.Any())
+                {
+                    _log.Error($"Unable to find 'Connectors' SMC within the 'Interface_Connectors' submodel...");
+                    return;
+                }
+
+                var connectors = connectorsSMC.Value.Select(sme => sme as ISubmodelElementCollection).Where(smc => smc != null);
+
+                var nameplateSM = FindAllSubmodels(ticket.Env, aas).FirstOrDefault(sm => sm.IdShort == "Nameplate");
+
+                var manufacturerName = nameplateSM?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.GlobalReference, "0173-1#02-AAO677#002"))?.ValueAsText() ??
+                    nameplateSM?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.ConceptDescription, "0173-1#02-AAO677#002"))?.ValueAsText();
+
+                var articleNumber = nameplateSM?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.GlobalReference, "0173-1#02-AAO676#003"))?.ValueAsText() ??
+                    nameplateSM?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.ConceptDescription, "0173-1#02-AAO676#003"))?.ValueAsText();
+
+                var result = await GenerateAmlDialog.DetermineCreateAmlConfiguration(displayContext, manufacturerName, articleNumber);
+
+                if (result == null)
+                {
+                    return;
+                }
+
+                // Create the AML file
+                var amlDocument = InitializeAmlDocumentFromTemplate();
+                var amlFile = amlDocument.CAEXFile;
+
+                var sucLib = amlFile.SystemUnitClassLib.Append(result.SucLibName);
+
+
+                var suc = sucLib.SystemUnitClass.Append(result.SucName);
+                AddRoleToElement(suc, "AutomationMLComponentStandardRCL/AutomationComponent");
+                suc.Attribute["AssetID"].Value = aas.AssetInformation.GlobalAssetId;
+
+                foreach (var connector in connectors)
+                {
+                    var connectorName = connector.IdShort;
+                    var connectorType = connector.OverValueOrEmpty().FirstOrDefault(sme => sme.IdShort == "ConnectorType")?.ValueAsText();
+
+                    var connectorIE = suc.InternalElement.Append(connectorName);
+                    try
+                    {
+                        AddRoleToElement(connectorIE, $"AutomationMLComponentStandardRCL/{connectorType}Connector");
+                    } catch(Exception ex)
+                    {
+                        _log.Error(ex.Message, ex);
+                    }
+
+                    AddExternalInterfaceToElement(connectorIE, "DIAMONDInterfaceClassLib/AASXInternalConnector");
+                    var connectorReference = String.Join("/", connector.GetReference().Keys.Select(key => key.Value));
+                    connectorIE.ExternalInterface["AASXInternalConnector"].Attribute["AAS_Ref"].Value = connectorReference;
+                }
+
+                var ecadSM = CreateSubmodel(result.SubmodelName, _options.GetTemplateIdSubmodel(aas.GetSubjectId()), null, aas, ticket.Env);
+
+                string amlTempFilePath = Path.Combine(Path.GetTempPath(), $"{articleNumber}.aml");
+                amlDocument.SaveToFile(amlTempFilePath, true);
+
+                ImportAmlFile(ecadSM, amlTempFilePath, ticket.Package);
+
+                resultEvents = new List<AasxPluginResultEventBase>() {
+                    new AasxPluginResultEventRedrawAllElements(),
+                    new AasxPluginResultEventNavigateToReference()
+                    {
+                        targetReference = ecadSM.GetReference()
+                    }
+                };
+            }
 
             resultEvents?.ToList().ForEach(r => _eventStack.PushEvent(r));
+        }
+
+        private void AddRoleToElement(SystemUnitClassType element, string referencedRoleClassPath)
+        {
+            if (element.CAEXDocument.FindByPath(referencedRoleClassPath) == null)
+            {
+                throw new Exception($"Unable to find RoleClass with path '{referencedRoleClassPath}'");
+            }
+
+            var supportedRoleClass = element.New_SupportedRoleClass(referencedRoleClassPath);
+            var role = supportedRoleClass.RoleClass;
+
+            foreach (var attribute in role.Attribute)
+            {
+                element.Attribute.Insert(attribute.Copy() as AttributeType, false);
+            }
+
+            foreach( var externalInterface in role.ExternalInterface)
+            {
+                element.ExternalInterface.Insert(externalInterface.Copy() as ExternalInterfaceType, false);
+            }
+        }
+
+        private void AddExternalInterfaceToElement(SystemUnitClassType element, string referencedInterfaceClassPath)
+        {
+            if (element.CAEXDocument.FindByPath(referencedInterfaceClassPath) == null)
+            {
+                throw new Exception($"Unable to find InterfaceClass with path '{referencedInterfaceClassPath}'");
+            }
+
+            var interfaceName = referencedInterfaceClassPath.Split("/").Last();
+            var externalInterface = element.New_ExternalInterface(interfaceName, referencedInterfaceClassPath);
+
+            foreach (var attribute in (element.CAEXDocument.FindByPath(referencedInterfaceClassPath) as InterfaceClassType).Attribute)
+            {
+                externalInterface.Attribute.Insert(attribute.Copy() as AttributeType, false);
+            }
         }
 
         private CAEXObject? GetSelectedAmlObject(params object[] args)
@@ -475,6 +620,18 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Load and parse the resource containing the AML template file to use for the generation.
+        /// </summary>
+        /// <returns>The parsed CAEXDocument</returns>
+        protected static CAEXDocument InitializeAmlDocumentFromTemplate()
+        {
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("AasxPluginAml.Resources.template-caex-30.aml"))
+            {
+                return CAEXDocument.LoadFromStream(stream);
+            };
         }
     }
 }

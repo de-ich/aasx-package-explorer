@@ -1,0 +1,1594 @@
+﻿<CAEXFile SchemaVersion="3.0" FileName="template-caex-30.aml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dke.de/CAEX" xsi:schemaLocation="http://www.dke.de/CAEX CAEX_ClassModel_V.3.0.xsd">
+  <AdditionalInformation DocumentVersions="Recommendations" />
+  <SuperiorStandardVersion>AutomationML 2.10</SuperiorStandardVersion>
+  <SourceDocumentInformation OriginName="AutomationML Editor" OriginID="916578CA-FE0D-474E-A4FC-9E1719892369" OriginVersion="6.1.5.0" LastWritingDateTime="2023-12-08T13:19:41.4726545+01:00" OriginProjectID="unspecified" OriginProjectTitle="unspecified" OriginRelease="6.1.5.0" OriginVendor="AutomationML e.V." OriginVendorURL="www.AutomationML.org" />
+  <InterfaceClassLib Name="AutomationMLComponentBaseICL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <InterfaceClass Name="SkillInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface" />
+    <InterfaceClass Name="2DReference" RefBaseClassPath="AutomationMLBPRInterfaceClassLib/ExternalDataReference">
+      <Description>A 2DReference shall be used to reference a 2D representation of the AutomationML Component.</Description>
+    </InterfaceClass>
+    <InterfaceClass Name="GraphicRepresentationReference" RefBaseClassPath="AutomationMLBPRInterfaceClassLib/ExternalDataReference" />
+    <InterfaceClass Name="JTReference" RefBaseClassPath="AutomationMLBPRInterfaceClassLib/ExternalDataReference" />
+    <InterfaceClass Name="DeviceDescriptionReference" RefBaseClassPath="AutomationMLBPRInterfaceClassLib/ExternalDataReference">
+      <Attribute Name="Version" AttributeDataType="xs:string" />
+    </InterfaceClass>
+    <InterfaceClass Name="MechanicInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+      <Description>A MechanicInterface represents a hardware provision to mechanically fasten or join two or more objects together.</Description>
+    </InterfaceClass>
+    <InterfaceClass Name="ElectricInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+      <Description>An ElectricInterface describes an electro-mechanical provision used to join electrical terminations and to create electrical circuits.</Description>
+    </InterfaceClass>
+    <InterfaceClass Name="LiquidicInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface" />
+    <InterfaceClass Name="PneumaticInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+      <Description>???</Description>
+    </InterfaceClass>
+    <InterfaceClass Name="PneumaticConnector" RefBaseClassPath="AutomationMLComponentBaseICL/PneumaticInterface">
+      <Attribute Name="pneumaticPort" AttributeDataType="xs:string" />
+      <Attribute Name="connectorType" AttributeDataType="xs:string" />
+    </InterfaceClass>
+    <InterfaceClass Name="CondensateDrainConnector" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface" />
+    <InterfaceClass Name="HydraulicInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface" />
+    <InterfaceClass Name="SensorInterface" RefBaseClassPath="AutomationMLComponentBaseICL/MechanicInterface" />
+    <InterfaceClass Name="JointInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface" />
+  </InterfaceClassLib>
+  <InterfaceClassLib Name="AutomationMLFMIInterfaceClassLib">
+    <Description>The InterfaceClassLib AutomationMLFMIInterfaceClassLib is defined in the Whitepaper "Description of AutomationML Components". The document can be downloaded at https://www.automationml.org/o.red.c/publications.html . The Version of the related WP is 1.0  State November 2019 and has the Document Identifier WP Compo.</Description>
+    <Version>1.0.0</Version>
+    <InterfaceClass Name="FMIReference" RefBaseClassPath="AutomationMLBPRInterfaceClassLib/ExternalDataReference" />
+    <InterfaceClass Name="FMIVariableInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
+      <Attribute Name="Name" AttributeDataType="xs:string" />
+      <Attribute Name="Causality" AttributeDataType="xs:string" />
+    </InterfaceClass>
+  </InterfaceClassLib>
+  <InterfaceClassLib Name="AutomationMLBPRInterfaceClassLib">
+    <Description />
+    <Version>1.0.0</Version>
+    <InterfaceClass Name="ExternalDataReference" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector" ID="{320f7f3a-6df8-4ccd-af35-a4367b37eb7a}">
+      <Attribute Name="MIMEType" AttributeDataType="xs:string" />
+    </InterfaceClass>
+  </InterfaceClassLib>
+  <InterfaceClassLib Name="AutomationMLLogicInterfaceClassLib">
+    <Description>AutomationMLLogicInterfaceClassLib specifies all logic related interface classes for 
+referencing AML logic XML documents.</Description>
+    <Version>1.0.0</Version>
+    <InterfaceClass Name="LogicModelInterface" />
+    <InterfaceClass Name="SequencingLogicModelInterface" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/LogicModelInterface" />
+    <InterfaceClass Name="BehaviourLogicModelInterface" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/LogicModelInterface" />
+    <InterfaceClass Name="InterlockingLogicModelInterface" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/LogicModelInterface" />
+    <InterfaceClass Name="LogicModelElementInterface" />
+    <InterfaceClass Name="VariableInterface" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/LogicModelElementInterface">
+      <Attribute Name="Direction" AttributeDataType="xs:string" />
+    </InterfaceClass>
+    <InterfaceClass Name="InterlockingVariableInterface" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/VariableInterface">
+      <Attribute Name="SafeConditionEquals" AttributeDataType="xs:boolean" />
+    </InterfaceClass>
+  </InterfaceClassLib>
+  <InterfaceClassLib Name="AutomationMLPLCopenXMLInterfaceClassLib">
+    <Description>AutomationMLPLCopenXMLInterfaceClassLib specifies the logic related interface class for 
+referencing IEC 61131-10 documents</Description>
+    <Version>1.0.0</Version>
+    <InterfaceClass Name="VariableInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface" />
+  </InterfaceClassLib>
+  <InterfaceClassLib Name="AutomationMLInterfaceClassLib">
+    <Description>Standard Automation Markup Language Interface Class Library</Description>
+    <Version>2.10.0</Version>
+    <InterfaceClass Name="AutomationMLBaseInterface">
+      <InterfaceClass Name="Order" RefBaseClassPath="AutomationMLBaseInterface">
+        <Attribute Name="Direction" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/Direction" />
+      </InterfaceClass>
+      <InterfaceClass Name="Port" RefBaseClassPath="AutomationMLBaseInterface">
+        <Attribute Name="Direction" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/Direction">
+          <Constraint Name="AllowedValues">
+            <NominalScaledType>
+              <RequiredValue>In</RequiredValue>
+              <RequiredValue>Out</RequiredValue>
+              <RequiredValue>InOut</RequiredValue>
+            </NominalScaledType>
+          </Constraint>
+        </Attribute>
+        <Attribute Name="Cardinality" RefAttributeType="AutomationMLBaseAttributeTypeLib/Cardinality">
+          <Attribute Name="MinOccur" AttributeDataType="xs:unsignedInt" />
+          <Attribute Name="MaxOccur" AttributeDataType="xs:unsignedInt" />
+        </Attribute>
+        <Attribute Name="Category" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/Category" />
+      </InterfaceClass>
+      <InterfaceClass Name="PPRConnector" RefBaseClassPath="AutomationMLBaseInterface" />
+      <InterfaceClass Name="ExternalDataConnector" RefBaseClassPath="AutomationMLBaseInterface">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+        <InterfaceClass Name="COLLADAInterface" RefBaseClassPath="ExternalDataConnector" />
+        <InterfaceClass Name="PLCopenXMLInterface" RefBaseClassPath="ExternalDataConnector" />
+        <InterfaceClass Name="ExternalDataReference" RefBaseClassPath="ExternalDataConnector">
+          <Attribute Name="MIMEType" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/MIMEType" />
+        </InterfaceClass>
+      </InterfaceClass>
+      <InterfaceClass Name="Communication" RefBaseClassPath="AutomationMLBaseInterface">
+        <InterfaceClass Name="SignalInterface" RefBaseClassPath="Communication" />
+      </InterfaceClass>
+    </InterfaceClass>
+  </InterfaceClassLib>
+  <InterfaceClassLib Name="DIAMONDInterfaceClassLib">
+    <Version>0</Version>
+    <InterfaceClass Name="AASXInternalConnector" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+      <Attribute Name="AAS_Ref" AttributeDataType="xs:string" />
+    </InterfaceClass>
+  </InterfaceClassLib>
+  <RoleClassLib Name="AutomationMLBaseRoleClassLib">
+    <Description>Automation Markup Language base role class library</Description>
+    <Version>2.10.0</Version>
+    <RoleClass Name="AutomationMLBaseRole">
+      <RoleClass Name="Group" RefBaseClassPath="AutomationMLBaseRole">
+        <Attribute Name="AssociatedFacet" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/AssociatedFacet" />
+      </RoleClass>
+      <RoleClass Name="Facet" RefBaseClassPath="AutomationMLBaseRole" />
+      <RoleClass Name="Resource" RefBaseClassPath="AutomationMLBaseRole" />
+      <RoleClass Name="Product" RefBaseClassPath="AutomationMLBaseRole" />
+      <RoleClass Name="Process" RefBaseClassPath="AutomationMLBaseRole" />
+      <RoleClass Name="Structure" RefBaseClassPath="AutomationMLBaseRole">
+        <RoleClass Name="ProductStructure" RefBaseClassPath="Structure" />
+        <RoleClass Name="ProcessStructure" RefBaseClassPath="Structure" />
+        <RoleClass Name="ResourceStructure" RefBaseClassPath="Structure" />
+      </RoleClass>
+      <RoleClass Name="ExternalData" RefBaseClassPath="AutomationMLBaseRole" />
+    </RoleClass>
+  </RoleClassLib>
+  <RoleClassLib Name="AutomationMLComponentBaseRCL">
+    <Description>Working Version  for 2nd Edition Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <RoleClass Name="AdditionalDeviceDescription">
+      <Description>This is the base class for standard or user defined role classes referencing technology based device descriptions.</Description>
+      <Attribute Name="SpecVersion" AttributeDataType="xs:string">
+        <Description>The version of the Specification or Schema of the device description file.</Description>
+      </Attribute>
+      <Attribute Name="DocLang" AttributeDataType="xs:string">
+        <Description>Language of the referenced description file.</Description>
+      </Attribute>
+      <ExternalInterface Name="DeviceDescriptionReference" ID="77a3d04b-702e-4852-8094-cd37cd155fcd" RefBaseClassPath="AutomationMLComponentBaseICL/DeviceDescriptionReference">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        <Attribute Name="MIMEType" AttributeDataType="xs:string" />
+        <Attribute Name="Version" AttributeDataType="xs:string" />
+      </ExternalInterface>
+    </RoleClass>
+    <RoleClass Name="Connector" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+      <Description>The role class “Connector” is an abstract basic role class and the base class for standard or user defined role classes descriping connectors of components.</Description>
+    </RoleClass>
+    <RoleClass Name="Documentation" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/ExternalData">
+      <Description>The role class “Documentation” shall be used to specify all AutomationML objects referencing documentation related information of a compponent.</Description>
+      <ExternalInterface Name="ExternalDataReference" ID="7b24341d-fd33-4fc3-9ae9-3fb9673d11ea" RefBaseClassPath="AutomationMLBPRInterfaceClassLib/ExternalDataReference">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        <Attribute Name="MIMEType" AttributeDataType="xs:string" />
+      </ExternalInterface>
+    </RoleClass>
+    <RoleClass Name="GeometryModel" RefBaseClassPath="AutomationMLComponentBaseRCL/Model">
+      <Description>The role class “GeometryModel” is a basic abstract role class and the base class for standard or user defined role classes referencing component geometry models.</Description>
+    </RoleClass>
+    <RoleClass Name="GraphicRepresentation" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/ExternalData">
+      <Description>The role class “GraphicRepresentation” is a basic role class and the base class for standard or user defined role classes referencing graphic representation of components.</Description>
+      <ExternalInterface Name="GraphicRepresentationReference" ID="fdfc49bd-0266-4f31-a0b2-cf365f16fbeb" RefBaseClassPath="AutomationMLComponentBaseICL/GraphicRepresentationReference">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        <Attribute Name="MIMEType" AttributeDataType="xs:string" />
+      </ExternalInterface>
+    </RoleClass>
+    <RoleClass Name="Icon" RefBaseClassPath="AutomationMLComponentBaseRCL/GraphicRepresentation" />
+    <RoleClass Name="LogicModel" RefBaseClassPath="AutomationMLComponentBaseRCL/Model">
+      <Description>The role class “LogicModel” is a basic abstract role class and the base class for standard or user defined role classes referencing component logic models.</Description>
+      <RoleClass Name="PLCopenXMLLogic" RefBaseClassPath="AutomationMLLogicRoleClassLib/LogicModelObject">
+        <ExternalInterface Name="VariableInterface" ID="7306f95b-7e2e-4f3a-af1d-12f4e1d1e941" RefBaseClassPath="AutomationMLPLCopenXMLInterfaceClassLib/VariableInterface" />
+        <ExternalInterface Name="LogicInterface" ID="ca8c37da-96d9-44a8-9c8c-68c5f6b8b420">
+          <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        </ExternalInterface>
+      </RoleClass>
+      <RoleClass Name="AMLLogic" RefBaseClassPath="AutomationMLLogicRoleClassLib/LogicModelObject" />
+      <RoleClass Name="FMILogic" RefBaseClassPath="AutomationMLFMILogicRoleClassLib/FMILogicObject">
+        <Attribute Name="Name" AttributeDataType="xs:string" />
+        <Attribute Name="Description" AttributeDataType="xs:string" />
+        <Attribute Name="FMIVersion" AttributeDataType="xs:string" />
+        <ExternalInterface Name="FMIReference" ID="fb47e6a7-2e9f-4e2e-bfa3-0288da9973c7" RefBaseClassPath="AutomationMLFMIInterfaceClassLib/FMIReference">
+          <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+          <Attribute Name="MIMEType" AttributeDataType="xs:string" />
+        </ExternalInterface>
+        <ExternalInterface Name="FMIVariableInterface" ID="41d8e7a0-4cfc-4b4f-baab-ef32e2d4072b" RefBaseClassPath="AutomationMLFMIInterfaceClassLib/FMIVariableInterface">
+          <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+          <Attribute Name="Name" AttributeDataType="xs:string" />
+          <Attribute Name="Causality" AttributeDataType="xs:string" />
+        </ExternalInterface>
+      </RoleClass>
+    </RoleClass>
+    <RoleClass Name="KinematicModel" RefBaseClassPath="AutomationMLComponentBaseRCL/Model">
+      <Description>The basic abstract role class “KinematicModel” shall be used as base class for standard or user defined role classes referencing component models. </Description>
+    </RoleClass>
+    <RoleClass Name="MaintenanceDescription" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+      <Description>The role class “MaintenanceDescription” is a abstract basic role class and the base class for standard or user defined role classes defining maintenance description.</Description>
+    </RoleClass>
+    <RoleClass Name="Model" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+      <Description>The basic abstract role class “Function” shall be used as base class for standard or user defined role classes defining and referencing component models.</Description>
+    </RoleClass>
+    <RoleClass Name="Symbol" RefBaseClassPath="AutomationMLComponentBaseRCL/GraphicRepresentation">
+      <Description>The role class “Symbol” shall be used for referencing a symbol of the Automation Component.</Description>
+    </RoleClass>
+    <RoleClass Name="TechnicalData" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+      <Attribute Name="GeneralInformation" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/GeneralInformation">
+        <Attribute Name="ManufacturerName" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerName"></Attribute>
+        <Attribute Name="ManaufacturerLogo" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/ManaufacturerLogo" />
+        <Attribute Name="ManufacturerProductDesignation" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductDesignation"></Attribute>
+        <Attribute Name="ManufacturerPartNumber" AttributeDataType="xs:string" />
+        <Attribute Name="OrderCodeOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/OrderCodeOfManufacturer"></Attribute>
+        <Attribute Name="ProductImage" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/ProductImage" />
+      </Attribute>
+      <Attribute Name="FurtherInformation" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/FurtherInformation">
+        <Attribute Name="TextStatement" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/TextStatement" />
+        <Attribute Name="Vailddate" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/Vailddate" />
+      </Attribute>
+    </RoleClass>
+    <RoleClass Name="NamePlate" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+  </RoleClassLib>
+  <RoleClassLib Name="AutomationMLComponentStandardRCL">
+    <Description>Working Version  for 2nd Edition Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <RoleClass Name="AutomationComponent" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+      <Description>This role class defines a set of attributes to identify, classify and describe an automation component as an industrial product which serves specific functions, i.e. for industrial process or factory automation.</Description>
+      <Attribute Name="AssetID" AttributeDataType="xs:string" />
+    </RoleClass>
+    <RoleClass Name="VendorNamePlate" RefBaseClassPath="AutomationMLComponentBaseRCL/NamePlate">
+      <Attribute Name="VendorNameplate" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/VendorNameplate">
+        <Attribute Name="NamePlateHeader" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/NamePlateHeader">
+          <Attribute Name="Title" AttributeDataType="xs:string">
+            <Value>OPC 10000-100</Value>
+          </Attribute>
+          <Attribute Name="Version" AttributeDataType="xs:string">
+            <Value>1.03.1</Value>
+          </Attribute>
+          <Attribute Name="URL" AttributeDataType="xs:string" />
+          <Attribute Name="Organisation" AttributeDataType="xs:string">
+            <Value>OPC Foundation</Value>
+          </Attribute>
+        </Attribute>
+        <Attribute Name="DeviceRevision" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceRevision" />
+        <Attribute Name="SerialNumber" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SerialNumber"></Attribute>
+        <Attribute Name="HardwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/HardwareVersion"></Attribute>
+        <Attribute Name="SoftwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SoftwareRevision"></Attribute>
+        <Attribute Name="ProductInstanceUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductInstanceUri" />
+        <Attribute Name="RevisionCounter" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/RevisionCounter" />
+        <Attribute Name="ManufacturerName" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerName"></Attribute>
+        <Attribute Name="ManufacturerUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerUri" />
+        <Attribute Name="Model" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/Model" />
+        <Attribute Name="ProductCode" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductCode" />
+        <Attribute Name="DeviceClass" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceClass" />
+        <Attribute Name="DeviceManual" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceManual" />
+      </Attribute>
+    </RoleClass>
+    <RoleClass Name="IDTANamplateForIndustrialEquipment" RefBaseClassPath="AutomationMLComponentBaseRCL/NamePlate">
+      <Attribute Name="Contact" RefAttributeType="AutomationMLContactATL/EconomicEntity">
+        <Description>TODO</Description>
+        <Attribute Name="LegalName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/LegalName">
+          <Description>The full name of a natural person or legal entity (organisation, company, etc).
+For a natural person the format should be: "last names, first names".
+Examples (some typical names from different countries):
+  "Smith, Jane"
+  "Álvarez Sánchez, María Carmen"
+  "Lee, Jung Hun"
+  "Takahashi, Haruto"
+  "Lula da Silva, Luiz Inácio"
+For a legal entity it should be the full legal name.
+Examples (some members and partners of AutomationML):
+  "Otto-von-Guericke University Magdeburg"
+  "Tunku Abdul Rahman University College"
+  "Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V."
+  "International Electrotechnical Commission"
+  "Siemens AG"
+  "Apple Inc."
+  "EDAG Production Solutions GmbH &amp; Co. KG"
+Caution: please be aware of special characters in XML, e.g. the ampersand.
+</Description>
+        </Attribute>
+        <Attribute Name="AdditionalName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/AdditionalName">
+          <Description>Additional information of the organizational unit, e.g. the faculty of a university
+Examples (some members and partners of AutomationML):
+  "Chair of Production Systems and Automation" (Otto-von-Guericke University Magdeburg)
+  "Faculty of Engineering and Technology" (Tunku Abdul Rahman University College)
+  "Fraunhofer Institute for Manufacturing Engineering and Automation" (Fraunhofer-Gesellschaft)
+</Description>
+        </Attribute>
+        <Attribute Name="ShortName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/ShortName">
+          <Description>The short name of the legal entity.
+For a natural person it might be an optional name, e.g. an English nickname for asian names.
+For a legal entity it should be a common abbreviation. It's recommended to use the internet domain which is short and unique.
+Examples (some members and partners of AutomationML):
+  "IEC" or "iec.ch" (International Electrotechnical Commission)
+  "OVGU" or "psa.ovgu.de" (Otto-von-Guericke University Magdeburg)
+  "TARC" or "tarc.edu.my/foet" (Tunku Abdul Rahman University College)
+  "EDAG" or "edag-ps.com" (EDAG Production Solutions GmbH &amp; Co. KG)
+Caution: please be aware of special characters in XML, e.g. the ampersand.
+</Description>
+        </Attribute>
+        <Attribute Name="Department" RefAttributeType="AutomationMLContactATL/Department">
+          <Description>administrative section within an organisation where a business partner is located</Description>
+        </Attribute>
+        <Attribute Name="Address" RefAttributeType="AutomationMLLocationATL/PostalAddress">
+          <Description>TODO</Description>
+        </Attribute>
+        <Attribute Name="CommList" RefAttributeType="AutomationMLContactATL/CommList">
+          <Description>TODO</Description>
+        </Attribute>
+        <Attribute Name="VAT" RefAttributeType="AutomationMLContactATL/VAT">
+          <Description>VAT identification number (Value Added Tax) of the business partner</Description>
+        </Attribute>
+        <Attribute Name="DUNS" RefAttributeType="AutomationMLContactATL/DUNS">
+          <Description>Internationaler Standard "Global Trade Item Number": Mit der 13-stellige Nummer unterhalb des Barcodes kann jeder Artikel, jedes Produkt oder jede Produktvariante weltweit ï¿½berschneidungsfrei identifiziert werden.</Description>
+        </Attribute>
+      </Attribute>
+      <Attribute Name="DigitalNameplate" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DigitalNameplate">
+        <Attribute Name="NamePlateHeader" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/NamePlateHeader">
+          <Attribute Name="Title" AttributeDataType="xs:string">
+            <Value>Digital Nameplate for Industrial Equipment</Value>
+          </Attribute>
+          <Attribute Name="Version" AttributeDataType="xs:string">
+            <Value>2.0</Value>
+          </Attribute>
+          <Attribute Name="URL" AttributeDataType="xs:string">
+            <Value>https://industrialdigitaltwin.org/wp-content/uploads/2022/10/IDTA-02006-2-0_Submodel_Digital-Nameplate.pdf</Value>
+          </Attribute>
+          <Attribute Name="Organisation" AttributeDataType="xs:string">
+            <Value>IDTA</Value>
+          </Attribute>
+        </Attribute>
+        <Attribute Name="UriOfTheProduct" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI"></Attribute>
+        <Attribute Name="ManufacturerName" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerName"></Attribute>
+        <Attribute Name="ManufacturerProductDesignation" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductDesignation"></Attribute>
+        <Attribute Name="ManufacturerProductRoot" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductRoot"></Attribute>
+        <Attribute Name="ManufacturerProductFamily" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductFamily"></Attribute>
+        <Attribute Name="ManufacturerProductType" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductType"></Attribute>
+        <Attribute Name="OrderCodeOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/OrderCodeOfManufacturer"></Attribute>
+        <Attribute Name="ProductArticleNumberOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductArticleNumberOfManufacturer"></Attribute>
+        <Attribute Name="SerialNumber" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SerialNumber"></Attribute>
+        <Attribute Name="YearOfConstruction" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/YearOfConstruction"></Attribute>
+        <Attribute Name="DateOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DateOfManufacture"></Attribute>
+        <Attribute Name="HardwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/HardwareVersion"></Attribute>
+        <Attribute Name="FirmwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/FirmwareVersion"></Attribute>
+        <Attribute Name="SoftwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SoftwareRevision"></Attribute>
+        <Attribute Name="CountryOfOrigin" AttributeDataType="xs:string" />
+      </Attribute>
+    </RoleClass>
+    <RoleClass Name="AMLNameplate" RefBaseClassPath="AutomationMLComponentBaseRCL/NamePlate">
+      <Attribute Name="AMLNameplate" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/AMLNameplate">
+        <Attribute Name="NamePlateHeader" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/NamePlateHeader">
+          <Attribute Name="Title" AttributeDataType="xs:string" />
+          <Attribute Name="Version" AttributeDataType="xs:string" />
+          <Attribute Name="URL" AttributeDataType="xs:string" />
+          <Attribute Name="Organisation" AttributeDataType="xs:string" />
+        </Attribute>
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+        <Attribute Name="ManufacturerName" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerName"></Attribute>
+        <Attribute Name="ManufacturerProductDesignation" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductDesignation"></Attribute>
+        <Attribute Name="ManufacturerProductRoot" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductRoot"></Attribute>
+        <Attribute Name="ManufacturerProductFamily" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductFamily"></Attribute>
+        <Attribute Name="ManufacturerProductType" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductType"></Attribute>
+        <Attribute Name="OrderCodeOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/OrderCodeOfManufacturer"></Attribute>
+        <Attribute Name="ProductArticleNumberOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductArticleNumberOfManufacturer"></Attribute>
+        <Attribute Name="SerialNumber" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SerialNumber"></Attribute>
+        <Attribute Name="YearOfConstruction" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/YearOfConstruction"></Attribute>
+        <Attribute Name="DateOfManufacture" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DateOfManufacture"></Attribute>
+        <Attribute Name="HardwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/HardwareVersion"></Attribute>
+        <Attribute Name="FirmwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/FirmwareVersion"></Attribute>
+        <Attribute Name="SoftwareRevision" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SoftwareRevision"></Attribute>
+        <Attribute Name="DeviceRevision" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceRevision" />
+        <Attribute Name="ProductInstanceUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductInstanceUri" />
+        <Attribute Name="RevisionCounter" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/RevisionCounter" />
+        <Attribute Name="ManufacturerUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerUri" />
+        <Attribute Name="Model" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/Model" />
+        <Attribute Name="ProductCode" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductCode" />
+        <Attribute Name="DeviceClass" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceClass" />
+        <Attribute Name="DeviceManual" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceManual" />
+      </Attribute>
+    </RoleClass>
+    <RoleClass Name="CommercialData" RefBaseClassPath="AutomationMLComponentBaseRCL/TechnicalData">
+      <Description>This role class defines a set of attributes to identify, classify and describe an automation component as an industrial product which serves specific functions, i.e. for industrial process or factory automation.</Description>
+      <Attribute Name="Commercial" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/Commercial">
+        <Attribute Name="ManufacturerPID" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/ManufacturerPID" />
+        <Attribute Name="InternalPID" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/InternalPID" />
+        <Attribute Name="EAN" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/EAN" />
+        <Attribute Name="CustomsTariffNumber" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/CustomsTariffNumber" />
+        <Attribute Name="GTIN" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/GTIN" />
+        <Attribute Name="Currency" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/Currency" />
+      </Attribute>
+      <Attribute Name="Supplier" RefAttributeType="AutomationMLContactATL/EconomicEntity">
+        <Description>TODO</Description>
+        <Attribute Name="LegalName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/LegalName">
+          <Description>The full name of a natural person or legal entity (organisation, company, etc).
+For a natural person the format should be: "last names, first names".
+Examples (some typical names from different countries):
+  "Smith, Jane"
+  "Álvarez Sánchez, María Carmen"
+  "Lee, Jung Hun"
+  "Takahashi, Haruto"
+  "Lula da Silva, Luiz Inácio"
+For a legal entity it should be the full legal name.
+Examples (some members and partners of AutomationML):
+  "Otto-von-Guericke University Magdeburg"
+  "Tunku Abdul Rahman University College"
+  "Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V."
+  "International Electrotechnical Commission"
+  "Siemens AG"
+  "Apple Inc."
+  "EDAG Production Solutions GmbH &amp; Co. KG"
+Caution: please be aware of special characters in XML, e.g. the ampersand.
+</Description>
+        </Attribute>
+        <Attribute Name="AdditionalName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/AdditionalName">
+          <Description>Additional information of the organizational unit, e.g. the faculty of a university
+Examples (some members and partners of AutomationML):
+  "Chair of Production Systems and Automation" (Otto-von-Guericke University Magdeburg)
+  "Faculty of Engineering and Technology" (Tunku Abdul Rahman University College)
+  "Fraunhofer Institute for Manufacturing Engineering and Automation" (Fraunhofer-Gesellschaft)
+</Description>
+        </Attribute>
+        <Attribute Name="ShortName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/ShortName">
+          <Description>The short name of the legal entity.
+For a natural person it might be an optional name, e.g. an English nickname for asian names.
+For a legal entity it should be a common abbreviation. It's recommended to use the internet domain which is short and unique.
+Examples (some members and partners of AutomationML):
+  "IEC" or "iec.ch" (International Electrotechnical Commission)
+  "OVGU" or "psa.ovgu.de" (Otto-von-Guericke University Magdeburg)
+  "TARC" or "tarc.edu.my/foet" (Tunku Abdul Rahman University College)
+  "EDAG" or "edag-ps.com" (EDAG Production Solutions GmbH &amp; Co. KG)
+Caution: please be aware of special characters in XML, e.g. the ampersand.
+</Description>
+        </Attribute>
+        <Attribute Name="Department" RefAttributeType="AutomationMLContactATL/Department">
+          <Description>administrative section within an organisation where a business partner is located</Description>
+        </Attribute>
+        <Attribute Name="Address" RefAttributeType="AutomationMLLocationATL/PostalAddress">
+          <Description>TODO</Description>
+        </Attribute>
+        <Attribute Name="CommList" RefAttributeType="AutomationMLContactATL/CommList">
+          <Description>TODO</Description>
+        </Attribute>
+        <Attribute Name="VAT" RefAttributeType="AutomationMLContactATL/VAT">
+          <Description>VAT identification number (Value Added Tax) of the business partner</Description>
+        </Attribute>
+        <Attribute Name="DUNS" RefAttributeType="AutomationMLContactATL/DUNS">
+          <Description>Internationaler Standard "Global Trade Item Number": Mit der 13-stellige Nummer unterhalb des Barcodes kann jeder Artikel, jedes Produkt oder jede Produktvariante weltweit ï¿½berschneidungsfrei identifiziert werden.</Description>
+        </Attribute>
+      </Attribute>
+    </RoleClass>
+    <RoleClass Name="ComponentParameter" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+    <RoleClass Name="ToolChainAttributes" RefBaseClassPath="AutomationMLComponentBaseRCL/TechnicalData">
+      <Attribute Name="countryRestriction" AttributeDataType="xs:string">
+        <Attribute Name="country" AttributeDataType="xs:string" />
+        <Attribute Name="usageAllowed" AttributeDataType="xs:boolean" />
+        <Attribute Name="alternative" AttributeDataType="xs:string" />
+      </Attribute>
+      <Attribute Name="orderDatailsManufacturer" AttributeDataType="xs:string">
+        <Attribute Name="country" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryTime" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryTimeUnit" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryUnit" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryConditions" AttributeDataType="xs:string" />
+        <Attribute Name="additionalConditions" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryPlace" AttributeDataType="xs:string" />
+      </Attribute>
+      <Attribute Name="deliveryRelaseDate" AttributeDataType="xs:string" />
+      <Attribute Name="deliveryEndDate" AttributeDataType="xs:string" />
+      <Attribute Name="discontinuationDate" AttributeDataType="xs:string" />
+      <Attribute Name="EOLDate" AttributeDataType="xs:string" />
+      <Attribute Name="followUpProductID" AttributeDataType="xs:string" />
+      <Attribute Name="diameter" AttributeDataType="xs:string" />
+      <Attribute Name="releaseStatus" AttributeDataType="xs:string" />
+      <Attribute Name="orderDatailsManufacturer1" AttributeDataType="xs:string">
+        <Attribute Name="country" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryTime" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryTimeUnit" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryUnit" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryConditions" AttributeDataType="xs:string" />
+        <Attribute Name="additionalConditions" AttributeDataType="xs:string" />
+        <Attribute Name="deliveryPlace" AttributeDataType="xs:string" />
+      </Attribute>
+      <Attribute Name="supplier" AttributeDataType="xs:string">
+        <Attribute Name="supplierName" AttributeDataType="xs:string" />
+        <Attribute Name="standardSupplier" AttributeDataType="xs:string" />
+        <Attribute Name="supplierPrice" AttributeDataType="xs:string" />
+        <Attribute Name="currency" AttributeDataType="xs:string" />
+        <Attribute Name="alternativeArticle" AttributeDataType="xs:string" />
+        <Attribute Name="alternativeOrderCode" AttributeDataType="xs:string" />
+      </Attribute>
+      <Attribute Name="warrantyTime" AttributeDataType="xs:string" />
+      <Attribute Name="warrantyInheritanceChild" AttributeDataType="xs:string" />
+      <Attribute Name="warrantyInheritanceParent" AttributeDataType="xs:string" />
+      <Attribute Name="firmwareVersion" AttributeDataType="xs:string" />
+      <Attribute Name="hardwareVersion" AttributeDataType="xs:string" />
+      <Attribute Name="softwareVersion" AttributeDataType="xs:string" />
+      <Attribute Name="materialNumber" AttributeDataType="xs:string" />
+      <Attribute Name="manufacturerDUNSNumber" AttributeDataType="xs:string" />
+      <Attribute Name="energyType" AttributeDataType="xs:string" />
+      <Attribute Name="indicatorDIN" AttributeDataType="xs:string" />
+    </RoleClass>
+    <RoleClass Name="BehaviourModel" RefBaseClassPath="AutomationMLComponentBaseRCL/LogicModel" />
+    <RoleClass Name="Function" RefBaseClassPath="AutomationMLComponentBaseRCL/LogicModel" />
+    <RoleClass Name="SimulationModel" RefBaseClassPath="AutomationMLComponentBaseRCL/LogicModel" />
+    <RoleClass Name="SequencingModel" RefBaseClassPath="AutomationMLComponentBaseRCL/LogicModel" />
+    <RoleClass Name="Sequence" RefBaseClassPath="AutomationMLComponentStandardRCL/SequencingModel" />
+    <RoleClass Name="SequenceElement" RefBaseClassPath="AutomationMLComponentStandardRCL/SequencingModel" />
+    <RoleClass Name="SkillModel" RefBaseClassPath="AutomationMLComponentBaseRCL/Model" ChangeMode="create" />
+    <RoleClass Name="SkillLogicModel" RefBaseClassPath="AutomationMLComponentBaseRCL/LogicModel" ChangeMode="change" />
+    <RoleClass Name="SkillConnector" RefBaseClassPath="AutomationMLComponentBaseRCL/Connector" />
+    <RoleClass Name="COLLADAKinematicModel" RefBaseClassPath="AutomationMLComponentBaseRCL/KinematicModel">
+      <ExternalInterface Name="COLLADAInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface" ID="4515b789-fc7b-410d-8756-2ffe16255139">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        <Attribute Name="refType" AttributeDataType="xs:string" />
+        <Attribute Name="target" AttributeDataType="xs:token" />
+      </ExternalInterface>
+    </RoleClass>
+    <RoleClass Name="COLLADAKinematicJoint" RefBaseClassPath="AutomationMLComponentStandardRCL/COLLADAKinematicModel">
+      <ExternalInterface Name="JointInterface" ID="d62522cb-76b9-49f2-9f1d-38aa7afa30ff" RefBaseClassPath="AutomationMLComponentBaseICL/JointInterface" />
+    </RoleClass>
+    <RoleClass Name="COLLADAKinematicAttachment" RefBaseClassPath="AutomationMLComponentStandardRCL/COLLADAKinematicModel">
+      <ExternalInterface Name="AttachmentInterface" ID="5a7555a1-1b49-4abe-9f64-23f33c81d41f" />
+    </RoleClass>
+    <RoleClass Name="COLLADAGeometryModel" RefBaseClassPath="AutomationMLComponentBaseRCL/GeometryModel">
+      <ExternalInterface Name="COLLADAInterface" ID="d7d00603-9b83-4e1c-821f-ee2fb28a4aa1" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        <Attribute Name="refType" AttributeDataType="xs:string" />
+        <Attribute Name="target" AttributeDataType="xs:token" />
+      </ExternalInterface>
+    </RoleClass>
+    <RoleClass Name="COLLADAGeometryAttachment" RefBaseClassPath="AutomationMLComponentStandardRCL/COLLADAGeometryModel">
+      <ExternalInterface Name="AttachmentInterface" ID="1913fd44-cb01-4c0d-9f8f-6fbfdea2755f" />
+    </RoleClass>
+    <RoleClass Name="JTGeometryModel" RefBaseClassPath="AutomationMLComponentBaseRCL/GeometryModel">
+      <ExternalInterface Name="JTReference" ID="aedac47c-741d-4e2e-b8d7-4443ef055535" RefBaseClassPath="AutomationMLComponentBaseICL/JTReference">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        <Attribute Name="MIMEType" AttributeDataType="xs:string" />
+      </ExternalInterface>
+    </RoleClass>
+    <RoleClass Name="2DGeometryModel" RefBaseClassPath="AutomationMLComponentBaseRCL/GeometryModel">
+      <ExternalInterface Name="2DReference" ID="8b7f8789-f132-4692-9871-1a10cf1df20f" RefBaseClassPath="AutomationMLComponentBaseICL/2DReference">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        <Attribute Name="MIMEType" AttributeDataType="xs:string" />
+      </ExternalInterface>
+    </RoleClass>
+    <RoleClass Name="ComponentPicture" RefBaseClassPath="AutomationMLComponentBaseRCL/GraphicRepresentation" />
+    <RoleClass Name="ElectricSymbol" RefBaseClassPath="AutomationMLComponentBaseRCL/Symbol" />
+    <RoleClass Name="HydraulicSymbol" RefBaseClassPath="AutomationMLComponentBaseRCL/Symbol" />
+    <RoleClass Name="PneumaticSymbol" RefBaseClassPath="AutomationMLComponentBaseRCL/Symbol" />
+    <RoleClass Name="ComponentIcon" RefBaseClassPath="AutomationMLComponentBaseRCL/Icon" />
+    <RoleClass Name="ManufacturerIcon" RefBaseClassPath="AutomationMLComponentBaseRCL/Icon" />
+    <RoleClass Name="Certificate" RefBaseClassPath="AutomationMLComponentBaseRCL/Documentation" />
+    <RoleClass Name="MechanicConnector" RefBaseClassPath="AutomationMLComponentBaseRCL/Connector">
+      <ExternalInterface Name="MechanicInterface" ID="f161edf3-c422-4cf7-9bf6-e4cba061b15c" RefBaseClassPath="AutomationMLComponentBaseICL/MechanicInterface" />
+    </RoleClass>
+    <RoleClass Name="MultiConnector" RefBaseClassPath="AutomationMLComponentBaseRCL/Connector" />
+    <RoleClass Name="LogicConnector" RefBaseClassPath="AutomationMLComponentBaseRCL/Connector">
+      <ExternalInterface Name="SignalInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication/SignalInterface" ID="17bd2a73-0f1a-4d4b-9451-c9621f1047bf" />
+    </RoleClass>
+    <RoleClass Name="ElectricConnector" RefBaseClassPath="AutomationMLComponentBaseRCL/Connector">
+      <ExternalInterface Name="ElectricInterface" ID="6d752fce-f141-4d8a-a8b5-0064ad19f707" RefBaseClassPath="AutomationMLComponentBaseICL/ElectricInterface" />
+      <ExternalInterface Name="MechanicInterface" ID="271c5740-a044-47a8-b4fb-c43cfe893342" RefBaseClassPath="AutomationMLComponentBaseICL/MechanicInterface" />
+    </RoleClass>
+    <RoleClass Name="FluidicConnector" RefBaseClassPath="AutomationMLComponentBaseRCL/Connector" />
+    <RoleClass Name="LiquidicConnector" RefBaseClassPath="AutomationMLComponentStandardRCL/FluidicConnector">
+      <ExternalInterface Name="LiquidicInterface" ID="5f170a3d-7d61-47e6-8a45-63e8b7448609" RefBaseClassPath="AutomationMLComponentBaseICL/LiquidicInterface" />
+    </RoleClass>
+    <RoleClass Name="PneumaticConnector" RefBaseClassPath="AutomationMLComponentStandardRCL/FluidicConnector">
+      <ExternalInterface Name="PneumaticInterface" ID="0f7d6ec8-7078-49bc-918b-33773609c977" RefBaseClassPath="AutomationMLComponentBaseICL/PneumaticInterface" />
+      <ExternalInterface Name="MechanicInterface" ID="66c5428d-cb7e-4faa-a3f4-4b3b27a2a082" RefBaseClassPath="AutomationMLComponentBaseICL/MechanicInterface" />
+    </RoleClass>
+    <RoleClass Name="HydraulicConnector" RefBaseClassPath="AutomationMLComponentStandardRCL/FluidicConnector">
+      <ExternalInterface Name="HydraulicInterface" ID="56f6607e-fa42-4d34-89e9-82c196a4adba" RefBaseClassPath="AutomationMLComponentBaseICL/HydraulicInterface" />
+    </RoleClass>
+    <RoleClass Name="SensorConnector" RefBaseClassPath="AutomationMLComponentBaseRCL/Connector">
+      <ExternalInterface Name="SensorInterface" ID="46fae3e7-fa14-4d27-a650-d135811affac" RefBaseClassPath="AutomationMLComponentBaseICL/SensorInterface" />
+    </RoleClass>
+    <RoleClass Name="MaintenanceDescriptionGroup" RefBaseClassPath="AutomationMLComponentBaseRCL/MaintenanceDescription">
+      <Description>???</Description>
+      <Attribute Name="TopicName" AttributeDataType="xs:string" />
+    </RoleClass>
+    <RoleClass Name="MaintenanceDescriptionItem" RefBaseClassPath="AutomationMLComponentBaseRCL/MaintenanceDescription">
+      <Description>???</Description>
+      <Attribute Name="Index" AttributeDataType="xs:PositiveInteger" />
+      <Attribute Name="SubTopic" AttributeDataType="xs:string" />
+      <Attribute Name="WorkDescription" AttributeDataType="xs:string" />
+      <Attribute Name="Cycle" AttributeDataType="xs:duration" />
+      <Attribute Name="PlannedTimePerWorker" AttributeDataType="xs:duration" />
+      <Attribute Name="ActivityKey" AttributeDataType="xs:string" />
+      <Attribute Name="ExecutionKey" AttributeDataType="xs:string" />
+      <Attribute Name="FunctionKey" AttributeDataType="xs:string" />
+      <Attribute Name="PersonnelKey" AttributeDataType="xs:string" />
+      <Attribute Name="LastExecution" AttributeDataType="xs:string" />
+    </RoleClass>
+  </RoleClassLib>
+  <RoleClassLib Name="AutomationMLClassificationRCL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>0.9.1</Version>
+    <RoleClass Name="Classification" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+    <RoleClass Name="eClassClassSpecification " RefBaseClassPath="AutomationMLClassificationRCL/Classification">
+      <Attribute Name="ECLASS" RefAttributeType="AutomationMLResourceClassificationATL/ECLASS">
+        <Description>Classification according to ECLASS catalog (former name: eCl@ss).
+See also: http://www.eclass.eu/</Description>
+        <Attribute Name="StandardName">
+          <Description>Default: ECLASS</Description>
+        </Attribute>
+        <Attribute Name="StandardVersion">
+          <Description>Version of ECLASS catalog
+          e.g. "12.0"</Description>
+        </Attribute>
+        <Attribute Name="ClassName">
+          <Description>Classification description
+          e.g. "HS-Drehstrom-Asynchronmotor, Kï¿½figlï¿½ufer (IEC)" for code 27-02-22-01</Description>
+        </Attribute>
+        <Attribute Name="ClassCode">
+          <Description>Classification code
+          e.g. "27022201" for code 27-02-22-01</Description>
+        </Attribute>
+        <Attribute Name="IRDI">
+          <Description>Classification IRDI
+          e.g. "0173-1#01-AKE148#018" for code 27-02-22-01</Description>
+        </Attribute>
+      </Attribute>
+    </RoleClass>
+    <RoleClass Name="EquipmentClassification" RefBaseClassPath="AutomationMLClassificationRCL/Classification" />
+    <RoleClass Name="DocumentClassification" RefBaseClassPath="AutomationMLClassificationRCL/Classification" />
+    <RoleClass Name="CDDClassification" RefBaseClassPath="AutomationMLClassificationRCL/Classification">
+      <Attribute Name="CDD" RefAttributeType="AutomationMLResourceClassificationATL/CDD">
+        <Description>Name of sub standard (IEC standard)
+        e.g. IEC 61360-4, IEC 61987, IEC 62683, IEC 63213</Description>
+        <Attribute Name="StandardName">
+          <Description>Name of sub standard (IEC standard)
+          e.g. IEC 61360-4, IEC 61987, IEC 62683, IEC 63213</Description>
+        </Attribute>
+        <Attribute Name="StandardVersion">
+          <Description>Version of CDD (Common Data Dictionary) catalog, version number without leading "V"
+          e.g. 2.0015.0003</Description>
+        </Attribute>
+        <Attribute Name="ClassName">
+          <Description>Classification description
+          e.g. "rotational ac motor" for AAA-167</Description>
+        </Attribute>
+        <Attribute Name="ClassCode">
+          <Description>Classification code
+          e.g. "AAA167" for AAA-167</Description>
+        </Attribute>
+        <Attribute Name="IRDI">
+          <Description>Classification IRDI
+          e.g. "0112/2///61360_4#AAA167#001" for AAA-167</Description>
+        </Attribute>
+      </Attribute>
+    </RoleClass>
+  </RoleClassLib>
+  <RoleClassLib Name="AutomationMLDocumentClassificationRCL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <RoleClass Name="DocumentContentClassification" RefBaseClassPath="AutomationMLClassificationRCL/Classification">
+      <Attribute Name="ContentClassification VDI 2770" RefAttributeType="AutomationMLDocumentClassificationATL/VDI 2770">
+        <Description>Default: VDI-2770</Description>
+        <Attribute Name="StandardName">
+          <Description>Default: VDI-2770</Description>
+        </Attribute>
+        <Attribute Name="StandardVersion">
+          <Description>Version of norm, usually year and month of publication date</Description>
+        </Attribute>
+        <Attribute Name="ClassName">
+          <Description>Classification description (class name)
+          e.g. "operation" for user manual
+          "spare parts" for spare parts list</Description>
+        </Attribute>
+        <Attribute Name="ClassCode">
+          <Description>Classification code (class ID)
+          e.g. "03-02" for user manual or "03-06" for spare parts list
+
+Values according to VDI norm:
+List values [en]:
+01-01  identification
+02-01  technical specification
+02-02  drawings, plans
+02-03  components
+02-04  certificates
+03-01  assembly, disassembly
+03-02  operation
+03-03  general safety
+03-04  inspection, maintenance
+03-05  repair
+03-06  spare parts
+04-01  contract documents
+List values [de]:
+01-01  Identifikation
+02-01  Technische Spezifikation
+02-02  Zeichnungen, Pläne
+02-03  Bauteile
+02-04  Zeugnisse, Zertifikate, Bescheinigungen
+03-01  Montage, Demontage
+03-02  Bedienung
+03-03  Allgemeine Sicherheit
+03-04  Inspektion, Wartung, Prüfung
+03-05  Instandsetzung
+03-06  Ersatzteile
+04-01  Vertragsunterlagen
+</Description>
+          <Constraint Name="defined classes">
+            <NominalScaledType>
+              <RequiredValue>01-01</RequiredValue>
+              <RequiredValue>02-01</RequiredValue>
+              <RequiredValue>02-02</RequiredValue>
+              <RequiredValue>02-03</RequiredValue>
+              <RequiredValue>02-04</RequiredValue>
+              <RequiredValue>03-01</RequiredValue>
+              <RequiredValue>03-02</RequiredValue>
+              <RequiredValue>03-03</RequiredValue>
+              <RequiredValue>03-04</RequiredValue>
+              <RequiredValue>03-05</RequiredValue>
+              <RequiredValue>03-06</RequiredValue>
+              <RequiredValue>04-01</RequiredValue>
+            </NominalScaledType>
+          </Constraint>
+        </Attribute>
+      </Attribute>
+      <Attribute Name="ContentClassification IEC 61355" RefAttributeType="AutomationMLDocumentClassificationATL/IEC 61355">
+        <Description>Default: IEC-61355</Description>
+        <Attribute Name="StandardName">
+          <Description>Default: IEC-61355</Description>
+        </Attribute>
+        <Attribute Name="StandardVersion">
+          <Description>Version of IEC norm, usually year and month of publication date</Description>
+        </Attribute>
+        <Attribute Name="ClassName">
+          <Description>Classification description
+          e.g. "instructions and manuals" for user manual
+          "parts lists" for spare parts list</Description>
+        </Attribute>
+        <Attribute Name="ClassCode">
+          <Description>Classification code
+          e.g. "DC" for user manual
+          "PB" for spare parts list</Description>
+        </Attribute>
+      </Attribute>
+      <Attribute Name="ContentClassification Custom" AttributeDataType="xs:string" RefAttributeType="AutomationMLDocumentClassificationATL/Custom">
+        <Attribute Name="StandardName">
+          <Description>Name of standard</Description>
+        </Attribute>
+        <Attribute Name="StandardVersion">
+          <Description>Version of standard</Description>
+        </Attribute>
+        <Attribute Name="ClassName">
+          <Description>Classification description</Description>
+        </Attribute>
+        <Attribute Name="ClassCode">
+          <Description>Classification code</Description>
+        </Attribute>
+      </Attribute>
+      <Attribute Name="DocumentTitle" AttributeDataType="xs:string" RefAttributeType="AutomationMLDocumentClassificationATL/DocumentTitle">
+        <Description>Title of document</Description>
+      </Attribute>
+      <Attribute Name="ContentSummary" AttributeDataType="xs:string" RefAttributeType="AutomationMLDocumentClassificationATL/ContentSummary">
+        <Description>Summary/description of document content</Description>
+      </Attribute>
+      <Attribute Name="ContentKeyWords" AttributeDataType="xs:string" RefAttributeType="AutomationMLDocumentClassificationATL/ContentKeyWords">
+        <Description>Key words for document content</Description>
+      </Attribute>
+    </RoleClass>
+  </RoleClassLib>
+  <RoleClassLib Name="AutomationMLFMILogicRoleClassLib">
+    <Description>The RoleClassLib AutomationMLFMILogicRoleClassLib is defined in the Whitepaper "Description of AutomationML Components". The document can be downloaded at https://www.automationml.org/o.red.c/publications.html . The Version of the related WP is 1.0  State November 2019 and has the Document Identifier WP Compo.</Description>
+    <Version>1.0.0</Version>
+    <RoleClass Name="FMILogicObject" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+  </RoleClassLib>
+  <RoleClassLib Name="AutomationMLLogicRoleClassLib">
+    <Description>AutomationMLLogicRoleClassLib specifies all logic related role classes.</Description>
+    <Version>1.0.0</Version>
+    <RoleClass Name="InterlockingTargetGroup" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Group">
+      <ExternalInterface Name="ConnectionInterlockingSourceGroup" ID="70e6b544-9120-4fc9-b059-8d97c59f75f2" />
+      <ExternalInterface Name="ReferenceInterlockingLogicModel" ID="b1a85f25-1ecf-4048-bdd3-84085d81b06a" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/InterlockingLogicModelInterface" />
+    </RoleClass>
+    <RoleClass Name="InterlockingSourceGroup" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Group">
+      <ExternalInterface Name="ConnectionInterlockingTargetGroup" ID="adf94976-a6d0-4960-b5af-55719a3e2130" />
+      <ExternalInterface Name="ReferenceInterlockingLogicModel" ID="617c8706-8ee7-4e7b-8b94-900afe19f4f7" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/InterlockingLogicModelInterface" />
+      <ExternalInterface Name="ReferenceInterlockingVariable" ID="3472f585-cf80-4b83-a355-db401cf18af9" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/InterlockingVariableInterface">
+        <Attribute Name="Direction" AttributeDataType="xs:string" />
+        <Attribute Name="SafeConditionEquals" AttributeDataType="xs:boolean" />
+      </ExternalInterface>
+    </RoleClass>
+    <RoleClass Name="LogicModelObject" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+      <ExternalInterface Name="ReferenceSequence" ID="0370baf8-4ba1-420a-9cc4-4810b84c1fd7" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/SequencingLogicModelInterface" />
+      <ExternalInterface Name="ReferenceBehaviour" ID="26f13ad6-479c-4121-a327-1114af968155" RefBaseClassPath="AutomationMLLogicInterfaceClassLib/BehaviourLogicModelInterface" />
+    </RoleClass>
+  </RoleClassLib>
+  <RoleClassLib Name="AutomationMLDocumentationBPR ">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <RoleClass Name="PlantDocumentation" RefBaseClassPath="AutomationMLComponentBaseRCL/Documentation" />
+    <RoleClass Name="LineDocumentation" RefBaseClassPath="AutomationMLComponentBaseRCL/Documentation" />
+    <RoleClass Name="CellDocumentation" RefBaseClassPath="AutomationMLComponentBaseRCL/Documentation" />
+    <RoleClass Name="Manual" RefBaseClassPath="AutomationMLComponentBaseRCL/Documentation" />
+    <RoleClass Name="CECertificate" RefBaseClassPath="AutomationMLComponentStandardRCL/Certificate" />
+    <RoleClass Name="PlantManual" RefBaseClassPath="AutomationMLDocumentationBPR /Manual" />
+    <RoleClass Name="LineManual" RefBaseClassPath="AutomationMLDocumentationBPR /Manual" />
+    <RoleClass Name="PlantCECertif" RefBaseClassPath="AutomationMLDocumentationBPR /CECertificate" />
+    <RoleClass Name="LineCECertificate" RefBaseClassPath="AutomationMLDocumentationBPR /CECertificate" />
+  </RoleClassLib>
+  <RoleClassLib Name="AutomationMLBPRRoleClassLib">
+    <Version>1.0.0</Version>
+    <RoleClass Name="ExternalData" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+      <RoleClass Name="UserManual" RefBaseClassPath="AutomationMLBPRRoleClassLib/ExternalData" />
+      <RoleClass Name="BillOfMaterial" RefBaseClassPath="AutomationMLBPRRoleClassLib/ExternalData" />
+      <RoleClass Name="Construction" RefBaseClassPath="AutomationMLBPRRoleClassLib/ExternalData" />
+      <RoleClass Name="ProductDocumentation" RefBaseClassPath="AutomationMLBPRRoleClassLib/ExternalData" />
+    </RoleClass>
+  </RoleClassLib>
+  <AttributeTypeLib Name="AutomationMLResourceClassificationATL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1.</Version>
+    <AttributeType Name="Classification">
+      <Description>xxx</Description>
+      <Attribute Name="StandardName">
+        <Description>Name of standard</Description>
+      </Attribute>
+      <Attribute Name="StandardVersion">
+        <Description>Version of standard</Description>
+      </Attribute>
+      <Attribute Name="ClassName">
+        <Description>Classification description</Description>
+      </Attribute>
+      <Attribute Name="ClassCode">
+        <Description>Classification code</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="Custom" RefAttributeType="AutomationMLResourceClassificationATL/Classification">
+      <Description>Name of agreement between supplier and customer</Description>
+      <Attribute Name="StandardName">
+        <Description>Name of agreement between supplier and customer</Description>
+      </Attribute>
+      <Attribute Name="StandardVersion">
+        <Description>Version of agreement between supplier and customer</Description>
+      </Attribute>
+      <Attribute Name="ClassName">
+        <Description>Classification description</Description>
+      </Attribute>
+      <Attribute Name="ClassCode">
+        <Description>Classification code</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="ECLASS" RefAttributeType="AutomationMLResourceClassificationATL/Classification">
+      <Description>Classification according to ECLASS catalog (former name: eCl@ss).
+See also: http://www.eclass.eu/</Description>
+      <Attribute Name="StandardName">
+        <Description>Default: ECLASS</Description>
+      </Attribute>
+      <Attribute Name="StandardVersion">
+        <Description>Version of ECLASS catalog
+          e.g. "12.0"</Description>
+      </Attribute>
+      <Attribute Name="ClassName">
+        <Description>Classification description
+          e.g. "HS-Drehstrom-Asynchronmotor, Kï¿½figlï¿½ufer (IEC)" for code 27-02-22-01</Description>
+      </Attribute>
+      <Attribute Name="ClassCode">
+        <Description>Classification code
+          e.g. "27022201" for code 27-02-22-01</Description>
+      </Attribute>
+      <Attribute Name="IRDI">
+        <Description>Classification IRDI
+          e.g. "0173-1#01-AKE148#018" for code 27-02-22-01</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="CDD" RefAttributeType="AutomationMLResourceClassificationATL/Classification">
+      <Description>Name of sub standard (IEC standard)
+        e.g. IEC 61360-4, IEC 61987, IEC 62683, IEC 63213</Description>
+      <Attribute Name="StandardName">
+        <Description>Name of sub standard (IEC standard)
+          e.g. IEC 61360-4, IEC 61987, IEC 62683, IEC 63213</Description>
+      </Attribute>
+      <Attribute Name="StandardVersion">
+        <Description>Version of CDD (Common Data Dictionary) catalog, version number without leading "V"
+          e.g. 2.0015.0003</Description>
+      </Attribute>
+      <Attribute Name="ClassName">
+        <Description>Classification description
+          e.g. "rotational ac motor" for AAA-167</Description>
+      </Attribute>
+      <Attribute Name="ClassCode">
+        <Description>Classification code
+          e.g. "AAA167" for AAA-167</Description>
+      </Attribute>
+      <Attribute Name="IRDI">
+        <Description>Classification IRDI
+          e.g. "0112/2///61360_4#AAA167#001" for AAA-167</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="IEC 81346" RefAttributeType="AutomationMLResourceClassificationATL/Classification">
+      <Description>Default: IEC-81346
+        e.g. "IEC 81346-2"</Description>
+      <Attribute Name="StandardName">
+        <Description>Default: IEC-81346
+          e.g. "IEC 81346-2"</Description>
+      </Attribute>
+      <Attribute Name="StandardVersion">
+        <Description>Version of IEC norm, usually year and month of publication date
+          e.g. "2020-10"</Description>
+      </Attribute>
+      <Attribute Name="ClassName">
+        <Description>Classification description
+          e.g. "Antreiben elektromagnetisch" for Elektromotor</Description>
+      </Attribute>
+      <Attribute Name="ClassCode">
+        <Description>Classification code
+          e.g. "MA" for Elektromotor</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="StandardName" AttributeDataType="xs:string">
+      <Description>Name of standard</Description>
+    </AttributeType>
+    <AttributeType Name="StandardVersion" AttributeDataType="xs:string">
+      <Description>Version of standard</Description>
+    </AttributeType>
+    <AttributeType Name="ClassName" AttributeDataType="xs:string">
+      <Description>Classification description</Description>
+    </AttributeType>
+    <AttributeType Name="ClassCode" AttributeDataType="xs:string">
+      <Description>Classification code</Description>
+    </AttributeType>
+    <AttributeType Name="IRDI" AttributeDataType="xs:string">
+      <Description>Classification IRDI (international registration data identifier).
+The IRDI is an internationally unique identifier for a data element according to OECD.
+See also OECD glossary of statistical terms: https://stats.oecd.org/glossary/detail.asp?ID=1404</Description>
+    </AttributeType>
+    <AttributeType Name="QueryURL" AttributeDataType="xs:string">
+      <Description>URL of dictionary for the specific classification IRDI</Description>
+    </AttributeType>
+  </AttributeTypeLib>
+  <AttributeTypeLib Name="AutomationMLDocumentClassificationATL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <AttributeType Name="ContentClassification" RefAttributeType="AutomationMLResourceClassificationATL/Classification" />
+    <AttributeType Name="Custom" RefAttributeType="AutomationMLDocumentClassificationATL/ContentClassification" />
+    <AttributeType Name="VDI 2770" RefAttributeType="AutomationMLDocumentClassificationATL/ContentClassification">
+      <Description>TODO</Description>
+      <Attribute Name="StandardName">
+        <Description>Default: VDI-2770</Description>
+      </Attribute>
+      <Attribute Name="StandardVersion">
+        <Description>Version of norm, usually year and month of publication date</Description>
+      </Attribute>
+      <Attribute Name="ClassName">
+        <Description>Classification description (class name)
+          e.g. "operation" for user manual
+          "spare parts" for spare parts list</Description>
+      </Attribute>
+      <Attribute Name="ClassCode">
+        <Description>Classification code (class ID)
+          e.g. "03-02" for user manual or "03-06" for spare parts list
+
+Values according to VDI norm:
+List values [en]:
+01-01  identification
+02-01  technical specification
+02-02  drawings, plans
+02-03  components
+02-04  certificates
+03-01  assembly, disassembly
+03-02  operation
+03-03  general safety
+03-04  inspection, maintenance
+03-05  repair
+03-06  spare parts
+04-01  contract documents
+List values [de]:
+01-01  Identifikation
+02-01  Technische Spezifikation
+02-02  Zeichnungen, Pläne
+02-03  Bauteile
+02-04  Zeugnisse, Zertifikate, Bescheinigungen
+03-01  Montage, Demontage
+03-02  Bedienung
+03-03  Allgemeine Sicherheit
+03-04  Inspektion, Wartung, Prüfung
+03-05  Instandsetzung
+03-06  Ersatzteile
+04-01  Vertragsunterlagen
+</Description>
+        <Constraint Name="defined classes">
+          <NominalScaledType>
+            <RequiredValue>01-01</RequiredValue>
+            <RequiredValue>02-01</RequiredValue>
+            <RequiredValue>02-02</RequiredValue>
+            <RequiredValue>02-03</RequiredValue>
+            <RequiredValue>02-04</RequiredValue>
+            <RequiredValue>03-01</RequiredValue>
+            <RequiredValue>03-02</RequiredValue>
+            <RequiredValue>03-03</RequiredValue>
+            <RequiredValue>03-04</RequiredValue>
+            <RequiredValue>03-05</RequiredValue>
+            <RequiredValue>03-06</RequiredValue>
+            <RequiredValue>04-01</RequiredValue>
+          </NominalScaledType>
+        </Constraint>
+      </Attribute>
+      <Attribute Name="DocumentTitle" RefAttributeType="AutomationMLDocumentClassificationATL/DocumentTitle">
+        <Description>Title of document</Description>
+      </Attribute>
+      <Attribute Name="ContentSummary" RefAttributeType="AutomationMLDocumentClassificationATL/ContentSummary">
+        <Description>Summary/description of document content</Description>
+      </Attribute>
+      <Attribute Name="ContentKeyWords" RefAttributeType="AutomationMLDocumentClassificationATL/ContentKeyWords">
+        <Description>Key words for document content</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="IEC 61355" RefAttributeType="AutomationMLDocumentClassificationATL/ContentClassification">
+      <Description>Default: IEC-61355</Description>
+      <Attribute Name="StandardName">
+        <Description>Default: IEC-61355</Description>
+      </Attribute>
+      <Attribute Name="StandardVersion">
+        <Description>Version of IEC norm, usually year and month of publication date</Description>
+      </Attribute>
+      <Attribute Name="ClassName">
+        <Description>Classification description
+          e.g. "instructions and manuals" for user manual
+          "parts lists" for spare parts list</Description>
+      </Attribute>
+      <Attribute Name="ClassCode">
+        <Description>Classification code
+          e.g. "DC" for user manual
+          "PB" for spare parts list</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="DocumentTitle" AttributeDataType="xs:string">
+      <Description>Title of document</Description>
+    </AttributeType>
+    <AttributeType Name="ContentSummary" AttributeDataType="xs:string">
+      <Description>Summary/description of document content</Description>
+    </AttributeType>
+    <AttributeType Name="ContentKeyWords" AttributeDataType="xs:string">
+      <Description>Key words for document content</Description>
+    </AttributeType>
+  </AttributeTypeLib>
+  <AttributeTypeLib Name="AutomationMLLocationATL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <AttributeType Name="PostalAddress">
+      <Description>Address information of a business partner</Description>
+      <Attribute Name="StreetOrPOBox" RefAttributeType="AutomationMLLocationATL/StreetOrPOBox">
+        <Description>street name and house number</Description>
+      </Attribute>
+      <Attribute Name="CityName" RefAttributeType="AutomationMLLocationATL/CityName">
+        <Description>town or city</Description>
+      </Attribute>
+      <Attribute Name="PostalCode" RefAttributeType="AutomationMLLocationATL/PostalCode">
+        <Description>ZIP code of address</Description>
+      </Attribute>
+      <Attribute Name="CountryCode" RefAttributeType="AutomationMLLocationATL/CountryCode">
+        <Description>TODO</Description>
+      </Attribute>
+      <Attribute Name="AddressRemarks" RefAttributeType="AutomationMLLocationATL/AddressRemarks">
+        <Description>plain text characterizing address information for which there is no property</Description>
+      </Attribute>
+      <Attribute Name="AddressURL" RefAttributeType="AutomationMLLocationATL/AddressURL">
+        <Description>web site address where information about the product or contact is given</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="StreetOrPOBox" AttributeDataType="xs:string">
+      <Description>street name and house number</Description>
+    </AttributeType>
+    <AttributeType Name="CityName" AttributeDataType="xs:string">
+      <Description>town or city</Description>
+    </AttributeType>
+    <AttributeType Name="PostalCode" AttributeDataType="xs:string">
+      <Description>ZIP code of address</Description>
+    </AttributeType>
+    <AttributeType Name="CountryCode" AttributeDataType="xs:string">
+      <Description>code of a country</Description>
+    </AttributeType>
+    <AttributeType Name="AddressRemarks" AttributeDataType="xs:string">
+      <Description>plain text characterizing address information for which there is no property</Description>
+    </AttributeType>
+    <AttributeType Name="AddressURL" AttributeDataType="xs:string">
+      <Description>web site address where information about the product or contact is given</Description>
+    </AttributeType>
+    <AttributeType Name="GeograficLocation">
+      <Description>TODO</Description>
+      <AttributeType Name="WGS84" RefAttributeType="AutomationMLLocationATL/GeograficLocation">
+        <Description>World Geodetic System 1984 </Description>
+        <Attribute Name="Latitude" AttributeDataType="xs:float">
+          <Description>North from 0.000000 .. +90.000000°, South from 0.000000 .. -90.000000° 
+Example: 46.235197° = 46.235197°N = 46°14.111667'N = 46°14'06.70"N</Description>
+        </Attribute>
+        <Attribute Name="Longitude" AttributeDataType="xs:float">
+          <Description>East from 0.000000 .. +180.000000°, West from 0.000000 .. -180.000000° 
+Example: 8.015445° = 008.015445°E = 008°00.92670'E = 008°00'55.60"E</Description>
+        </Attribute>
+      </AttributeType>
+      <AttributeType Name="OLC" AttributeDataType="xs:string" RefAttributeType="AutomationMLLocationATL/GeograficLocation">
+        <Description>Open Location Code 
+Example: 9F4MG972+R2</Description>
+      </AttributeType>
+    </AttributeType>
+    <AttributeType Name="Vector3D">
+      <Description>TODO</Description>
+      <Attribute Name="X" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/X">
+        <Description>TODO</Description>
+      </Attribute>
+      <Attribute Name="Y" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/Y">
+        <Description>TODO</Description>
+      </Attribute>
+      <Attribute Name="Z" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/X">
+        <Description>TODO</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="X" AttributeDataType="xs:float">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Y" AttributeDataType="xs:float">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Z" AttributeDataType="xs:float">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Position3D" RefAttributeType="AutomationMLLocationATL/Vector3D">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Direction3D" RefAttributeType="AutomationMLLocationATL/Vector3D">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Size3D" RefAttributeType="AutomationMLLocationATL/Vector3D">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Frame3D" AttributeDataType="xs:string">
+      <Attribute Name="Origin" RefAttributeType="AutomationMLLocationATL/Position3D">
+        <Description>TODO</Description>
+        <Attribute Name="X" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/X">
+          <Description>TODO</Description>
+        </Attribute>
+        <Attribute Name="Y" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/Y">
+          <Description>TODO</Description>
+        </Attribute>
+        <Attribute Name="Z" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/X">
+          <Description>TODO</Description>
+        </Attribute>
+      </Attribute>
+      <Attribute Name="Size" RefAttributeType="AutomationMLLocationATL/Size3D">
+        <Description>TODO</Description>
+        <Attribute Name="X" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/X">
+          <Description>TODO</Description>
+        </Attribute>
+        <Attribute Name="Y" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/Y">
+          <Description>TODO</Description>
+        </Attribute>
+        <Attribute Name="Z" AttributeDataType="xs:float" RefAttributeType="AutomationMLLocationATL/X">
+          <Description>TODO</Description>
+        </Attribute>
+      </Attribute>
+    </AttributeType>
+  </AttributeTypeLib>
+  <AttributeTypeLib Name="AutomationMLBaseAttributeTypeLib">
+    <Description>Standard Automation Markup Language Attribute Type Library</Description>
+    <Version>2.10.0</Version>
+    <AttributeType Name="Direction" AttributeDataType="xs:string">
+      <Constraint Name="AllowedValues">
+        <NominalScaledType>
+          <RequiredValue>In</RequiredValue>
+          <RequiredValue>Out</RequiredValue>
+          <RequiredValue>InOut</RequiredValue>
+        </NominalScaledType>
+      </Constraint>
+    </AttributeType>
+    <AttributeType Name="Cardinality">
+      <Attribute Name="MinOccur" AttributeDataType="xs:unsignedInt" />
+      <Attribute Name="MaxOccur" AttributeDataType="xs:unsignedInt" />
+    </AttributeType>
+    <AttributeType Name="Category" AttributeDataType="xs:string" />
+    <AttributeType Name="refURI" AttributeDataType="xs:anyURI" />
+    <AttributeType Name="AssociatedFacet" AttributeDataType="xs:string" />
+    <AttributeType Name="ListType" />
+    <AttributeType Name="OrderedListType" />
+    <AttributeType Name="LocalizedAttribute" AttributeDataType="xs:string" />
+    <AttributeType Name="AssociatedExternalValue">
+      <Attribute Name="refCAEXAttribute" />
+      <Attribute Name="refURI" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+      <Attribute Name="Direction" RefAttributeType="AutomationMLBaseAttributeTypeLib/Direction" />
+    </AttributeType>
+    <AttributeType Name="MIMEType" AttributeDataType="xs:string" />
+    <AttributeType Name="DocLang" AttributeDataType="xs:string" />
+  </AttributeTypeLib>
+  <AttributeTypeLib Name="AutomationMLContactATL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <AttributeType Name="EconomicEntity">
+      <Description>TODO</Description>
+      <Attribute Name="LegalName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/LegalName">
+        <Description>The full name of a natural person or legal entity (organisation, company, etc).
+For a natural person the format should be: "last names, first names".
+Examples (some typical names from different countries):
+  "Smith, Jane"
+  "Álvarez Sánchez, María Carmen"
+  "Lee, Jung Hun"
+  "Takahashi, Haruto"
+  "Lula da Silva, Luiz Inácio"
+For a legal entity it should be the full legal name.
+Examples (some members and partners of AutomationML):
+  "Otto-von-Guericke University Magdeburg"
+  "Tunku Abdul Rahman University College"
+  "Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V."
+  "International Electrotechnical Commission"
+  "Siemens AG"
+  "Apple Inc."
+  "EDAG Production Solutions GmbH &amp; Co. KG"
+Caution: please be aware of special characters in XML, e.g. the ampersand.
+</Description>
+      </Attribute>
+      <Attribute Name="AdditionalName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/AdditionalName">
+        <Description>Additional information of the organizational unit, e.g. the faculty of a university
+Examples (some members and partners of AutomationML):
+  "Chair of Production Systems and Automation" (Otto-von-Guericke University Magdeburg)
+  "Faculty of Engineering and Technology" (Tunku Abdul Rahman University College)
+  "Fraunhofer Institute for Manufacturing Engineering and Automation" (Fraunhofer-Gesellschaft)
+</Description>
+      </Attribute>
+      <Attribute Name="ShortName" AttributeDataType="xs:string" RefAttributeType="AutomationMLContactATL/ShortName">
+        <Description>The short name of the legal entity.
+For a natural person it might be an optional name, e.g. an English nickname for asian names.
+For a legal entity it should be a common abbreviation. It's recommended to use the internet domain which is short and unique.
+Examples (some members and partners of AutomationML):
+  "IEC" or "iec.ch" (International Electrotechnical Commission)
+  "OVGU" or "psa.ovgu.de" (Otto-von-Guericke University Magdeburg)
+  "TARC" or "tarc.edu.my/foet" (Tunku Abdul Rahman University College)
+  "EDAG" or "edag-ps.com" (EDAG Production Solutions GmbH &amp; Co. KG)
+Caution: please be aware of special characters in XML, e.g. the ampersand.
+</Description>
+      </Attribute>
+      <Attribute Name="Department" RefAttributeType="AutomationMLContactATL/Department">
+        <Description>administrative section within an organisation where a business partner is located</Description>
+      </Attribute>
+      <Attribute Name="Address" RefAttributeType="AutomationMLLocationATL/PostalAddress">
+        <Description>TODO</Description>
+      </Attribute>
+      <Attribute Name="CommList" RefAttributeType="AutomationMLContactATL/CommList">
+        <Description>TODO</Description>
+      </Attribute>
+      <Attribute Name="VAT" RefAttributeType="AutomationMLContactATL/VAT">
+        <Description>VAT identification number (Value Added Tax) of the business partner</Description>
+      </Attribute>
+      <Attribute Name="DUNS" RefAttributeType="AutomationMLContactATL/DUNS">
+        <Description>Internationaler Standard "Global Trade Item Number": Mit der 13-stellige Nummer unterhalb des Barcodes kann jeder Artikel, jedes Produkt oder jede Produktvariante weltweit ï¿½berschneidungsfrei identifiziert werden.</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="CommItem">
+      <Description>TODO</Description>
+      <AttributeType Name="Phone" RefAttributeType="AutomationMLContactATL/CommItem">
+        <Description>Phone number including type</Description>
+        <Attribute Name="PhoneNr" RefAttributeType="AutomationMLContactATL/PhoneNr">
+          <Description>Phone number including type</Description>
+        </Attribute>
+        <Attribute Name="PhoneType" RefAttributeType="AutomationMLContactATL/PhoneType">
+          <Description>characterization of a telephone according to its location or usage</Description>
+        </Attribute>
+      </AttributeType>
+      <AttributeType Name="Fax" RefAttributeType="AutomationMLContactATL/CommItem">
+        <Description>Fax number including type</Description>
+        <Attribute Name="FaxNr" RefAttributeType="AutomationMLContactATL/FaxNr">
+          <Description>Fax number including type</Description>
+        </Attribute>
+        <Attribute Name="FaxType" RefAttributeType="AutomationMLContactATL/FaxType">
+          <Description>characterization of the fax according its location or usage</Description>
+        </Attribute>
+      </AttributeType>
+      <AttributeType Name="Email" RefAttributeType="AutomationMLContactATL/CommItem">
+        <Description>TODO</Description>
+        <Attribute Name="EmailAddress" RefAttributeType="AutomationMLContactATL/EmailAddress">
+          <Description>electronic mail address of a business partner</Description>
+        </Attribute>
+        <Attribute Name="EmailType" RefAttributeType="AutomationMLContactATL/EmailType">
+          <Description>characterization of an e-mail address according to its location or usage</Description>
+        </Attribute>
+        <Attribute Name="PublicKey" RefAttributeType="AutomationMLContactATL/PublicKey">
+          <Description>public part of an unsymmetrical key pair to sign or encrypt text or messages</Description>
+        </Attribute>
+        <Attribute Name="PublicKeyType" RefAttributeType="AutomationMLContactATL/PublicKeyType">
+          <Description>characterization of a public key according to its encryption process</Description>
+        </Attribute>
+      </AttributeType>
+    </AttributeType>
+    <AttributeType Name="CommList" RefAttributeType="AutomationMLBaseAttributeTypeLib/ListType">
+      <Description>List of communication entries, contains objects inherited from AutomationMLContactATL/CommItem</Description>
+    </AttributeType>
+    <AttributeType Name="LegalName" AttributeDataType="xs:string">
+      <Description>The full name of a natural person or legal entity (organisation, company, etc).
+For a natural person the format should be: "last names, first names".
+Examples (some typical names from different countries):
+  "Smith, Jane"
+  "Álvarez Sánchez, María Carmen"
+  "Lee, Jung Hun"
+  "Takahashi, Haruto"
+  "Lula da Silva, Luiz Inácio"
+For a legal entity it should be the full legal name.
+Examples (some members and partners of AutomationML):
+  "Otto-von-Guericke University Magdeburg"
+  "Tunku Abdul Rahman University College"
+  "Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V."
+  "International Electrotechnical Commission"
+  "Siemens AG"
+  "Apple Inc."
+  "EDAG Production Solutions GmbH &amp; Co. KG"
+Caution: please be aware of special characters in XML, e.g. the ampersand.
+</Description>
+    </AttributeType>
+    <AttributeType Name="AdditionalName" AttributeDataType="xs:string">
+      <Description>Additional information of the organizational unit, e.g. the faculty of a university
+Examples (some members and partners of AutomationML):
+  "Chair of Production Systems and Automation" (Otto-von-Guericke University Magdeburg)
+  "Faculty of Engineering and Technology" (Tunku Abdul Rahman University College)
+  "Fraunhofer Institute for Manufacturing Engineering and Automation" (Fraunhofer-Gesellschaft)
+</Description>
+    </AttributeType>
+    <AttributeType Name="ShortName" AttributeDataType="xs:string">
+      <Description>The short name of the legal entity.
+For a natural person it might be an optional name, e.g. an English nickname for asian names.
+For a legal entity it should be a common abbreviation. It's recommended to use the internet domain which is short and unique.
+Examples (some members and partners of AutomationML):
+  "IEC" or "iec.ch" (International Electrotechnical Commission)
+  "OVGU" or "psa.ovgu.de" (Otto-von-Guericke University Magdeburg)
+  "TARC" or "tarc.edu.my/foet" (Tunku Abdul Rahman University College)
+  "EDAG" or "edag-ps.com" (EDAG Production Solutions GmbH &amp; Co. KG)
+Caution: please be aware of special characters in XML, e.g. the ampersand.
+</Description>
+    </AttributeType>
+    <AttributeType Name="Department" AttributeDataType="xs:string">
+      <Description>administrative section within an organisation where a business partner is located</Description>
+    </AttributeType>
+    <AttributeType Name="PhoneNr" AttributeDataType="xs:string">
+      <Description>complete telephone number to be called to reach a business partner</Description>
+    </AttributeType>
+    <AttributeType Name="PhoneType" AttributeDataType="xs:string">
+      <Description>characterization of a telephone according to its location or usage</Description>
+    </AttributeType>
+    <AttributeType Name="FaxNr" AttributeDataType="xs:string">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="FaxType" AttributeDataType="xs:string">
+      <Description>characterization of the fax according its location or usage</Description>
+    </AttributeType>
+    <AttributeType Name="EmailAddress" AttributeDataType="xs:string">
+      <Description>electronic mail address of a business partner</Description>
+    </AttributeType>
+    <AttributeType Name="EmailType" AttributeDataType="xs:string">
+      <Description>characterization of an e-mail address according to its location or usage</Description>
+    </AttributeType>
+    <AttributeType Name="PublicKey" AttributeDataType="xs:string">
+      <Description>public part of an unsymmetrical key pair to sign or encrypt text or messages</Description>
+    </AttributeType>
+    <AttributeType Name="PublicKeyType" AttributeDataType="xs:string">
+      <Description>characterization of a public key according to its encryption process</Description>
+    </AttributeType>
+    <AttributeType Name="VAT" AttributeDataType="xs:string">
+      <Description>VAT identification number (Value Added Tax) of the business partner</Description>
+    </AttributeType>
+    <AttributeType Name="DUNS" AttributeDataType="xs:string">
+      <Description>Internationaler Standard "Global Trade Item Number": Mit der 13-stellige Nummer unterhalb des Barcodes kann jeder Artikel, jedes Produkt oder jede Produktvariante weltweit ï¿½berschneidungsfrei identifiziert werden.</Description>
+    </AttributeType>
+    <AttributeType Name="GLN" AttributeDataType="xs:long">
+      <Description>Internationaler Standard "Global Location Number": The GLN is a 13-digit number and is used to identify physical locations or legal entities.
+It can identify locations uniquely where required. This identifier is compliant with norm ISO/IEC 6523.
+See also: https://en.wikipedia.org/wiki/Global_Location_Number
+</Description>
+    </AttributeType>
+  </AttributeTypeLib>
+  <AttributeTypeLib Name="AutomationMLProductModelATL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <AttributeType Name="Size">
+      <Description>TODO</Description>
+      <Attribute Name="Width" RefAttributeType="AutomationMLProductModelATL/Width">
+        <Description>TODO</Description>
+      </Attribute>
+      <Attribute Name="Length" RefAttributeType="AutomationMLProductModelATL/Length">
+        <Description>TODO</Description>
+      </Attribute>
+      <Attribute Name="Height" RefAttributeType="AutomationMLProductModelATL/Height">
+        <Description>TODO</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="SizeAndWeight" RefAttributeType="AutomationMLProductModelATL/Size">
+      <Description>TODO</Description>
+      <Attribute Name="Weight" RefAttributeType="AutomationMLProductModelATL/Weight">
+        <Description>TODO</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="Width" AttributeDataType="xs:string">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Length" AttributeDataType="xs:string">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Height" AttributeDataType="xs:string">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="Weight" AttributeDataType="xs:string">
+      <Description>TODO</Description>
+    </AttributeType>
+    <AttributeType Name="GTIN" AttributeDataType="xs:string">
+      <Description>Internationaler Standard "Global Trade Item Number": Mit der 13-stellige Nummer unterhalb des Barcodes kann jeder Artikel, jedes Produkt oder jede Produktvariante weltweit �berschneidungsfrei identifiziert werden.</Description>
+    </AttributeType>
+    <AttributeType Name="Markings">
+      <Description>Collection of product markings</Description>
+      <Attribute Name="MarkingName" RefAttributeType="AutomationMLProductModelATL/MarkingName">
+        <Description>Collection of product markings</Description>
+      </Attribute>
+      <Attribute Name="MarkingFile" RefAttributeType="AutomationMLProductModelATL/MarkingFile">
+        <Description>picture of the marking</Description>
+      </Attribute>
+      <Attribute Name="MarkingAddtionalText" RefAttributeType="AutomationMLProductModelATL/MarkingAddtionalText">
+        <Description>where applicable, additional information on the marking in plain text</Description>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="MarkingName" AttributeDataType="xs:string">
+      <Description>common name of the marking</Description>
+    </AttributeType>
+    <AttributeType Name="MarkingFile" AttributeDataType="xs:string">
+      <Description>picture of the marking</Description>
+    </AttributeType>
+    <AttributeType Name="MarkingAddtionalText" AttributeDataType="xs:string">
+      <Description>where applicable, additional information on the marking in plain text</Description>
+    </AttributeType>
+  </AttributeTypeLib>
+  <AttributeTypeLib Name="AutomationMLCommercialATL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.91.1</Version>
+    <AttributeType Name="Currency" AttributeDataType="xs:string" />
+    <AttributeType Name="GTIN" AttributeDataType="xs:string" />
+    <AttributeType Name="CustomsTariffNumber" AttributeDataType="xs:string" />
+    <AttributeType Name="EAN" AttributeDataType="xs:string" />
+    <AttributeType Name="InternalPID" AttributeDataType="xs:string" />
+    <AttributeType Name="ManufacturerPID" AttributeDataType="xs:string" />
+    <AttributeType Name="Commercial" AttributeDataType="xs:string">
+      <Attribute Name="ManufacturerPID" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/ManufacturerPID" />
+      <Attribute Name="InternalPID" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/InternalPID" />
+      <Attribute Name="EAN" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/EAN" />
+      <Attribute Name="CustomsTariffNumber" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/CustomsTariffNumber" />
+      <Attribute Name="GTIN" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/GTIN" />
+      <Attribute Name="Currency" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/Currency" />
+      <Attribute Name="AlternativeArticle" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/AlternativeArticle" />
+      <Attribute Name="AlternativeOrderCode" AttributeDataType="xs:string" RefAttributeType="AutomationMLCommercialATL/AlternativeOrderCode" />
+    </AttributeType>
+    <AttributeType Name="AlternativeArticle" AttributeDataType="xs:string" />
+    <AttributeType Name="AlternativeOrderCode" AttributeDataType="xs:string" />
+  </AttributeTypeLib>
+  <AttributeTypeLib Name="AutomationMLDigitalNameplateATL">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <Revision>
+      <RevisionDate>2022-11-29T10:46:06.9763945+01:00</RevisionDate>
+      <AuthorName></AuthorName>
+    </Revision>
+    <AttributeType Name="AMLNameplate" AttributeDataType="xs:string">
+      <Attribute Name="NamePlateHeader" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/NamePlateHeader">
+        <Attribute Name="Title" AttributeDataType="xs:string" />
+        <Attribute Name="Version" AttributeDataType="xs:string" />
+        <Attribute Name="URL" AttributeDataType="xs:string" />
+        <Attribute Name="Organisation" AttributeDataType="xs:string" />
+      </Attribute>
+      <Attribute Name="refURI" AttributeDataType="xs:anyURI" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+      <Attribute Name="ManufacturerName" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerName"></Attribute>
+      <Attribute Name="ManufacturerProductDesignation" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductDesignation"></Attribute>
+      <Attribute Name="ManufacturerProductRoot" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductRoot"></Attribute>
+      <Attribute Name="ManufacturerProductFamily" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductFamily"></Attribute>
+      <Attribute Name="ManufacturerProductType" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductType"></Attribute>
+      <Attribute Name="OrderCodeOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/OrderCodeOfManufacturer"></Attribute>
+      <Attribute Name="ProductArticleNumberOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductArticleNumberOfManufacturer"></Attribute>
+      <Attribute Name="SerialNumber" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SerialNumber"></Attribute>
+      <Attribute Name="YearOfConstruction" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/YearOfConstruction"></Attribute>
+      <Attribute Name="DateOfManufacture" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DateOfManufacture"></Attribute>
+      <Attribute Name="HardwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/HardwareVersion"></Attribute>
+      <Attribute Name="FirmwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/FirmwareVersion"></Attribute>
+      <Attribute Name="SoftwareRevision" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SoftwareRevision"></Attribute>
+      <Attribute Name="DeviceRevision" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceRevision" />
+      <Attribute Name="ProductInstanceUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductInstanceUri" />
+      <Attribute Name="RevisionCounter" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/RevisionCounter" />
+      <Attribute Name="ManufacturerUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerUri" />
+      <Attribute Name="Model" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/Model" />
+      <Attribute Name="ProductCode" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductCode" />
+      <Attribute Name="DeviceClass" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceClass" />
+      <Attribute Name="DeviceManual" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceManual" />
+    </AttributeType>
+    <AttributeType Name="DigitalNameplate" AttributeDataType="xs:string">
+      <Attribute Name="NamePlateHeader" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/NamePlateHeader">
+        <Attribute Name="Title" AttributeDataType="xs:string">
+          <Value>Digital Nameplate for Industrial Equipment</Value>
+        </Attribute>
+        <Attribute Name="Version" AttributeDataType="xs:string">
+          <Value>2.0</Value>
+        </Attribute>
+        <Attribute Name="URL" AttributeDataType="xs:string">
+          <Value>https://industrialdigitaltwin.org/wp-content/uploads/2022/10/IDTA-02006-2-0_Submodel_Digital-Nameplate.pdf</Value>
+        </Attribute>
+        <Attribute Name="Organisation" AttributeDataType="xs:string">
+          <Value>IDTA</Value>
+        </Attribute>
+      </Attribute>
+      <Attribute Name="UriOfTheProduct" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI"></Attribute>
+      <Attribute Name="ManufacturerName" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerName"></Attribute>
+      <Attribute Name="ManufacturerProductDesignation" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductDesignation"></Attribute>
+      <Attribute Name="ManufacturerProductRoot" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductRoot"></Attribute>
+      <Attribute Name="ManufacturerProductFamily" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductFamily"></Attribute>
+      <Attribute Name="ManufacturerProductType" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductType"></Attribute>
+      <Attribute Name="OrderCodeOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/OrderCodeOfManufacturer"></Attribute>
+      <Attribute Name="ProductArticleNumberOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductArticleNumberOfManufacturer"></Attribute>
+      <Attribute Name="SerialNumber" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SerialNumber"></Attribute>
+      <Attribute Name="YearOfConstruction" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/YearOfConstruction"></Attribute>
+      <Attribute Name="DateOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DateOfManufacture"></Attribute>
+      <Attribute Name="HardwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/HardwareVersion"></Attribute>
+      <Attribute Name="FirmwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/FirmwareVersion"></Attribute>
+      <Attribute Name="SoftwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SoftwareRevision"></Attribute>
+      <Attribute Name="CountryOfOrigin" AttributeDataType="xs:string" />
+    </AttributeType>
+    <AttributeType Name="VendorNameplate" AttributeDataType="xs:string">
+      <Attribute Name="NamePlateHeader" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/NamePlateHeader">
+        <Attribute Name="Title" AttributeDataType="xs:string">
+          <Value>OPC 10000-100</Value>
+        </Attribute>
+        <Attribute Name="Version" AttributeDataType="xs:string">
+          <Value>1.03.1</Value>
+        </Attribute>
+        <Attribute Name="URL" AttributeDataType="xs:string" />
+        <Attribute Name="Organisation" AttributeDataType="xs:string">
+          <Value>OPC Foundation</Value>
+        </Attribute>
+      </Attribute>
+      <Attribute Name="DeviceRevision" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceRevision" />
+      <Attribute Name="SerialNumber" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SerialNumber"></Attribute>
+      <Attribute Name="HardwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/HardwareVersion"></Attribute>
+      <Attribute Name="SoftwareVersion" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/SoftwareRevision"></Attribute>
+      <Attribute Name="ProductInstanceUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductInstanceUri" />
+      <Attribute Name="RevisionCounter" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/RevisionCounter" />
+      <Attribute Name="ManufacturerName" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerName"></Attribute>
+      <Attribute Name="ManufacturerUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerUri" />
+      <Attribute Name="Model" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/Model" />
+      <Attribute Name="ProductCode" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductCode" />
+      <Attribute Name="DeviceClass" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceClass" />
+      <Attribute Name="DeviceManual" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/DeviceManual" />
+    </AttributeType>
+    <AttributeType Name="NamePlateHeader" AttributeDataType="xs:string">
+      <Attribute Name="Title" AttributeDataType="xs:string" />
+      <Attribute Name="Version" AttributeDataType="xs:string" />
+      <Attribute Name="URL" AttributeDataType="xs:string" />
+      <Attribute Name="Organisation" AttributeDataType="xs:string" />
+    </AttributeType>
+    <AttributeType Name="ManufacturerName" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="ManufacturerProductDesignation" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="ManufacturerProductRoot" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="ManufacturerProductFamily" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="ManufacturerProductType" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="OrderCodeOfManufacturer" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="ProductArticleNumberOfManufacturer" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="SerialNumber" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="YearOfConstruction" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="DateOfManufacture" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="HardwareVersion" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="FirmwareVersion" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="SoftwareRevision" AttributeDataType="xs:string"></AttributeType>
+    <AttributeType Name="DeviceRevision" AttributeDataType="xs:string" />
+    <AttributeType Name="ProductInstanceUri" AttributeDataType="xs:string" />
+    <AttributeType Name="RevisionCounter" AttributeDataType="xs:string" />
+    <AttributeType Name="ManufacturerUri" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+    <AttributeType Name="Model" AttributeDataType="xs:string" />
+    <AttributeType Name="ProductCode" AttributeDataType="xs:string" />
+    <AttributeType Name="DeviceClass" AttributeDataType="xs:string" />
+    <AttributeType Name="DeviceManual" AttributeDataType="xs:string" />
+  </AttributeTypeLib>
+  <AttributeTypeLib Name="AutomationMLTechnicalData">
+    <Description>First Working Version  for 2nd Edition of Component Description Aug. 2023</Description>
+    <Version>1.9.1</Version>
+    <AttributeType Name="GeneralInformation" AttributeDataType="xs:string">
+      <Attribute Name="ManufacturerName" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerName"></Attribute>
+      <Attribute Name="ManaufacturerLogo" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/ManaufacturerLogo" />
+      <Attribute Name="ManufacturerProductDesignation" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ManufacturerProductDesignation"></Attribute>
+      <Attribute Name="OrderCodeOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/OrderCodeOfManufacturer"></Attribute>
+      <Attribute Name="ProductImage" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/ProductImage" />
+      <Attribute Name="ProductArticleNumberOfManufacturer" AttributeDataType="xs:string" RefAttributeType="AutomationMLDigitalNameplateATL/ProductArticleNumberOfManufacturer"></Attribute>
+    </AttributeType>
+    <AttributeType Name="FurtherInformation" AttributeDataType="xs:string">
+      <Attribute Name="TextStatement" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/TextStatement" />
+      <Attribute Name="Vailddate" AttributeDataType="xs:string" RefAttributeType="AutomationMLTechnicalData/Vailddate" />
+    </AttributeType>
+    <AttributeType Name="ManaufacturerLogo" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+    <AttributeType Name="ProductImage" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+    <AttributeType Name="TextStatement" AttributeDataType="xs:string" />
+    <AttributeType Name="Vailddate" AttributeDataType="xs:string" />
+  </AttributeTypeLib>
+</CAEXFile>
