@@ -195,7 +195,18 @@ namespace AasxPluginVec
         public static IAssetAdministrationShell GetAasContainingElements(IEnumerable<ISubmodelElement> elements, AasCore.Aas3_0.Environment env)
         {
             var submodelReferences = new HashSet<Reference>(elements.Select(e => e.GetParentSubmodel().GetReference() as Reference));
-            var aas = env.AssetAdministrationShells.FirstOrDefault(aas => submodelReferences.All(r => aas.HasSubmodelReference(r)));
+            var aas = env.AssetAdministrationShells.FirstOrDefault(aas =>
+            {
+                try
+                {
+                    // this try-catch block is necessary as the current implementation of 'aas.HasSubmodelReference' will throw
+                    // an exception if the ass has no assigned submodels
+                    return submodelReferences.All(r => aas.HasSubmodelReference(r));
+                } catch (Exception ex)
+                {
+                    return false;
+                }
+            });
             return aas;
         }
 
