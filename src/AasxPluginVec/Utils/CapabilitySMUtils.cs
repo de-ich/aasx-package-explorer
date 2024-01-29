@@ -1,5 +1,6 @@
 ﻿using AasCore.Aas3_0;
 using Extensions;
+using NPOI.Util.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,18 @@ namespace AasxPluginVec
         public const string ID_SHORT_REQUIRED_CAP_SM = "RequiredCapabilities";
         public const string ID_SHORT_OFFERED_CAP_SM = "OfferedCapabilities";
         public const string SEM_ID_CAP_SET = "https://wiki.eclipse.org/BaSyx_/_Documentation_/_Submodels_/_Capability#CapabilitySet";
+        public const string ID_SHORT_CAP_SET = "CapabilitySet";
         public const string SEM_ID_CAP_CONTAINER = "https://wiki.eclipse.org/BaSyx_/_Documentation_/_Submodels_/_Capability#CapabilityContainer";
+        public const string ID_SHORT_CAP_CONTAINER = "CapabilityContainer";
+        public const string SEM_ID_COMMENT = "https://wiki.eclipse.org/BaSyx_/_Documentation_/_Submodels_/_Capability#Comment";
+        public const string ID_SHORT_COMMENT = "Comment";
         public const string SEM_ID_CAP_RELATIONSHIPS = "https://wiki.eclipse.org/BaSyx_/_Documentation_/_Submodels_/_Capability#CapabilityRelationships";
+        public const string ID_SHORT_CAP_RELATIONSHIPS = "CapabilityRelationships";
         public const string SEM_ID_PROP_SET = "https://wiki.eclipse.org/BaSyx_/_Documentation_/_Submodels_/_Capability#PropertySet";
+        public const string ID_SHORT_PROP_SET = "PropertySet";
         public const string SEM_ID_PROP_CONTAINER = "https://wiki.eclipse.org/BaSyx_/_Documentation_/_Submodels_/_Capability#PropertyContainer";
-        public const string SEM_ID_CONSTRAINT_CONTAINER = "ConstraintContainer";
+        public const string ID_SHORT_PROP_CONTAINER = "PropertyContainer";
+        public const string ID_SHORT_CONSTRAINT_CONTAINER = "ConstraintContainer";
 
         public static bool IsCapabilitySubmodel(this ISubmodel submodel)
         {
@@ -45,9 +53,44 @@ namespace AasxPluginVec
 
         public static IEnumerable<ISubmodelElementCollection> FindCapabilityContainers(this ISubmodel capabilitySubmodel)
         {
-            var capabilitySet = capabilitySubmodel.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.GlobalReference, SEM_ID_CAP_SET)) as ISubmodelElementCollection;
+            var capabilitySet = FindCapabilitySet(capabilitySubmodel);
 
             return capabilitySet?.OverValueOrEmpty().Where(sme => sme.IsCapabilityContainer()).Select(sme => sme as ISubmodelElementCollection) ?? new List<ISubmodelElementCollection>();
+        }
+
+        public static ISubmodelElementCollection FindCapabilitySet(ISubmodel capabilitySubmodel, bool createIfNonExistant = false)
+        {
+            var capabilitySet = capabilitySubmodel.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.GlobalReference, SEM_ID_CAP_SET)) as ISubmodelElementCollection;
+
+            if (capabilitySet == null && createIfNonExistant)
+            {
+                capabilitySet = new SubmodelElementCollection(idShort: ID_SHORT_CAP_SET, semanticId: CreateSemanticId(KeyTypes.GlobalReference, SEM_ID_CAP_SET));
+                capabilitySubmodel.AddChild(capabilitySet);
+            }
+
+            return capabilitySet;
+        }
+
+        public static ISubmodelElementCollection CreateCapabilityContainer(ISubmodelElementCollection capabilitySet, string capabilityName, string capabilitySemanticId, bool createRelationshipContainer = false)
+        {
+            var numberOfExistingCapabilities = capabilitySet.OverValueOrEmpty().Count();
+            var idShort = $"{ID_SHORT_CAP_CONTAINER}{(numberOfExistingCapabilities + 1):00}";
+
+            var capabilityContainer = new SubmodelElementCollection(idShort: idShort, semanticId: CreateSemanticId(KeyTypes.GlobalReference, SEM_ID_CAP_CONTAINER));
+
+            capabilityContainer.AddChild(new Capability(idShort: capabilityName, semanticId: CreateSemanticId(KeyTypes.GlobalReference, capabilitySemanticId)));
+            capabilityContainer.AddChild(new MultiLanguageProperty(idShort: ID_SHORT_COMMENT, semanticId: CreateSemanticId(KeyTypes.GlobalReference, SEM_ID_COMMENT)));
+
+            capabilityContainer.AddChild(new SubmodelElementCollection(idShort: ID_SHORT_PROP_SET, semanticId: CreateSemanticId(KeyTypes.GlobalReference, SEM_ID_PROP_SET)));
+
+            if (createRelationshipContainer)
+            {
+                capabilityContainer.AddChild(new SubmodelElementCollection(idShort: ID_SHORT_CAP_RELATIONSHIPS, semanticId: CreateSemanticId(KeyTypes.GlobalReference, SEM_ID_CAP_RELATIONSHIPS)));
+            }
+
+            capabilitySet.AddChild(capabilityContainer);
+
+            return capabilityContainer;
         }
 
         public static string? GetCapabilitySemanticId(this ISubmodelElementCollection capabilityContainer)
@@ -88,6 +131,28 @@ namespace AasxPluginVec
         {
             return propertySet.FindProperties().FirstOrDefault(prop => prop.IdShort == propertyName);
         }
+
+        public static ISubmodelElementCollection CreateProperty(this ISubmodelElementCollection propertySet, string propertyName, object propertyValue = null, DataTypeDefXsd valueType = DataTypeDefXsd.String)
+        {
+            var numberOfExistingProperties = propertySet.OverValueOrEmpty().Count();
+
+            var propertyContainer = new SubmodelElementCollection(
+                    idShort: $"{ID_SHORT_PROP_CONTAINER}{(numberOfExistingProperties + 1):00}",
+                    semanticId: CreateSemanticId(KeyTypes.GlobalReference, SEM_ID_PROP_CONTAINER)
+                );
+
+            propertyContainer.AddChild(
+                new Property(
+                    valueType,
+                    idShort: propertyName,
+                    value: propertyValue?.ToString()
+                )
+            );
+            propertySet.AddChild(propertyContainer);
+
+            return propertyContainer;
+        }
+
         public static bool IsCapabilityRelationships(this ISubmodelElement submodelElement)
         {
             var smc = submodelElement as ISubmodelElementCollection;
@@ -104,7 +169,7 @@ namespace AasxPluginVec
         {
             var smc = submodelElement as ISubmodelElementCollection;
 
-            return smc?.HasSemanticId(KeyTypes.GlobalReference, SEM_ID_CONSTRAINT_CONTAINER) ?? false;
+            return smc?.HasSemanticId(KeyTypes.GlobalReference, ID_SHORT_CONSTRAINT_CONTAINER) ?? false;
         }
 
         public static ISubmodelElement? FindConstraintForProperty(ISubmodelElementCollection capabilityRelationships, IProperty property, AasCore.Aas3_0.Environment env)

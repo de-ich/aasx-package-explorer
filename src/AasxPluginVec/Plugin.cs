@@ -279,6 +279,32 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     }
                 });
 
+                // create required capability
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "CreateRequiredCapability",
+                        Header = "VWS4LS: Create a Required Capability within a Capability Submodel",
+                        HelpText = "Create a Required Capability within the selected Required Capability Submodel",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                // create required capability
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
+                        Name = "CreateOfferedCapability",
+                        Header = "VWS4LS: Create an Offered Capability within a Capability Submodel",
+                        HelpText = "Create an Offered Capability within the selected Offered Capability Submodel",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
                 // return
                 return new AasxPluginResultProvideMenuItems()
                 {
@@ -381,6 +407,16 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     if (cmd == "capabilitymatching")
                     {
                         resultEvents = await ExecuteCapabilityMatching(ticket, displayContext);
+                    }
+
+                    if (cmd == "createrequiredcapability")
+                    {
+                        resultEvents = await ExecuteCreateRequiredCapability(ticket, displayContext);
+                    }
+
+                    if (cmd == "createofferedcapability")
+                    {
+                        resultEvents = await ExecuteCreateOfferedCapability(ticket, displayContext);
                     }
 
                     resultEvents?.ToList().ForEach(r => _eventStack.PushEvent(r));
@@ -721,6 +757,66 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     PrintDependencyTree(option, indentLevel + 2);
                 }
             }
+        }
+
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteCreateRequiredCapability(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+            var selectedElements = ticket.SelectedDereferencedMainDataObjects;
+            
+            var worker = new RequiredCapabilityCreator(env, _options);
+            worker.ValidateSelection(selectedElements);
+
+            var capabilitySM = selectedElements.First() as ISubmodel;
+
+            var result = await CreateRequiredCapabilityDialog.DetermineCreateRequiredCapabilityConfiguration(displayContext);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            _log.Info($"Creating required capability...");
+            var capability = worker.CreateRequiredCapability(capabilitySM, result.CapabilitySemanticId, result.Properties);
+
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = capability?.GetReference()
+                }
+            };
+        }
+
+        private async Task<IEnumerable<AasxPluginResultEventBase>> ExecuteCreateOfferedCapability(AasxMenuActionTicket ticket, AnyUiContextPlusDialogs displayContext)
+        {
+            var env = ticket.Env;
+            var selectedElements = ticket.SelectedDereferencedMainDataObjects;
+
+            var worker = new OfferedCapabilityCreator(env, _options);
+            worker.ValidateSelection(selectedElements);
+
+            var capabilitySM = selectedElements.First() as ISubmodel;
+
+            var result = await CreateOfferedCapabilityDialog.DetermineCreateOfferedCapabilityConfiguration(displayContext);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            _log.Info($"Creating offered capability...");
+            var capability = worker.CreateOfferedCapability(capabilitySM, result.CapabilitySemanticId, result.Properties);
+
+            return new List<AasxPluginResultEventBase>()
+            {
+                new AasxPluginResultEventRedrawAllElements(),
+                new AasxPluginResultEventNavigateToReference()
+                {
+                    targetReference = capability?.GetReference()
+                }
+            };
         }
 
         private static IEnumerable<Entity> GetSelectedEntitiesFromTicket(AasxMenuActionTicket ticket)
