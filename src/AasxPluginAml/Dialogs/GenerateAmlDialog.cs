@@ -17,7 +17,7 @@ namespace AasxPluginAml.AnyUi
         {
             public string SucLibName { get; set; } = string.Empty;
             public string SucName { get; set; } = string.Empty;
-            public string SubmodelName { get; set;} = "ECAD";
+            public string SubmodelName { get; set;} = "AutomationML";
         }
 
         public static async Task<GenerateAmlDialogResult> DetermineCreateAmlConfiguration(
