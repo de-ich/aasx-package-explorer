@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2023 Festo SE & Co. KG <https://www.festo.com/net/de_de/Forms/web/contact_international>
 Author: Matthias Freund
 
@@ -239,8 +239,20 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     AttachPoint = "Plugins",
                     MenuItem = new AasxMenuItem()
                     {
+                        Name = "InitializeInterfaceConnectorsSM",
+                        Header = "Diamond: Initialize an Interface_Connectors Submodel for the selected AAS",
+                        HelpText = "Initialize an Interface_Connectors Submodel for the selected AAS",
+                        ArgDefs = new AasxMenuListOfArgDefs()
+                    }
+                });
+
+                res.Add(new AasxPluginResultSingleMenuItem()
+                {
+                    AttachPoint = "Plugins",
+                    MenuItem = new AasxMenuItem()
+                    {
                         Name = "GenerateAndIncludeAMLFile",
-                        Header = "AutomationML: Generate and Include an AML file for the selected AAS",
+                        Header = "Diamond: Generate and Include an AML file for the selected AAS",
                         HelpText = "Generate an AML files based on the interface connectors submodel and include it in the AAS",
                         ArgDefs = new AasxMenuListOfArgDefs()
                     }
@@ -457,6 +469,101 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                     new AasxPluginResultEventNavigateToReference()
                     {
                         targetReference = elementReference.GetReference()
+                    }
+                };
+            }
+            else if (cmd == "initializeinterfaceconnectorssm")
+            {
+                if (ticket.Package == null || ticket.DereferencedMainDataObject is not IAssetAdministrationShell)
+                {
+                    _log.Error($"No AAS was selcted...");
+                    return;
+                }
+
+                var aas = ticket.DereferencedMainDataObject as IAssetAdministrationShell;
+
+                var result = await InitInterfaceConnectorsSmDialog.DetermineInitInterfaceConnectorsSmConfiguration(displayContext);
+
+                if (result == null)
+                {
+                    return;
+                }
+
+                var sm = CreateSubmodel("Interface_Connectors", _options.GetTemplateIdSubmodel(aas.GetSubjectId()), null, aas, ticket.Env);
+
+                var connectors = new SubmodelElementCollection(idShort: "Connectors");
+                sm.AddChild(connectors);
+
+                var pneumaticProperties = new List<(string, string)>()
+                {
+                    ( "Designation", null ),
+                    ( "ConnectorType", "Pneumatic" ),
+                    ( "LogicalFunction", null ),
+                    ( "DesignType", null )
+                };
+
+                for (var i = 0; i < result.NumberOfPneumaticConnectors; i++)
+                {
+                    var connector = new SubmodelElementCollection(idShort: $"PneumaticConnector{(i+1):00}");
+                    connectors.AddChild(connector);
+
+                    pneumaticProperties.ForEach(p =>
+                    {
+                        var prop = new AasCore.Aas3_0.Property(DataTypeDefXsd.String, idShort: p.Item1, value: p.Item2);
+                        connector.AddChild(prop);
+                    });
+                }
+
+                var electricProperties = new List<(string, string)>()
+                {
+                    ( "Designation", null ),
+                    ( "ConnectorType", "Electric" ),
+                    ( "LogicalFunction", null ),
+                    ( "NumberOfPins", null ),
+                    ( "Coding", null ),
+                    ( "RatedVoltage", null ),
+                    ( "RatedCurrent", null ),
+                    ( "DesignType", null ),
+                    ( "PlugType", null ),
+
+                };
+
+                for (var i = 0; i < result.NumberOfElectricConnectors; i++)
+                {
+                    var connector = new SubmodelElementCollection(idShort: $"ElectricConnector{(i + 1):00}");
+                    connectors.AddChild(connector);
+
+                    electricProperties.ForEach(p =>
+                    {
+                        var prop = new AasCore.Aas3_0.Property(DataTypeDefXsd.String, idShort: p.Item1, value: p.Item2);
+                        connector.AddChild(prop);
+                    });
+                }
+
+                var mechanicProperties = new List<(string, string)>()
+                {
+                    ( "Designation", null ),
+                    ( "ConnectorType", "Mechanic" ),
+                    ( "DesignType", null )
+                };
+
+                for (var i = 0; i < result.NumberOfMechanicConnectors; i++)
+                {
+                    var connector = new SubmodelElementCollection(idShort: $"MechanicConnector{(i + 1):00}");
+                    connectors.AddChild(connector);
+
+                    mechanicProperties.ForEach(p =>
+                    {
+                        var prop = new AasCore.Aas3_0.Property(DataTypeDefXsd.String, idShort: p.Item1, value: p.Item2);
+                        connector.AddChild(prop);
+                    });
+                }
+
+                resultEvents = new List<AasxPluginResultEventBase>() {
+                    new AasxPluginResultEventRedrawAllElements(),
+                    new AasxPluginResultEventNavigateToReference()
+                    {
+                        targetReference = sm.GetReference()
                     }
                 };
             }
