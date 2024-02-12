@@ -508,22 +508,24 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 var amlDocument = InitializeAmlDocumentFromTemplate();
                 var amlFile = amlDocument.CAEXFile;
 
-                var sucLib = amlFile.SystemUnitClassLib.Append(result.SucLibName);
+                var sucLib = amlFile.SystemUnitClassLib["Festo"];
+                sucLib.Name = result.SucLibName;
 
+                var suc = sucLib.SystemUnitClass["AutomationComponent"];
+                suc.Name = result.SucName;
+                suc.Attribute["globalAssetID"].Value = aas.AssetInformation.GlobalAssetId;
 
-                var suc = sucLib.SystemUnitClass.Append(result.SucName);
-                AddRoleToElement(suc, "AutomationMLComponentStandardRCL/AutomationComponent");
-                suc.Attribute["AssetID"].Value = aas.AssetInformation.GlobalAssetId;
+                var connectorCollection = suc.InternalElement["ConnectorCollection"];
 
                 foreach (var connector in connectors)
                 {
                     var connectorName = connector.IdShort;
                     var connectorType = connector.OverValueOrEmpty().FirstOrDefault(sme => sme.IdShort == "ConnectorType")?.ValueAsText();
 
-                    var connectorIE = suc.InternalElement.Append(connectorName);
+                    var connectorIE = connectorCollection.InternalElement.Append(connectorName);
                     try
                     {
-                        AddRoleToElement(connectorIE, $"AutomationMLComponentStandardRCL/{connectorType}Connector");
+                        AddRoleToElement(connectorIE, $"AutomationML_Component_RoleClassLib_ConnectorExtension/{connectorType}Connector");
                     } catch(Exception ex)
                     {
                         _log.Error(ex.Message, ex);
