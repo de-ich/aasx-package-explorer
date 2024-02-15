@@ -251,8 +251,8 @@ public static class BasicAasUtils
             return null;
         }
 
-        // we assume that the subject ID is simply the 'host' part of the IRI
-        return new UriBuilder(iri).Uri.Host;
+        // we assume that the subject ID is simply the 'scheme' and 'authority' part of the IRI
+        return new UriBuilder(iri).Uri.GetLeftPart(UriPartial.Authority);
     }
 
     public static string GetSubjectId(this IAssetAdministrationShell aas)
