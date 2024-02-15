@@ -20,7 +20,7 @@ public class AmlOptions : AasxIntegrationBase.AasxPluginOptionsBase
 {
     private string TemplateIdAsset = "/ids/asset/DDDD_DDDD_DDDD_DDDD";
     private string TemplateIdAas = "/ids/aas/DDDD_DDDD_DDDD_DDDD";
-    private string TemplateIdSubmodel = "/ids/submodel/DDDD_DDDD_DDDD_DDDD";
+    private string TemplateIdSubmodel = "/ids/sm/DDDD_DDDD_DDDD_DDDD";
     public Dictionary<string, string> AssetIdByPartNumberDict = new Dictionary<string, string>();
 
     /// <summary>
