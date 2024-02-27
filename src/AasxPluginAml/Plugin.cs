@@ -604,7 +604,10 @@ namespace AasxIntegrationBase // the namespace has to be: AasxIntegrationBase
                 var articleNumber = nameplateSM?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.GlobalReference, "0173-1#02-AAO676#003"))?.ValueAsText() ??
                     nameplateSM?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.ConceptDescription, "0173-1#02-AAO676#003"))?.ValueAsText();
 
-                var result = await GenerateAmlDialog.DetermineCreateAmlConfiguration(displayContext, manufacturerName, articleNumber);
+                var orderCode = nameplateSM?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.GlobalReference, "0173-1#02-AAO227#002"))?.ValueAsText() ??
+                    nameplateSM?.OverSubmodelElementsOrEmpty().FirstOrDefault(sme => sme.HasSemanticId(KeyTypes.ConceptDescription, "0173-1#02-AAO227#002"))?.ValueAsText();
+
+                var result = await GenerateAmlDialog.DetermineCreateAmlConfiguration(displayContext, $"{manufacturerName}_{articleNumber}", $"{articleNumber}_{orderCode}");
 
                 if (result == null)
                 {
