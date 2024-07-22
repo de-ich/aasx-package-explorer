@@ -784,7 +784,7 @@ namespace AasxPluginDigitalNameplate
                     .Set(description: "SerialNumber:\n" +
                         "Unique combination of numbers and letters used to identify the " +
                         "product (asset) instance once it has been manufactured. Does not need to be " +
-                        "worldwide unqiue, only for the manufacturer."));
+                        "worldwide unique, only for the manufacturer."));
 
             // Product designation
 
@@ -990,7 +990,7 @@ namespace AasxPluginDigitalNameplate
                 statement: ((plate.DateOfManufacture?.HasContent() == true)
                     ? new IndexStatement(Quality.Good, statement: "Is given.")
                     : new IndexStatement(Quality.Warn, statement: "Should be given."))
-                    .Set(description: "SerialNumber:\n" +
+                    .Set(description: "DateOfManufacture:\n" +
                         "Date from which the production and / or development process is completed or " +
                         "from which a service is provided completely."));
 

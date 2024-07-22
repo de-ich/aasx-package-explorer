@@ -193,7 +193,19 @@ namespace Extensions
 
         public static string GetAsIdentifier(this IReference reference)
         {
-            if (reference.Type == ReferenceTypes.ExternalReference) // Applying only to Global Reference, based on older implementation, TODO:Make it Generic
+
+            if (reference != null && reference.Type == ReferenceTypes.ExternalReference) // Applying only to Global Reference, based on older implementation, TODO:Make it Generic
+            {
+                if (reference.Keys == null || reference.Keys.Count < 1)
+                {
+                    return null;
+                }
+
+                return reference.Keys[0].Value;
+            }
+
+            //TODO (jtikekar, 2024-03-06): Refactor, added w.r.t. GitHub issue 11
+            if(reference.Type == ReferenceTypes.ModelReference)
             {
                 if (reference.Keys == null || reference.Keys.Count < 1)
                 {

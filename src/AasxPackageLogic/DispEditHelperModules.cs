@@ -9,6 +9,7 @@ This source code may use other Open Source software components (see LICENSE.txt)
 
 using AasxIntegrationBase;
 using AdminShellNS;
+using AdminShellNS.Extensions;
 using AnyUi;
 using Extensions;
 using Newtonsoft.Json;
@@ -17,6 +18,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using static AasxPackageLogic.DispEditHelperBasics;
 using Aas = AasCore.Aas3_0;
 
 namespace AasxPackageLogic
@@ -134,7 +136,7 @@ namespace AasxPackageLogic
                             return true == referable.IdShort?.Contains("---");
                         },
                         "The idShort contains 3 dashes. Probably, the entitiy was auto-named " +
-                        "to keep it unqiue because of an operation such a copy/ paste.",
+                        "to keep it unique because of an operation such a copy/ paste.",
                         severityLevel: HintCheck.Severity.Notice)
                     });
             }
@@ -186,6 +188,8 @@ namespace AasxPackageLogic
                 this.AddKeyListLangStr<ILangStringNameType>(stack, "displayName", referable.DisplayName,
                     repo, relatedReferable: referable);
             }
+
+
 
             // category deprecated
             this.AddHintBubble(
@@ -319,6 +323,7 @@ namespace AasxPackageLogic
         //
 
         public void DisplayOrEditEntityIdentifiable(AnyUiStackPanel stack,
+            Aas.Environment env,
             Aas.IIdentifiable identifiable,
             string templateForIdString,
             DispEditInjectAction injectToId = null)
@@ -339,8 +344,23 @@ namespace AasxPackageLogic
                     () => { return identifiable.Id == ""; },
                     "Identification id shall not be empty. You could use the 'Generate' button in order to " +
                         "generate a worldwide unique id. " +
-                        "The template of this id could be set by commandline arguments." )
-
+                        "The template of this id could be set by commandline arguments." ),
+                new HintCheck(
+                    () => {
+                        int count = 0;
+                        if(env != null && !env.AssetAdministrationShells.IsNullOrEmpty())
+                        {
+                            foreach(var aas in env.AssetAdministrationShells)
+                            {
+                                if(aas.Id == identifiable.Id)
+                                    count++;
+                            }
+                        }
+                        
+                        return (count >= 2?true:false);
+                    },
+                    "It is not allowed to have duplicate Ids in AAS of the same file. This will break functionality and we strongly encoure to make the Id unique!",
+                    breakIfTrue: false)
             });
             if (this.SafeguardAccess(
                     stack, repo, identifiable.Id, "id:", "Create data element!",
@@ -356,7 +376,10 @@ namespace AasxPackageLogic
                     v =>
                     {
                         var dr = new DiaryReference(identifiable);
+                        string value = v as string;
+                        bool duplicate = false;
                         identifiable.Id = v as string;
+                        //mlem
                         this.AddDiaryEntry(identifiable, new DiaryEntryStructChange(), diaryReference: dr);
                         return new AnyUiLambdaActionNone();
                     },
@@ -806,9 +829,8 @@ namespace AasxPackageLogic
                                 });
                         }
 
-                        // which content is possible?
                         var cntByDs = ExtendIDataSpecificationContent.GuessContentTypeFor(
-                                        hasDataSpecification[i].DataSpecification);
+                                        hasDataSpecification[i].DataSpecificationContent);
 
                         AddHintBubble(
                             stack, hintMode, new[] {

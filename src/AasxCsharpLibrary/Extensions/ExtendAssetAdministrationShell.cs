@@ -135,31 +135,31 @@ namespace Extensions
             {
                 foreach (var submodelRef in sourceAas.submodelRefs)
                 {
-                    var keyList = new List<IKey>();
-                    foreach (var refKey in submodelRef.Keys)
+                    if (!submodelRef.IsEmpty)
                     {
-                        var keyType = Stringification.KeyTypesFromString(refKey.type);
-                        if (keyType != null)
+                        var keyList = new List<IKey>();
+                        foreach (var refKey in submodelRef.Keys)
                         {
-                            keyList.Add(new Key((KeyTypes)keyType, refKey.value));
+                            var keyType = Stringification.KeyTypesFromString(refKey.type);
+                            if (keyType != null)
+                            {
+                                keyList.Add(new Key((KeyTypes)keyType, refKey.value));
+                            }
+                            else
+                            {
+                                Console.WriteLine($"KeyType value {refKey.type} not found.");
+                            }
                         }
-                        else
-                        {
-                            Console.WriteLine($"KeyType value {refKey.type} not found.");
-                        }
+                        assetAdministrationShell.Submodels ??= new List<IReference>();
+                        assetAdministrationShell.Submodels.Add(new Reference(ReferenceTypes.ModelReference, keyList)); 
                     }
-                    assetAdministrationShell.Submodels ??= new List<IReference>();
-                    assetAdministrationShell.Submodels.Add(new Reference(ReferenceTypes.ModelReference, keyList));
                 }
             }
 
-            if (sourceAas.hasDataSpecification != null)
+            if (sourceAas.hasDataSpecification != null && sourceAas.hasDataSpecification.reference.Count > 0)
             {
                 //TODO (jtikekar, 0000-00-00): EmbeddedDataSpecification?? (as per old implementation)
-                if (assetAdministrationShell.EmbeddedDataSpecifications == null)
-                {
-                    assetAdministrationShell.EmbeddedDataSpecifications = new List<IEmbeddedDataSpecification>();
-                }
+                assetAdministrationShell.EmbeddedDataSpecifications ??= new List<IEmbeddedDataSpecification>();
                 foreach (var dataSpecification in sourceAas.hasDataSpecification.reference)
                 {
                     if (!dataSpecification.IsEmpty)
@@ -223,21 +223,24 @@ namespace Extensions
             {
                 foreach (var submodelRef in sourceAas.submodelRefs)
                 {
-                    var keyList = new List<IKey>();
-                    foreach (var refKey in submodelRef.Keys)
+                    if (!submodelRef.IsEmpty)
                     {
-                        var keyType = Stringification.KeyTypesFromString(refKey.type);
-                        if (keyType != null)
+                        var keyList = new List<IKey>();
+                        foreach (var refKey in submodelRef.Keys)
                         {
-                            keyList.Add(new Key((KeyTypes)keyType, refKey.value));
+                            var keyType = Stringification.KeyTypesFromString(refKey.type);
+                            if (keyType != null)
+                            {
+                                keyList.Add(new Key((KeyTypes)keyType, refKey.value));
+                            }
+                            else
+                            {
+                                Console.WriteLine($"KeyType value {refKey.type} not found.");
+                            }
                         }
-                        else
-                        {
-                            Console.WriteLine($"KeyType value {refKey.type} not found.");
-                        }
+                        assetAdministrationShell.Submodels ??= new List<IReference>();
+                        assetAdministrationShell.Submodels.Add(new Reference(ReferenceTypes.ModelReference, keyList)); 
                     }
-                    assetAdministrationShell.Submodels ??= new List<IReference>();
-                    assetAdministrationShell.Submodels.Add(new Reference(ReferenceTypes.ModelReference, keyList));
                 }
             }
 

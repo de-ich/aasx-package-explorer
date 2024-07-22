@@ -112,8 +112,11 @@ namespace Extensions
 
             // check
             submodel.BaseValidation(results);
-            submodel.Kind.Value.Validate(results, submodel);
-            submodel.SemanticId.Keys.Validate(results, submodel);
+            submodel.Kind?.Validate(results, submodel);
+            if (submodel.SemanticId != null && !submodel.SemanticId.IsEmpty())
+            {
+                submodel.SemanticId.Keys.Validate(results, submodel); 
+            }
         }
 
         public static Submodel ConvertFromV10(this Submodel submodel, AasxCompatibilityModels.AdminShellV10.Submodel sourceSubmodel, bool shallowCopy = false)
@@ -221,7 +224,7 @@ namespace Extensions
             if (srcSM.identification?.id != null)
                 sm.Id = srcSM.identification.id;
 
-            if (srcSM.description != null)
+            if (srcSM.description != null && !srcSM.description.langString.IsNullOrEmpty())
                 sm.Description = ExtensionsUtil.ConvertDescriptionFromV20(srcSM.description);
 
             if (srcSM.administration != null)
@@ -243,7 +246,10 @@ namespace Extensions
                         Console.WriteLine($"KeyType value {refKey.type} not found.");
                     }
                 }
-                sm.SemanticId = new Reference(ReferenceTypes.ExternalReference, keyList);
+                if (keyList.Count > 0)
+                {
+                    sm.SemanticId = new Reference(ReferenceTypes.ExternalReference, keyList); 
+                }
             }
 
             if (srcSM.kind != null)
