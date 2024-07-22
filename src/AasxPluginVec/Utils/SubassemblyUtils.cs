@@ -29,11 +29,6 @@ namespace AasxPluginVec
             var entryNodeInAssociatedProductBom = associatedProductBom.FindEntryNode();
             var vecReference = entryNodeInAssociatedProductBom?.GetVecRelationship(env, aas);
 
-            if (vecReference == null)
-            {
-                throw new Exception("Unable to find VEC reference in existing product BOM!");
-            }
-            
             var idShort = ID_SHORT_MANUFACTURING_BOM_SM;
 
             // as there may be multiple product boms, we check if the idshort of the associated product bom has an extension that we reuse
@@ -46,7 +41,10 @@ namespace AasxPluginVec
             var manufacturingBom = CreateBomSubmodel(idShort, iriTemplate, aas: aas, env: env, supplementarySemanticId: SEM_ID_MANUFACTURING_BOM_SM);
             var entryNodeInManufacturingBom = manufacturingBom.FindEntryNode();
 
-            CreateVecRelationship(entryNodeInManufacturingBom, vecReference, env, vecReference.GetParentSubmodel());
+            if (vecReference != null)
+            {
+                CreateVecRelationship(entryNodeInManufacturingBom, vecReference, env, vecReference.GetParentSubmodel());
+            }
 
             return manufacturingBom;
         }

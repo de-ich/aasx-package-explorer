@@ -177,18 +177,21 @@ namespace AasxPluginVec
         {
             var referencedVecFileSMEs = entitiesToBeMadeSubassembly.Select(e => e.FindReferencedVecFileSME(env, aas)).Where(v => v != null);
 
-            if (referencedVecFileSMEs.ToHashSet().Count != 1)
+            if (referencedVecFileSMEs.ToHashSet().Count > 1)
             {
                 throw new Exception("Unable to determine VEC file referenced by the BOM submodel(s)!");
             }
 
-            var existingVecFileSME = referencedVecFileSMEs.First();
+            var existingVecFileSME = referencedVecFileSMEs.FirstOrDefault();
 
             // the AAS for the new sub-assembly
             this.newSubassemblyAas = CreateAAS(this.newSubassemblyAasName, options.GetTemplateIdAas(aas.GetSubjectId()), options.GetTemplateIdAsset(aas.GetSubjectId()), env, AssetKind.Type);
 
-            // FIXME probably, we should not just copy the whole existing VEC file but extract the relevant parts only into a new file
-            newVecSubmodel = InitializeVecSubmodel(newSubassemblyAas, env, existingVecFileSME);
+            if (existingVecFileSME != null)
+            {
+                // FIXME probably, we should not just copy the whole existing VEC file but extract the relevant parts only into a new file
+                newVecSubmodel = InitializeVecSubmodel(newSubassemblyAas, env, existingVecFileSME);
+            }
 
             newProductBom = CreateBomSubmodel(ID_SHORT_PRODUCT_BOM_SM, options.GetTemplateIdSubmodel(aas.GetSubjectId()), aas: newSubassemblyAas, env: env, supplementarySemanticId: SEM_ID_PRODUCT_BOM_SM);
             CopyVecRelationship(originalManufacturingBom.FindEntryNode(), newProductBom.FindEntryNode());
